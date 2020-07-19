@@ -1,0 +1,20 @@
+[class^='icons-'],
+[class*=' icons-'] {
+  position: relative;
+  z-index: 10;
+  display: inline-block;
+  *margin-right: 0.3em;
+  vertical-align: middle;
+  background-image: url('../images/front/sprite.png') !important;
+}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  [class^='icons-'],
+  [class*=' icons-'] {
+    background-image: url('../images/front/sprite@2x.png') !important;
+  }
+}
+//icons normal
+//@include sprites($spritesheet-sprites);
+//icons retina
+@include retina-sprites($retina-groups);

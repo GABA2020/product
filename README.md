@@ -1,2 +1,3 @@
-# product
-user profiles, for now
+# GABA
+
+This is the main code base for GABA

@@ -1,0 +1,1232 @@
+// SCSS variables are information about icon's compiled state, stored under its original file name
+//
+// .icon-home {
+//   width: $icon-home-width;
+// }
+//
+// The large array-like variables contain all information about a single icon
+// $icon-home: x y offset_x offset_y width height total_width total_height image_path;
+//
+// At the bottom of this section, we provide information about the spritesheet itself
+// $spritesheet: width height image $spritesheet-sprites;
+$icons-account-name: 'icons-account';
+$icons-account-x: 117px;
+$icons-account-y: 82px;
+$icons-account-offset-x: -117px;
+$icons-account-offset-y: -82px;
+$icons-account-width: 9px;
+$icons-account-height: 9px;
+$icons-account-total-width: 129px;
+$icons-account-total-height: 122px;
+$icons-account-image: 'app/images/front/sprite.png';
+$icons-account: (
+  117px,
+  82px,
+  -117px,
+  -82px,
+  9px,
+  9px,
+  129px,
+  122px,
+  'app/images/front/sprite.png',
+  'icons-account'
+);
+$icons-bag-name: 'icons-bag';
+$icons-bag-x: 0px;
+$icons-bag-y: 0px;
+$icons-bag-offset-x: 0px;
+$icons-bag-offset-y: 0px;
+$icons-bag-width: 57px;
+$icons-bag-height: 66px;
+$icons-bag-total-width: 129px;
+$icons-bag-total-height: 122px;
+$icons-bag-image: 'app/images/front/sprite.png';
+$icons-bag: (
+  0px,
+  0px,
+  0px,
+  0px,
+  57px,
+  66px,
+  129px,
+  122px,
+  'app/images/front/sprite.png',
+  'icons-bag'
+);
+$icons-edit-name: 'icons-edit';
+$icons-edit-x: 19px;
+$icons-edit-y: 92px;
+$icons-edit-offset-x: -19px;
+$icons-edit-offset-y: -92px;
+$icons-edit-width: 15px;
+$icons-edit-height: 13px;
+$icons-edit-total-width: 129px;
+$icons-edit-total-height: 122px;
+$icons-edit-image: 'app/images/front/sprite.png';
+$icons-edit: (
+  19px,
+  92px,
+  -19px,
+  -92px,
+  15px,
+  13px,
+  129px,
+  122px,
+  'app/images/front/sprite.png',
+  'icons-edit'
+);
+$icons-facebook-name: 'icons-facebook';
+$icons-facebook-x: 63px;
+$icons-facebook-y: 71px;
+$icons-facebook-offset-x: -63px;
+$icons-facebook-offset-y: -71px;
+$icons-facebook-width: 16px;
+$icons-facebook-height: 16px;
+$icons-facebook-total-width: 129px;
+$icons-facebook-total-height: 122px;
+$icons-facebook-image: 'app/images/front/sprite.png';
+$icons-facebook: (
+  63px,
+  71px,
+  -63px,
+  -71px,
+  16px,
+  16px,
+  129px,
+  122px,
+  'app/images/front/sprite.png',
+  'icons-facebook'
+);
+$icons-grid-name: 'icons-grid';
+$icons-grid-x: 96px;
+$icons-grid-y: 21px;
+$icons-grid-offset-x: -96px;
+$icons-grid-offset-y: -21px;
+$icons-grid-width: 16px;
+$icons-grid-height: 16px;
+$icons-grid-total-width: 129px;
+$icons-grid-total-height: 122px;
+$icons-grid-image: 'app/images/front/sprite.png';
+$icons-grid: (
+  96px,
+  21px,
+  -96px,
+  -21px,
+  16px,
+  16px,
+  129px,
+  122px,
+  'app/images/front/sprite.png',
+  'icons-grid'
+);
+$icons-image-name: 'icons-image';
+$icons-image-x: 96px;
+$icons-image-y: 42px;
+$icons-image-offset-x: -96px;
+$icons-image-offset-y: -42px;
+$icons-image-width: 16px;
+$icons-image-height: 16px;
+$icons-image-total-width: 129px;
+$icons-image-total-height: 122px;
+$icons-image-image: 'app/images/front/sprite.png';
+$icons-image: (
+  96px,
+  42px,
+  -96px,
+  -42px,
+  16px,
+  16px,
+  129px,
+  122px,
+  'app/images/front/sprite.png',
+  'icons-image'
+);
+$icons-linkedin-name: 'icons-linkedin';
+$icons-linkedin-x: 21px;
+$icons-linkedin-y: 71px;
+$icons-linkedin-offset-x: -21px;
+$icons-linkedin-offset-y: -71px;
+$icons-linkedin-width: 16px;
+$icons-linkedin-height: 16px;
+$icons-linkedin-total-width: 129px;
+$icons-linkedin-total-height: 122px;
+$icons-linkedin-image: 'app/images/front/sprite.png';
+$icons-linkedin: (
+  21px,
+  71px,
+  -21px,
+  -71px,
+  16px,
+  16px,
+  129px,
+  122px,
+  'app/images/front/sprite.png',
+  'icons-linkedin'
+);
+$icons-lock-name: 'icons-lock';
+$icons-lock-x: 62px;
+$icons-lock-y: 0px;
+$icons-lock-offset-x: -62px;
+$icons-lock-offset-y: 0px;
+$icons-lock-width: 29px;
+$icons-lock-height: 33px;
+$icons-lock-total-width: 129px;
+$icons-lock-total-height: 122px;
+$icons-lock-image: 'app/images/front/sprite.png';
+$icons-lock: (
+  62px,
+  0px,
+  -62px,
+  0px,
+  29px,
+  33px,
+  129px,
+  122px,
+  'app/images/front/sprite.png',
+  'icons-lock'
+);
+$icons-mini-name: 'icons-mini';
+$icons-mini-x: 63px;
+$icons-mini-y: 92px;
+$icons-mini-offset-x: -63px;
+$icons-mini-offset-y: -92px;
+$icons-mini-width: 19px;
+$icons-mini-height: 10px;
+$icons-mini-total-width: 129px;
+$icons-mini-total-height: 122px;
+$icons-mini-image: 'app/images/front/sprite.png';
+$icons-mini: (
+  63px,
+  92px,
+  -63px,
+  -92px,
+  19px,
+  10px,
+  129px,
+  122px,
+  'app/images/front/sprite.png',
+  'icons-mini'
+);
+$icons-pi-name: 'icons-pi';
+$icons-pi-x: 0px;
+$icons-pi-y: 71px;
+$icons-pi-offset-x: 0px;
+$icons-pi-offset-y: -71px;
+$icons-pi-width: 16px;
+$icons-pi-height: 16px;
+$icons-pi-total-width: 129px;
+$icons-pi-total-height: 122px;
+$icons-pi-image: 'app/images/front/sprite.png';
+$icons-pi: (
+  0px,
+  71px,
+  0px,
+  -71px,
+  16px,
+  16px,
+  129px,
+  122px,
+  'app/images/front/sprite.png',
+  'icons-pi'
+);
+$icons-pinterest-name: 'icons-pinterest';
+$icons-pinterest-x: 96px;
+$icons-pinterest-y: 0px;
+$icons-pinterest-offset-x: -96px;
+$icons-pinterest-offset-y: 0px;
+$icons-pinterest-width: 16px;
+$icons-pinterest-height: 16px;
+$icons-pinterest-total-width: 129px;
+$icons-pinterest-total-height: 122px;
+$icons-pinterest-image: 'app/images/front/sprite.png';
+$icons-pinterest: (
+  96px,
+  0px,
+  -96px,
+  0px,
+  16px,
+  16px,
+  129px,
+  122px,
+  'app/images/front/sprite.png',
+  'icons-pinterest'
+);
+$icons-point-name: 'icons-point';
+$icons-point-x: 42px;
+$icons-point-y: 71px;
+$icons-point-offset-x: -42px;
+$icons-point-offset-y: -71px;
+$icons-point-width: 16px;
+$icons-point-height: 16px;
+$icons-point-total-width: 129px;
+$icons-point-total-height: 122px;
+$icons-point-image: 'app/images/front/sprite.png';
+$icons-point: (
+  42px,
+  71px,
+  -42px,
+  -71px,
+  16px,
+  16px,
+  129px,
+  122px,
+  'app/images/front/sprite.png',
+  'icons-point'
+);
+$icons-report-name: 'icons-report';
+$icons-report-x: 62px;
+$icons-report-y: 38px;
+$icons-report-offset-x: -62px;
+$icons-report-offset-y: -38px;
+$icons-report-width: 21px;
+$icons-report-height: 21px;
+$icons-report-total-width: 129px;
+$icons-report-total-height: 122px;
+$icons-report-image: 'app/images/front/sprite.png';
+$icons-report: (
+  62px,
+  38px,
+  -62px,
+  -38px,
+  21px,
+  21px,
+  129px,
+  122px,
+  'app/images/front/sprite.png',
+  'icons-report'
+);
+$icons-search-name: 'icons-search';
+$icons-search-x: 117px;
+$icons-search-y: 67px;
+$icons-search-offset-x: -117px;
+$icons-search-offset-y: -67px;
+$icons-search-width: 10px;
+$icons-search-height: 10px;
+$icons-search-total-width: 129px;
+$icons-search-total-height: 122px;
+$icons-search-image: 'app/images/front/sprite.png';
+$icons-search: (
+  117px,
+  67px,
+  -117px,
+  -67px,
+  10px,
+  10px,
+  129px,
+  122px,
+  'app/images/front/sprite.png',
+  'icons-search'
+);
+$icons-star-opacity-name: 'icons-star-opacity';
+$icons-star-opacity-x: 117px;
+$icons-star-opacity-y: 51px;
+$icons-star-opacity-offset-x: -117px;
+$icons-star-opacity-offset-y: -51px;
+$icons-star-opacity-width: 11px;
+$icons-star-opacity-height: 11px;
+$icons-star-opacity-total-width: 129px;
+$icons-star-opacity-total-height: 122px;
+$icons-star-opacity-image: 'app/images/front/sprite.png';
+$icons-star-opacity: (
+  117px,
+  51px,
+  -117px,
+  -51px,
+  11px,
+  11px,
+  129px,
+  122px,
+  'app/images/front/sprite.png',
+  'icons-star-opacity'
+);
+$icons-star-name: 'icons-star';
+$icons-star-x: 117px;
+$icons-star-y: 35px;
+$icons-star-offset-x: -117px;
+$icons-star-offset-y: -35px;
+$icons-star-width: 11px;
+$icons-star-height: 11px;
+$icons-star-total-width: 129px;
+$icons-star-total-height: 122px;
+$icons-star-image: 'app/images/front/sprite.png';
+$icons-star: (
+  117px,
+  35px,
+  -117px,
+  -35px,
+  11px,
+  11px,
+  129px,
+  122px,
+  'app/images/front/sprite.png',
+  'icons-star'
+);
+$icons-submit-email-name: 'icons-submit-email';
+$icons-submit-email-x: 0px;
+$icons-submit-email-y: 111px;
+$icons-submit-email-offset-x: 0px;
+$icons-submit-email-offset-y: -111px;
+$icons-submit-email-width: 13px;
+$icons-submit-email-height: 11px;
+$icons-submit-email-total-width: 129px;
+$icons-submit-email-total-height: 122px;
+$icons-submit-email-image: 'app/images/front/sprite.png';
+$icons-submit-email: (
+  0px,
+  111px,
+  0px,
+  -111px,
+  13px,
+  11px,
+  129px,
+  122px,
+  'app/images/front/sprite.png',
+  'icons-submit-email'
+);
+$icons-target-name: 'icons-target';
+$icons-target-x: 117px;
+$icons-target-y: 0px;
+$icons-target-offset-x: -117px;
+$icons-target-offset-y: 0px;
+$icons-target-width: 12px;
+$icons-target-height: 12px;
+$icons-target-total-width: 129px;
+$icons-target-total-height: 122px;
+$icons-target-image: 'app/images/front/sprite.png';
+$icons-target: (
+  117px,
+  0px,
+  -117px,
+  0px,
+  12px,
+  12px,
+  129px,
+  122px,
+  'app/images/front/sprite.png',
+  'icons-target'
+);
+$icons-trash-name: 'icons-trash';
+$icons-trash-x: 117px;
+$icons-trash-y: 17px;
+$icons-trash-offset-x: -117px;
+$icons-trash-offset-y: -17px;
+$icons-trash-width: 11px;
+$icons-trash-height: 13px;
+$icons-trash-total-width: 129px;
+$icons-trash-total-height: 122px;
+$icons-trash-image: 'app/images/front/sprite.png';
+$icons-trash: (
+  117px,
+  17px,
+  -117px,
+  -17px,
+  11px,
+  13px,
+  129px,
+  122px,
+  'app/images/front/sprite.png',
+  'icons-trash'
+);
+$icons-twitter-name: 'icons-twitter';
+$icons-twitter-x: 96px;
+$icons-twitter-y: 63px;
+$icons-twitter-offset-x: -96px;
+$icons-twitter-offset-y: -63px;
+$icons-twitter-width: 16px;
+$icons-twitter-height: 16px;
+$icons-twitter-total-width: 129px;
+$icons-twitter-total-height: 122px;
+$icons-twitter-image: 'app/images/front/sprite.png';
+$icons-twitter: (
+  96px,
+  63px,
+  -96px,
+  -63px,
+  16px,
+  16px,
+  129px,
+  122px,
+  'app/images/front/sprite.png',
+  'icons-twitter'
+);
+$icons-warning-name: 'icons-warning';
+$icons-warning-x: 0px;
+$icons-warning-y: 92px;
+$icons-warning-offset-x: 0px;
+$icons-warning-offset-y: -92px;
+$icons-warning-width: 14px;
+$icons-warning-height: 14px;
+$icons-warning-total-width: 129px;
+$icons-warning-total-height: 122px;
+$icons-warning-image: 'app/images/front/sprite.png';
+$icons-warning: (
+  0px,
+  92px,
+  0px,
+  -92px,
+  14px,
+  14px,
+  129px,
+  122px,
+  'app/images/front/sprite.png',
+  'icons-warning'
+);
+$logo-name: 'logo';
+$logo-x: 39px;
+$logo-y: 92px;
+$logo-offset-x: -39px;
+$logo-offset-y: -92px;
+$logo-width: 19px;
+$logo-height: 10px;
+$logo-total-width: 129px;
+$logo-total-height: 122px;
+$logo-image: 'app/images/front/sprite.png';
+$logo: (
+  39px,
+  92px,
+  -39px,
+  -92px,
+  19px,
+  10px,
+  129px,
+  122px,
+  'app/images/front/sprite.png',
+  'logo'
+);
+$icons-account-2x-name: 'icons-account@2x';
+$icons-account-2x-x: 234px;
+$icons-account-2x-y: 164px;
+$icons-account-2x-offset-x: -234px;
+$icons-account-2x-offset-y: -164px;
+$icons-account-2x-width: 18px;
+$icons-account-2x-height: 18px;
+$icons-account-2x-total-width: 258px;
+$icons-account-2x-total-height: 244px;
+$icons-account-2x-image: 'app/images/front/sprite@2x.png';
+$icons-account-2x: (
+  234px,
+  164px,
+  -234px,
+  -164px,
+  18px,
+  18px,
+  258px,
+  244px,
+  'app/images/front/sprite@2x.png',
+  'icons-account@2x'
+);
+$icons-bag-2x-name: 'icons-bag@2x';
+$icons-bag-2x-x: 0px;
+$icons-bag-2x-y: 0px;
+$icons-bag-2x-offset-x: 0px;
+$icons-bag-2x-offset-y: 0px;
+$icons-bag-2x-width: 114px;
+$icons-bag-2x-height: 132px;
+$icons-bag-2x-total-width: 258px;
+$icons-bag-2x-total-height: 244px;
+$icons-bag-2x-image: 'app/images/front/sprite@2x.png';
+$icons-bag-2x: (
+  0px,
+  0px,
+  0px,
+  0px,
+  114px,
+  132px,
+  258px,
+  244px,
+  'app/images/front/sprite@2x.png',
+  'icons-bag@2x'
+);
+$icons-edit-2x-name: 'icons-edit@2x';
+$icons-edit-2x-x: 38px;
+$icons-edit-2x-y: 184px;
+$icons-edit-2x-offset-x: -38px;
+$icons-edit-2x-offset-y: -184px;
+$icons-edit-2x-width: 30px;
+$icons-edit-2x-height: 26px;
+$icons-edit-2x-total-width: 258px;
+$icons-edit-2x-total-height: 244px;
+$icons-edit-2x-image: 'app/images/front/sprite@2x.png';
+$icons-edit-2x: (
+  38px,
+  184px,
+  -38px,
+  -184px,
+  30px,
+  26px,
+  258px,
+  244px,
+  'app/images/front/sprite@2x.png',
+  'icons-edit@2x'
+);
+$icons-facebook-2x-name: 'icons-facebook@2x';
+$icons-facebook-2x-x: 126px;
+$icons-facebook-2x-y: 142px;
+$icons-facebook-2x-offset-x: -126px;
+$icons-facebook-2x-offset-y: -142px;
+$icons-facebook-2x-width: 32px;
+$icons-facebook-2x-height: 32px;
+$icons-facebook-2x-total-width: 258px;
+$icons-facebook-2x-total-height: 244px;
+$icons-facebook-2x-image: 'app/images/front/sprite@2x.png';
+$icons-facebook-2x: (
+  126px,
+  142px,
+  -126px,
+  -142px,
+  32px,
+  32px,
+  258px,
+  244px,
+  'app/images/front/sprite@2x.png',
+  'icons-facebook@2x'
+);
+$icons-grid-2x-name: 'icons-grid@2x';
+$icons-grid-2x-x: 192px;
+$icons-grid-2x-y: 42px;
+$icons-grid-2x-offset-x: -192px;
+$icons-grid-2x-offset-y: -42px;
+$icons-grid-2x-width: 32px;
+$icons-grid-2x-height: 32px;
+$icons-grid-2x-total-width: 258px;
+$icons-grid-2x-total-height: 244px;
+$icons-grid-2x-image: 'app/images/front/sprite@2x.png';
+$icons-grid-2x: (
+  192px,
+  42px,
+  -192px,
+  -42px,
+  32px,
+  32px,
+  258px,
+  244px,
+  'app/images/front/sprite@2x.png',
+  'icons-grid@2x'
+);
+$icons-image-2x-name: 'icons-image@2x';
+$icons-image-2x-x: 192px;
+$icons-image-2x-y: 84px;
+$icons-image-2x-offset-x: -192px;
+$icons-image-2x-offset-y: -84px;
+$icons-image-2x-width: 32px;
+$icons-image-2x-height: 32px;
+$icons-image-2x-total-width: 258px;
+$icons-image-2x-total-height: 244px;
+$icons-image-2x-image: 'app/images/front/sprite@2x.png';
+$icons-image-2x: (
+  192px,
+  84px,
+  -192px,
+  -84px,
+  32px,
+  32px,
+  258px,
+  244px,
+  'app/images/front/sprite@2x.png',
+  'icons-image@2x'
+);
+$icons-linkedin-2x-name: 'icons-linkedin@2x';
+$icons-linkedin-2x-x: 42px;
+$icons-linkedin-2x-y: 142px;
+$icons-linkedin-2x-offset-x: -42px;
+$icons-linkedin-2x-offset-y: -142px;
+$icons-linkedin-2x-width: 32px;
+$icons-linkedin-2x-height: 32px;
+$icons-linkedin-2x-total-width: 258px;
+$icons-linkedin-2x-total-height: 244px;
+$icons-linkedin-2x-image: 'app/images/front/sprite@2x.png';
+$icons-linkedin-2x: (
+  42px,
+  142px,
+  -42px,
+  -142px,
+  32px,
+  32px,
+  258px,
+  244px,
+  'app/images/front/sprite@2x.png',
+  'icons-linkedin@2x'
+);
+$icons-lock-2x-name: 'icons-lock@2x';
+$icons-lock-2x-x: 124px;
+$icons-lock-2x-y: 0px;
+$icons-lock-2x-offset-x: -124px;
+$icons-lock-2x-offset-y: 0px;
+$icons-lock-2x-width: 58px;
+$icons-lock-2x-height: 66px;
+$icons-lock-2x-total-width: 258px;
+$icons-lock-2x-total-height: 244px;
+$icons-lock-2x-image: 'app/images/front/sprite@2x.png';
+$icons-lock-2x: (
+  124px,
+  0px,
+  -124px,
+  0px,
+  58px,
+  66px,
+  258px,
+  244px,
+  'app/images/front/sprite@2x.png',
+  'icons-lock@2x'
+);
+$icons-mini-2x-name: 'icons-mini@2x';
+$icons-mini-2x-x: 126px;
+$icons-mini-2x-y: 184px;
+$icons-mini-2x-offset-x: -126px;
+$icons-mini-2x-offset-y: -184px;
+$icons-mini-2x-width: 38px;
+$icons-mini-2x-height: 20px;
+$icons-mini-2x-total-width: 258px;
+$icons-mini-2x-total-height: 244px;
+$icons-mini-2x-image: 'app/images/front/sprite@2x.png';
+$icons-mini-2x: (
+  126px,
+  184px,
+  -126px,
+  -184px,
+  38px,
+  20px,
+  258px,
+  244px,
+  'app/images/front/sprite@2x.png',
+  'icons-mini@2x'
+);
+$icons-pi-2x-name: 'icons-pi@2x';
+$icons-pi-2x-x: 0px;
+$icons-pi-2x-y: 142px;
+$icons-pi-2x-offset-x: 0px;
+$icons-pi-2x-offset-y: -142px;
+$icons-pi-2x-width: 32px;
+$icons-pi-2x-height: 32px;
+$icons-pi-2x-total-width: 258px;
+$icons-pi-2x-total-height: 244px;
+$icons-pi-2x-image: 'app/images/front/sprite@2x.png';
+$icons-pi-2x: (
+  0px,
+  142px,
+  0px,
+  -142px,
+  32px,
+  32px,
+  258px,
+  244px,
+  'app/images/front/sprite@2x.png',
+  'icons-pi@2x'
+);
+$icons-pinterest-2x-name: 'icons-pinterest@2x';
+$icons-pinterest-2x-x: 192px;
+$icons-pinterest-2x-y: 0px;
+$icons-pinterest-2x-offset-x: -192px;
+$icons-pinterest-2x-offset-y: 0px;
+$icons-pinterest-2x-width: 32px;
+$icons-pinterest-2x-height: 32px;
+$icons-pinterest-2x-total-width: 258px;
+$icons-pinterest-2x-total-height: 244px;
+$icons-pinterest-2x-image: 'app/images/front/sprite@2x.png';
+$icons-pinterest-2x: (
+  192px,
+  0px,
+  -192px,
+  0px,
+  32px,
+  32px,
+  258px,
+  244px,
+  'app/images/front/sprite@2x.png',
+  'icons-pinterest@2x'
+);
+$icons-point-2x-name: 'icons-point@2x';
+$icons-point-2x-x: 84px;
+$icons-point-2x-y: 142px;
+$icons-point-2x-offset-x: -84px;
+$icons-point-2x-offset-y: -142px;
+$icons-point-2x-width: 32px;
+$icons-point-2x-height: 32px;
+$icons-point-2x-total-width: 258px;
+$icons-point-2x-total-height: 244px;
+$icons-point-2x-image: 'app/images/front/sprite@2x.png';
+$icons-point-2x: (
+  84px,
+  142px,
+  -84px,
+  -142px,
+  32px,
+  32px,
+  258px,
+  244px,
+  'app/images/front/sprite@2x.png',
+  'icons-point@2x'
+);
+$icons-report-2x-name: 'icons-report@2x';
+$icons-report-2x-x: 124px;
+$icons-report-2x-y: 76px;
+$icons-report-2x-offset-x: -124px;
+$icons-report-2x-offset-y: -76px;
+$icons-report-2x-width: 42px;
+$icons-report-2x-height: 42px;
+$icons-report-2x-total-width: 258px;
+$icons-report-2x-total-height: 244px;
+$icons-report-2x-image: 'app/images/front/sprite@2x.png';
+$icons-report-2x: (
+  124px,
+  76px,
+  -124px,
+  -76px,
+  42px,
+  42px,
+  258px,
+  244px,
+  'app/images/front/sprite@2x.png',
+  'icons-report@2x'
+);
+$icons-search-2x-name: 'icons-search@2x';
+$icons-search-2x-x: 234px;
+$icons-search-2x-y: 134px;
+$icons-search-2x-offset-x: -234px;
+$icons-search-2x-offset-y: -134px;
+$icons-search-2x-width: 20px;
+$icons-search-2x-height: 20px;
+$icons-search-2x-total-width: 258px;
+$icons-search-2x-total-height: 244px;
+$icons-search-2x-image: 'app/images/front/sprite@2x.png';
+$icons-search-2x: (
+  234px,
+  134px,
+  -234px,
+  -134px,
+  20px,
+  20px,
+  258px,
+  244px,
+  'app/images/front/sprite@2x.png',
+  'icons-search@2x'
+);
+$icons-star-opacity-2x-name: 'icons-star-opacity@2x';
+$icons-star-opacity-2x-x: 234px;
+$icons-star-opacity-2x-y: 102px;
+$icons-star-opacity-2x-offset-x: -234px;
+$icons-star-opacity-2x-offset-y: -102px;
+$icons-star-opacity-2x-width: 22px;
+$icons-star-opacity-2x-height: 22px;
+$icons-star-opacity-2x-total-width: 258px;
+$icons-star-opacity-2x-total-height: 244px;
+$icons-star-opacity-2x-image: 'app/images/front/sprite@2x.png';
+$icons-star-opacity-2x: (
+  234px,
+  102px,
+  -234px,
+  -102px,
+  22px,
+  22px,
+  258px,
+  244px,
+  'app/images/front/sprite@2x.png',
+  'icons-star-opacity@2x'
+);
+$icons-star-2x-name: 'icons-star@2x';
+$icons-star-2x-x: 234px;
+$icons-star-2x-y: 70px;
+$icons-star-2x-offset-x: -234px;
+$icons-star-2x-offset-y: -70px;
+$icons-star-2x-width: 22px;
+$icons-star-2x-height: 22px;
+$icons-star-2x-total-width: 258px;
+$icons-star-2x-total-height: 244px;
+$icons-star-2x-image: 'app/images/front/sprite@2x.png';
+$icons-star-2x: (
+  234px,
+  70px,
+  -234px,
+  -70px,
+  22px,
+  22px,
+  258px,
+  244px,
+  'app/images/front/sprite@2x.png',
+  'icons-star@2x'
+);
+$icons-submit-email-2x-name: 'icons-submit-email@2x';
+$icons-submit-email-2x-x: 0px;
+$icons-submit-email-2x-y: 222px;
+$icons-submit-email-2x-offset-x: 0px;
+$icons-submit-email-2x-offset-y: -222px;
+$icons-submit-email-2x-width: 26px;
+$icons-submit-email-2x-height: 22px;
+$icons-submit-email-2x-total-width: 258px;
+$icons-submit-email-2x-total-height: 244px;
+$icons-submit-email-2x-image: 'app/images/front/sprite@2x.png';
+$icons-submit-email-2x: (
+  0px,
+  222px,
+  0px,
+  -222px,
+  26px,
+  22px,
+  258px,
+  244px,
+  'app/images/front/sprite@2x.png',
+  'icons-submit-email@2x'
+);
+$icons-target-2x-name: 'icons-target@2x';
+$icons-target-2x-x: 234px;
+$icons-target-2x-y: 0px;
+$icons-target-2x-offset-x: -234px;
+$icons-target-2x-offset-y: 0px;
+$icons-target-2x-width: 24px;
+$icons-target-2x-height: 24px;
+$icons-target-2x-total-width: 258px;
+$icons-target-2x-total-height: 244px;
+$icons-target-2x-image: 'app/images/front/sprite@2x.png';
+$icons-target-2x: (
+  234px,
+  0px,
+  -234px,
+  0px,
+  24px,
+  24px,
+  258px,
+  244px,
+  'app/images/front/sprite@2x.png',
+  'icons-target@2x'
+);
+$icons-trash-2x-name: 'icons-trash@2x';
+$icons-trash-2x-x: 234px;
+$icons-trash-2x-y: 34px;
+$icons-trash-2x-offset-x: -234px;
+$icons-trash-2x-offset-y: -34px;
+$icons-trash-2x-width: 22px;
+$icons-trash-2x-height: 26px;
+$icons-trash-2x-total-width: 258px;
+$icons-trash-2x-total-height: 244px;
+$icons-trash-2x-image: 'app/images/front/sprite@2x.png';
+$icons-trash-2x: (
+  234px,
+  34px,
+  -234px,
+  -34px,
+  22px,
+  26px,
+  258px,
+  244px,
+  'app/images/front/sprite@2x.png',
+  'icons-trash@2x'
+);
+$icons-twitter-2x-name: 'icons-twitter@2x';
+$icons-twitter-2x-x: 192px;
+$icons-twitter-2x-y: 126px;
+$icons-twitter-2x-offset-x: -192px;
+$icons-twitter-2x-offset-y: -126px;
+$icons-twitter-2x-width: 32px;
+$icons-twitter-2x-height: 32px;
+$icons-twitter-2x-total-width: 258px;
+$icons-twitter-2x-total-height: 244px;
+$icons-twitter-2x-image: 'app/images/front/sprite@2x.png';
+$icons-twitter-2x: (
+  192px,
+  126px,
+  -192px,
+  -126px,
+  32px,
+  32px,
+  258px,
+  244px,
+  'app/images/front/sprite@2x.png',
+  'icons-twitter@2x'
+);
+$icons-warning-2x-name: 'icons-warning@2x';
+$icons-warning-2x-x: 0px;
+$icons-warning-2x-y: 184px;
+$icons-warning-2x-offset-x: 0px;
+$icons-warning-2x-offset-y: -184px;
+$icons-warning-2x-width: 28px;
+$icons-warning-2x-height: 28px;
+$icons-warning-2x-total-width: 258px;
+$icons-warning-2x-total-height: 244px;
+$icons-warning-2x-image: 'app/images/front/sprite@2x.png';
+$icons-warning-2x: (
+  0px,
+  184px,
+  0px,
+  -184px,
+  28px,
+  28px,
+  258px,
+  244px,
+  'app/images/front/sprite@2x.png',
+  'icons-warning@2x'
+);
+$logo-2x-name: 'logo@2x';
+$logo-2x-x: 78px;
+$logo-2x-y: 184px;
+$logo-2x-offset-x: -78px;
+$logo-2x-offset-y: -184px;
+$logo-2x-width: 38px;
+$logo-2x-height: 20px;
+$logo-2x-total-width: 258px;
+$logo-2x-total-height: 244px;
+$logo-2x-image: 'app/images/front/sprite@2x.png';
+$logo-2x: (
+  78px,
+  184px,
+  -78px,
+  -184px,
+  38px,
+  20px,
+  258px,
+  244px,
+  'app/images/front/sprite@2x.png',
+  'logo@2x'
+);
+$spritesheet-width: 129px;
+$spritesheet-height: 122px;
+$spritesheet-image: 'app/images/front/sprite.png';
+$spritesheet-sprites: (
+  $icons-account,
+  $icons-bag,
+  $icons-edit,
+  $icons-facebook,
+  $icons-grid,
+  $icons-image,
+  $icons-linkedin,
+  $icons-lock,
+  $icons-mini,
+  $icons-pi,
+  $icons-pinterest,
+  $icons-point,
+  $icons-report,
+  $icons-search,
+  $icons-star-opacity,
+  $icons-star,
+  $icons-submit-email,
+  $icons-target,
+  $icons-trash,
+  $icons-twitter,
+  $icons-warning,
+  $logo
+);
+$spritesheet: (
+  129px,
+  122px,
+  'app/images/front/sprite.png',
+  $spritesheet-sprites
+);
+$retina-spritesheet-width: 258px;
+$retina-spritesheet-height: 244px;
+$retina-spritesheet-image: 'app/images/front/sprite@2x.png';
+$retina-spritesheet-sprites: (
+  $icons-account-2x,
+  $icons-bag-2x,
+  $icons-edit-2x,
+  $icons-facebook-2x,
+  $icons-grid-2x,
+  $icons-image-2x,
+  $icons-linkedin-2x,
+  $icons-lock-2x,
+  $icons-mini-2x,
+  $icons-pi-2x,
+  $icons-pinterest-2x,
+  $icons-point-2x,
+  $icons-report-2x,
+  $icons-search-2x,
+  $icons-star-opacity-2x,
+  $icons-star-2x,
+  $icons-submit-email-2x,
+  $icons-target-2x,
+  $icons-trash-2x,
+  $icons-twitter-2x,
+  $icons-warning-2x,
+  $logo-2x
+);
+$retina-spritesheet: (
+  258px,
+  244px,
+  'app/images/front/sprite@2x.png',
+  $retina-spritesheet-sprites
+);
+
+// These "retina group" variables are mappings for the naming and pairing of normal and retina sprites.
+//
+// The list formatted variables are intended for mixins like `retina-sprite` and `retina-sprites`.
+$icons-account-group-name: 'icons-account';
+$icons-account-group: ('icons-account', $icons-account, $icons-account-2x);
+$icons-bag-group-name: 'icons-bag';
+$icons-bag-group: ('icons-bag', $icons-bag, $icons-bag-2x);
+$icons-edit-group-name: 'icons-edit';
+$icons-edit-group: ('icons-edit', $icons-edit, $icons-edit-2x);
+$icons-facebook-group-name: 'icons-facebook';
+$icons-facebook-group: ('icons-facebook', $icons-facebook, $icons-facebook-2x);
+$icons-grid-group-name: 'icons-grid';
+$icons-grid-group: ('icons-grid', $icons-grid, $icons-grid-2x);
+$icons-image-group-name: 'icons-image';
+$icons-image-group: ('icons-image', $icons-image, $icons-image-2x);
+$icons-linkedin-group-name: 'icons-linkedin';
+$icons-linkedin-group: ('icons-linkedin', $icons-linkedin, $icons-linkedin-2x);
+$icons-lock-group-name: 'icons-lock';
+$icons-lock-group: ('icons-lock', $icons-lock, $icons-lock-2x);
+$icons-mini-group-name: 'icons-mini';
+$icons-mini-group: ('icons-mini', $icons-mini, $icons-mini-2x);
+$icons-pi-group-name: 'icons-pi';
+$icons-pi-group: ('icons-pi', $icons-pi, $icons-pi-2x);
+$icons-pinterest-group-name: 'icons-pinterest';
+$icons-pinterest-group: (
+  'icons-pinterest',
+  $icons-pinterest,
+  $icons-pinterest-2x
+);
+$icons-point-group-name: 'icons-point';
+$icons-point-group: ('icons-point', $icons-point, $icons-point-2x);
+$icons-report-group-name: 'icons-report';
+$icons-report-group: ('icons-report', $icons-report, $icons-report-2x);
+$icons-search-group-name: 'icons-search';
+$icons-search-group: ('icons-search', $icons-search, $icons-search-2x);
+$icons-star-opacity-group-name: 'icons-star-opacity';
+$icons-star-opacity-group: (
+  'icons-star-opacity',
+  $icons-star-opacity,
+  $icons-star-opacity-2x
+);
+$icons-star-group-name: 'icons-star';
+$icons-star-group: ('icons-star', $icons-star, $icons-star-2x);
+$icons-submit-email-group-name: 'icons-submit-email';
+$icons-submit-email-group: (
+  'icons-submit-email',
+  $icons-submit-email,
+  $icons-submit-email-2x
+);
+$icons-target-group-name: 'icons-target';
+$icons-target-group: ('icons-target', $icons-target, $icons-target-2x);
+$icons-trash-group-name: 'icons-trash';
+$icons-trash-group: ('icons-trash', $icons-trash, $icons-trash-2x);
+$icons-twitter-group-name: 'icons-twitter';
+$icons-twitter-group: ('icons-twitter', $icons-twitter, $icons-twitter-2x);
+$icons-warning-group-name: 'icons-warning';
+$icons-warning-group: ('icons-warning', $icons-warning, $icons-warning-2x);
+$logo-group-name: 'logo';
+$logo-group: ('logo', $logo, $logo-2x);
+$retina-groups: (
+  $icons-account-group,
+  $icons-bag-group,
+  $icons-edit-group,
+  $icons-facebook-group,
+  $icons-grid-group,
+  $icons-image-group,
+  $icons-linkedin-group,
+  $icons-lock-group,
+  $icons-mini-group,
+  $icons-pi-group,
+  $icons-pinterest-group,
+  $icons-point-group,
+  $icons-report-group,
+  $icons-search-group,
+  $icons-star-opacity-group,
+  $icons-star-group,
+  $icons-submit-email-group,
+  $icons-target-group,
+  $icons-trash-group,
+  $icons-twitter-group,
+  $icons-warning-group,
+  $logo-group
+);
+
+// The provided mixins are intended to be used with the array-like variables
+//
+// .icon-home {
+//   @include sprite-width($icon-home);
+// }
+//
+// .icon-email {
+//   @include sprite($icon-email);
+// }
+//
+// Example usage in HTML:
+//
+// `display: block` sprite:
+// <div class="icon-home"></div>
+//
+// To change `display` (e.g. `display: inline-block;`), we suggest using a common CSS class:
+//
+// // CSS
+// .icon {
+//   display: inline-block;
+// }
+//
+// // HTML
+// <i class="icon icon-home"></i>
+@mixin sprite-width($sprite) {
+  width: nth($sprite, 5);
+}
+
+@mixin sprite-height($sprite) {
+  height: nth($sprite, 6);
+}
+
+@mixin sprite-position($sprite) {
+  $sprite-offset-x: nth($sprite, 3);
+  $sprite-offset-y: nth($sprite, 4);
+  background-position: $sprite-offset-x $sprite-offset-y;
+}
+
+@mixin sprite-image($sprite) {
+  $sprite-image: nth($sprite, 9);
+  background-image: url(#{$sprite-image});
+}
+
+@mixin sprite($sprite) {
+  @include sprite-image($sprite);
+  @include sprite-position($sprite);
+  @include sprite-width($sprite);
+  @include sprite-height($sprite);
+}
+
+// The `retina-sprite` mixin sets up rules and a media query for a sprite/retina sprite.
+//   It should be used with a "retina group" variable.
+//
+// The media query is from CSS Tricks: https://css-tricks.com/snippets/css/retina-display-media-query/
+//
+// $icon-home-group: ('icon-home', $icon-home, $icon-home-2x, );
+//
+// .icon-home {
+//   @include retina-sprite($icon-home-group);
+// }
+@mixin sprite-background-size($sprite) {
+  $sprite-total-width: nth($sprite, 7);
+  $sprite-total-height: nth($sprite, 8);
+  background-size: $sprite-total-width $sprite-total-height;
+}
+
+@mixin retina-sprite($retina-group) {
+  $normal-sprite: nth($retina-group, 2);
+  $retina-sprite: nth($retina-group, 3);
+  @include sprite($normal-sprite);
+
+  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    @include sprite-image($retina-sprite);
+    @include sprite-background-size($normal-sprite);
+  }
+}
+
+// The `sprites` mixin generates identical output to the CSS template
+//   but can be overridden inside of SCSS
+//
+// @include sprites($spritesheet-sprites);
+@mixin sprites($sprites) {
+  @each $sprite in $sprites {
+    $sprite-name: nth($sprite, 10);
+    .#{$sprite-name} {
+      @include sprite($sprite);
+    }
+  }
+}
+
+// The `retina-sprites` mixin generates a CSS rule and media query for retina groups
+//   This yields the same output as CSS retina template but can be overridden in SCSS
+//
+// @include retina-sprites($retina-groups);
+@mixin retina-sprites($retina-groups) {
+  @each $retina-group in $retina-groups {
+    $sprite-name: nth($retina-group, 1);
+    .#{$sprite-name} {
+      @include retina-sprite($retina-group);
+    }
+  }
+}

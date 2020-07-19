@@ -1,0 +1,205 @@
+/*************************************
+**************************************
+These are the styles for
+the navigation section
+**************************************
+**************************************/
+
+/*mobile*/
+
+.mm-panels > .mm-panel > .mm-listview,
+.mm-listview {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.mm-listview {
+  margin-bottom: 0 !important;
+}
+
+.mm-listview > li a {
+  padding: 13px 15px 12px;
+}
+
+.mm-listview .mm-next {
+  width: 32px;
+}
+
+.mm-listview .mm-next + a,
+.mm-listview .mm-next + span {
+  margin-right: 0;
+}
+
+.mm-menu .mm-listview > li .mm-arrow::after,
+.mm-menu .mm-listview > li .mm-next::after {
+  border-color: map-get($global-color, b);
+}
+
+.mm-arrow::after,
+.mm-next::after {
+  right: 15px;
+}
+
+.mm-listview .mm-next::before {
+  border-left: 0;
+}
+
+.mm-panels > .mm-panel {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/*menu-device*/
+
+#page-layout #nav-device {
+  display: none;
+}
+
+.mm-navbar {
+  background-color: map-get($global-color, f);
+  .mm-title {
+    font-size: 15px;
+    text-transform: uppercase;
+  }
+  .mm-menu .mm-btn::after,
+  .mm-menu .mm-btn::before {
+    border-color: map-get($global-color, b);
+  }
+  .mm-title,
+  *,
+  a {
+    color: map-get($global-color, b) !important;
+  }
+}
+
+.mm-prev::before {
+  left: 19px;
+}
+
+.mm-menu .mm-btn::after,
+.mm-menu .mm-btn::before {
+  border-color: map-get($global-color, b);
+}
+
+.mm-listview {
+  > li {
+    @include opacity(0);
+    @include transform(translateX(-50%));
+    display: block;
+    width: 100%;
+    .background-one {
+      background-color: map-get($global-color, e);
+      &:hover,
+      &:focus {
+        background-color: darken(map-get($global-color, e), 5.5%);
+      }
+    }
+    .background-two {
+      background-color: map-get($global-color, f);
+      &:hover,
+      &:focus {
+        background-color: darken(map-get($global-color, f), 5.5%);
+      }
+    }
+    .background-three {
+      background-color: map-get($global-color, g);
+      &:hover,
+      &:focus {
+        background-color: darken(map-get($global-color, g), 5.5%);
+      }
+    }
+    .background-four {
+      background-color: map-get($global-color, h);
+      &:hover,
+      &:focus {
+        background-color: darken(map-get($global-color, h), 5.5%);
+      }
+    }
+    .background-five {
+      background-color: map-get($global-color, i);
+      &:hover,
+      &:focus {
+        background-color: darken(map-get($global-color, i), 5.5%);
+      }
+    }
+    .background-six {
+      background-color: map-get($global-color, j);
+      &:hover,
+      &:focus {
+        background-color: darken(map-get($global-color, j), 5.5%);
+      }
+    }
+    &:nth-child(1) {
+      -webkit-transition: opacity 0.5s 0.1s, -webkit-transform 0.5s 0.1s;
+      transition: opacity 0.5s 0.1s, transform 0.5s 0.1s;
+    }
+    &:nth-child(2) {
+      -webkit-transition: opacity 0.5s 0.2s, -webkit-transform 0.5s 0.2s;
+      transition: opacity 0.5s 0.2s, transform 0.5s 0.2s;
+    }
+    &:nth-child(3) {
+      -webkit-transition: opacity 0.5s 0.3s, -webkit-transform 0.5s 0.3s;
+      transition: opacity 0.5s 0.3s, transform 0.5s 0.3s;
+    }
+    &:nth-child(4) {
+      -webkit-transition: opacity 0.5s 0.4s, -webkit-transform 0.5s 0.4s;
+      transition: opacity 0.5s 0.4s, transform 0.5s 0.4s;
+    }
+    &:nth-child(5) {
+      -webkit-transition: opacity 0.5s 0.5s, -webkit-transform 0.5s 0.5s;
+      transition: opacity 0.5s 0.5s, transform 0.5s 0.5s;
+    }
+    &:nth-child(6) {
+      -webkit-transition: opacity 0.5s 0.6s, -webkit-transform 0.5s 0.6s;
+      transition: opacity 0.5s 0.6s, transform 0.5s 0.6s;
+    }
+    a {
+      padding: 10px 15px;
+      font-size: 14px;
+      color: map-get($global-color, c);
+      .icons-bouquet {
+        margin-right: 13px;
+      }
+    }
+    .background-one,
+    .background-two,
+    .background-three,
+    .background-four,
+    .background-five,
+    .background-six {
+      color: map-get($global-color, b);
+      font-size: 15px;
+      text-transform: uppercase;
+    }
+  }
+}
+
+.mm-panels .title-info,
+.mm-panels .info-box {
+  @include opacity(0);
+  @include transform(translateX(-50%));
+}
+
+.mm-panels {
+  .title-info {
+    -webkit-transition: opacity 0.5s 0.7s, -webkit-transform 0.5s 0.7s;
+    transition: opacity 0.5s 0.7s, transform 0.5s 0.7s;
+  }
+  .info-box {
+    -webkit-transition: opacity 0.5s 0.8s, -webkit-transform 0.5s 0.8s;
+    transition: opacity 0.5s 0.8s, transform 0.5s 0.8s;
+  }
+}
+
+.mm-listview > li:not(.mm-divider)::after {
+  left: 0;
+}
+
+.mm-opening {
+  .mm-listview li,
+  .title-info,
+  .info-box {
+    @include opacity(1);
+    @include transform(translateX(0));
+  }
+}

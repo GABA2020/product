@@ -1,0 +1,166 @@
+/*************************************
+**************************************
+These are the styles for
+the main content section
+**************************************
+**************************************/
+.container {
+  @media screen and (min-width: 1140px) {
+    max-width: 1110px;
+  }
+  @media screen and (max-width: 1140px) {
+    max-width: 100%;
+  }
+}
+
+#wrapper {
+  height: auto;
+  margin: 0 auto -60px;
+  min-height: 100%;
+  padding: 0 0 60px;
+}
+
+/*----- Content -----*/
+
+#page_content {
+  // background: url(#{$base-url}/sprite.png) no-repeat scroll;
+  min-height: 100%;
+  margin: 0;
+}
+
+/*----- Left/Right Content -----*/
+
+#page-container {
+  @include clearfix();
+  background-color: #fff;
+  .page_sidebar_wrapper {
+    .page_sidebar_left {
+      @include clearfix();
+      position: relative;
+      margin-right: -100%;
+      padding: 15px;
+      float: left;
+      width: 225px;
+      color: #fff;
+      background-color: #3d3d3d;
+    }
+    .page_sidebar_right {
+      @include clearfix();
+      position: relative;
+      margin-left: -100%;
+      padding: 15px;
+      float: right;
+      width: 225px;
+      color: #fff;
+      background-color: #3d3d3d;
+    }
+  }
+  .page_content_wrapper {
+    .page_content_left {
+      margin: 0 0 0 225px;
+      min-height: 300px;
+      padding: 15px;
+      background-color: #fff;
+    }
+    .page_content_right {
+      margin: 0 225px 0 0;
+      min-height: 300px;
+      padding: 15px;
+      background-color: #fff;
+    }
+  }
+}
+
+.header_line {
+  margin-top: 20px;
+}
+
+.section {
+  padding: 10px;
+  background-color: #fff;
+}
+
+.bg1 {
+  background-color: #428bca;
+}
+
+.bg2 {
+  background-color: #5cb85c;
+}
+
+.bg3 {
+  background-color: #5bc0de;
+}
+
+.bg4 {
+  background-color: #f0ad4e;
+}
+
+.bg5 {
+  background-color: #d9534f;
+}
+
+/*equal-height*/
+
+.equal-height-item {
+  @include equal_height();
+  .catagory-item {
+    @include flexbox();
+  }
+}
+
+/*effect dropdown*/
+
+.dropdown-menu {
+  @include opacity(0);
+  display: block;
+  visibility: hidden;
+  -webkit-transform: translateX(0);
+  -moz-transform: translateX(0);
+  -ms-transform: translateX(0);
+  -o-transform: translateX(0);
+  transform: translateX(0);
+  -webkit-transform: translateY(30px);
+  -moz-transform: translateY(30px);
+  -ms-transform: translateY(30px);
+  -o-transform: translateY(30px);
+  transform: translateY(30px);
+  -webkit-transition: opacity 0.3s 0s, visibility 0s 0.3s,
+    -webkit-transform 0.3s 0s;
+  -moz-transition: opacity 0.3s 0s, visibility 0s 0.3s, -moz-transform 0.3s 0s;
+  transition: opacity 0.3s 0s, visibility 0s 0.3s, transform 0.3s 0s;
+  z-index: -100;
+}
+
+.open .dropdown-menu {
+  @include opacity(1);
+  display: block;
+  visibility: visible;
+  -webkit-transform: translateY(0);
+  -moz-transform: translateY(0);
+  -ms-transform: translateY(0);
+  -o-transform: translateY(0);
+  transform: translateY(0);
+  -webkit-transition: opacity 0.3s 0s, visibility 0.3s 0s,
+    -webkit-transform 0.3s 0s;
+  -moz-transition: opacity 0.3s 0s, visibility 0.3s 0s, -moz-transform 0.3s 0s;
+  transition: opacity 0.3s 0s, visibility 0.3s 0s, transform 0.3s 0s;
+  z-index: 1500;
+}
+
+.bootstrap-datetimepicker-widget.dropdown-menu {
+  @include opacity(1);
+  display: block;
+  visibility: visible;
+  z-index: 1000;
+  -webkit-transform: translateX(0);
+  -moz-transform: translateX(0);
+  -ms-transform: translateX(0);
+  -o-transform: translateX(0);
+  transform: translateX(0);
+  -webkit-transform: translateY(0);
+  -moz-transform: translateY(0);
+  -ms-transform: translateY(0);
+  -o-transform: translateY(0);
+  transform: translateY(0);
+}

@@ -1,0 +1,116 @@
+//-------------------------------------
+//  Reset a.k.a @include global-reset
+//-------------------------------------
+// Based on Eric Meyer's reset 2.0 Global reset rules.
+// For more specific resets, use the reset mixins provided below
+// http://meyerweb.com/eric/tools/css/reset/
+
+/*----- reset -----*/
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+}
+
+img {
+  vertical-align: top;
+}
+
+/*----- common -----*/
+
+html,
+body {
+  height: 100%;
+}
+
+html {
+  font-size: 62.5%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  color: map-get($global-color, a);
+  background-color: map-get($global-color, b);
+  font-size: 1.4rem;
+  line-height: 1.5em;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+}
+
+input,
+select,
+textarea {
+  color: #333;
+  font: $base-font $font-stack;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+textarea:-webkit-autofill:active,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus,
+select:-webkit-autofill:active {
+  background-color: #fff !important;
+  -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+  outline: none !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+a {
+  text-decoration: none;
+  color: map-get($global-color, a);
+  &:link,
+  &:visited,
+  &:hover,
+  &:focus {
+    @include transition(all 0.2s ease-in-out);
+    text-decoration: none;
+    outline: none;
+  }
+  &:focus {
+    outline: thin dotted;
+    outline: 5px auto -webkit-focus-ring-color;
+    outline-offset: -2px;
+  }
+  @include link($base-color, $base-color, $link-color-hover, $link-color-hover);
+}
+
+.btn,
+.btn:hover,
+.btn:active {
+  @include transition(all 0.2s ease-in-out);
+  outline: 0 !important;
+}
+
+img {
+  width: auto\9;
+  height: auto;
+  max-width: 100%;
+  vertical-align: middle;
+  object-fit: cover;
+  -ms-interpolation-mode: bicubic;
+  -webkit-animation: smooth-image 1.2s;
+  -moz-animation: smooth-image 1.2s;
+  animation: smooth-image 1.2s;
+}
+::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #7fb1f8 !important;
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: #7fb1f8 !important;
+}
+
+::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: #7fb1f8 !important;
+}

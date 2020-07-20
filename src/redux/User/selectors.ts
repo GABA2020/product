@@ -8,10 +8,19 @@ const selectDomain = (state: RootState) => state.user || initialState;
 
 export const userSelector = createSelector(
   [selectDomain],
-  ({ userProfile, userSearchResults, userSearchProfile, loading }) => ({
+  ({
+    userProfile,
+    userSearchResults,
+    userSearchProfile,
+    workExperiences,
+    educations,
+    loading,
+  }) => ({
     userProfile,
     userSearchResults,
     loading,
     userSearchProfile,
+    workExperiences,
+    educations,
   }),
 );

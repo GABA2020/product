@@ -1,6 +1,5 @@
 import { db } from 'helpers/firebase.module';
 import { DTO } from 'types/DTO';
-import { User } from 'firebase';
 
 const getUserProfile = async (email: string) => {
   const userRef = db.collection('member_data').doc(email);
@@ -38,5 +37,44 @@ const getUserSearchProfile = async (
     });
   return profileUser;
 };
+const getWorkExperiences = async (
+  payload: DTO.User.GetWorkExperiencesRequest,
+) => {
+  const workExperiences: ENTITIES.WorkExperience[] = [];
 
-export { getUserProfile, searchUsers, getUserSearchProfile };
+  const userRef = await db
+    .collection('member_data')
+    .doc(payload.email)
+    .collection('work');
+  const workCollection = await userRef.get();
+  workCollection.forEach(doc => {
+    workExperiences.push({
+      id: doc.id,
+      ...doc.data(),
+    } as ENTITIES.WorkExperience);
+  });
+  return { workExperiences: workExperiences };
+};
+const getEducations = async (payload: DTO.User.GetEducationsRequest) => {
+  const educations: ENTITIES.Education[] = [];
+
+  const userRef = await db
+    .collection('member_data')
+    .doc(payload.email)
+    .collection('education');
+  const educationCollection = await userRef.get();
+  educationCollection.forEach(doc => {
+    educations.push({
+      id: doc.id,
+      ...doc.data(),
+    } as ENTITIES.Education);
+  });
+  return { educations: educations };
+};
+export {
+  getUserProfile,
+  searchUsers,
+  getUserSearchProfile,
+  getWorkExperiences,
+  getEducations,
+};

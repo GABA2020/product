@@ -1,7 +1,8 @@
 import React, { Fragment, FC } from 'react';
 import { img_locker, img_user } from '../../../assets/images';
-import { Helmet } from 'react-helmet';
 import { ordinal_suffix_of } from 'helpers/Unity';
+import { Link } from 'react-router-dom';
+import RoutesTypes from 'types/Routes';
 interface IGuestProfile {
   userGuestProfile: ENTITIES.UserProfile;
   program: ENTITIES.Program;
@@ -117,7 +118,7 @@ export const GuestUserProfile: FC<IGuestProfile> = props => {
                             height={100}
                           />
                           <div className="locker-caption">
-                            <a href="#">Path</a>
+                            <Link to={RoutesTypes.PRODUCT}>Path</Link>
                           </div>
                         </div>
                         <div className="media-body">
@@ -144,7 +145,7 @@ export const GuestUserProfile: FC<IGuestProfile> = props => {
                             height={100}
                           />
                           <div className="locker-caption">
-                            <a href="#">Path</a>
+                            <Link to={RoutesTypes.PRODUCT}>Path</Link>
                           </div>
                         </div>
                         <div className="media-body">
@@ -199,7 +200,7 @@ export const GuestUserProfile: FC<IGuestProfile> = props => {
                             height={100}
                           />
                           <div className="locker-caption">
-                            <a href="#">Path</a>
+                            <Link to={RoutesTypes.PRODUCT}>Path</Link>
                           </div>
                         </div>
                         <div className="media-body">
@@ -226,7 +227,7 @@ export const GuestUserProfile: FC<IGuestProfile> = props => {
                             height={100}
                           />
                           <div className="locker-caption">
-                            <a href="#">Path</a>
+                            <Link to={RoutesTypes.PRODUCT}>Path</Link>
                           </div>
                         </div>
                         <div className="media-body">
@@ -253,7 +254,7 @@ export const GuestUserProfile: FC<IGuestProfile> = props => {
                             height={100}
                           />
                           <div className="locker-caption">
-                            <a href="#">Path</a>
+                            <Link to={RoutesTypes.PRODUCT}>Path</Link>
                           </div>
                         </div>
                         <div className="media-body">

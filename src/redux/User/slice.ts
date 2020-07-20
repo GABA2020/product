@@ -18,12 +18,15 @@ import { DTO } from 'types/DTO';
 export const initialState: STATES.User = {
   loading: true,
   loadingSearchBox: true,
+  workExperiences: [],
+  educations: [],
   userProfile: {
     email: '',
     avatar: '',
     awards: '',
+    about: '',
     class_quartile: '',
-    clerkship_honors: '',
+    clerkship_honors: [],
     complex_1: 0,
     complex_2: 0,
     couples_match: false,
@@ -53,9 +56,9 @@ export const initialState: STATES.User = {
     specialty_interest: '',
     specialty_specific_publications: '',
     step_1: 0,
-    step_1_resources_used: 0,
+    step_1_resources_used: [],
     step_2: 0,
-    step_2_resources_used: 0,
+    step_2_resources_used: [],
     student_location: '',
     student_status: '',
     total_interviews_attended: '',
@@ -71,8 +74,9 @@ export const initialState: STATES.User = {
     email: '',
     avatar: '',
     awards: '',
+    about: '',
     class_quartile: '',
-    clerkship_honors: '',
+    clerkship_honors: [],
     complex_1: 0,
     complex_2: 0,
     couples_match: false,
@@ -102,9 +106,9 @@ export const initialState: STATES.User = {
     specialty_interest: '',
     specialty_specific_publications: '',
     step_1: 0,
-    step_1_resources_used: 0,
+    step_1_resources_used: [],
     step_2: 0,
-    step_2_resources_used: 0,
+    step_2_resources_used: [],
     student_location: '',
     student_status: '',
     total_interviews_attended: '',
@@ -171,6 +175,43 @@ const UserSliceState = createSlice({
       state.userSearchProfile = action.payload;
     },
     getUserSearchProfileActionFailed(state) {
+      state.loading = false;
+    },
+    //CV
+    // work experiences
+    getWorkExperiencesAction(
+      state,
+      action: PayloadAction<DTO.User.GetWorkExperiencesRequest>,
+    ) {
+      state.loading = true;
+      state.workExperiences = [];
+    },
+    getWorkExperiencesActionSuccess(
+      state,
+      action: PayloadAction<DTO.User.GetWorkExperiencesResponse>,
+    ) {
+      state.loading = false;
+      state.workExperiences = action.payload.workExperiences;
+    },
+    getWorkExperiencesActionFailed(state) {
+      state.loading = false;
+    },
+    //education
+    getEducationsAction(
+      state,
+      action: PayloadAction<DTO.User.GetEducationsRequest>,
+    ) {
+      state.loading = true;
+      state.educations = [];
+    },
+    getEducationsActionSuccess(
+      state,
+      action: PayloadAction<DTO.User.GetEducationsResponse>,
+    ) {
+      state.loading = false;
+      state.educations = action.payload.educations;
+    },
+    getEducationsActionFailed(state) {
       state.loading = false;
     },
   },

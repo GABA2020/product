@@ -1,0 +1,64 @@
+.header-account {
+  .icons {
+    margin: 0 17px 0 0;
+  }
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 42px;
+  background-color: white;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+  background-color: #3e8e41;
+}
+
+.search-pc {
+  position: relative;
+}
+
+.search-result {
+  position: absolute;
+  top: 55px;
+  width: 100%;
+  background-color: white;
+  text-align: right;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+
+  .search-result-item {
+    padding: 6px 0px;
+    background-color: white;
+    text-align: center;
+    // background: url(../images/front/icons-search@2x.png) no-repeat 38% center #f3f7fe;
+  }
+
+  .search-result-item span {
+    cursor: pointer
+  }
+}

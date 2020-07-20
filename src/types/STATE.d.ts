@@ -3,8 +3,10 @@ declare namespace STATES {
     loading: boolean;
     loadingSearchBox: boolean;
     userProfile: ENTITIES.UserProfile;
-    userSearchResults: ENTITIES.UserProfile[];
+    userSearchResults: ENTITIES.UserProfile[]; //search box
     userSearchProfile: ENTITIES.UserProfile;
+    workExperiences: ENTITIES.Work[];
+    educations: ENTITIES.Education[];
   }
   interface Program {
     loading: boolean;

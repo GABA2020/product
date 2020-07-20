@@ -1,18 +1,56 @@
-import React, { FC, Fragment } from 'react';
+import React, { FC, Fragment, useState } from 'react';
 import { img_locker, img_user } from 'assets/images';
 import { ordinal_suffix_of } from 'helpers/Unity';
+import { Work } from '../Work';
+import { Volunteer } from '../Volunteer';
+import { Education } from '../Education';
+import { Research } from '../Research';
+import { Link } from 'react-router-dom';
+import RoutesTypes from 'types/Routes';
 //redux state
 
 interface IMyProfile {
   userProfile: ENTITIES.UserProfile;
   program: ENTITIES.Program;
+  workExperiences: ENTITIES.WorkExperience[];
+  educations: ENTITIES.Education[];
 }
 
 export const MyProfile: FC<IMyProfile> = props => {
-  const { userProfile, program } = props;
-
+  const { userProfile, program, workExperiences, educations } = props;
+  const arrayWork = [
+    'work',
+    'volunteer',
+    'research',
+    'publication',
+    'letter',
+    'school',
+  ];
+  const [stateWork, setStateWork] = useState<string>(arrayWork[0]);
+  const renderCVWithCondition = () => {
+    switch (stateWork) {
+      case arrayWork[0]:
+        return (
+          <Work
+            userProfile={userProfile}
+            workExperiences={workExperiences}
+          ></Work>
+        );
+      case arrayWork[1]:
+        return <Volunteer></Volunteer>;
+      case arrayWork[2]:
+        return <Research></Research>;
+      case arrayWork[5]:
+        return <Education educations={educations}></Education>;
+      default:
+        break;
+    }
+  };
   return (
     <Fragment>
+      {/* <section className="section-profile-edit text-right">
+        <a href="">edit</a>
+      </section> */}
       <section className="section-profile">
         <div className="container">
           <div className="media media-profile">
@@ -155,7 +193,7 @@ export const MyProfile: FC<IMyProfile> = props => {
                   <h3 className="step-name">
                     <a href="#">Step Three</a>
                   </h3>
-                  <p className="step-paragraph">
+                  <p className="step-paragraph step-paragraph-verify">
                     Once we verify your scores, you will see them here.
                   </p>
                   <div className="scope-link">
@@ -174,102 +212,83 @@ export const MyProfile: FC<IMyProfile> = props => {
             <div className="wrap-content">
               <div className="experiences-slidebar">
                 <nav className="experiences-nav">
-                  <li className="active">
-                    <a href="#">Work</a>
+                  <li
+                    className={
+                      stateWork === arrayWork[0] ? 'active' : undefined
+                    }
+                  >
+                    <a
+                      onClick={e => {
+                        e.preventDefault();
+                        setStateWork(arrayWork[0]);
+                      }}
+                      href="#"
+                    >
+                      Work
+                    </a>
+                  </li>
+                  <li
+                    className={
+                      stateWork === arrayWork[1] ? 'active' : undefined
+                    }
+                  >
+                    <a
+                      onClick={e => {
+                        e.preventDefault();
+                        setStateWork(arrayWork[1]);
+                      }}
+                      href="#"
+                    >
+                      Volunteer
+                    </a>
                   </li>
                   <li>
-                    <a href="#">Volunteer</a>
+                    <a
+                      onClick={e => {
+                        e.preventDefault();
+                        setStateWork(arrayWork[2]);
+                      }}
+                      href="#"
+                    >
+                      Research
+                    </a>
                   </li>
                   <li>
-                    <a href="#">Research</a>
+                    <a
+                      onClick={e => {
+                        e.preventDefault();
+                        setStateWork(arrayWork[3]);
+                      }}
+                      href="#"
+                    >
+                      Publications
+                    </a>
                   </li>
                   <li>
-                    <a href="#">Publications</a>
+                    <a
+                      onClick={e => {
+                        e.preventDefault();
+                        setStateWork(arrayWork[4]);
+                      }}
+                      href="#"
+                    >
+                      Letters
+                    </a>
                   </li>
                   <li>
-                    <a href="#">Letters</a>
-                  </li>
-                  <li>
-                    <a href="#">Schools</a>
+                    <a
+                      onClick={e => {
+                        e.preventDefault();
+                        setStateWork(arrayWork[5]);
+                      }}
+                      href="#"
+                    >
+                      Schools
+                    </a>
                   </li>
                 </nav>
               </div>
-              <div className="experiences-main">
-                <div className="experiences-content">
-                  <div className="main-title">
-                    <h2>Experiences</h2>
-                    <p>Work</p>
-                  </div>
-                  <div className="experiences-caption">
-                    <p>
-                      This could be a few lines written by Harley serving as an
-                      introduction into her work experience. This blurb could
-                      change to different blurbs depending on the tab selected
-                      above, or be a general blurb applying to all.
-                    </p>
-                  </div>
-                  <div className="accordion">
-                    <div className="accordion-item active">
-                      <div className="accordion-title">
-                        <a href="#">Medical Student</a>
-                      </div>
-                      <div className="accordion-content">
-                        <p>Harvard Medical School • Full-time</p>
-                        <p>Jun 2016 – Present • 4 years 1 month</p>
-                        <p>Boston, Massachusetts</p>
-                      </div>
-                    </div>
-                    <div className="accordion-item">
-                      <div className="accordion-title">
-                        <a href="#">
-                          Professional Experience Title and Place 2
-                        </a>
-                      </div>
-                      <div className="accordion-content">
-                        <p>Boston, Massachusetts</p>
-                        <p>Harvard Medical School • Full-time</p>
-                        <p>Jun 2016 – Present • 4 years 1 month</p>
-                      </div>
-                    </div>
-                    <div className="accordion-item">
-                      <div className="accordion-title">
-                        <a href="#">
-                          Professional Experience Title and Place 3
-                        </a>
-                      </div>
-                      <div className="accordion-content">
-                        <p>Boston, Massachusetts</p>
-                        <p>Harvard Medical School • Full-time</p>
-                        <p>Jun 2016 – Present • 4 years 1 month</p>
-                      </div>
-                    </div>
-                    <div className="accordion-item">
-                      <div className="accordion-title">
-                        <a href="#">
-                          Professional Experience Title and Place 4
-                        </a>
-                      </div>
-                      <div className="accordion-content">
-                        <p>Boston, Massachusetts</p>
-                        <p>Harvard Medical School • Full-time</p>
-                        <p>Jun 2016 – Present • 4 years 1 month</p>
-                      </div>
-                    </div>
-                    <div className="accordion-item">
-                      <div className="accordion-title">
-                        <a href="#">
-                          Professional Experience Title and Place 5
-                        </a>
-                      </div>
-                      <div className="accordion-content">
-                        <p>Boston, Massachusetts</p>
-                        <p>Harvard Medical School • Full-time</p>
-                        <p>Jun 2016 – Present • 4 years 1 month</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <div className="experiences-main">{renderCVWithCondition()}</div>
             </div>
           </div>
         </div>
@@ -322,7 +341,7 @@ export const MyProfile: FC<IMyProfile> = props => {
                             height={100}
                           />
                           <div className="locker-caption">
-                            <a href="#">Path</a>
+                            <Link to={RoutesTypes.PRODUCT}>Path</Link>
                           </div>
                         </div>
                         <div className="media-body">
@@ -349,7 +368,7 @@ export const MyProfile: FC<IMyProfile> = props => {
                             height={100}
                           />
                           <div className="locker-caption">
-                            <a href="#">Path</a>
+                            <Link to={RoutesTypes.PRODUCT}>Path</Link>
                           </div>
                         </div>
                         <div className="media-body">
@@ -404,7 +423,7 @@ export const MyProfile: FC<IMyProfile> = props => {
                             height={100}
                           />
                           <div className="locker-caption">
-                            <a href="#">Path</a>
+                            <Link to={RoutesTypes.PRODUCT}>Path</Link>
                           </div>
                         </div>
                         <div className="media-body">
@@ -431,7 +450,7 @@ export const MyProfile: FC<IMyProfile> = props => {
                             height={100}
                           />
                           <div className="locker-caption">
-                            <a href="#">Path</a>
+                            <Link to={RoutesTypes.PRODUCT}>Path</Link>
                           </div>
                         </div>
                         <div className="media-body">
@@ -458,7 +477,7 @@ export const MyProfile: FC<IMyProfile> = props => {
                             height={100}
                           />
                           <div className="locker-caption">
-                            <a href="#">Path</a>
+                            <Link to={RoutesTypes.PRODUCT}>Path</Link>
                           </div>
                         </div>
                         <div className="media-body">

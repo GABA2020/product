@@ -18,6 +18,7 @@ import Helmet from 'react-helmet';
 import { MyProfile } from 'app/components/MyProfile';
 import { GuestUserProfile } from 'app/components/GuestUserProfile';
 import { programSelector } from 'redux/Program/selectors';
+import 'styles/scss/SearchUser.scss';
 
 interface IProfile {
   match: {
@@ -32,7 +33,13 @@ export const SearchUser: FC<IProfile> = props => {
   useInjectSaga({ key: userSliceKey, saga: UserSaga });
   useInjectSaga({ key: programSliceKey, saga: ProgramSaga });
   const dispatch = useDispatch();
-  const { userProfile, userSearchProfile, loading } = useSelector(userSelector);
+  const {
+    userProfile,
+    userSearchProfile,
+    workExperiences,
+    educations,
+    loading,
+  } = useSelector(userSelector);
   const { program } = useSelector(programSelector);
 
   useEffect(() => {
@@ -47,6 +54,10 @@ export const SearchUser: FC<IProfile> = props => {
       dispatch(
         programActions.getProgramReviewAction({ email: userProfile.email }),
       );
+      dispatch(
+        userActions.getWorkExperiencesAction({ email: userProfile.email }),
+      );
+      dispatch(userActions.getEducationsAction({ email: userProfile.email }));
     } else {
       dispatch(
         programActions.getProgramReviewAction({
@@ -84,6 +95,8 @@ export const SearchUser: FC<IProfile> = props => {
 
                 {userProfile.username === userSearchProfile.username ? (
                   <MyProfile
+                    workExperiences={workExperiences}
+                    educations={educations}
                     program={program}
                     userProfile={userProfile}
                   ></MyProfile>

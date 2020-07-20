@@ -4,8 +4,9 @@ declare namespace ENTITIES {
     email: string;
     avatar: string;
     awards: string;
+    about: string;
     class_quartile: string;
-    clerkship_honors: string;
+    clerkship_honors: string[];
     complex_1: number;
     complex_2: number;
     couples_match: boolean;
@@ -35,9 +36,9 @@ declare namespace ENTITIES {
     specialty_interest: string;
     specialty_specific_publications: string;
     step_1: number;
-    step_1_resources_used: number;
+    step_1_resources_used: string[];
     step_2: number;
-    step_2_resources_used: number;
+    step_2_resources_used: string[];
     student_location: string;
     student_status: string;
     total_interviews_attended: string;
@@ -81,5 +82,34 @@ declare namespace ENTITIES {
     training: string;
     vacation_weeks: string;
     year: string;
+  }
+  interface WorkExperience {
+    id: string;
+    company: string;
+    company_address: string;
+    date_end: string;
+    date_start: string;
+    description: string;
+    job_title: string;
+  }
+  // interface Volunteer {
+  //   id: string;
+  //   date_end: string;
+  //   date_start: string;
+  //   description: string;
+  //   job_title: string;
+  //   number_of_hours_served: string;
+  //   organization_address: string;
+  //   organization_name: string;
+  // }
+  interface Education {
+    id: string;
+    date_end: string;
+    date_start: string;
+    degree_type: string;
+    honors: string;
+    major: string;
+    school: string;
+    school_address: string;
   }
 }

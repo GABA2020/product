@@ -16,7 +16,7 @@ import { UserSaga } from 'redux/User/saga';
 import { useInjectSaga } from 'redux-injectors';
 import { userSelector } from 'redux/User/selectors';
 import { AuthSaga } from 'redux/Auth/saga';
-import 'assets/css/header.scss';
+import 'styles/scss/header.scss';
 import { SearchBox } from 'app/components/SearchBox';
 
 export const Header = () => {

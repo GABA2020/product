@@ -8,7 +8,7 @@
 
 import * as React from 'react';
 import 'assets/css/common.css';
-import 'assets/scss/LoadingPage.scss';
+import 'styles/scss/LoadingPage.scss';
 import { Slide, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 // import { HomePage } from './containers/HomePage/Loadable';

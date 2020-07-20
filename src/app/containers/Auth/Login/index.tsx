@@ -2,13 +2,13 @@ import React, { Fragment } from 'react';
 import { Helmet } from 'react-helmet';
 import { useSelector, useDispatch } from 'react-redux';
 import { useInjectSaga } from 'utils/redux-injectors';
-import { sliceKey, reducer, actions } from 'redux/Auth/slice';
+import { sliceKey, actions } from 'redux/Auth/slice';
 import { authSelector } from 'redux/Auth/selectors';
 import { AuthSaga } from 'redux/Auth/saga';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers';
-import 'assets/scss/login.scss';
+import 'styles/scss/login.scss';
 
 const loginSchema = yup.object().shape({
   email: yup.string().required('Email is a required field'),

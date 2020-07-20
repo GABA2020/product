@@ -7,8 +7,9 @@ declare namespace DTO {
       email: string;
       avatar: string;
       awards: string;
+      about: string;
       class_quartile: string;
-      clerkship_honors: string;
+      clerkship_honors: string[];
       complex_1: number;
       complex_2: number;
       couples_match: boolean;
@@ -38,9 +39,9 @@ declare namespace DTO {
       specialty_interest: string;
       specialty_specific_publications: string;
       step_1: number;
-      step_1_resources_used: number;
+      step_1_resources_used: string[];
       step_2: number;
-      step_2_resources_used: number;
+      step_2_resources_used: string[];
       student_location: string;
       student_status: string;
       total_interviews_attended: string;
@@ -66,8 +67,9 @@ declare namespace DTO {
       email: string;
       avatar: string;
       awards: string;
+      about: string;
       class_quartile: string;
-      clerkship_honors: string;
+      clerkship_honors: string[];
       complex_1: number;
       complex_2: number;
       couples_match: boolean;
@@ -97,9 +99,9 @@ declare namespace DTO {
       specialty_interest: string;
       specialty_specific_publications: string;
       step_1: number;
-      step_1_resources_used: number;
+      step_1_resources_used: string[];
       step_2: number;
-      step_2_resources_used: number;
+      step_2_resources_used: string[];
       student_location: string;
       student_status: string;
       total_interviews_attended: string;
@@ -109,6 +111,19 @@ declare namespace DTO {
       waitlists: number;
       year: string;
       year_in_program: number;
+    }
+
+    interface GetWorkExperiencesRequest {
+      email: string;
+    }
+    interface GetWorkExperiencesResponse {
+      workExperiences: ENTITIES.WorkExperience[];
+    }
+    interface GetEducationsRequest {
+      email: string;
+    }
+    interface GetEducationsResponse {
+      educations: ENTITIES.Education[];
     }
   }
 

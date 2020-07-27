@@ -113,12 +113,32 @@ declare namespace DTO {
       year_in_program: number;
     }
 
+    interface UpdateUserProfileRequest {
+      userProfile: ENTITIES.UserProfile;
+    }
+
     interface GetWorkExperiencesRequest {
       email: string;
     }
     interface GetWorkExperiencesResponse {
       workExperiences: ENTITIES.WorkExperience[];
     }
+
+    interface AddNewWorkExperiencesRequest {
+      email: string;
+      workExperience: ENTITIES.WorkExperience;
+    }
+
+    interface EditWorkExperiencesRequest {
+      email: string;
+      workExperience: ENTITIES.WorkExperience;
+    }
+
+    interface DeleteWorkExperiencesRequest {
+      email: string;
+      id: string;
+    }
+
     interface GetEducationsRequest {
       email: string;
     }
@@ -174,6 +194,12 @@ declare namespace DTO {
     }
     interface LoginResponse {
       username: string;
+    }
+  }
+
+  export namespace Storage {
+    interface GetAvatarUrlRequest {
+      name: string;
     }
   }
 }

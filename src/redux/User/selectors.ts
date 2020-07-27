@@ -15,12 +15,14 @@ export const userSelector = createSelector(
     workExperiences,
     educations,
     loading,
+    loadingUserSearchProfile,
   }) => ({
     userProfile,
     userSearchResults,
-    loading,
     userSearchProfile,
     workExperiences,
     educations,
+    loading,
+    loadingUserSearchProfile,
   }),
 );

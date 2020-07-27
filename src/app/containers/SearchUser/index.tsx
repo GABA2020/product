@@ -15,10 +15,11 @@ import { userSelector } from 'redux/User/selectors';
 import { img_user, img_locker } from 'assets/images';
 import { NotFoundPage } from '../NotFoundPage/Loadable';
 import Helmet from 'react-helmet';
-import { MyProfile } from 'app/components/MyProfile';
 import { GuestUserProfile } from 'app/components/GuestUserProfile';
 import { programSelector } from 'redux/Program/selectors';
 import 'styles/scss/SearchUser.scss';
+import 'styles/scss/ModalEditProfile.scss';
+import { MyProfile } from '../MyProfile';
 
 interface IProfile {
   match: {
@@ -39,6 +40,7 @@ export const SearchUser: FC<IProfile> = props => {
     workExperiences,
     educations,
     loading,
+    loadingUserSearchProfile,
   } = useSelector(userSelector);
   const { program } = useSelector(programSelector);
 
@@ -50,21 +52,21 @@ export const SearchUser: FC<IProfile> = props => {
     );
   }, [match.params.username]);
   useEffect(() => {
-    if (userSearchProfile.username === userProfile.username) {
-      dispatch(
-        programActions.getProgramReviewAction({ email: userProfile.email }),
-      );
-      dispatch(
-        userActions.getWorkExperiencesAction({ email: userProfile.email }),
-      );
-      dispatch(userActions.getEducationsAction({ email: userProfile.email }));
-    } else {
-      dispatch(
-        programActions.getProgramReviewAction({
-          email: userSearchProfile.email,
-        }),
-      );
-    }
+    // if (userSearchProfile.username === userProfile.username) {
+    //   dispatch(
+    //     programActions.getProgramReviewAction({ email: userProfile.email }),
+    //   );
+    //   dispatch(
+    //     userActions.getWorkExperiencesAction({ email: userProfile.email }),
+    //   );
+    //   dispatch(userActions.getEducationsAction({ email: userProfile.email }));
+    //   return;
+    // }
+    dispatch(
+      programActions.getProgramReviewAction({
+        email: userSearchProfile.email,
+      }),
+    );
   }, [userSearchProfile.username, userProfile.username]);
 
   return (
@@ -74,7 +76,7 @@ export const SearchUser: FC<IProfile> = props => {
         <title>{userSearchProfile.name}</title>
       </Helmet>
       <Fragment>
-        {loading ? (
+        {loadingUserSearchProfile ? (
           <section className="page-loading"></section>
         ) : (
           <section id="page_content">
@@ -94,12 +96,7 @@ export const SearchUser: FC<IProfile> = props => {
                 </section>
 
                 {userProfile.username === userSearchProfile.username ? (
-                  <MyProfile
-                    workExperiences={workExperiences}
-                    educations={educations}
-                    program={program}
-                    userProfile={userProfile}
-                  ></MyProfile>
+                  <MyProfile></MyProfile>
                 ) : (
                   <GuestUserProfile
                     program={program}

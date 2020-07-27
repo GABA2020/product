@@ -32,6 +32,10 @@ import {
   sliceKey as programSlice,
   reducer as programReducer,
 } from 'redux/Program/slice';
+import {
+  sliceKey as storageSlice,
+  reducer as storageReducer,
+} from 'redux/Storage/slice';
 import { useInjectReducer } from 'utils/redux-injectors';
 import { MainPage } from './containers/MainPage';
 import { Login } from './containers/Auth/Login';
@@ -61,6 +65,7 @@ export function App() {
   useInjectReducer({ key: authSlice, reducer: authReducer });
   useInjectReducer({ key: userSlice, reducer: userReducer });
   useInjectReducer({ key: programSlice, reducer: programReducer });
+  useInjectReducer({ key: storageSlice, reducer: storageReducer });
 
   React.useEffect(() => {
     auth().onAuthStateChanged(user => {

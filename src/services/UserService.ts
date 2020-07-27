@@ -1,4 +1,4 @@
-import { db } from 'helpers/firebase.module';
+import { db, storageAvatar } from 'helpers/firebase.module';
 import { DTO } from 'types/DTO';
 
 const getUserProfile = async (email: string) => {
@@ -37,6 +37,20 @@ const getUserSearchProfile = async (
     });
   return profileUser;
 };
+
+const updateUserProfile = async (
+  payload: DTO.User.UpdateUserProfileRequest,
+) => {
+  const userRef = await db
+    .collection('member_data')
+    .doc(payload.userProfile.email)
+    .set({
+      ...payload.userProfile,
+    });
+  return userRef;
+};
+
+// work
 const getWorkExperiences = async (
   payload: DTO.User.GetWorkExperiencesRequest,
 ) => {
@@ -55,6 +69,54 @@ const getWorkExperiences = async (
   });
   return { workExperiences: workExperiences };
 };
+
+const addNewWorkExperience = async (
+  payload: DTO.User.AddNewWorkExperiencesRequest,
+) => {
+  const workCollection = await db
+    .collection('member_data')
+    .doc(payload.email)
+    .collection('work')
+    .add({
+      company: payload.workExperience.company,
+      company_address: payload.workExperience.company_address,
+      date_end: payload.workExperience.date_end,
+      date_start: payload.workExperience.date_start,
+      description: payload.workExperience.description,
+      job_title: payload.workExperience.job_title,
+    });
+};
+
+const editWorkExperience = async (
+  payload: DTO.User.EditWorkExperiencesRequest,
+) => {
+  const workCollection = await db
+    .collection('member_data')
+    .doc(payload.email)
+    .collection('work')
+    .doc(payload.workExperience.id)
+    .set({
+      company: payload.workExperience.company,
+      company_address: payload.workExperience.company_address,
+      date_end: payload.workExperience.date_end,
+      date_start: payload.workExperience.date_start,
+      description: payload.workExperience.description,
+      job_title: payload.workExperience.job_title,
+    });
+};
+
+const deleteWorkExperience = async (
+  payload: DTO.User.DeleteWorkExperiencesRequest,
+) => {
+  const workCollection = await db
+    .collection('member_data')
+    .doc(payload.email)
+    .collection('work')
+    .doc(payload.id)
+    .delete();
+};
+// end work
+
 const getEducations = async (payload: DTO.User.GetEducationsRequest) => {
   const educations: ENTITIES.Education[] = [];
 
@@ -77,4 +139,8 @@ export {
   getUserSearchProfile,
   getWorkExperiences,
   getEducations,
+  addNewWorkExperience,
+  editWorkExperience,
+  deleteWorkExperience,
+  updateUserProfile,
 };

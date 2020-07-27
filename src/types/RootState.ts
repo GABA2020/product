@@ -12,4 +12,5 @@ export interface RootState {
   user?: STATES.User;
   program?: STATES.Program;
   auth?: STATES.Auth;
+  storage?: STATES.Storage;
 }

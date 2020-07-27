@@ -18,6 +18,7 @@ import { DTO } from 'types/DTO';
 export const initialState: STATES.User = {
   loading: true,
   loadingSearchBox: true,
+  loadingUserSearchProfile: true,
   workExperiences: [],
   educations: [],
   userProfile: {
@@ -164,17 +165,30 @@ const UserSliceState = createSlice({
       state,
       action: PayloadAction<DTO.User.GetUserSearchProfileRequest>,
     ) {
-      state.loading = true;
+      state.loadingUserSearchProfile = true;
       state.userSearchProfile = initialState.userSearchProfile;
     },
     getUserSearchProfileActionSuccess(
       state,
       action: PayloadAction<DTO.User.GetUserSearchProfileResponse>,
     ) {
-      state.loading = false;
+      state.loadingUserSearchProfile = false;
       state.userSearchProfile = action.payload;
     },
     getUserSearchProfileActionFailed(state) {
+      state.loadingUserSearchProfile = false;
+    },
+    updateUserProfileAction(
+      state,
+      action: PayloadAction<DTO.User.UpdateUserProfileRequest>,
+    ) {
+      state.loading = true;
+      state.userProfile = action.payload.userProfile;
+    },
+    updateUserProfileActionSuccess(state) {
+      state.loading = false;
+    },
+    updateUserProfileActionFailed(state) {
       state.loading = false;
     },
     //CV
@@ -191,11 +205,62 @@ const UserSliceState = createSlice({
       action: PayloadAction<DTO.User.GetWorkExperiencesResponse>,
     ) {
       state.loading = false;
-      state.workExperiences = action.payload.workExperiences;
+      state.workExperiences = action.payload.workExperiences.sort((a, b) =>
+        a.date_end < b.date_end ? 1 : a.date_end > b.date_end ? -1 : 0,
+      );
     },
     getWorkExperiencesActionFailed(state) {
       state.loading = false;
     },
+    addNewWorkExperienceAction(
+      state,
+      action: PayloadAction<DTO.User.AddNewWorkExperiencesRequest>,
+    ) {
+      state.loading = true;
+    },
+    addNewWorkExperienceActionSuccess(state) {
+      state.loading = false;
+    },
+    addNewWorkExperienceActionFailed(state) {
+      state.loading = false;
+    },
+    editWorkExperienceAction(
+      state,
+      action: PayloadAction<DTO.User.EditWorkExperiencesRequest>,
+    ) {
+      state.loading = true;
+      // const workExperiencesTemp = state.workExperiences;
+      // const foundIndex = workExperiencesTemp.findIndex(
+      //   x => x.id === action.payload.workExperience.id,
+      // );
+      // workExperiencesTemp[foundIndex] = action.payload.workExperience;
+
+      // state.workExperiences = workExperiencesTemp.sort((a, b) =>
+      //   a.date_end < b.date_end ? 1 : a.date_end > b.date_end ? -1 : 0,
+      // );
+    },
+    editWorkExperienceActionSuccess(state) {
+      state.loading = false;
+    },
+    editWorkExperienceActionFailed(state) {
+      state.loading = false;
+    },
+    deleteWorkExperienceActionAction(
+      state,
+      action: PayloadAction<DTO.User.DeleteWorkExperiencesRequest>,
+    ) {
+      state.loading = true;
+      state.workExperiences = state.workExperiences.filter(
+        item => item.id !== action.payload.id,
+      );
+    },
+    deleteWorkExperienceActionSuccess(state) {
+      state.loading = false;
+    },
+    deleteWorkExperienceActionFailed(state) {
+      state.loading = false;
+    },
+    // end work experiences
     //education
     getEducationsAction(
       state,
@@ -209,7 +274,9 @@ const UserSliceState = createSlice({
       action: PayloadAction<DTO.User.GetEducationsResponse>,
     ) {
       state.loading = false;
-      state.educations = action.payload.educations;
+      state.educations = action.payload.educations.sort((a, b) =>
+        a.date_end < b.date_end ? 1 : a.date_end > b.date_end ? -1 : 0,
+      );
     },
     getEducationsActionFailed(state) {
       state.loading = false;

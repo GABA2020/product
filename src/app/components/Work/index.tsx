@@ -1,12 +1,48 @@
-import React, { Fragment, useEffect, FC } from 'react';
+import React, { Fragment, useEffect, FC, useState } from 'react';
+import '../../../styles/AccordionContent.scss';
+import { faEdit, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { EditWorkModal } from '../Modal/EditWorkModal';
+import { AddWorkModal } from '../Modal/AddWorkModal';
 import moment from 'moment';
-import _ from 'lodash';
+
 interface IWork {
   workExperiences: ENTITIES.WorkExperience[];
   userProfile: ENTITIES.UserProfile;
+  editMode: boolean;
+  editWorkExperience: (workExperience: ENTITIES.WorkExperience) => void;
+  addNewWorkExperience: (workExperience: ENTITIES.WorkExperience) => void;
+  deleteWorkExperience: (workExperience: ENTITIES.WorkExperience) => void;
 }
 export const Work: FC<IWork> = props => {
-  const { workExperiences, userProfile } = props;
+  const {
+    workExperiences,
+    userProfile,
+    editMode,
+    editWorkExperience,
+    addNewWorkExperience,
+    deleteWorkExperience,
+  } = props;
+  /* state modal display */
+  const [isShowModalEditWorkState, setIsShowModalEditWorkState] = useState<
+    boolean
+  >(false);
+  const [isShowModalAddWorkState, setIsShowModalAddWorkState] = useState<
+    boolean
+  >(false);
+  /* end state modal display */
+  const [workExperienceState, setWorkExperienceState] = useState<
+    ENTITIES.WorkExperience
+  >({
+    id: '',
+    company: '',
+    company_address: '',
+    date_end: '',
+    date_start: '',
+    description: '',
+    job_title: '',
+  });
+
   useEffect(() => {
     var accordion = new (jQuery as any).DEVFUNC.accordion();
     accordion.handleAccordion();
@@ -22,34 +58,87 @@ export const Work: FC<IWork> = props => {
       addClass: 'spmenu_open',
     });
   }, []);
-  const renderDescription = (text: string) => {
-    return text.split('-').map((item, index) => {
-      return item !== '' ? <p key={index}>- {item}</p> : null;
-    });
+  const onAddNewWorkExperience = (workExperience: ENTITIES.WorkExperience) => {
+    addNewWorkExperience(workExperience);
+    setIsShowModalAddWorkState(false);
+  };
+  const onEditNewWorkExperience = (workExperience: ENTITIES.WorkExperience) => {
+    editWorkExperience(workExperience);
+    setIsShowModalEditWorkState(false);
+  };
+
+  const onDeleteWorkExperience = (workExperience: ENTITIES.WorkExperience) => {
+    deleteWorkExperience(workExperience);
+    setIsShowModalEditWorkState(false);
   };
   return (
     <Fragment>
+      <EditWorkModal
+        isShow={isShowModalEditWorkState}
+        onHide={() => setIsShowModalEditWorkState(false)}
+        workExperience={workExperienceState}
+        editWorkExperience={onEditNewWorkExperience}
+        deleteWorkExperience={onDeleteWorkExperience}
+      ></EditWorkModal>
+      <AddWorkModal
+        addNewWorkExperience={onAddNewWorkExperience}
+        isShow={isShowModalAddWorkState}
+        onHide={() => setIsShowModalAddWorkState(false)}
+      ></AddWorkModal>
       <div className="experiences-content">
-        <div className="main-title">
-          <h2> Work</h2>
-          <p>Experiences</p>
-        </div>
         <div className="experiences-caption">
+          <h3>About</h3>
           <p>{userProfile.about}</p>
+        </div>
+        <div className="main-title">
+          <div className="main-title-work">
+            <h2> Work</h2>
+            {editMode === true ? (
+              <a
+                href="#"
+                onClick={e => {
+                  e.preventDefault();
+                  setIsShowModalAddWorkState(true);
+                }}
+              >
+                <FontAwesomeIcon icon={faPlusCircle} />
+              </a>
+            ) : null}
+          </div>
         </div>
         <div className="accordion">
           {workExperiences.map((item, index) => {
             return (
-              <Fragment>
-                <div key={index} className="accordion-item active">
+              <Fragment key={index}>
+                <div className="accordion-item">
                   <div className="accordion-title">
                     <a href="#">{item.job_title}</a>
                   </div>
                   <div className="accordion-content">
-                    <p>{item.company}</p>
-                    <p>{`${item.date_start} - ${item.date_end}`}</p>
+                    <div className="accordion-content-company">
+                      <p>{item.company}</p>
+                      {editMode === true ? (
+                        <a
+                          onClick={e => {
+                            e.preventDefault();
+                            setWorkExperienceState(item);
+                            setIsShowModalEditWorkState(true);
+                          }}
+                          href="#"
+                        >
+                          <FontAwesomeIcon icon={faEdit}></FontAwesomeIcon>
+                        </a>
+                      ) : null}
+                    </div>
+                    <p>{`${moment(item.date_start).format(
+                      'MMM yyyy',
+                    )} - ${moment(item.date_end).format('MMM yyyy')}`}</p>
                     <p>{item.company_address}</p>
-                    {renderDescription(item.description)}
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: item.description,
+                      }}
+                    />
                   </div>
                 </div>
               </Fragment>

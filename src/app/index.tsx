@@ -40,6 +40,7 @@ import { useInjectReducer } from 'utils/redux-injectors';
 import { MainPage } from './containers/MainPage';
 import { Login } from './containers/Auth/Login';
 import { CVPage } from './containers/CVPage';
+import { SignUp } from './containers/SignUp';
 
 // Auth Route
 const AuthRoute = ({ component: Component, ...rest }) => {
@@ -88,6 +89,7 @@ export function App() {
       <Router history={history}>
         <Switch>
           <Route exact path={RoutesTypes.SIGN_IN} component={Login} />
+          <Route exact path={RoutesTypes.SIGN_UP} component={SignUp} />
           <AuthRoute
             isAuth={isAuth}
             exact

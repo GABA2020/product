@@ -6,9 +6,12 @@ import { sliceKey, actions } from 'redux/Auth/slice';
 import { authSelector } from 'redux/Auth/selectors';
 import { AuthSaga } from 'redux/Auth/saga';
 import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
+import RoutesTypes from '../../../../types/Routes';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers';
 import 'styles/scss/login.scss';
+import { SignUp } from 'app/containers/SignUp/index';
 
 const loginSchema = yup.object().shape({
   email: yup.string().required('Email is a required field'),
@@ -83,13 +86,15 @@ export const Login: React.FC = props => {
               Forgot password?
             </a>
           </div>
-          <button
-            className="btn btn-primary btn-block"
-            type="button"
-            id="btn-signup"
-          >
-            <i className="fas fa-user-plus" /> Sign up
-          </button>
+          <Link to={RoutesTypes.SIGN_UP}>
+            <button
+              className="btn btn-primary btn-block"
+              type="button"
+              id="btn-signup"
+            >
+              <i className="fas fa-user-plus" /> Sign up
+            </button>
+          </Link>
         </form>
         <br />
       </div>

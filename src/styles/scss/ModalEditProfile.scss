@@ -31,10 +31,6 @@
 .upload-image-crop.text-center {
     margin-top: 20px;
 
-    .scale-range-wrapper {
-        padding: 0 170px;
-    }
-
     .btn-wrapper-crop {
         display: flex;
         justify-content: center;
@@ -49,187 +45,193 @@
     }
 }
 
-/*end section upload profile*/
-/* Responsive */
-@media screen and (min-width: 1200px) {
+/* 
+  ##Device = Desktops
+  ##Screen = 1281px to higher resolution desktops
+*/
+
+@media (min-width: 1281px) {
+
     .profile-images-wrapper {
         input.upload-image {
-            width: 45px;
-            height: 21px;
-            left: 56%;
-
-            .upload-image-icon {
-                position: absolute;
-                bottom: -0.1rem;
-                left: 62%;
-                margin-left: -.9375rem;
-                cursor: pointer;
-            }
-        }
-    }
-}
-
-@media screen and (max-width: 1199px) {
-    .profile-images-wrapper {
-        input.upload-image {
-            width: 45px;
-            height: 21px;
-            left: 56%;
-
-            .upload-image-icon {
-                position: absolute;
-                bottom: -0.1rem;
-                left: 62%;
-                margin-left: -.9375rem;
-                cursor: pointer;
-            }
-        }
-    }
-}
-
-@media screen and (max-width: 991px) {
-    .profile-images-wrapper {
-        input.upload-image {
-            width: 45px;
-            height: 21px;
-            left: 57%;
-
-            .upload-image-icon {
-                position: absolute;
-                bottom: -0.1rem;
-                left: 62%;
-                margin-left: -.9375rem;
-                cursor: pointer;
-            }
-        }
-    }
-}
-
-@media screen and (max-width: 899px) {
-    .profile-images-wrapper {
-        input.upload-image {
-            width: 45px;
-            height: 21px;
-            left: 57%;
-
-            .upload-image-icon {
-                position: absolute;
-                bottom: -0.1rem;
-                left: 68%;
-                margin-left: -.9375rem;
-                cursor: pointer;
-            }
-        }
-    }
-
-    .upload-image-crop.text-center {
-        .scale-range-wrapper {
-            padding: 0 173px;
-        }
-    }
-}
-
-@media screen and (max-width: 768px) {
-    .profile-images-wrapper {
-        input.upload-image {
-            width: 45px;
-            height: 21px;
-            left: 57%;
-
-            .upload-image-icon {
-                position: absolute;
-                bottom: -0.1rem;
-                left: 68%;
-                margin-left: -.9375rem;
-                cursor: pointer;
-            }
-        }
-    }
-
-    .upload-image-crop.text-center {
-        .scale-range-wrapper {
-            padding: 0 198px;
-        }
-    }
-}
-
-@media screen and (max-width: 575px) {
-    .profile-images-wrapper {
-        input.upload-image {
-            width: 47px;
+            display: block;
+            width: 43px;
             height: 20px;
+            opacity: 0;
+            position: absolute;
             left: 58%;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+            cursor: pointer;
         }
 
         .upload-image-icon {
             position: absolute;
             bottom: -0.1rem;
-            left: 65%;
+            left: 63%;
             margin-left: -.9375rem;
             cursor: pointer;
         }
     }
 
-    .upload-image-crop.text-center {
-        .scale-range-wrapper {
-            padding: 0 130px;
-        }
-    }
 }
 
-@media screen and (max-width: 413px) {
+/* 
+    ##Device = Laptops, Desktops
+    ##Screen = B/w 1025px to 1280px
+  */
+
+@media (min-width: 1025px) and (max-width: 1280px) {
+
     .profile-images-wrapper {
         input.upload-image {
-            width: 47px;
-            height: 21px;
+            display: block;
+            width: 43px;
+            height: 20px;
+            opacity: 0;
+            position: absolute;
+            left: 58%;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+            cursor: pointer;
+        }
+
+        .upload-image-icon {
+            position: absolute;
+            bottom: -0.1rem;
+            left: 63%;
+            margin-left: -.9375rem;
+            cursor: pointer;
+        }
+    }
+
+}
+
+/* 
+    ##Device = Tablets, Ipads (portrait)
+    ##Screen = B/w 768px to 1024px
+  */
+
+@media (min-width: 768px) and (max-width: 1024px) {
+
+    .profile-images-wrapper {
+        input.upload-image {
+            display: block;
+            width: 43px;
+            height: 20px;
+            opacity: 0;
+            position: absolute;
+            left: 58%;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+            cursor: pointer;
+        }
+
+        .upload-image-icon {
+            position: absolute;
+            bottom: -0.1rem;
+            left: 63%;
+            margin-left: -.9375rem;
+            cursor: pointer;
+        }
+    }
+
+}
+
+/* 
+    ##Device = Tablets, Ipads (landscape)
+    ##Screen = B/w 768px to 1024px
+  */
+
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+
+    .profile-images-wrapper {
+        input.upload-image {
+            display: block;
+            width: 43px;
+            height: 20px;
+            opacity: 0;
+            position: absolute;
+            left: 58%;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+            cursor: pointer;
+        }
+
+        .upload-image-icon {
+            position: absolute;
+            bottom: -0.1rem;
+            left: 63%;
+            margin-left: -.9375rem;
+            cursor: pointer;
+        }
+    }
+
+}
+
+/* 
+    ##Device = Low Resolution Tablets, Mobiles (Landscape)
+    ##Screen = B/w 481px to 767px
+  */
+
+@media (min-width: 481px) and (max-width: 767px) {
+
+    .profile-images-wrapper {
+        input.upload-image {
+            display: block;
+            width: 43px;
+            height: 20px;
+            opacity: 0;
+            position: absolute;
             left: 60%;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+            cursor: pointer;
+        }
 
-            .upload-image-icon {
-                position: absolute;
-                bottom: -0.1rem;
-                left: 68%;
-                margin-left: -.9375rem;
-                cursor: pointer;
-            }
+        .upload-image-icon {
+            position: absolute;
+            bottom: -0.1rem;
+            left: 66%;
+            margin-left: -.9375rem;
+            cursor: pointer;
         }
     }
 
-    .upload-image-crop.text-center {
-        .scale-range-wrapper {
-            padding: 0 50px;
+}
+
+/* 
+    ##Device = Most of the Smartphones Mobiles (Portrait)
+    ##Screen = B/w 320px to 479px
+  */
+
+@media (min-width: 320px) and (max-width: 480px) {
+
+    .profile-images-wrapper {
+        input.upload-image {
+            display: block;
+            width: 43px;
+            height: 20px;
+            opacity: 0;
+            position: absolute;
+            left: 63%;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+            cursor: pointer;
         }
-    }
 
-    @media screen and (max-width: 374px) {
-        .profile-images-wrapper {
-            input.upload-image {
-                width: 43px;
-                height: 23px;
-                left: 61%;
-
-            }
-
-            .upload-image-icon {
-                position: absolute;
-                bottom: -0.1rem;
-                left: 71%;
-                margin-left: -.9375rem;
-                cursor: pointer;
-            }
-        }
-
-        .upload-image-crop.text-center {
-            .scale-range-wrapper {
-                padding: 0 28px;
-            }
-        }
-    }
-
-    @media screen and (max-width: 321px) {
-        .upload-image-crop.text-center {
-            .scale-range-wrapper {
-                padding: 0 28px;
-            }
+        .upload-image-icon {
+            position: absolute;
+            bottom: -0.1rem;
+            left: 71%;
+            margin-left: -.9375rem;
+            cursor: pointer;
         }
     }
 

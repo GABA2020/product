@@ -1,5 +1,7 @@
 // DTO only ref to ENTITIES.d.ts
 import { UserProfile } from 'redux/User/types';
+import { Volunteer } from 'app/components/Volunteer';
+import { Education } from 'app/components/Education';
 
 declare namespace DTO {
   export namespace User {
@@ -116,34 +118,92 @@ declare namespace DTO {
     interface UpdateUserProfileRequest {
       userProfile: ENTITIES.UserProfile;
     }
+    namespace WorkExperience {
+      interface GetWorkExperiencesRequest {
+        email: string;
+      }
+      interface GetWorkExperiencesResponse {
+        workExperiences: ENTITIES.WorkExperience[];
+      }
 
-    interface GetWorkExperiencesRequest {
-      email: string;
+      interface AddNewWorkExperiencesRequest {
+        email: string;
+        workExperience: ENTITIES.WorkExperience;
+      }
+
+      interface EditWorkExperiencesRequest {
+        email: string;
+        workExperience: ENTITIES.WorkExperience;
+      }
+
+      interface DeleteWorkExperiencesRequest {
+        email: string;
+        id: string;
+      }
     }
-    interface GetWorkExperiencesResponse {
-      workExperiences: ENTITIES.WorkExperience[];
+    namespace Education {
+      interface GetEducationsRequest {
+        email: string;
+      }
+      interface GetEducationsResponse {
+        educations: ENTITIES.Education[];
+      }
+
+      interface AddNewEducationRequest {
+        email: string;
+        education: ENTITIES.Education;
+      }
+
+      interface EditEducationRequest {
+        email: string;
+        education: ENTITIES.Education;
+      }
+
+      interface DeleteEducationRequest {
+        email: string;
+        id: string;
+      }
     }
 
-    interface AddNewWorkExperiencesRequest {
-      email: string;
-      workExperience: ENTITIES.WorkExperience;
+    namespace Volunteer {
+      interface GetVolunteersRequest {
+        email: string;
+      }
+      interface GetVolunteersResponse {
+        volunteers: ENTITIES.Volunteer[];
+      }
+      interface AddNewVolunteerRequest {
+        email: string;
+        volunteer: ENTITIES.Volunteer;
+      }
+      interface EditVolunteerRequest {
+        email: string;
+        volunteer: ENTITIES.Volunteer;
+      }
+      interface DeleteVolunteerRequest {
+        email: string;
+        id: string;
+      }
     }
-
-    interface EditWorkExperiencesRequest {
-      email: string;
-      workExperience: ENTITIES.WorkExperience;
-    }
-
-    interface DeleteWorkExperiencesRequest {
-      email: string;
-      id: string;
-    }
-
-    interface GetEducationsRequest {
-      email: string;
-    }
-    interface GetEducationsResponse {
-      educations: ENTITIES.Education[];
+    namespace Research {
+      interface GetResearchesRequest {
+        email: string;
+      }
+      interface GetResearchesResponse {
+        researches: ENTITIES.Research[];
+      }
+      interface AddNewResearchRequest {
+        email: string;
+        research: ENTITIES.Research;
+      }
+      interface EditResearchRequest {
+        email: string;
+        research: ENTITIES.Research;
+      }
+      interface DeleteResearchRequest {
+        email: string;
+        id: string;
+      }
     }
   }
 
@@ -185,6 +245,11 @@ declare namespace DTO {
       vacation_weeks: string;
       year: string;
     }
+
+    interface UpdateProgramRequest {
+      email: string;
+      program: ENTITIES.Program;
+    }
   }
 
   export namespace Auth {
@@ -201,5 +266,12 @@ declare namespace DTO {
     interface GetAvatarUrlRequest {
       name: string;
     }
+    interface UploadAvatarRequest {
+      name: string;
+      content: string;
+    }
+    // interface UploadAvatarResponse {
+    //   url: string;
+    // }
   }
 }

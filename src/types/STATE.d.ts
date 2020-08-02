@@ -8,6 +8,8 @@ declare namespace STATES {
     userSearchProfile: ENTITIES.UserProfile;
     workExperiences: ENTITIES.WorkExperience[];
     educations: ENTITIES.Education[];
+    volunteers: ENTITIES.Volunteer[];
+    researches: ENTITIES.Research[];
   }
   interface Program {
     loading: boolean;

@@ -3,6 +3,7 @@ import AvatarEditor from 'react-avatar-editor';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faWindowClose } from '@fortawesome/free-solid-svg-icons';
 import { img_user } from 'assets/images';
+import { generateNewNameImage, dataUrlFile } from 'helpers/Unity';
 interface IFIle {
   lastModified: number;
   lastModifiedDate: string;
@@ -13,7 +14,7 @@ interface IFIle {
 }
 interface IImageCrop {
   imageSrc: IFIle;
-  onCropDone: (imageBase64: string) => void;
+  onCropDone: (imageBase64: string, name: string) => void;
   onCropCancel: () => void;
 }
 export const ImageCrop: FC<IImageCrop> = props => {
@@ -33,6 +34,7 @@ export const ImageCrop: FC<IImageCrop> = props => {
   const handelCropDone = () => {
     onCropDone(
       (setEditorRef as any).current.getImageScaledToCanvas().toDataURL(),
+      generateNewNameImage(),
     );
   };
 
@@ -44,8 +46,8 @@ export const ImageCrop: FC<IImageCrop> = props => {
         borderRadius={220}
         scale={parseFloat(scaleState)}
         rotate={0}
-        width={200}
-        height={200}
+        width={250}
+        height={250}
         ref={setEditorRef}
       ></AvatarEditor>
       <div className="scale-range-wrapper">

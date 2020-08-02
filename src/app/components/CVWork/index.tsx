@@ -3,9 +3,7 @@ import { Volunteer } from '../Volunteer';
 import { Research } from '../Research';
 import { Education } from '../Education';
 import { Work } from '../Work';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
-import { AddWorkModal } from '../Modal/AddWorkModal';
+
 const arrayWork = [
   'work',
   'volunteer',
@@ -19,22 +17,44 @@ interface ICVWork {
   userProfile: ENTITIES.UserProfile;
   workExperiences: ENTITIES.WorkExperience[];
   educations: ENTITIES.Education[];
+  volunteers: ENTITIES.Volunteer[];
+  researches: ENTITIES.Research[];
   editMode: boolean;
   editWorkExperience: (workExperience: ENTITIES.WorkExperience) => void;
   addNewWorkExperience: (workExperience: ENTITIES.WorkExperience) => void;
   deleteWorkExperience: (workExperience: ENTITIES.WorkExperience) => void;
+  addNewEducation: (education: ENTITIES.Education) => void;
+  editEducation: (education: ENTITIES.Education) => void;
+  deleteEducation: (education: ENTITIES.Education) => void;
+  addNewVolunteer: (volunteer: ENTITIES.Volunteer) => void;
+  editVolunteer: (volunteer: ENTITIES.Volunteer) => void;
+  deleteVolunteer: (volunteer: ENTITIES.Volunteer) => void;
+  addNewResearch: (research: ENTITIES.Research) => void;
+  editResearch: (research: ENTITIES.Research) => void;
+  deleteResearch: (research: ENTITIES.Research) => void;
 }
 export const CVWork: FC<ICVWork> = props => {
   const {
     userProfile,
     workExperiences,
     educations,
+    volunteers,
+    researches,
     editMode,
     editWorkExperience,
     addNewWorkExperience,
     deleteWorkExperience,
+    addNewEducation,
+    editEducation,
+    deleteEducation,
+    addNewVolunteer,
+    editVolunteer,
+    deleteVolunteer,
+    addNewResearch,
+    editResearch,
+    deleteResearch,
   } = props;
-  const [stateWork, setStateWork] = useState<string>(arrayWork[0]);
+  const [stateWork, setStateWork] = useState<string>(arrayWork[2]);
 
   const renderCVWithCondition = () => {
     switch (stateWork) {
@@ -50,11 +70,38 @@ export const CVWork: FC<ICVWork> = props => {
           ></Work>
         );
       case arrayWork[1]:
-        return <Volunteer></Volunteer>;
+        return (
+          <Volunteer
+            volunteers={volunteers}
+            editMode={editMode}
+            userProfile={userProfile}
+            addNewVolunteer={addNewVolunteer}
+            editVolunteer={editVolunteer}
+            deleteVolunteer={deleteVolunteer}
+          ></Volunteer>
+        );
       case arrayWork[2]:
-        return <Research></Research>;
+        return (
+          <Research
+            addNewResearch={addNewResearch}
+            editResearch={editResearch}
+            deleteResearch={deleteResearch}
+            researches={researches}
+            editMode={editMode}
+            userProfile={userProfile}
+          ></Research>
+        );
       case arrayWork[5]:
-        return <Education educations={educations}></Education>;
+        return (
+          <Education
+            userProfile={userProfile}
+            addNewEducation={addNewEducation}
+            editEducation={editEducation}
+            deleteEducation={deleteEducation}
+            editMode={editMode}
+            educations={educations}
+          ></Education>
+        );
       default:
         break;
     }
@@ -98,7 +145,11 @@ export const CVWork: FC<ICVWork> = props => {
                       Volunteer
                     </a>
                   </li>
-                  <li>
+                  <li
+                    className={
+                      stateWork === arrayWork[2] ? 'active' : undefined
+                    }
+                  >
                     <a
                       onClick={e => {
                         e.preventDefault();
@@ -113,17 +164,6 @@ export const CVWork: FC<ICVWork> = props => {
                     <a
                       onClick={e => {
                         e.preventDefault();
-                        setStateWork(arrayWork[3]);
-                      }}
-                      href="#"
-                    >
-                      Publications
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      onClick={e => {
-                        e.preventDefault();
                         setStateWork(arrayWork[4]);
                       }}
                       href="#"
@@ -131,7 +171,11 @@ export const CVWork: FC<ICVWork> = props => {
                       Letters
                     </a>
                   </li>
-                  <li>
+                  <li
+                    className={
+                      stateWork === arrayWork[5] ? 'active' : undefined
+                    }
+                  >
                     <a
                       onClick={e => {
                         e.preventDefault();

@@ -14,6 +14,8 @@ export const userSelector = createSelector(
     userSearchProfile,
     workExperiences,
     educations,
+    volunteers,
+    researches,
     loading,
     loadingUserSearchProfile,
   }) => ({
@@ -22,6 +24,8 @@ export const userSelector = createSelector(
     userSearchProfile,
     workExperiences,
     educations,
+    volunteers,
+    researches,
     loading,
     loadingUserSearchProfile,
   }),

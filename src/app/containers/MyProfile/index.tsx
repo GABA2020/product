@@ -20,7 +20,7 @@ import { StorageSaga } from 'redux/Storage/saga';
 import { userSelector } from 'redux/User/selectors';
 import { programSelector } from 'redux/Program/selectors';
 import { storageSelector } from 'redux/Storage/selectors';
-import { img_locker, img_user } from 'assets/images';
+import { img_locker, img_user, verified_check, oval } from 'assets/images';
 import { ordinal_suffix_of } from 'helpers/Unity';
 import { Link } from 'react-router-dom';
 import RoutesTypes from 'types/Routes';
@@ -28,6 +28,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { EditProfileModal } from 'app/components/Modal/EditProfileModal';
 import { CVWork } from 'app/components/CVWork';
+import { Rate } from 'antd';
 
 export const MyProfile = props => {
   useInjectSaga({ key: userSliceKey, saga: UserSaga });
@@ -452,12 +453,12 @@ export const MyProfile = props => {
             <div className="locker-col">
               <div className="locker-tabs">
                 <ul className="nav nav-tabs">
-                  <li className="active">
+                  <li>
                     <a href="#frame-1" role="tab" data-toggle="tab">
                       Resources
                     </a>
                   </li>
-                  <li>
+                  <li className="active">
                     <a href="#frame-2" role="tab" data-toggle="tab">
                       Reviews
                     </a>
@@ -475,7 +476,7 @@ export const MyProfile = props => {
           </div>
           <div className="locker-panel">
             <div className="tab-content">
-              <div role="tabpanel" className="tab-pane active" id="frame-1">
+              <div role="tabpanel" className="tab-pane" id="frame-1">
                 <div className="locker-category">
                   <ul className="locker-list">
                     <li className="locker-item">
@@ -687,8 +688,166 @@ export const MyProfile = props => {
                   </ul>
                 </div>
               </div>
-              <div role="tabpanel" className="tab-pane" id="frame-2">
-                content
+              <div role="tabpanel" className="tab-pane active" id="frame-2">
+                <div className="locker-review">
+                  <ul className="review-list">
+                    <li className="review-item">
+                      <h4 className="review-title">Anki: Pepper Deck</h4>
+                      <div className="review-match">
+                        {/* <div className="review-vote">
+                        </div> */}
+                        <Rate defaultValue={2}></Rate>
+                        <p className="oval">
+                          <img src={oval} alt="" />
+                        </p>
+                        <p>Anatomy</p>
+                      </div>
+                      <p className="title-comment">
+                        dramatically improved my scores
+                      </p>
+                      <p className="comment">
+                        So GABA recommended Anki for me because of my learning
+                        style.. and boy was it accurate. My recommendation was
+                        98% but I would honestly give Anki a solid 100. My
+                        Anatomy scores improved before my eyes{' '}
+                        <span className="read-more">...show more</span>
+                        <span className="comment-more">
+                          test test test test test test test test test test test
+                          test test test test test test test test test test test
+                          test test{' '}
+                        </span>
+                      </p>
+                      <div className="user-information">
+                        <div className="profile-image">
+                          <img src={img_user} alt="img" />
+                        </div>
+                        <div className="profile-infor">
+                          @quinnthere{' '}
+                          <sup className="verify-check">
+                            <img src={verified_check} alt="image" />
+                          </sup>
+                          <ul className="score">
+                            <li>Step One 246</li>
+                            <li className="separate">|</li>
+                            <li>Step Two 240</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </li>
+                    <li className="review-item">
+                      <h4 className="review-title">SketchyClinical</h4>
+                      <div className="review-match">
+                        {/* <div className="review-vote">
+                        </div> */}
+                        <Rate defaultValue={2}></Rate>
+                        <p className="oval">
+                          <img src={oval} alt="" />
+                        </p>
+                        <p>Pathology</p>
+                      </div>
+                      <p className="title-comment">
+                        looked super cool, but not for me
+                      </p>
+                      <p className="comment">
+                        This is what happens when I try something based on
+                        heresay and not my GABA recommendations. I won’t make
+                        that mistake again.
+                      </p>
+                      <div className="user-information">
+                        <div className="profile-image">
+                          <img src={img_user} alt="img" />
+                        </div>
+                        <div className="profile-infor">
+                          @quinnthere{' '}
+                          <sup className="verify-check">
+                            <img src={verified_check} alt="image" />
+                          </sup>
+                          <ul className="score">
+                            <li>Step One 246</li>
+                            <li className="separate">|</li>
+                            <li>Step Two 240</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </li>
+                    <li className="review-item">
+                      <h4 className="review-title">Osmosis</h4>
+                      <div className="review-match">
+                        {/* <div className="review-vote">
+                        </div> */}
+                        <Rate defaultValue={4}></Rate>
+                        <p className="oval">
+                          <img src={oval} alt="" />
+                        </p>
+                        <p>Clinical Management</p>
+                      </div>
+                      <p className="title-comment">almost perfect!</p>
+                      <p className="comment">
+                        I’ve been using Osmosis for the longest cans fondly
+                        refer to it as my tried and true. I’ve also recommended
+                        it to my fellow classmates, so of course I was more than
+                        happy to see it here on GABA, available to purchase
+                        direct.
+                      </p>
+                      <div className="user-information">
+                        <div className="profile-image">
+                          <img src={img_user} alt="img" />
+                        </div>
+                        <div className="profile-infor">
+                          @quinnthere{' '}
+                          <sup className="verify-check">
+                            <img src={verified_check} alt="image" />
+                          </sup>
+                          <ul className="score">
+                            <li>Step One 246</li>
+                            <li className="separate">|</li>
+                            <li>Step Two 240</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </li>
+                    <li className="review-item">
+                      <h4 className="review-title">Anki: Pepper Deck</h4>
+                      <div className="review-match">
+                        {/* <div className="review-vote">
+                        </div> */}
+                        <Rate defaultValue={2}></Rate>
+                        <p className="oval">
+                          <img src={oval} alt="" />
+                        </p>
+                        <p>Anatomy</p>
+                      </div>
+                      <p className="title-comment">
+                        dramatically improved my scores
+                      </p>
+                      <p className="comment">
+                        So GABA recommended Anki for me because of my learning
+                        style.. and boy was it accurate. My recommendation was
+                        98% but I would honestly give Anki a solid 100. My
+                        Anatomy scores improved before my eyes.
+                      </p>
+                      <div className="user-information">
+                        <div className="profile-image">
+                          <img src={img_user} alt="img" />
+                        </div>
+                        <div className="profile-infor">
+                          @quinnthere{' '}
+                          <sup className="verify-check">
+                            <img src={verified_check} alt="image" />
+                          </sup>
+                          <ul className="score">
+                            <li>Step One 246</li>
+                            <li className="separate">|</li>
+                            <li>Step Two 240</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                  <div className="review-btn-wrap">
+                    <button className="load-more">Load More Reviews</button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

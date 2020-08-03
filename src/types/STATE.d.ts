@@ -10,6 +10,7 @@ declare namespace STATES {
     educations: ENTITIES.Education[];
     volunteers: ENTITIES.Volunteer[];
     researches: ENTITIES.Research[];
+    letters: ENTITIES.Letter[];
   }
   interface Program {
     loading: boolean;

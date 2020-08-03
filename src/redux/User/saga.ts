@@ -10,11 +10,14 @@ import {
   addNewWorkExperience,
   editWorkExperience,
   deleteWorkExperience,
-  getImageURL,
   updateUserProfile,
   addNewEducation,
   editEducation,
   deleteEducation,
+  getLetters,
+  addNewLetter,
+  editLetter,
+  deleteLetter,
 } from '../../services';
 import {
   getVolunteers,
@@ -259,6 +262,52 @@ export function* deleteResearchSaga({ payload }) {
     yield put(actions.deleteResearchActionFailed());
   }
 }
+
+export function* getLettersSaga({ payload }) {
+  yield delay(500);
+  try {
+    const response: DTO.User.Letter.GetLettersResponse = yield call(
+      getLetters,
+      payload,
+    );
+    yield put(actions.getLettersActionSuccess(response));
+  } catch (e) {
+    yield put(actions.getLettersActionFailed());
+  }
+}
+
+export function* addLetterSaga({ payload }) {
+  yield delay(500);
+  try {
+    const response = yield call(addNewLetter, payload);
+    yield put(actions.addNewLetterActionSuccess());
+    yield put(actions.getLettersAction({ email: payload.email }));
+  } catch (e) {
+    yield put(actions.addNewLetterActionFailed());
+  }
+}
+
+export function* editLetterSaga({ payload }) {
+  yield delay(500);
+  try {
+    const response = yield call(editLetter, payload);
+    yield put(actions.editLetterActionSuccess());
+    yield put(actions.getLettersAction({ email: payload.email }));
+  } catch (e) {
+    yield put(actions.editLetterActionFailed());
+  }
+}
+
+export function* deleteLetterSaga({ payload }) {
+  yield delay(500);
+  try {
+    const response = yield call(deleteLetter, payload);
+    yield put(actions.deleteLetterActionSuccess());
+  } catch (e) {
+    yield put(actions.deleteLetterActionFailed());
+  }
+}
+
 /**
  * Root saga manages watcher lifecycle
  */
@@ -301,4 +350,10 @@ export function* UserSaga() {
   yield takeLatest(actions.addNewResearchAction, addResearchSaga);
   yield takeLatest(actions.editResearchAction, editResearchSaga);
   yield takeLatest(actions.deleteResearchAction, deleteResearchSaga);
+
+  //letter
+  yield takeLatest(actions.getLettersAction, getLettersSaga);
+  yield takeLatest(actions.addNewLetterAction, addLetterSaga);
+  yield takeLatest(actions.editLetterAction, editLetterSaga);
+  yield takeLatest(actions.deleteLetterAction, deleteLetterSaga);
 }

@@ -127,6 +127,14 @@ declare namespace ENTITIES {
     title_of_work: string;
   }
 
+  interface Letter {
+    id: string;
+    document_name: string;
+    document_type: string;
+    link: string;
+    receive_date: string;
+  }
+
   interface File {
     lastModified: number;
     lastModifiedDate: string;

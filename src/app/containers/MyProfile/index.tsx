@@ -40,6 +40,7 @@ export const MyProfile = props => {
     educations,
     volunteers,
     researches,
+    letters,
   } = useSelector(userSelector);
   const { program } = useSelector(programSelector);
   const { avatar_url } = useSelector(storageSelector);
@@ -60,6 +61,7 @@ export const MyProfile = props => {
     dispatch(userActions.getEducationsAction({ email: userProfile.email }));
     dispatch(userActions.getVolunteersAction({ email: userProfile.email }));
     dispatch(userActions.getResearchesAction({ email: userProfile.email }));
+    dispatch(userActions.getLettersAction({ email: userProfile.email }));
   }, [userProfile.email]);
 
   useEffect(() => {
@@ -310,6 +312,7 @@ export const MyProfile = props => {
       </section>
       {/* owner profile will use userProfile */}
       <CVWork
+        letters={letters}
         researches={researches}
         volunteers={volunteers}
         userProfile={userProfile}
@@ -409,6 +412,30 @@ export const MyProfile = props => {
             userActions.deleteResearchAction({
               email: userProfile.email,
               id: research.id,
+            }),
+          );
+        }}
+        addNewLetter={letter => {
+          dispatch(
+            userActions.addNewLetterAction({
+              email: userProfile.email,
+              letter,
+            }),
+          );
+        }}
+        editLetter={letter => {
+          dispatch(
+            userActions.editLetterAction({
+              email: userProfile.email,
+              letter,
+            }),
+          );
+        }}
+        deleteLetter={letters => {
+          dispatch(
+            userActions.deleteLetterAction({
+              email: userProfile.email,
+              id: letters.id,
             }),
           );
         }}

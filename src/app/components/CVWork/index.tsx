@@ -3,6 +3,7 @@ import { Volunteer } from '../Volunteer';
 import { Research } from '../Research';
 import { Education } from '../Education';
 import { Work } from '../Work';
+import { Letter } from '../Letter';
 
 const arrayWork = [
   'work',
@@ -19,6 +20,7 @@ interface ICVWork {
   educations: ENTITIES.Education[];
   volunteers: ENTITIES.Volunteer[];
   researches: ENTITIES.Research[];
+  letters: ENTITIES.Letter[];
   editMode: boolean;
   editWorkExperience: (workExperience: ENTITIES.WorkExperience) => void;
   addNewWorkExperience: (workExperience: ENTITIES.WorkExperience) => void;
@@ -32,6 +34,9 @@ interface ICVWork {
   addNewResearch: (research: ENTITIES.Research) => void;
   editResearch: (research: ENTITIES.Research) => void;
   deleteResearch: (research: ENTITIES.Research) => void;
+  addNewLetter: (letter: ENTITIES.Letter) => void;
+  editLetter: (letter: ENTITIES.Letter) => void;
+  deleteLetter: (letter: ENTITIES.Letter) => void;
 }
 export const CVWork: FC<ICVWork> = props => {
   const {
@@ -40,6 +45,7 @@ export const CVWork: FC<ICVWork> = props => {
     educations,
     volunteers,
     researches,
+    letters,
     editMode,
     editWorkExperience,
     addNewWorkExperience,
@@ -53,8 +59,11 @@ export const CVWork: FC<ICVWork> = props => {
     addNewResearch,
     editResearch,
     deleteResearch,
+    addNewLetter,
+    editLetter,
+    deleteLetter,
   } = props;
-  const [stateWork, setStateWork] = useState<string>(arrayWork[2]);
+  const [stateWork, setStateWork] = useState<string>(arrayWork[4]);
 
   const renderCVWithCondition = () => {
     switch (stateWork) {
@@ -90,6 +99,17 @@ export const CVWork: FC<ICVWork> = props => {
             editMode={editMode}
             userProfile={userProfile}
           ></Research>
+        );
+      case arrayWork[4]:
+        return (
+          <Letter
+            userProfile={userProfile}
+            editMode={editMode}
+            letters={letters}
+            addNewLetter={addNewLetter}
+            editLetter={editLetter}
+            deleteLetter={deleteLetter}
+          ></Letter>
         );
       case arrayWork[5]:
         return (
@@ -160,7 +180,11 @@ export const CVWork: FC<ICVWork> = props => {
                       Research
                     </a>
                   </li>
-                  <li>
+                  <li
+                    className={
+                      stateWork === arrayWork[4] ? 'active' : undefined
+                    }
+                  >
                     <a
                       onClick={e => {
                         e.preventDefault();

@@ -24,6 +24,7 @@ export const initialState: STATES.User = {
   educations: [],
   volunteers: [],
   researches: [],
+  letters: [],
   userProfile: {
     email: '',
     avatar: '',
@@ -453,6 +454,68 @@ const UserSliceState = createSlice({
       state.loading = false;
     },
     // end research
+
+    // letter
+    getLettersAction(
+      state,
+      action: PayloadAction<DTO.User.Letter.GetLettersRequest>,
+    ) {
+      state.loading = true;
+    },
+    getLettersActionSuccess(
+      state,
+      action: PayloadAction<DTO.User.Letter.GetLettersResponse>,
+    ) {
+      state.loading = false;
+      state.letters = action.payload.letters.sort((a, b) => {
+        const date1 = new Date(a.receive_date);
+        const date2 = new Date(b.receive_date);
+        return date1 < date2 ? 1 : date1 > date2 ? -1 : 0;
+      });
+    },
+    getLettersActionFailed(state) {
+      state.loading = false;
+    },
+    addNewLetterAction(
+      state,
+      action: PayloadAction<DTO.User.Letter.AddNewLetterRequest>,
+    ) {
+      state.loading = true;
+    },
+    addNewLetterActionSuccess(state) {
+      state.loading = false;
+    },
+    addNewLetterActionFailed(state) {
+      state.loading = false;
+    },
+    editLetterAction(
+      state,
+      action: PayloadAction<DTO.User.Letter.EditLetterRequest>,
+    ) {
+      state.loading = true;
+    },
+    editLetterActionSuccess(state) {
+      state.loading = false;
+    },
+    editLetterActionFailed(state) {
+      state.loading = false;
+    },
+    deleteLetterAction(
+      state,
+      action: PayloadAction<DTO.User.Letter.DeleteLetterRequest>,
+    ) {
+      state.loading = true;
+      state.letters = state.letters.filter(
+        item => item.id !== action.payload.id,
+      );
+    },
+    deleteLetterActionSuccess(state) {
+      state.loading = false;
+    },
+    deleteLetterActionFailed(state) {
+      state.loading = false;
+    },
+    // end letter
   },
 });
 

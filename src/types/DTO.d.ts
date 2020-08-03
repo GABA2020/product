@@ -205,6 +205,27 @@ declare namespace DTO {
         id: string;
       }
     }
+
+    namespace Letter {
+      interface GetLettersRequest {
+        email: string;
+      }
+      interface GetLettersResponse {
+        letters: ENTITIES.Letter[];
+      }
+      interface AddNewLetterRequest {
+        email: string;
+        letter: ENTITIES.Letter;
+      }
+      interface EditLetterRequest {
+        email: string;
+        letter: ENTITIES.Letter;
+      }
+      interface DeleteLetterRequest {
+        email: string;
+        id: string;
+      }
+    }
   }
 
   export namespace Program {

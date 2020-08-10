@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, FC } from 'react';
 import { Link } from 'react-router-dom';
-import { img_locker, verified_check, oval } from 'assets/images';
+import { img_locker, verified_check, oval, bag } from 'assets/images';
 import RoutesTypes from 'types/Routes';
 import { Rate } from 'antd';
 import { useInjectSaga } from 'utils/redux-injectors';
@@ -77,12 +77,12 @@ export const Locker = () => {
             <div className="locker-col">
               <div className="locker-tabs">
                 <ul className="nav nav-tabs">
-                  <li>
+                  <li className="active">
                     <a href="#frame-1" role="tab" data-toggle="tab">
                       Resources
                     </a>
                   </li>
-                  <li className="active">
+                  <li>
                     <a href="#frame-2" role="tab" data-toggle="tab">
                       Reviews
                     </a>
@@ -100,27 +100,34 @@ export const Locker = () => {
           </div>
           <div className="locker-panel">
             <div className="tab-content">
-              <div role="tabpanel" className="tab-pane" id="frame-1">
+              <div role="tabpanel" className="tab-pane active" id="frame-1">
                 <div className="locker-category">
                   <ul className="locker-list">
                     <li className="locker-item">
-                      <div className="media media-locker">
-                        <div className="locker-images">
+                      <div className="media media-locker-item">
+                        <div className="locker-image">
                           <img
                             alt="user image"
                             src={img_locker}
                             width={125}
                             height={100}
                           />
-                          <div className="locker-caption">
+                          <div className="image-caption">
                             <Link to={RoutesTypes.PRODUCT}>Path</Link>
                           </div>
                         </div>
-                        <div className="media-body">
-                          <h3 className="locker-title">Boards &amp; Beyond</h3>
-                          <p className="locker-match">95 % match</p>
-                          <div className="review-appear">
-                            <p className="no-review">No review</p>
+                        <div className="locker-information">
+                          <div className="title">
+                            <p>Boards &amp; Beyond</p>
+                          </div>
+                          <div className="match">
+                            <p>95 % match</p>
+                          </div>
+                          <div className="review">
+                            <p>No review</p>
+                            {/* <div className="vote-star">
+                              <Rate disabled defaultValue={5}></Rate>
+                            </div> */}
                           </div>
                         </div>
                       </div>
@@ -131,160 +138,30 @@ export const Locker = () => {
                       </div>
                     </li>
                     <li className="locker-item">
-                      <div className="media media-locker">
-                        <div className="locker-images">
+                      <div className="media media-locker-item">
+                        <div className="locker-image">
                           <img
                             alt="user image"
                             src={img_locker}
                             width={125}
                             height={100}
                           />
-                          <div className="locker-caption">
+                          <div className="image-caption">
                             <Link to={RoutesTypes.PRODUCT}>Path</Link>
                           </div>
                         </div>
-                        <div className="media-body">
-                          <h3 className="locker-title">Anki: Pepper Deck</h3>
-                          <p className="locker-match">98 % match</p>
-                          <div className="review-appear">
-                            <div className="vote-rating">
-                              <ul className="vote-rating-list">
-                                <li className="rating-item active">
-                                  <a href="#" className="rating-star">
-                                    &nbsp;
-                                  </a>
-                                </li>
-                                <li className="rating-item active">
-                                  <a href="#" className="rating-star">
-                                    &nbsp;
-                                  </a>
-                                </li>
-                                <li className="rating-item active">
-                                  <a href="#" className="rating-star">
-                                    &nbsp;
-                                  </a>
-                                </li>
-                                <li className="rating-item active">
-                                  <a href="#" className="rating-star">
-                                    &nbsp;
-                                  </a>
-                                </li>
-                                <li className="rating-item">
-                                  <a href="#" className="rating-star">
-                                    &nbsp;
-                                  </a>
-                                </li>
-                              </ul>
-                            </div>
+                        <div className="locker-information">
+                          <div className="title">
+                            <p>Boards &amp; Beyond</p>
                           </div>
-                        </div>
-                      </div>
-                      <div className="locker-button">
-                        <a href="#" className="btn btn-resource">
-                          Manage Resource
-                        </a>
-                      </div>
-                    </li>
-                    <li className="locker-item">
-                      <div className="media media-locker">
-                        <div className="locker-images">
-                          <img
-                            alt="user image"
-                            src={img_locker}
-                            width={125}
-                            height={100}
-                          />
-                          <div className="locker-caption">
-                            <Link to={RoutesTypes.PRODUCT}>Path</Link>
+                          <div className="match">
+                            <p>95 % match</p>
                           </div>
-                        </div>
-                        <div className="media-body">
-                          <h3 className="locker-title">SketchyPharm</h3>
-                          <p className="locker-match">82 % match</p>
-                          <div className="review-appear">
-                            <p className="no-review">No review</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="locker-button">
-                        <a href="#" className="btn btn-resource">
-                          Manage Resource
-                        </a>
-                      </div>
-                    </li>
-                    <li className="locker-item">
-                      <div className="media media-locker">
-                        <div className="locker-images">
-                          <img
-                            alt="user image"
-                            src={img_locker}
-                            width={125}
-                            height={100}
-                          />
-                          <div className="locker-caption">
-                            <Link to={RoutesTypes.PRODUCT}>Path</Link>
-                          </div>
-                        </div>
-                        <div className="media-body">
-                          <h3 className="locker-title">SketchyClinical</h3>
-                          <p className="locker-match">82 % match</p>
-                          <div className="review-appear">
-                            <p className="no-review">No review</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="locker-button">
-                        <a href="#" className="btn btn-resource">
-                          Manage Resource
-                        </a>
-                      </div>
-                    </li>
-                    <li className="locker-item">
-                      <div className="media media-locker">
-                        <div className="locker-images">
-                          <img
-                            alt="user image"
-                            src={img_locker}
-                            width={125}
-                            height={100}
-                          />
-                          <div className="locker-caption">
-                            <Link to={RoutesTypes.PRODUCT}>Path</Link>
-                          </div>
-                        </div>
-                        <div className="media-body">
-                          <h3 className="locker-title">AMBOSS</h3>
-                          <p className="locker-match">76 % match</p>
-                          <div className="review-appear">
-                            <div className="vote-rating">
-                              <ul className="vote-rating-list">
-                                <li className="rating-item active">
-                                  <a href="#" className="rating-star">
-                                    &nbsp;
-                                  </a>
-                                </li>
-                                <li className="rating-item active">
-                                  <a href="#" className="rating-star">
-                                    &nbsp;
-                                  </a>
-                                </li>
-                                <li className="rating-item active">
-                                  <a href="#" className="rating-star">
-                                    &nbsp;
-                                  </a>
-                                </li>
-                                <li className="rating-item active">
-                                  <a href="#" className="rating-star">
-                                    &nbsp;
-                                  </a>
-                                </li>
-                                <li className="rating-item">
-                                  <a href="#" className="rating-star">
-                                    &nbsp;
-                                  </a>
-                                </li>
-                              </ul>
-                            </div>
+                          <div className="review">
+                            <p>No review</p>
+                            {/* <div className="vote-star">
+                              <Rate disabled defaultValue={5}></Rate>
+                            </div> */}
                           </div>
                         </div>
                       </div>
@@ -296,15 +173,15 @@ export const Locker = () => {
                     </li>
                     <li className="locker-item">
                       <div className="media-marketplace">
-                        <div className="marketplace-symbol">
-                          <span className="icons-bag">&nbsp;</span>
+                        <div className="image">
+                          <img src={bag} alt="bag" />
                         </div>
-                        <div className="marketplace-caption">
-                          <p>Browse all resources in the Marketplace</p>
+                        <div className="caption">
+                          <p>Browse all resources</p>
                         </div>
                       </div>
                       <div className="locker-button">
-                        <a href="#" className="btn btn-market">
+                        <a href="#" className="btn btn-marketplace">
                           Go to Marketplace
                         </a>
                       </div>
@@ -312,7 +189,7 @@ export const Locker = () => {
                   </ul>
                 </div>
               </div>
-              <div role="tabpanel" className="tab-pane active" id="frame-2">
+              <div role="tabpanel" className="tab-pane" id="frame-2">
                 {reviews && reviews.length > 0 ? (
                   <div className="locker-review">
                     {renderReviews(reviews)}

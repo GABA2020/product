@@ -5,7 +5,7 @@ import { right_arrow, down_arrow } from 'assets/images';
 import moment from 'moment';
 import { AddResearchModal } from '../Modal/AddResearchModal';
 import { EditResearchModal } from '../Modal/EditResearchModal';
-import { DayMonthYearFormat } from 'helpers/Unity';
+import { DayMonthYearFormat, windowOpen } from 'helpers/Unity';
 interface IResearch {
   editMode: boolean;
   userProfile: ENTITIES.UserProfile;
@@ -138,7 +138,13 @@ export const Research: FC<IResearch> = props => {
                       </div>
                       {item.is_show_link === true && (
                         <div className="content-publication text-right">
-                          <a href={item.link} target="_blank">
+                          <a
+                            onClick={e => {
+                              e.preventDefault();
+                              windowOpen(item.link);
+                            }}
+                            href={item.link}
+                          >
                             Go to Publication{' '}
                             <img
                               className="right-arrow"

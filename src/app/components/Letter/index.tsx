@@ -7,7 +7,7 @@ import moment from 'moment';
 import { AddLetterModal } from '../Modal/AddLetterModal';
 import { EditLetterModal } from '../Modal/EditLetterModal';
 import { right_arrow, down_arrow } from 'assets/images';
-import { DayMonthYearFormat } from 'helpers/Unity';
+import { DayMonthYearFormat, windowOpen } from 'helpers/Unity';
 interface ILetter {
   userProfile: ENTITIES.UserProfile;
   letters: ENTITIES.Letter[];
@@ -142,7 +142,13 @@ export const Letter: FC<ILetter> = props => {
                       </div>
                       {item.is_show_link === true && (
                         <div className="content-publication text-right">
-                          <a href={item.link} target="_blank">
+                          <a
+                            onClick={e => {
+                              e.preventDefault();
+                              windowOpen(item.link);
+                            }}
+                            href={item.link}
+                          >
                             Go to Publication{' '}
                             <img
                               className="right-arrow"

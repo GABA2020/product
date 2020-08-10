@@ -6,3 +6,4 @@ export const right_arrow = require('../images/sprites/right-arrow.png');
 export const down_arrow = require('../images/sprites/arrow-down.png');
 export const verified_check = require('../images/sprites/verified_check.svg');
 export const oval = require('../images/sprites/oval.svg');
+export const bag = require('../images/sprites/Bag.svg');

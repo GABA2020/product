@@ -7,7 +7,7 @@ const getReviews = async (payload: DTO.Locker.GetReviewsRequest) => {
   const reviews: ENTITIES.Review[] = [];
 
   const lockerRef = db
-    .collection('locker')
+    .collection('member_data')
     .doc(payload.email)
     .collection('reviews');
 
@@ -40,7 +40,7 @@ const getMoreReviews = async (payload: DTO.Locker.GetMoreReviewsRequest) => {
   const reviews: ENTITIES.Review[] = [];
 
   const lockerRef = await db
-    .collection('locker')
+    .collection('member_data')
     .doc(payload.email)
     .collection('reviews');
 

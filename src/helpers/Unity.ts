@@ -15,6 +15,14 @@ const ordinal_suffix_of = (i: number) => {
       return `${i}th`;
   }
 };
+
+const windowOpen = url => {
+  if (!url.match(/^https?:\/\//i)) {
+    url = 'https://' + url;
+  }
+  return window.open(url);
+};
+
 const generateNewNameImage = () => {
   return `${`${Math.floor(Math.random() * 99999999999999)}-${Math.floor(
     Math.random() * 99999999999999,
@@ -36,12 +44,15 @@ const dataUrlFile = (dataUrl, filename) => {
 };
 
 const getDifferenceMonthYear = (second1: number, second2: number) => {
-  const firstDate = moment(moment.unix(second1).format('YYYY/MM/DD'));
-  const secondDate = moment(moment.unix(second2).format('YYYY/MM/DD'));
+  const a = moment(moment.unix(second2).format('YYYY/MM/DD'));
+  const b = moment(moment.unix(second1).format('YYYY/MM/DD'));
 
-  const duration = moment.duration(secondDate.diff(firstDate));
-  const years = Math.round(duration.asYears());
-  const months = Math.round(secondDate.diff(firstDate, 'M', true));
+  var years = a.diff(b, 'year');
+  b.add(years, 'years');
+
+  var months = a.diff(b, 'months');
+  b.add(months, 'months');
+
   let text = ``;
   if (years === 0 && months === 0) {
     return text;
@@ -86,6 +97,7 @@ export {
   getDifferenceMonthYear,
   getDifferenceYear,
   convertDateToTimestamp,
+  windowOpen,
   MonthYearFormat,
   DayMonthYearFormat,
   YearFormat,

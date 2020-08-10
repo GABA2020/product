@@ -1,7 +1,6 @@
-import React, { FC, Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useInjectSaga } from 'utils/redux-injectors';
-import { unwrapResult } from '@reduxjs/toolkit';
 import {
   sliceKey as userSliceKey,
   actions as userActions,
@@ -20,15 +19,12 @@ import { StorageSaga } from 'redux/Storage/saga';
 import { userSelector } from 'redux/User/selectors';
 import { programSelector } from 'redux/Program/selectors';
 import { storageSelector } from 'redux/Storage/selectors';
-import { img_locker, img_user, verified_check, oval } from 'assets/images';
 import { ordinal_suffix_of } from 'helpers/Unity';
-import { Link } from 'react-router-dom';
-import RoutesTypes from 'types/Routes';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { EditProfileModal } from 'app/components/Modal/EditProfileModal';
-import { CVWork } from 'app/components/CVWork';
-import { Rate } from 'antd';
+import { Locker } from '../Locker';
+import { CVWork } from '../CVWork';
 
 export const MyProfile = props => {
   useInjectSaga({ key: userSliceKey, saga: UserSaga });
@@ -56,13 +52,6 @@ export const MyProfile = props => {
     dispatch(
       programActions.getProgramReviewAction({ email: userProfile.email }),
     );
-    dispatch(
-      userActions.getWorkExperiencesAction({ email: userProfile.email }),
-    );
-    dispatch(userActions.getEducationsAction({ email: userProfile.email }));
-    dispatch(userActions.getVolunteersAction({ email: userProfile.email }));
-    dispatch(userActions.getResearchesAction({ email: userProfile.email }));
-    dispatch(userActions.getLettersAction({ email: userProfile.email }));
   }, [userProfile.email]);
 
   useEffect(() => {
@@ -311,8 +300,9 @@ export const MyProfile = props => {
           </ul>
         </div>
       </section>
-      {/* owner profile will use userProfile */}
-      <CVWork
+      {/* CV work */}
+      <CVWork editMode={editModeState} />
+      {/* <CVWork
         letters={letters}
         researches={researches}
         volunteers={volunteers}
@@ -320,6 +310,11 @@ export const MyProfile = props => {
         workExperiences={workExperiences}
         educations={educations}
         editMode={editModeState}
+        getWorkExperiences={() => {
+          dispatch(
+            userActions.getWorkExperiencesAction({ email: userProfile.email }),
+          );
+        }}
         addNewWorkExperience={workExperience => {
           dispatch(
             userActions.addNewWorkExperienceAction({
@@ -342,6 +337,11 @@ export const MyProfile = props => {
               email: userProfile.email,
               id: workExperience.id,
             }),
+          );
+        }}
+        getEducations={() => {
+          dispatch(
+            userActions.getEducationsAction({ email: userProfile.email }),
           );
         }}
         addNewEducation={education => {
@@ -368,6 +368,11 @@ export const MyProfile = props => {
             }),
           );
         }}
+        getVolunteers={() => {
+          dispatch(
+            userActions.getVolunteersAction({ email: userProfile.email }),
+          );
+        }}
         addNewVolunteer={volunteer => {
           dispatch(
             userActions.addNewVolunteerAction({
@@ -390,6 +395,11 @@ export const MyProfile = props => {
               email: userProfile.email,
               id: volunteer.id,
             }),
+          );
+        }}
+        getResearches={() => {
+          dispatch(
+            userActions.getResearchesAction({ email: userProfile.email }),
           );
         }}
         addNewResearch={research => {
@@ -416,6 +426,9 @@ export const MyProfile = props => {
             }),
           );
         }}
+        getLetters={() => {
+          dispatch(userActions.getLettersAction({ email: userProfile.email }));
+        }}
         addNewLetter={letter => {
           dispatch(
             userActions.addNewLetterAction({
@@ -440,419 +453,9 @@ export const MyProfile = props => {
             }),
           );
         }}
-      />
-
-      <section className="section-locker">
-        <div className="container">
-          <div className="locker-front">
-            <div className="locker-col">
-              <div className="main-title">
-                <h2>Locker</h2>
-              </div>
-            </div>
-            <div className="locker-col">
-              <div className="locker-tabs">
-                <ul className="nav nav-tabs">
-                  <li>
-                    <a href="#frame-1" role="tab" data-toggle="tab">
-                      Resources
-                    </a>
-                  </li>
-                  <li className="active">
-                    <a href="#frame-2" role="tab" data-toggle="tab">
-                      Reviews
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div className="locker-col">
-              <div className="visual-learner">
-                <a href="#" className="btn btn-learner">
-                  Visual Learner
-                </a>
-              </div>
-            </div>
-          </div>
-          <div className="locker-panel">
-            <div className="tab-content">
-              <div role="tabpanel" className="tab-pane" id="frame-1">
-                <div className="locker-category">
-                  <ul className="locker-list">
-                    <li className="locker-item">
-                      <div className="media media-locker">
-                        <div className="locker-images">
-                          <img
-                            alt="user image"
-                            src={img_locker}
-                            width={125}
-                            height={100}
-                          />
-                          <div className="locker-caption">
-                            <Link to={RoutesTypes.PRODUCT}>Path</Link>
-                          </div>
-                        </div>
-                        <div className="media-body">
-                          <h3 className="locker-title">Boards &amp; Beyond</h3>
-                          <p className="locker-match">95 % match</p>
-                          <div className="review-appear">
-                            <p className="no-review">No review</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="locker-button">
-                        <a href="#" className="btn btn-resource">
-                          Manage Resource
-                        </a>
-                      </div>
-                    </li>
-                    <li className="locker-item">
-                      <div className="media media-locker">
-                        <div className="locker-images">
-                          <img
-                            alt="user image"
-                            src={img_locker}
-                            width={125}
-                            height={100}
-                          />
-                          <div className="locker-caption">
-                            <Link to={RoutesTypes.PRODUCT}>Path</Link>
-                          </div>
-                        </div>
-                        <div className="media-body">
-                          <h3 className="locker-title">Anki: Pepper Deck</h3>
-                          <p className="locker-match">98 % match</p>
-                          <div className="review-appear">
-                            <div className="vote-rating">
-                              <ul className="vote-rating-list">
-                                <li className="rating-item active">
-                                  <a href="#" className="rating-star">
-                                    &nbsp;
-                                  </a>
-                                </li>
-                                <li className="rating-item active">
-                                  <a href="#" className="rating-star">
-                                    &nbsp;
-                                  </a>
-                                </li>
-                                <li className="rating-item active">
-                                  <a href="#" className="rating-star">
-                                    &nbsp;
-                                  </a>
-                                </li>
-                                <li className="rating-item active">
-                                  <a href="#" className="rating-star">
-                                    &nbsp;
-                                  </a>
-                                </li>
-                                <li className="rating-item">
-                                  <a href="#" className="rating-star">
-                                    &nbsp;
-                                  </a>
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="locker-button">
-                        <a href="#" className="btn btn-resource">
-                          Manage Resource
-                        </a>
-                      </div>
-                    </li>
-                    <li className="locker-item">
-                      <div className="media media-locker">
-                        <div className="locker-images">
-                          <img
-                            alt="user image"
-                            src={img_locker}
-                            width={125}
-                            height={100}
-                          />
-                          <div className="locker-caption">
-                            <Link to={RoutesTypes.PRODUCT}>Path</Link>
-                          </div>
-                        </div>
-                        <div className="media-body">
-                          <h3 className="locker-title">SketchyPharm</h3>
-                          <p className="locker-match">82 % match</p>
-                          <div className="review-appear">
-                            <p className="no-review">No review</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="locker-button">
-                        <a href="#" className="btn btn-resource">
-                          Manage Resource
-                        </a>
-                      </div>
-                    </li>
-                    <li className="locker-item">
-                      <div className="media media-locker">
-                        <div className="locker-images">
-                          <img
-                            alt="user image"
-                            src={img_locker}
-                            width={125}
-                            height={100}
-                          />
-                          <div className="locker-caption">
-                            <Link to={RoutesTypes.PRODUCT}>Path</Link>
-                          </div>
-                        </div>
-                        <div className="media-body">
-                          <h3 className="locker-title">SketchyClinical</h3>
-                          <p className="locker-match">82 % match</p>
-                          <div className="review-appear">
-                            <p className="no-review">No review</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="locker-button">
-                        <a href="#" className="btn btn-resource">
-                          Manage Resource
-                        </a>
-                      </div>
-                    </li>
-                    <li className="locker-item">
-                      <div className="media media-locker">
-                        <div className="locker-images">
-                          <img
-                            alt="user image"
-                            src={img_locker}
-                            width={125}
-                            height={100}
-                          />
-                          <div className="locker-caption">
-                            <Link to={RoutesTypes.PRODUCT}>Path</Link>
-                          </div>
-                        </div>
-                        <div className="media-body">
-                          <h3 className="locker-title">AMBOSS</h3>
-                          <p className="locker-match">76 % match</p>
-                          <div className="review-appear">
-                            <div className="vote-rating">
-                              <ul className="vote-rating-list">
-                                <li className="rating-item active">
-                                  <a href="#" className="rating-star">
-                                    &nbsp;
-                                  </a>
-                                </li>
-                                <li className="rating-item active">
-                                  <a href="#" className="rating-star">
-                                    &nbsp;
-                                  </a>
-                                </li>
-                                <li className="rating-item active">
-                                  <a href="#" className="rating-star">
-                                    &nbsp;
-                                  </a>
-                                </li>
-                                <li className="rating-item active">
-                                  <a href="#" className="rating-star">
-                                    &nbsp;
-                                  </a>
-                                </li>
-                                <li className="rating-item">
-                                  <a href="#" className="rating-star">
-                                    &nbsp;
-                                  </a>
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="locker-button">
-                        <a href="#" className="btn btn-resource">
-                          Manage Resource
-                        </a>
-                      </div>
-                    </li>
-                    <li className="locker-item">
-                      <div className="media-marketplace">
-                        <div className="marketplace-symbol">
-                          <span className="icons-bag">&nbsp;</span>
-                        </div>
-                        <div className="marketplace-caption">
-                          <p>Browse all resources in the Marketplace</p>
-                        </div>
-                      </div>
-                      <div className="locker-button">
-                        <a href="#" className="btn btn-market">
-                          Go to Marketplace
-                        </a>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div role="tabpanel" className="tab-pane active" id="frame-2">
-                <div className="locker-review">
-                  <ul className="review-list">
-                    <li className="review-item">
-                      <h4 className="review-title">Anki: Pepper Deck</h4>
-                      <div className="review-match">
-                        {/* <div className="review-vote">
-                        </div> */}
-                        <Rate defaultValue={2}></Rate>
-                        <p className="oval">
-                          <img src={oval} alt="" />
-                        </p>
-                        <p>Anatomy</p>
-                      </div>
-                      <p className="title-comment">
-                        dramatically improved my scores
-                      </p>
-                      <p className="comment">
-                        So GABA recommended Anki for me because of my learning
-                        style.. and boy was it accurate. My recommendation was
-                        98% but I would honestly give Anki a solid 100. My
-                        Anatomy scores improved before my eyes{' '}
-                        <span className="read-more">...show more</span>
-                        <span className="comment-more">
-                          test test test test test test test test test test test
-                          test test test test test test test test test test test
-                          test test{' '}
-                        </span>
-                      </p>
-                      <div className="user-information">
-                        <div className="profile-image">
-                          <img src={img_user} alt="img" />
-                        </div>
-                        <div className="profile-infor">
-                          @quinnthere{' '}
-                          <sup className="verify-check">
-                            <img src={verified_check} alt="image" />
-                          </sup>
-                          <ul className="score">
-                            <li>Step One 246</li>
-                            <li className="separate">|</li>
-                            <li>Step Two 240</li>
-                          </ul>
-                        </div>
-                      </div>
-                    </li>
-                    <li className="review-item">
-                      <h4 className="review-title">SketchyClinical</h4>
-                      <div className="review-match">
-                        {/* <div className="review-vote">
-                        </div> */}
-                        <Rate defaultValue={2}></Rate>
-                        <p className="oval">
-                          <img src={oval} alt="" />
-                        </p>
-                        <p>Pathology</p>
-                      </div>
-                      <p className="title-comment">
-                        looked super cool, but not for me
-                      </p>
-                      <p className="comment">
-                        This is what happens when I try something based on
-                        heresay and not my GABA recommendations. I won’t make
-                        that mistake again.
-                      </p>
-                      <div className="user-information">
-                        <div className="profile-image">
-                          <img src={img_user} alt="img" />
-                        </div>
-                        <div className="profile-infor">
-                          @quinnthere{' '}
-                          <sup className="verify-check">
-                            <img src={verified_check} alt="image" />
-                          </sup>
-                          <ul className="score">
-                            <li>Step One 246</li>
-                            <li className="separate">|</li>
-                            <li>Step Two 240</li>
-                          </ul>
-                        </div>
-                      </div>
-                    </li>
-                    <li className="review-item">
-                      <h4 className="review-title">Osmosis</h4>
-                      <div className="review-match">
-                        {/* <div className="review-vote">
-                        </div> */}
-                        <Rate defaultValue={4}></Rate>
-                        <p className="oval">
-                          <img src={oval} alt="" />
-                        </p>
-                        <p>Clinical Management</p>
-                      </div>
-                      <p className="title-comment">almost perfect!</p>
-                      <p className="comment">
-                        I’ve been using Osmosis for the longest cans fondly
-                        refer to it as my tried and true. I’ve also recommended
-                        it to my fellow classmates, so of course I was more than
-                        happy to see it here on GABA, available to purchase
-                        direct.
-                      </p>
-                      <div className="user-information">
-                        <div className="profile-image">
-                          <img src={img_user} alt="img" />
-                        </div>
-                        <div className="profile-infor">
-                          @quinnthere{' '}
-                          <sup className="verify-check">
-                            <img src={verified_check} alt="image" />
-                          </sup>
-                          <ul className="score">
-                            <li>Step One 246</li>
-                            <li className="separate">|</li>
-                            <li>Step Two 240</li>
-                          </ul>
-                        </div>
-                      </div>
-                    </li>
-                    <li className="review-item">
-                      <h4 className="review-title">Anki: Pepper Deck</h4>
-                      <div className="review-match">
-                        {/* <div className="review-vote">
-                        </div> */}
-                        <Rate defaultValue={2}></Rate>
-                        <p className="oval">
-                          <img src={oval} alt="" />
-                        </p>
-                        <p>Anatomy</p>
-                      </div>
-                      <p className="title-comment">
-                        dramatically improved my scores
-                      </p>
-                      <p className="comment">
-                        So GABA recommended Anki for me because of my learning
-                        style.. and boy was it accurate. My recommendation was
-                        98% but I would honestly give Anki a solid 100. My
-                        Anatomy scores improved before my eyes.
-                      </p>
-                      <div className="user-information">
-                        <div className="profile-image">
-                          <img src={img_user} alt="img" />
-                        </div>
-                        <div className="profile-infor">
-                          @quinnthere{' '}
-                          <sup className="verify-check">
-                            <img src={verified_check} alt="image" />
-                          </sup>
-                          <ul className="score">
-                            <li>Step One 246</li>
-                            <li className="separate">|</li>
-                            <li>Step Two 240</li>
-                          </ul>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                  <div className="review-btn-wrap">
-                    <button className="load-more">Load More Reviews</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      /> */}
+      {/* locker */}
+      <Locker />
       <section className="section-milestones"></section>
     </Fragment>
   );

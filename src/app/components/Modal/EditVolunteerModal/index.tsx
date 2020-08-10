@@ -9,6 +9,7 @@ import { Formik } from 'formik';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { showDialogDelete } from 'helpers/Swal.module';
+import { convertDateToTimestamp } from 'helpers/Unity';
 
 const schema = yup.object().shape({
   job_title: yup
@@ -91,8 +92,8 @@ export const EditVolunteerModal: FC<IEditVolunteerModal> = props => {
           <Formik
             initialValues={{
               ...initialValues,
-              date_end: moment(volunteer.date_end).toDate(),
-              date_start: moment(volunteer.date_start).toDate(),
+              date_end: moment.unix(volunteer.date_end.seconds).toDate(),
+              date_start: moment.unix(volunteer.date_start.seconds).toDate(),
               description: volunteer.description,
               job_title: volunteer.job_title,
               number_of_hours_served: volunteer.number_of_hours_served,
@@ -103,8 +104,16 @@ export const EditVolunteerModal: FC<IEditVolunteerModal> = props => {
             onSubmit={values => {
               const newVolunteer: ENTITIES.Volunteer = {
                 id: volunteer.id,
-                date_end: moment(values.date_end).format('yyyy/MM'),
-                date_start: moment(values.date_start).format('yyyy/MM'),
+                date_end: {
+                  seconds: convertDateToTimestamp(
+                    values.date_end.toDateString(),
+                  ),
+                },
+                date_start: {
+                  seconds: convertDateToTimestamp(
+                    values.date_start.toDateString(),
+                  ),
+                },
                 description: values.description,
                 job_title: values.job_title,
                 number_of_hours_served: values.number_of_hours_served,

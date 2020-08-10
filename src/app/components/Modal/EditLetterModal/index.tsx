@@ -7,6 +7,7 @@ import moment from 'moment';
 import 'styles/scss/ModalWorkExperience.scss';
 import { Formik } from 'formik';
 import { showDialogDelete } from 'helpers/Swal.module';
+import { convertDateToTimestamp } from 'helpers/Unity';
 
 const schema = yup.object().shape({
   document_name: yup
@@ -39,6 +40,7 @@ interface IForm {
   document_type: string;
   link: string;
   receive_date: Date;
+  is_show_link: boolean;
 }
 
 const initialValues: IForm = {
@@ -46,6 +48,7 @@ const initialValues: IForm = {
   document_type: '',
   link: '',
   receive_date: new Date(),
+  is_show_link: false,
 };
 
 export const EditLetterModal: FC<IEditLetterModal> = props => {
@@ -71,7 +74,8 @@ export const EditLetterModal: FC<IEditLetterModal> = props => {
               document_name: letter.document_name,
               document_type: letter.document_type,
               link: letter.link,
-              receive_date: new Date(letter.receive_date),
+              receive_date: moment.unix(letter.receive_date.seconds).toDate(),
+              is_show_link: letter.is_show_link,
             }}
             validationSchema={schema}
             onSubmit={values => {
@@ -80,7 +84,12 @@ export const EditLetterModal: FC<IEditLetterModal> = props => {
                 document_name: values.document_name,
                 document_type: values.document_type,
                 link: values.link,
-                receive_date: moment(values.receive_date).format('yyyy/MM/DD'),
+                receive_date: {
+                  seconds: convertDateToTimestamp(
+                    values.receive_date.toDateString(),
+                  ),
+                },
+                is_show_link: values.is_show_link,
               };
               editLetter(newLetter);
             }}
@@ -158,6 +167,17 @@ export const EditLetterModal: FC<IEditLetterModal> = props => {
                   {touched.link && errors.link && (
                     <span className={'text-danger'}>{errors.link}</span>
                   )}
+                </div>
+                <div className="checkbox">
+                  <label>
+                    <input
+                      onChange={handleChange}
+                      type="checkbox"
+                      name="is_show_link"
+                      checked={values.is_show_link === true ? true : false}
+                    />{' '}
+                    Show link ?
+                  </label>
                 </div>
                 <div className="btn-wrapper-submit">
                   <button

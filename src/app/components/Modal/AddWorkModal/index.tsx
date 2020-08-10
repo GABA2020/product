@@ -3,11 +3,11 @@ import { Modal } from 'react-bootstrap';
 import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import * as yup from 'yup';
-import moment from 'moment';
 import 'styles/scss/ModalWorkExperience.scss';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { Formik } from 'formik';
+import { convertDateToTimestamp } from 'helpers/Unity';
 
 const schema = yup.object().shape({
   job_title: yup
@@ -77,8 +77,16 @@ export const AddWorkModal: FC<IAddWorkModal> = props => {
                 id: '',
                 company: values.company,
                 company_address: values.company_address,
-                date_end: moment(values.date_end).format('yyyy/MM'),
-                date_start: moment(values.date_start).format('yyyy/MM'),
+                date_end: {
+                  seconds: convertDateToTimestamp(
+                    values.date_end.toDateString(),
+                  ),
+                },
+                date_start: {
+                  seconds: convertDateToTimestamp(
+                    values.date_start.toDateString(),
+                  ),
+                },
                 description: values.description,
                 job_title: values.job_title,
               };

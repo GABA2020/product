@@ -2,36 +2,54 @@ import React, { FC, Fragment, useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment';
-import { getDifferenceTwoDate } from 'helpers/Unity';
+import { YearFormat, getDifferenceYear } from 'helpers/Unity';
 import { AddVolunteerModal } from '../Modal/AddVolunteerModal';
 import { EditVolunteerModal } from '../Modal/EditVolunteerModal';
+import { down_arrow } from 'assets/images';
 interface IVolunteer {
   editMode: boolean;
   userProfile: ENTITIES.UserProfile;
   volunteers: ENTITIES.Volunteer[];
+  arrayLength: number;
+  loading: boolean;
   addNewVolunteer: (volunteer: ENTITIES.Volunteer) => void;
   editVolunteer: (volunteer: ENTITIES.Volunteer) => void;
   deleteVolunteer: (volunteer: ENTITIES.Volunteer) => void;
+  getVolunteers: () => void;
+  getMoreVolunteers: () => void;
 }
 export const Volunteer: FC<IVolunteer> = props => {
   const {
     editMode,
     userProfile,
     volunteers,
+    arrayLength,
+    loading,
     addNewVolunteer,
     editVolunteer,
     deleteVolunteer,
+    getVolunteers,
+    getMoreVolunteers,
   } = props;
   const [volunteerState, setVolunteerState] = useState<ENTITIES.Volunteer>({
     id: '',
-    date_end: '',
-    date_start: '',
+    date_end: {
+      seconds: 0,
+    },
+    date_start: {
+      seconds: 0,
+    },
     description: '',
     job_title: '',
     number_of_hours_served: '',
     organization_address: '',
     organization_name: '',
   });
+
+  useEffect(() => {
+    getVolunteers();
+  }, []);
+
   /* state modal display */
   const [editVolunteerModalState, setEditVolunteerModalState] = useState<
     boolean
@@ -41,21 +59,7 @@ export const Volunteer: FC<IVolunteer> = props => {
   );
 
   /* end state modal display */
-  useEffect(() => {
-    var accordion = new (jQuery as any).DEVFUNC.accordion();
-    accordion.handleAccordion();
-    /*****Smartphone menu settings*****/
-    (jQuery as any).DEVFUNC.spMenu({
-      menuBtn: [
-        {
-          oBtn: '#btn-nav-sp a',
-          target: '#sub-menu-sp',
-        },
-      ],
-      closeBtn: '.close_btn',
-      addClass: 'spmenu_open',
-    });
-  }, []);
+
   const onAddNewVolunteer = (volunteer: ENTITIES.Volunteer) => {
     addNewVolunteer(volunteer);
     setAddVolunteerModalState(false);
@@ -70,6 +74,7 @@ export const Volunteer: FC<IVolunteer> = props => {
     deleteVolunteer(volunteer);
     setEditVolunteerModalState(false);
   };
+
   return (
     <Fragment>
       <AddVolunteerModal
@@ -91,7 +96,7 @@ export const Volunteer: FC<IVolunteer> = props => {
         </div>
         <div className="main-title">
           <div className="main-title-work">
-            <h2>Volunteer</h2>
+            <h2>Volunteering</h2>
             {editMode === true ? (
               <a
                 href="#"
@@ -105,46 +110,70 @@ export const Volunteer: FC<IVolunteer> = props => {
             ) : null}
           </div>
         </div>
-        <div className="accordion">
-          {volunteers.map((item, index) => {
-            return (
-              <Fragment key={index}>
-                <div className="accordion-item">
-                  <div className="accordion-title">
-                    <a href="#">{item.organization_name}</a>
-                  </div>
-                  <div className="accordion-content">
-                    <div className="accordion-content-company">
-                      <p>
-                        {item.job_title} • {item.organization_address}
-                      </p>
-                      {editMode === true ? (
-                        <a
-                          onClick={e => {
-                            e.preventDefault();
-                            setVolunteerState(item);
-                            setEditVolunteerModalState(true);
-                          }}
-                          href="#"
-                        >
-                          <FontAwesomeIcon icon={faEdit}></FontAwesomeIcon>
-                        </a>
-                      ) : null}
+        {!loading &&
+          (volunteers.length > 0 ? (
+            volunteers.map((item, index) => {
+              return (
+                <Fragment key={index}>
+                  <div className="accordion">
+                    <div className="accordion-item">
+                      <div className="title-wrapper">
+                        <p className="title">{item.organization_name}</p>
+                        {editMode === true ? (
+                          <a
+                            onClick={e => {
+                              e.preventDefault();
+                              setVolunteerState(item);
+                              setEditVolunteerModalState(true);
+                            }}
+                            href="#"
+                          >
+                            <FontAwesomeIcon icon={faEdit}></FontAwesomeIcon>
+                          </a>
+                        ) : null}
+                      </div>
+                      <div className="sub-title">
+                        <p>
+                          {item.job_title} - {item.organization_address}
+                        </p>
+                        <p>
+                          {moment
+                            .unix(item.date_start.seconds)
+                            .format(YearFormat)}{' '}
+                          -{' '}
+                          {moment
+                            .unix(item.date_end.seconds)
+                            .format(YearFormat)}{' '}
+                          {getDifferenceYear(
+                            item.date_start.seconds,
+                            item.date_end.seconds,
+                          )}
+                        </p>
+                      </div>
                     </div>
-                    <p>
-                      {moment(item.date_start).format('yyyy')} –{' '}
-                      {moment(item.date_end).format('yyyy')}{' '}
-                      {`${getDifferenceTwoDate(
-                        item.date_start,
-                        item.date_end,
-                      )}`}
-                    </p>
                   </div>
-                </div>
-              </Fragment>
-            );
-          })}
-        </div>
+                </Fragment>
+              );
+            })
+          ) : (
+            <div className="text-empty text-center">
+              <p>There is no experiences available</p>
+            </div>
+          ))}
+        {volunteers.length > 0 && volunteers.length < arrayLength ? (
+          <div className="load-more-wrapper text-center">
+            <a
+              className="load-more-btn"
+              href="#"
+              onClick={e => {
+                e.preventDefault();
+                getMoreVolunteers();
+              }}
+            >
+              Load More Experiences <img src={down_arrow} alt="img" />
+            </a>
+          </div>
+        ) : null}
       </div>
     </Fragment>
   );

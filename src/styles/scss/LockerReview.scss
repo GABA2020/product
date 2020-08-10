@@ -1,4 +1,21 @@
 .locker-review {
+    color: #111741;
+
+    .locker-empty {
+        p {
+            margin-bottom: 16px;
+        }
+
+        .btn-start-review {
+            width: 168px;
+            height: 36px;
+            border-radius: 6px;
+            border: solid 1px #5ab88d;
+            background-color: #5ab88d;
+            color: #ffffff;
+        }
+    }
+
     .review-list {
         list-style: none;
         display: flex;
@@ -13,13 +30,13 @@
 
         }
 
-        h4.review-title {
+        .review-title a {
             font-weight: 500;
             font-stretch: normal;
             font-style: normal;
             line-height: 1.4;
             letter-spacing: normal;
-            color: #111741;
+            color: #111741 !important;
         }
 
         .review-match {
@@ -27,7 +44,7 @@
 
             p {
                 padding-top: 4px;
-                color: #111741;
+
             }
 
             .ant-rate {
@@ -58,34 +75,19 @@
             font-style: normal;
             line-height: 1.5;
             letter-spacing: normal;
-            color: #111741;
-            min-height: 168px;
-            // text-overflow: ellipsis;
-            // white-space: nowrap;
-            // overflow: hidden;
 
+            min-height: 150px;
             //200 max count
-            .read-more {
-                font-size: 14px;
-                cursor: pointer;
-            }
-
-            .read-more:hover {
-                color: blue;
-            }
-
-            .comment-more {
-                display: none;
-            }
         }
 
         .user-information {
-            margin-top: 54px;
+            margin-top: 45px;
             display: flex;
 
             .profile-image img {
                 width: 45px;
                 height: 45px;
+                border-radius: 50%;
             }
 
             .profile-infor {
@@ -98,6 +100,10 @@
                 letter-spacing: normal;
                 color: #337859;
 
+            }
+
+            .verify-check {
+                margin-left: 0.675rem;
             }
 
             .score {
@@ -113,7 +119,7 @@
                     font-style: normal;
                     line-height: 2;
                     letter-spacing: normal;
-                    color: #111741;
+
                 }
 
                 .separate {

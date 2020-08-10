@@ -1,27 +1,38 @@
 import React, { Fragment, useEffect, FC, useState } from 'react';
-import '../../../styles/AccordionContent.scss';
 import { faEdit, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { EditWorkModal } from '../Modal/EditWorkModal';
 import { AddWorkModal } from '../Modal/AddWorkModal';
 import moment from 'moment';
+import { MonthYearFormat, getDifferenceMonthYear } from 'helpers/Unity';
+import { down_arrow } from 'assets/images';
 
 interface IWork {
   workExperiences: ENTITIES.WorkExperience[];
   userProfile: ENTITIES.UserProfile;
   editMode: boolean;
+  arrayLength: number;
+  loading: boolean;
   editWorkExperience: (workExperience: ENTITIES.WorkExperience) => void;
   addNewWorkExperience: (workExperience: ENTITIES.WorkExperience) => void;
   deleteWorkExperience: (workExperience: ENTITIES.WorkExperience) => void;
+  getWorkExperiences: () => void;
+  getMoreWorkExperiences: () => void;
 }
+
+const text = `<p>- Developed new operational procedures and implemented new technology to optimize patient experience while reducing physician workload by approx. 35%.</p> <p>- Assisted physicians with all clinic procedures including minor surgeries, physical exams, exam documentation and patient triage</p>`;
 export const Work: FC<IWork> = props => {
   const {
     workExperiences,
     userProfile,
     editMode,
+    arrayLength,
+    loading,
+    getWorkExperiences,
     editWorkExperience,
     addNewWorkExperience,
     deleteWorkExperience,
+    getMoreWorkExperiences,
   } = props;
   /* state modal display */
   const [isShowModalEditWorkState, setIsShowModalEditWorkState] = useState<
@@ -37,11 +48,19 @@ export const Work: FC<IWork> = props => {
     id: '',
     company: '',
     company_address: '',
-    date_end: '',
-    date_start: '',
+    date_end: {
+      seconds: 0,
+    },
+    date_start: {
+      seconds: 0,
+    },
     description: '',
     job_title: '',
   });
+
+  useEffect(() => {
+    getWorkExperiences();
+  }, []);
 
   useEffect(() => {
     var accordion = new (jQuery as any).DEVFUNC.accordion();
@@ -106,57 +125,77 @@ export const Work: FC<IWork> = props => {
             ) : null}
           </div>
         </div>
-        <div className="accordion">
-          {workExperiences.map((item, index) => {
-            return (
-              <Fragment key={index}>
-                <div className="accordion-item">
-                  <div className="accordion-title">
-                    <a href="#">{item.job_title}</a>
-                  </div>
-                  <div className="accordion-content">
-                    <div className="accordion-content-company">
-                      <p>{item.company}</p>
-                      {editMode === true ? (
-                        <a
-                          onClick={e => {
-                            e.preventDefault();
-                            setWorkExperienceState(item);
-                            setIsShowModalEditWorkState(true);
+        {!loading &&
+          (workExperiences.length > 0 ? (
+            workExperiences.map((item, index) => {
+              return (
+                <Fragment key={index}>
+                  <div className="accordion">
+                    <div className="accordion-item">
+                      <div className="title-wrapper">
+                        <p className="title">{item.job_title}</p>
+                        {editMode === true ? (
+                          <a
+                            onClick={e => {
+                              e.preventDefault();
+                              setWorkExperienceState(item);
+                              setIsShowModalEditWorkState(true);
+                            }}
+                            href="#"
+                          >
+                            <FontAwesomeIcon icon={faEdit}></FontAwesomeIcon>
+                          </a>
+                        ) : null}
+                      </div>
+                      <div className="sub-title">
+                        <p>
+                          {item.company} • {item.company_address}
+                        </p>
+                        <p>
+                          {moment
+                            .unix(item.date_start.seconds)
+                            .format(MonthYearFormat)}{' '}
+                          –{' '}
+                          {moment
+                            .unix(item.date_end.seconds)
+                            .format(MonthYearFormat)}{' '}
+                          {getDifferenceMonthYear(
+                            item.date_start.seconds,
+                            item.date_end.seconds,
+                          )}
+                        </p>
+                      </div>
+                      <div className="content">
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: item.description,
                           }}
-                          href="#"
-                        >
-                          <FontAwesomeIcon icon={faEdit}></FontAwesomeIcon>
-                        </a>
-                      ) : null}
+                        ></div>
+                      </div>
                     </div>
-                    <p>{`${moment(item.date_start).format(
-                      'MMM yyyy',
-                    )} - ${moment(item.date_end).format('MMM yyyy')}`}</p>
-                    <p>{item.company_address}</p>
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: item.description,
-                      }}
-                    />
                   </div>
-                </div>
-              </Fragment>
-            );
-          })}
-
-          {/* <div className="accordion-item">
-            <div className="accordion-title">
-              <a href="#">Professional Experience Title and Place 2</a>
+                </Fragment>
+              );
+            })
+          ) : (
+            <div className="text-empty text-center">
+              <p>There is no experiences available</p>
             </div>
-            <div className="accordion-content">
-              <p>Boston, Massachusetts</p>
-              <p>Harvard Medical School • Full-time</p>
-              <p>Jun 2016 – Present • 4 years 1 month</p>
-            </div>
+          ))}
+        {workExperiences.length > 0 && workExperiences.length < arrayLength ? (
+          <div className="load-more-wrapper text-center">
+            <a
+              className="load-more-btn"
+              href="#"
+              onClick={e => {
+                e.preventDefault();
+                getMoreWorkExperiences();
+              }}
+            >
+              Load More Experiences <img src={down_arrow} alt="img" />
+            </a>
           </div>
-          </div> */}
-        </div>
+        ) : null}
       </div>
     </Fragment>
   );

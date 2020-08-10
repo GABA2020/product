@@ -1,5 +1,10 @@
 declare namespace ENTITIES {
   export type Maybe<T> = T | null;
+
+  interface ITime {
+    seconds: number;
+  }
+
   interface UserProfile {
     email: string;
     avatar: string;
@@ -87,15 +92,15 @@ declare namespace ENTITIES {
     id: string;
     company: string;
     company_address: string;
-    date_end: string;
-    date_start: string;
+    date_end: ITime;
+    date_start: ITime;
     description: string;
     job_title: string;
   }
   interface Volunteer {
     id: string;
-    date_end: string;
-    date_start: string;
+    date_end: ITime;
+    date_start: ITime;
     description: string;
     job_title: string;
     number_of_hours_served: string;
@@ -104,8 +109,8 @@ declare namespace ENTITIES {
   }
   interface Education {
     id: string;
-    date_end: string;
-    date_start: string;
+    date_end: ITime;
+    date_start: ITime;
     degree_type: string;
     honors: string;
     major: string;
@@ -117,7 +122,7 @@ declare namespace ENTITIES {
     id: string;
     author: string;
     event_address: string;
-    event_date: string;
+    event_date: ITime;
     event_name: string;
     journal: string;
     link: string;
@@ -132,7 +137,8 @@ declare namespace ENTITIES {
     document_name: string;
     document_type: string;
     link: string;
-    receive_date: string;
+    receive_date: ITime;
+    is_show_link: boolean;
   }
 
   interface File {
@@ -147,5 +153,14 @@ declare namespace ENTITIES {
   interface ISelect {
     label: string;
     value: string;
+  }
+
+  interface Review {
+    id: string;
+    name: string;
+    rating: number;
+    review_body: string;
+    subject: string;
+    date_time: string;
   }
 }

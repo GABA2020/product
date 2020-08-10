@@ -1,6 +1,7 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from 'utils/@reduxjs/toolkit';
 import { DTO } from 'types/DTO';
+import { STATES } from 'types/STATE';
 export const initialState: STATES.Program = {
   loading: true,
   program: {

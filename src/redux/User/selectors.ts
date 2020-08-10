@@ -17,6 +17,8 @@ export const userSelector = createSelector(
     volunteers,
     researches,
     letters,
+    lastQuery,
+    arrayLength,
     loading,
     loadingUserSearchProfile,
   }) => ({
@@ -29,6 +31,8 @@ export const userSelector = createSelector(
     researches,
     letters,
     loading,
+    lastQuery,
+    arrayLength,
     loadingUserSearchProfile,
   }),
 );

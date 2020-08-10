@@ -6,6 +6,7 @@ import * as yup from 'yup';
 import moment from 'moment';
 import 'styles/scss/ModalWorkExperience.scss';
 import { Formik } from 'formik';
+import { convertDateToTimestamp } from 'helpers/Unity';
 
 const schema = yup.object().shape({
   school: yup
@@ -80,8 +81,16 @@ export const AddEducationModal: FC<IAddEducationModal> = props => {
                 degree_type: values.degree_type,
                 major: values.major,
                 honors: values.honors,
-                date_end: moment(values.date_end).format('yyyy/MM'),
-                date_start: moment(values.date_start).format('yyyy/MM'),
+                date_end: {
+                  seconds: convertDateToTimestamp(
+                    values.date_end.toDateString(),
+                  ),
+                },
+                date_start: {
+                  seconds: convertDateToTimestamp(
+                    values.date_start.toDateString(),
+                  ),
+                },
               };
               addNewEducation(newEducation);
             }}

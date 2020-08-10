@@ -2,6 +2,7 @@
 import { UserProfile } from 'redux/User/types';
 import { Volunteer } from 'app/components/Volunteer';
 import { Education } from 'app/components/Education';
+import { firestore } from 'firebase';
 
 declare namespace DTO {
   export namespace User {
@@ -124,6 +125,17 @@ declare namespace DTO {
       }
       interface GetWorkExperiencesResponse {
         workExperiences: ENTITIES.WorkExperience[];
+        arrayLength: number;
+        lastQuery: any;
+      }
+
+      interface GetMoreWorkExperiencesRequest {
+        email: string;
+        lastQuery: any;
+      }
+      interface GetMoreWorkExperiencesResponse {
+        workExperiences: ENTITIES.WorkExperience[];
+        lastQuery: any;
       }
 
       interface AddNewWorkExperiencesRequest {
@@ -147,6 +159,17 @@ declare namespace DTO {
       }
       interface GetEducationsResponse {
         educations: ENTITIES.Education[];
+        arrayLength: number;
+        lastQuery: any;
+      }
+
+      interface GetMoreEducationsRequest {
+        email: string;
+        lastQuery: any;
+      }
+      interface GetMoreEducationsResponse {
+        educations: ENTITIES.Education[];
+        lastQuery: any;
       }
 
       interface AddNewEducationRequest {
@@ -171,7 +194,19 @@ declare namespace DTO {
       }
       interface GetVolunteersResponse {
         volunteers: ENTITIES.Volunteer[];
+        arrayLength: number;
+        lastQuery: any;
       }
+
+      interface GetMoreVolunteersRequest {
+        email: string;
+        lastQuery: any;
+      }
+      interface GetMoreVolunteersResponse {
+        volunteers: ENTITIES.Volunteer[];
+        lastQuery: any;
+      }
+
       interface AddNewVolunteerRequest {
         email: string;
         volunteer: ENTITIES.Volunteer;
@@ -191,6 +226,16 @@ declare namespace DTO {
       }
       interface GetResearchesResponse {
         researches: ENTITIES.Research[];
+        arrayLength: number;
+        lastQuery: any;
+      }
+      interface GetMoreResearchesRequest {
+        email: string;
+        lastQuery: any;
+      }
+      interface GetMoreResearchesResponse {
+        researches: ENTITIES.Research[];
+        lastQuery: any;
       }
       interface AddNewResearchRequest {
         email: string;
@@ -212,7 +257,19 @@ declare namespace DTO {
       }
       interface GetLettersResponse {
         letters: ENTITIES.Letter[];
+        arrayLength: number;
+        lastQuery: any;
       }
+
+      interface GetMoreLettersRequest {
+        email: string;
+        lastQuery: any;
+      }
+      interface GetMoreLettersResponse {
+        letters: ENTITIES.Letter[];
+        lastQuery: any;
+      }
+
       interface AddNewLetterRequest {
         email: string;
         letter: ENTITIES.Letter;
@@ -287,6 +344,7 @@ declare namespace DTO {
     interface GetAvatarUrlRequest {
       name: string;
     }
+
     interface UploadAvatarRequest {
       name: string;
       content: string;
@@ -294,5 +352,27 @@ declare namespace DTO {
     // interface UploadAvatarResponse {
     //   url: string;
     // }
+  }
+
+  export namespace Locker {
+    interface GetReviewsRequest {
+      email: string;
+    }
+
+    interface GetReviewsResponse {
+      reviews: ENTITIES.Review[];
+      lastQuery: any;
+      reviewLength: number;
+    }
+
+    interface GetMoreReviewsRequest {
+      email: string;
+      lastQuery: any;
+    }
+
+    interface GetMoreReviewsResponse {
+      reviews: ENTITIES.Review[];
+      lastQuery: any;
+    }
   }
 }

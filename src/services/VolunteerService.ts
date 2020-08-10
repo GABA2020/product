@@ -1,5 +1,9 @@
 import { db } from 'helpers/firebase.module';
 import { DTO } from 'types/DTO';
+import moment from 'moment';
+import { firestore } from 'firebase';
+
+const limitContent = 5;
 
 const getVolunteers = async (
   payload: DTO.User.Volunteer.GetVolunteersRequest,
@@ -10,14 +14,55 @@ const getVolunteers = async (
     .collection('member_data')
     .doc(payload.email)
     .collection('volunteer');
-  const volunteerCollection = await userRef.get();
+
+  const arrayLength = await (await userRef.get()).size;
+
+  const volunteerCollection = await userRef
+    .orderBy('date_end', 'desc')
+    .limit(limitContent)
+    .get();
+
+  const lastQuery = volunteerCollection.docs[
+    volunteerCollection.docs.length - 1
+  ].get('date_end');
+
   volunteerCollection.forEach(doc => {
     volunteers.push({
       id: doc.id,
       ...doc.data(),
     } as ENTITIES.Volunteer);
   });
-  return { volunteers: volunteers };
+  return { volunteers, arrayLength, lastQuery };
+};
+
+const getMoreVolunteers = async (
+  payload: DTO.User.Volunteer.GetMoreVolunteersRequest,
+) => {
+  const volunteers: ENTITIES.Volunteer[] = [];
+
+  const userRef = await db
+    .collection('member_data')
+    .doc(payload.email)
+    .collection('volunteer');
+
+  const volunteerCollection = await userRef
+    .orderBy('date_end', 'desc')
+    .startAfter(payload.lastQuery)
+    .limit(limitContent)
+    .get();
+
+  const lastQuery = volunteerCollection.docs[
+    volunteerCollection.docs.length - 1
+  ].get('date_end');
+
+  volunteerCollection.forEach(doc => {
+    volunteers.push({
+      id: doc.id,
+      ...doc.data(),
+    } as ENTITIES.Volunteer);
+  });
+
+  return { volunteers, lastQuery };
 };
 
 const addNewVolunteer = async (
@@ -29,8 +74,12 @@ const addNewVolunteer = async (
     .collection('volunteer');
 
   const volunteerCollection = await userRef.add({
-    date_end: payload.volunteer.date_end,
-    date_start: payload.volunteer.date_start,
+    date_end: firestore.Timestamp.fromDate(
+      moment.unix(payload.volunteer.date_end.seconds).toDate(),
+    ),
+    date_start: firestore.Timestamp.fromDate(
+      moment.unix(payload.volunteer.date_start.seconds).toDate(),
+    ),
     description: payload.volunteer.description,
     job_title: payload.volunteer.job_title,
     number_of_hours_served: payload.volunteer.number_of_hours_served,
@@ -50,8 +99,12 @@ const editVolunteer = async (
     .doc(payload.volunteer.id);
 
   const volunteerCollection = await userRef.set({
-    date_end: payload.volunteer.date_end,
-    date_start: payload.volunteer.date_start,
+    date_end: firestore.Timestamp.fromDate(
+      moment.unix(payload.volunteer.date_end.seconds).toDate(),
+    ),
+    date_start: firestore.Timestamp.fromDate(
+      moment.unix(payload.volunteer.date_start.seconds).toDate(),
+    ),
     description: payload.volunteer.description,
     job_title: payload.volunteer.job_title,
     number_of_hours_served: payload.volunteer.number_of_hours_served,
@@ -72,4 +125,10 @@ const deleteVolunteer = async (
     .delete();
 };
 
-export { getVolunteers, addNewVolunteer, editVolunteer, deleteVolunteer };
+export {
+  getVolunteers,
+  getMoreVolunteers,
+  addNewVolunteer,
+  editVolunteer,
+  deleteVolunteer,
+};

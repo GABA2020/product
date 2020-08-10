@@ -1,5 +1,9 @@
 import { db } from 'helpers/firebase.module';
 import { DTO } from 'types/DTO';
+import moment from 'moment';
+import { firestore } from 'firebase';
+
+const limitContent = 2;
 
 const getWorkExperiences = async (
   payload: DTO.User.WorkExperience.GetWorkExperiencesRequest,
@@ -10,14 +14,53 @@ const getWorkExperiences = async (
     .collection('member_data')
     .doc(payload.email)
     .collection('work');
-  const workCollection = await userRef.get();
+
+  const arrayLength = await (await userRef.get()).size;
+
+  const workCollection = await userRef
+    .orderBy('date_end', 'desc')
+    .limit(limitContent)
+    .get();
+
+  const lastQuery = workCollection.docs[workCollection.docs.length - 1].get(
+    'date_end',
+  );
+
   workCollection.forEach(doc => {
     workExperiences.push({
       id: doc.id,
       ...doc.data(),
     } as ENTITIES.WorkExperience);
   });
-  return { workExperiences: workExperiences };
+  return { workExperiences, arrayLength, lastQuery };
+};
+
+const getMoreWorkExperiences = async (
+  payload: DTO.User.WorkExperience.GetMoreWorkExperiencesRequest,
+) => {
+  const workExperiences: ENTITIES.WorkExperience[] = [];
+
+  const userRef = await db
+    .collection('member_data')
+    .doc(payload.email)
+    .collection('work');
+
+  const workCollection = await userRef
+    .orderBy('date_end', 'desc')
+    .startAfter(payload.lastQuery)
+    .limit(limitContent)
+    .get();
+  const lastQuery = workCollection.docs[workCollection.docs.length - 1].get(
+    'date_end',
+  );
+
+  workCollection.forEach(doc => {
+    workExperiences.push({
+      id: doc.id,
+      ...doc.data(),
+    } as ENTITIES.WorkExperience);
+  });
+  return { workExperiences, lastQuery };
 };
 
 const addNewWorkExperience = async (
@@ -30,8 +73,12 @@ const addNewWorkExperience = async (
     .add({
       company: payload.workExperience.company,
       company_address: payload.workExperience.company_address,
-      date_end: payload.workExperience.date_end,
-      date_start: payload.workExperience.date_start,
+      date_end: firestore.Timestamp.fromDate(
+        moment.unix(payload.workExperience.date_end.seconds).toDate(),
+      ),
+      date_start: firestore.Timestamp.fromDate(
+        moment.unix(payload.workExperience.date_start.seconds).toDate(),
+      ),
       description: payload.workExperience.description,
       job_title: payload.workExperience.job_title,
     });
@@ -48,8 +95,12 @@ const editWorkExperience = async (
     .set({
       company: payload.workExperience.company,
       company_address: payload.workExperience.company_address,
-      date_end: payload.workExperience.date_end,
-      date_start: payload.workExperience.date_start,
+      date_end: firestore.Timestamp.fromDate(
+        moment.unix(payload.workExperience.date_end.seconds).toDate(),
+      ),
+      date_start: firestore.Timestamp.fromDate(
+        moment.unix(payload.workExperience.date_start.seconds).toDate(),
+      ),
       description: payload.workExperience.description,
       job_title: payload.workExperience.job_title,
     });
@@ -68,6 +119,7 @@ const deleteWorkExperience = async (
 
 export {
   getWorkExperiences,
+  getMoreWorkExperiences,
   addNewWorkExperience,
   editWorkExperience,
   deleteWorkExperience,

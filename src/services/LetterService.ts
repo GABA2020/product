@@ -3,7 +3,7 @@ import { DTO } from 'types/DTO';
 import { firestore } from 'firebase';
 import moment from 'moment';
 
-const limitContent = 2;
+const limitContent = 5;
 
 const getLetters = async (payload: DTO.User.Letter.GetLettersRequest) => {
   const letters: ENTITIES.Letter[] = [];

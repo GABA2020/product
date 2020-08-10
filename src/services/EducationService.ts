@@ -3,7 +3,7 @@ import { DTO } from 'types/DTO';
 import moment from 'moment';
 import { firestore } from 'firebase';
 
-const limitContent = 2;
+const limitContent = 5;
 
 const getEducations = async (
   payload: DTO.User.Education.GetEducationsRequest,

@@ -164,4 +164,11 @@ declare namespace ENTITIES {
     subject: string;
     date_time: ITime;
   }
+
+  interface Resource {
+    id: strirng;
+    match_score: number;
+    name: string;
+    date: ITime;
+  }
 }

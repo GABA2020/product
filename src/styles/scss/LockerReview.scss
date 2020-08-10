@@ -183,6 +183,19 @@
             }
 
         }
+
+        .review-btn-wrap {
+            text-align: center;
+
+            .load-more {
+                width: 168px;
+                height: 36px;
+                border-radius: 6px;
+                border: solid 1px #5ab88d;
+                background-color: #5ab88d;
+                color: #ffffff;
+            }
+        }
     }
 
     //review

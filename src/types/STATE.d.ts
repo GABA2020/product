@@ -34,6 +34,7 @@ declare namespace STATES {
     loading: boolean;
     reviews: ENTITIES.Review[];
     lastQuery: any;
-    reviewLength: number;
+    arrayLength: number;
+    resources: ENTITIES.Resource[];
   }
 }

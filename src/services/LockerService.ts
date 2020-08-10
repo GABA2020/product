@@ -16,7 +16,7 @@ const getReviews = async (payload: DTO.Locker.GetReviewsRequest) => {
     .limit(limitContent)
     .get();
 
-  const reviewLength = (await lockerRef.get()).size;
+  const arrayLength = (await lockerRef.get()).size;
 
   let lastQuery = reviewCollection.docs[reviewCollection.docs.length - 1].get(
     'date_time',
@@ -32,7 +32,7 @@ const getReviews = async (payload: DTO.Locker.GetReviewsRequest) => {
   return {
     reviews,
     lastQuery,
-    reviewLength,
+    arrayLength,
   };
 };
 
@@ -63,4 +63,39 @@ const getMoreReviews = async (payload: DTO.Locker.GetMoreReviewsRequest) => {
 
   return { reviews, lastQuery };
 };
-export { getReviews, getMoreReviews };
+
+const getResources = async (
+  payload: DTO.Locker.Resource.getResourcesRequest,
+) => {
+  const resources: ENTITIES.Resource[] = [];
+
+  const lockerRef = db
+    .collection('member_data')
+    .doc(payload.email)
+    .collection('resources');
+
+  const resourceCollection = await lockerRef
+    .orderBy('date', 'asc')
+    .limit(limitContent)
+    .get();
+
+  const arrayLength = (await lockerRef.get()).size;
+
+  let lastQuery = resourceCollection.docs[
+    resourceCollection.docs.length - 1
+  ].get('date');
+
+  resourceCollection.forEach(doc => {
+    resources.push({
+      id: doc.id,
+      ...doc.data(),
+    } as ENTITIES.Resource);
+  });
+
+  return {
+    resources,
+    arrayLength,
+    lastQuery,
+  };
+};
+export { getReviews, getMoreReviews, getResources };

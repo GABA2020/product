@@ -20,7 +20,7 @@ export const GuestUserLocker = () => {
   useInjectSaga({ key: sliceKey, saga: LockerSaga });
   useInjectSaga({ key: storageSliceKey, saga: StorageSaga });
   const dispatch = useDispatch();
-  const { reviews, reviewLength, lastQuery } = useSelector(lockerSelector);
+  const { reviews, arrayLength, lastQuery } = useSelector(lockerSelector);
   const { userSearchProfile } = useSelector(userSelector);
   const { avatar_url } = useSelector(storageSelector);
 
@@ -327,7 +327,7 @@ export const GuestUserLocker = () => {
                     {renderReviews(reviews)}
                     {reviews &&
                     reviews.length > 0 &&
-                    reviews.length < reviewLength ? (
+                    reviews.length < arrayLength ? (
                       <div className="review-btn-wrap">
                         <button
                           onClick={() => {

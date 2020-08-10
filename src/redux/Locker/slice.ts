@@ -7,8 +7,9 @@ import { STATES } from 'types/STATE';
 export const initialState: STATES.Locker = {
   loading: true,
   reviews: [],
+  resources: [],
   lastQuery: {},
-  reviewLength: 0,
+  arrayLength: 0,
 };
 
 const LockerSlice = createSlice({
@@ -21,7 +22,7 @@ const LockerSlice = createSlice({
     ) {
       state.loading = true;
       state.reviews = initialState.reviews;
-      state.reviewLength = initialState.reviewLength;
+      state.arrayLength = initialState.arrayLength;
       state.lastQuery = initialState.lastQuery;
     },
     getReviewsActionSuccess(
@@ -30,7 +31,7 @@ const LockerSlice = createSlice({
     ) {
       state.loading = false;
       state.reviews = action.payload.reviews;
-      state.reviewLength = action.payload.reviewLength;
+      state.arrayLength = action.payload.arrayLength;
       state.lastQuery = action.payload.lastQuery;
     },
     getReviewsActionFailed(state) {
@@ -39,18 +40,35 @@ const LockerSlice = createSlice({
     getMoreReviewsAction(
       state,
       action: PayloadAction<DTO.Locker.GetMoreReviewsRequest>,
-    ) {
-      state.loading = true;
-    },
+    ) {},
     getMoreReviewsActionSuccess(
       state,
       action: PayloadAction<DTO.Locker.GetMoreReviewsResponse>,
     ) {
-      state.loading = false;
       state.reviews = [...state.reviews, ...action.payload.reviews];
       state.lastQuery = action.payload.lastQuery;
     },
-    getMoreReviewsActionFailed(state) {
+    getMoreReviewsActionFailed(state) {},
+
+    getResourcesAction(
+      state,
+      action: PayloadAction<DTO.Locker.Resource.getResourcesRequest>,
+    ) {
+      state.loading = true;
+      state.lastQuery = initialState.lastQuery;
+      state.arrayLength = initialState.arrayLength;
+      state.resources = initialState.resources;
+    },
+    getResourcesActionSuccess(
+      state,
+      action: PayloadAction<DTO.Locker.Resource.getResourcesResponse>,
+    ) {
+      state.loading = false;
+      state.lastQuery = action.payload.lastQuery;
+      state.arrayLength = action.payload.arrayLength;
+      state.resources = action.payload.resources;
+    },
+    getResourcesActionFailed(state) {
       state.loading = false;
     },
   },

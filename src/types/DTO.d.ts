@@ -362,7 +362,7 @@ declare namespace DTO {
     interface GetReviewsResponse {
       reviews: ENTITIES.Review[];
       lastQuery: any;
-      reviewLength: number;
+      arrayLength: number;
     }
 
     interface GetMoreReviewsRequest {
@@ -373,6 +373,28 @@ declare namespace DTO {
     interface GetMoreReviewsResponse {
       reviews: ENTITIES.Review[];
       lastQuery: any;
+    }
+
+    namespace Resource {
+      interface getResourcesRequest {
+        email: string;
+      }
+
+      interface getResourcesResponse {
+        resources: ENTITIES.Resource[];
+        lastQuery: any;
+        arrayLength: number;
+      }
+
+      interface getMoreResourcesRequest {
+        email: string;
+        lastQuery: any;
+      }
+
+      interface getMoreResourcesResponse {
+        resources: ENTITIES.Resource[];
+        lastQuery: any;
+      }
     }
   }
 }

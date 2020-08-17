@@ -17,7 +17,7 @@ export function configureAppStore() {
   const persistConfig = {
     key: 'root',
     storage: storage,
-    whitelist: ['auth', 'storage'],
+    whitelist: ['auth'],
   };
 
   const createPersistedReducer: (injectedReducers?: {

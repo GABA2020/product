@@ -4,25 +4,28 @@ import { DTO } from 'types/DTO';
 import { STATES } from 'types/STATE';
 export const initialState: STATES.Storage = {
   loading: true,
-  avatar_url: '',
+  imageUrls: {},
 };
 
 const StorageSliceState = createSlice({
   name: 'storage',
   initialState,
   reducers: {
-    getAvatarURLAction(
+    getImageUrlAction(
       state,
-      action: PayloadAction<DTO.Storage.GetAvatarUrlRequest>,
+      action: PayloadAction<DTO.Storage.GetImageUrlRequest>,
     ) {
       state.loading = true;
-      state.avatar_url = initialState.avatar_url;
+      state.imageUrls[action.payload.name] = null;
     },
-    getAvatarURLActionSuccess(state, action: PayloadAction<string>) {
+    getImageUrlActionSuccess(
+      state,
+      action: PayloadAction<DTO.Storage.GetImageUrlResponse>,
+    ) {
       state.loading = false;
-      state.avatar_url = action.payload;
+      state.imageUrls[action.payload.name] = action.payload.url;
     },
-    getAvatarURLActionFailed(state) {
+    getImageUrlActionFailed(state) {
       state.loading = false;
     },
     uploadAvatarAction(
@@ -31,9 +34,12 @@ const StorageSliceState = createSlice({
     ) {
       state.loading = true;
     },
-    uploadAvatarActionSuccess(state, action: PayloadAction<string>) {
+    uploadAvatarActionSuccess(
+      state,
+      action: PayloadAction<DTO.Storage.UploadAvatarResponse>,
+    ) {
       state.loading = false;
-      state.avatar_url = action.payload;
+      state.imageUrls[action.payload.name] = action.payload.url;
     },
     uploadAvatarActionFailed(state) {
       state.loading = false;

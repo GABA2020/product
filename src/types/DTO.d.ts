@@ -341,17 +341,23 @@ declare namespace DTO {
   }
 
   export namespace Storage {
-    interface GetAvatarUrlRequest {
+    interface GetImageUrlRequest {
       name: string;
+    }
+
+    interface GetImageUrlResponse {
+      name: string;
+      url: string;
     }
 
     interface UploadAvatarRequest {
       name: string;
       content: string;
     }
-    // interface UploadAvatarResponse {
-    //   url: string;
-    // }
+    interface UploadAvatarResponse {
+      name: string;
+      url: string;
+    }
   }
 
   export namespace Locker {
@@ -394,6 +400,16 @@ declare namespace DTO {
       interface getMoreResourcesResponse {
         resources: ENTITIES.Resource[];
         lastQuery: any;
+      }
+
+      interface GetResourceDetailRequest {
+        id: string;
+        email: string;
+      }
+
+      interface GetResourceDetailResponse {
+        id: string;
+        resource: ENTITIES.Resource;
       }
     }
   }

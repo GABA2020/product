@@ -1,39 +1,28 @@
 import React, { Fragment, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useInjectSaga } from 'utils/redux-injectors';
+import { sliceKey as userSliceKey } from 'redux/User/slice';
 import {
-  sliceKey as userSliceKey,
-  actions as userActions,
-} from 'redux/User/slice';
-import {
-  sliceKey as programSliceKey,
   actions as programActions,
+  sliceKey as programSliceKey,
 } from 'redux/Program/slice';
-import {
-  sliceKey as storageSliceKey,
-  actions as storageActions,
-} from 'redux/Storage/slice';
 import { UserSaga } from 'redux/User/saga';
 import { ProgramSaga } from 'redux/Program/saga';
-import { StorageSaga } from 'redux/Storage/saga';
 import { userSelector } from 'redux/User/selectors';
 import { programSelector } from 'redux/Program/selectors';
-import { img_locker } from '../../../assets/images';
 import { ordinal_suffix_of } from 'helpers/Unity';
-import { Link } from 'react-router-dom';
-import RoutesTypes from 'types/Routes';
-import { storageSelector } from 'redux/Storage/selectors';
 import { GuestUserLocker } from '../GuestUserLocker';
+import { useStorage } from 'hook/useStorage';
 
 export const GuestUserProfile = props => {
   useInjectSaga({ key: userSliceKey, saga: UserSaga });
   useInjectSaga({ key: programSliceKey, saga: ProgramSaga });
-  useInjectSaga({ key: storageSliceKey, saga: StorageSaga });
 
+  const dispatch = useDispatch();
   const { userSearchProfile } = useSelector(userSelector);
   const { program } = useSelector(programSelector);
-  const { avatar_url } = useSelector(storageSelector);
-  const dispatch = useDispatch();
+
+  const image = useStorage(`avatar/${userSearchProfile.avatar}`);
 
   useEffect(() => {
     dispatch(
@@ -42,14 +31,6 @@ export const GuestUserProfile = props => {
       }),
     );
   }, [userSearchProfile.username]);
-
-  useEffect(() => {
-    if (userSearchProfile.avatar !== '') {
-      dispatch(
-        storageActions.getAvatarURLAction({ name: userSearchProfile.avatar }),
-      );
-    }
-  }, [userSearchProfile.avatar]);
 
   return (
     <Fragment>
@@ -60,7 +41,7 @@ export const GuestUserProfile = props => {
               <a href="#">
                 <img
                   alt="user image"
-                  src={avatar_url}
+                  src={image ?? ''}
                   width={140}
                   height={140}
                 />

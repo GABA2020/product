@@ -158,17 +158,17 @@ declare namespace ENTITIES {
   interface Review {
     id: string;
     resource_id: string;
-    name: string;
-    rating: number;
     review_body: string;
     subject: string;
     date_time: ITime;
   }
 
   interface Resource {
-    id: strirng;
+    id: string;
     match_score: number;
     name: string;
     date: ITime;
+    picture_name: string;
+    rating: number;
   }
 }

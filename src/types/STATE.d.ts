@@ -28,7 +28,7 @@ declare namespace STATES {
   }
   interface Storage {
     loading: boolean;
-    avatar_url: string;
+    imageUrls: { [image_url: string]: string | null };
   }
   interface Locker {
     loading: boolean;
@@ -36,5 +36,6 @@ declare namespace STATES {
     lastQuery: any;
     arrayLength: number;
     resources: ENTITIES.Resource[];
+    listResourceCache: { [id: string]: ENTITIES.Resource | null };
   }
 }

@@ -1,46 +1,40 @@
-import React, { Fragment, useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { Fragment, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useInjectSaga } from 'utils/redux-injectors';
 import {
-  sliceKey as userSliceKey,
   actions as userActions,
+  sliceKey as userSliceKey,
 } from 'redux/User/slice';
 import {
-  sliceKey as programSliceKey,
   actions as programActions,
+  sliceKey as programSliceKey,
 } from 'redux/Program/slice';
 import {
-  sliceKey as storageSliceKey,
   actions as storageActions,
+  sliceKey as storageSliceKey,
 } from 'redux/Storage/slice';
 import { UserSaga } from 'redux/User/saga';
 import { ProgramSaga } from 'redux/Program/saga';
 import { StorageSaga } from 'redux/Storage/saga';
 import { userSelector } from 'redux/User/selectors';
 import { programSelector } from 'redux/Program/selectors';
-import { storageSelector } from 'redux/Storage/selectors';
 import { ordinal_suffix_of } from 'helpers/Unity';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { EditProfileModal } from 'app/components/Modal/EditProfileModal';
 import { Locker } from '../Locker';
 import { CVWork } from '../CVWork';
+import { useStorage } from 'hook/useStorage';
 
 export const MyProfile = props => {
   useInjectSaga({ key: userSliceKey, saga: UserSaga });
   useInjectSaga({ key: programSliceKey, saga: ProgramSaga });
   useInjectSaga({ key: storageSliceKey, saga: StorageSaga });
   const dispatch = useDispatch();
-  const {
-    userProfile,
-    workExperiences,
-    educations,
-    volunteers,
-    researches,
-    letters,
-  } = useSelector(userSelector);
+  const { userProfile, educations } = useSelector(userSelector);
   const { program } = useSelector(programSelector);
-  const { avatar_url } = useSelector(storageSelector);
+
+  const image = useStorage(`avatar/${userProfile.avatar}`);
 
   const [editModeState, setEditModeState] = useState<boolean>(true);
   const [
@@ -53,12 +47,6 @@ export const MyProfile = props => {
       programActions.getProgramReviewAction({ email: userProfile.email }),
     );
   }, [userProfile.email]);
-
-  useEffect(() => {
-    if (userProfile.avatar !== '') {
-      dispatch(storageActions.getAvatarURLAction({ name: userProfile.avatar }));
-    }
-  }, [userProfile.avatar]);
 
   const saveProfile = async (
     userProfile: ENTITIES.UserProfile,
@@ -94,7 +82,7 @@ export const MyProfile = props => {
   return (
     <Fragment>
       <EditProfileModal
-        avatar_url={avatar_url}
+        avatar_url={image ?? ''}
         saveProfile={saveProfile}
         program={program}
         userProfile={userProfile}
@@ -124,7 +112,7 @@ export const MyProfile = props => {
               <a href="#">
                 <img
                   alt="user image"
-                  src={avatar_url}
+                  src={image ?? ''}
                   width={140}
                   height={140}
                 />
@@ -302,158 +290,6 @@ export const MyProfile = props => {
       </section>
       {/* CV work */}
       <CVWork editMode={editModeState} />
-      {/* <CVWork
-        letters={letters}
-        researches={researches}
-        volunteers={volunteers}
-        userProfile={userProfile}
-        workExperiences={workExperiences}
-        educations={educations}
-        editMode={editModeState}
-        getWorkExperiences={() => {
-          dispatch(
-            userActions.getWorkExperiencesAction({ email: userProfile.email }),
-          );
-        }}
-        addNewWorkExperience={workExperience => {
-          dispatch(
-            userActions.addNewWorkExperienceAction({
-              email: userProfile.email,
-              workExperience,
-            }),
-          );
-        }}
-        editWorkExperience={workExperience => {
-          dispatch(
-            userActions.editWorkExperienceAction({
-              email: userProfile.email,
-              workExperience,
-            }),
-          );
-        }}
-        deleteWorkExperience={workExperience => {
-          dispatch(
-            userActions.deleteWorkExperienceActionAction({
-              email: userProfile.email,
-              id: workExperience.id,
-            }),
-          );
-        }}
-        getEducations={() => {
-          dispatch(
-            userActions.getEducationsAction({ email: userProfile.email }),
-          );
-        }}
-        addNewEducation={education => {
-          dispatch(
-            userActions.addNewEducationAction({
-              email: userProfile.email,
-              education,
-            }),
-          );
-        }}
-        editEducation={education => {
-          dispatch(
-            userActions.editEducationAction({
-              email: userProfile.email,
-              education,
-            }),
-          );
-        }}
-        deleteEducation={education => {
-          dispatch(
-            userActions.deleteEducationAction({
-              email: userProfile.email,
-              id: education.id,
-            }),
-          );
-        }}
-        getVolunteers={() => {
-          dispatch(
-            userActions.getVolunteersAction({ email: userProfile.email }),
-          );
-        }}
-        addNewVolunteer={volunteer => {
-          dispatch(
-            userActions.addNewVolunteerAction({
-              email: userProfile.email,
-              volunteer,
-            }),
-          );
-        }}
-        editVolunteer={volunteer => {
-          dispatch(
-            userActions.editVolunteerAction({
-              email: userProfile.email,
-              volunteer,
-            }),
-          );
-        }}
-        deleteVolunteer={volunteer => {
-          dispatch(
-            userActions.deleteVolunteerAction({
-              email: userProfile.email,
-              id: volunteer.id,
-            }),
-          );
-        }}
-        getResearches={() => {
-          dispatch(
-            userActions.getResearchesAction({ email: userProfile.email }),
-          );
-        }}
-        addNewResearch={research => {
-          dispatch(
-            userActions.addNewResearchAction({
-              email: userProfile.email,
-              research,
-            }),
-          );
-        }}
-        editResearch={research => {
-          dispatch(
-            userActions.editResearchAction({
-              email: userProfile.email,
-              research,
-            }),
-          );
-        }}
-        deleteResearch={research => {
-          dispatch(
-            userActions.deleteResearchAction({
-              email: userProfile.email,
-              id: research.id,
-            }),
-          );
-        }}
-        getLetters={() => {
-          dispatch(userActions.getLettersAction({ email: userProfile.email }));
-        }}
-        addNewLetter={letter => {
-          dispatch(
-            userActions.addNewLetterAction({
-              email: userProfile.email,
-              letter,
-            }),
-          );
-        }}
-        editLetter={letter => {
-          dispatch(
-            userActions.editLetterAction({
-              email: userProfile.email,
-              letter,
-            }),
-          );
-        }}
-        deleteLetter={letters => {
-          dispatch(
-            userActions.deleteLetterAction({
-              email: userProfile.email,
-              id: letters.id,
-            }),
-          );
-        }}
-      /> */}
       {/* locker */}
       <Locker />
       <section className="section-milestones"></section>

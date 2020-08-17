@@ -64,7 +64,7 @@ export const AddWorkModal: FC<IAddWorkModal> = props => {
     <Fragment>
       <Modal show={isShow} onHide={onHide}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit experience</Modal.Title>
+          <Modal.Title>Add experience</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Formik

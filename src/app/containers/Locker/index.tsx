@@ -1,17 +1,15 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { img_locker, verified_check, oval, bag } from 'assets/images';
-import RoutesTypes from 'types/Routes';
-import { Rate } from 'antd';
+import { bag } from 'assets/images';
 import { useInjectSaga } from 'utils/redux-injectors';
 import { actions, sliceKey } from 'redux/Locker/slice';
 import { LockerSaga } from 'redux/Locker/saga';
 import { useDispatch, useSelector } from 'react-redux';
 import { lockerSelector } from 'redux/Locker/selectors';
 import { userSelector } from 'redux/User/selectors';
-import { storageSelector } from 'redux/Storage/selectors';
-
-const tabContent = ['tabReview', 'tabResource'];
+import { ResourceModal } from 'app/components/Modal/ResourceModal';
+import { useStorage } from 'hook/useStorage';
+import { Resource } from 'app/components/Resource';
+import Review from 'app/components/Review';
 
 export const Locker = () => {
   useInjectSaga({ key: sliceKey, saga: LockerSaga });
@@ -20,8 +18,19 @@ export const Locker = () => {
     lockerSelector,
   );
   const { userProfile } = useSelector(userSelector);
-  const { avatar_url } = useSelector(storageSelector);
-  const [tab, setTab] = useState<string>(tabContent[0]);
+  const image = useStorage(`avatar/${userProfile.avatar}`);
+  const [resourceModal, setResourceModal] = useState<boolean>(false);
+  const [resourceState, setResourceState] = useState<ENTITIES.Resource>({
+    id: '',
+    match_score: 0,
+    name: '',
+    date: {
+      seconds: 0,
+    },
+    picture_name: '',
+    rating: 0,
+  });
+
   useEffect(() => {
     if (userProfile.email !== '') {
       dispatch(
@@ -31,40 +40,14 @@ export const Locker = () => {
       );
     }
   }, [userProfile.email]);
+
   const renderReviews = (reviews: ENTITIES.Review[]) => {
     return (
       <ul className="review-list">
         {reviews.map((item, index) => {
           return (
             <li key={index} className="review-item">
-              <h4 className="review-title">
-                <a href="#">{item.name}</a>
-              </h4>
-              <div className="review-match">
-                <Rate disabled defaultValue={item.rating}></Rate>
-                {/* <p className="oval">
-                  <img src={oval} alt="" />
-                </p> */}
-                {/* <p>Anatomy</p> */}
-              </div>
-              <p className="title-comment">{item.subject}</p>
-              <div className="comment">{item.review_body}</div>
-              <div className="user-information">
-                <div className="profile-image">
-                  <img src={avatar_url} alt="img" />
-                </div>
-                <div className="profile-infor">
-                  {userProfile.name}
-                  <sup className="verify-check">
-                    <img src={verified_check} alt="image" />
-                  </sup>
-                  <ul className="score">
-                    <li>Step One {userProfile.step_1}</li>
-                    <li className="separate">|</li>
-                    <li>Step Two {userProfile.step_2}</li>
-                  </ul>
-                </div>
-              </div>
+              <Review review={item} profile={userProfile} />
             </li>
           );
         })}
@@ -75,63 +58,46 @@ export const Locker = () => {
   const renderResource = (resources: ENTITIES.Resource[]) => {
     return (
       <ul className="locker-list">
+        <li className="locker-item">
+          <div className="media-marketplace">
+            <div className="image">
+              <img src={bag} alt="bag" />
+            </div>
+            <div className="caption">
+              <p>Browse all resources</p>
+            </div>
+          </div>
+          <div className="locker-button">
+            <a href="#" className="btn btn-marketplace">
+              Go to Marketplace
+            </a>
+          </div>
+        </li>
         {resources.map((item, index) => {
           return (
             <li key={index} className="locker-item">
-              <div className="media media-locker-item">
-                <div className="locker-image">
-                  <img
-                    alt="user image"
-                    src={img_locker}
-                    width={125}
-                    height={100}
-                  />
-                  <div className="image-caption">
-                    <Link to={RoutesTypes.PRODUCT}>Path</Link>
-                  </div>
-                </div>
-                <div className="locker-information">
-                  <div className="title">{item.name}</div>
-                  <div className="match">
-                    <p>{item.match_score} % match</p>
-                  </div>
-                  <div className="review">
-                    <p>No review</p>
-                    {/* <div className="vote-star">
-                          <Rate disabled defaultValue={5}></Rate>
-                        </div> */}
-                  </div>
-                </div>
-              </div>
-              <div className="locker-button">
-                <a href="#" className="btn btn-resource">
-                  Manage Resource
-                </a>
-              </div>
+              <Resource
+                openManageResource={resource => {
+                  setResourceState(resource);
+                  setResourceModal(true);
+                }}
+                resource={item}
+              />
             </li>
           );
         })}
-
-        {/* <li className="locker-item">
-        <div className="media-marketplace">
-          <div className="image">
-            <img src={bag} alt="bag" />
-          </div>
-          <div className="caption">
-            <p>Browse all resources</p>
-          </div>
-        </div>
-        <div className="locker-button">
-          <a href="#" className="btn btn-marketplace">
-            Go to Marketplace
-          </a>
-        </div>
-      </li> */}
       </ul>
     );
   };
   return (
     <Fragment>
+      <ResourceModal
+        resource={resourceState}
+        isShow={resourceModal}
+        onHide={() => {
+          setResourceModal(false);
+        }}
+      />
       <section className="section-locker">
         <div className="container">
           <div className="locker-front">
@@ -143,7 +109,7 @@ export const Locker = () => {
             <div className="locker-col">
               <div className="locker-tabs">
                 <ul className="nav nav-tabs">
-                  <li className={tab === tabContent[0] ? 'active' : undefined}>
+                  <li className="active">
                     <a
                       onClick={() => {
                         dispatch(
@@ -159,7 +125,7 @@ export const Locker = () => {
                       Resources
                     </a>
                   </li>
-                  <li className={tab === tabContent[1] ? 'active' : undefined}>
+                  <li>
                     <a
                       onClick={() => {
                         dispatch(
@@ -193,13 +159,43 @@ export const Locker = () => {
                   (resources.length > 0 ? (
                     <div className="locker-category">
                       {renderResource(resources)}
-                      <div className="review-btn-wrap">
-                        <button onClick={() => {}} className="load-more">
-                          Load More Resources
-                        </button>
+                      {resources.length > 0 && resources.length < arrayLength && (
+                        <div className="review-btn-wrap">
+                          <button
+                            onClick={() => {
+                              dispatch(
+                                actions.getMoreResourcesAction({
+                                  email: userProfile.email,
+                                  lastQuery,
+                                }),
+                              );
+                            }}
+                            className="load-more"
+                          >
+                            Load More Resources
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="locker-category">
+                      <div className="locker-empty text-center">
+                        <div className="media-marketplace">
+                          <div className="image">
+                            <img src={bag} alt="bag" />
+                          </div>
+                          <div className="caption">
+                            <p>Browse all resources</p>
+                          </div>
+                        </div>
+                        <div className="locker-button">
+                          <a href="#" className="btn btn-marketplace">
+                            Go to Marketplace
+                          </a>
+                        </div>
                       </div>
                     </div>
-                  ) : null)}
+                  ))}
               </div>
               <div role="tabpanel" className="tab-pane" id="frame-2">
                 {!loading &&

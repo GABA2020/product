@@ -6,11 +6,19 @@ const selectState = (state: RootState) => state.locker || initialState;
 
 export const lockerSelector = createSelector(
   [selectState],
-  ({ reviews, resources, arrayLength, lastQuery, loading }) => ({
+  ({
+    reviews,
+    resources,
+    arrayLength,
+    lastQuery,
+    loading,
+    listResourceCache,
+  }) => ({
     reviews,
     arrayLength,
     lastQuery,
     resources,
     loading,
+    listResourceCache,
   }),
 );

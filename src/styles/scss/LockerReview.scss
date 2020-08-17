@@ -17,7 +17,7 @@
         .locker-tabs {
             .nav-tabs>li>a {
                 font-size: 16px;
-                font-weight: 400;
+                font-weight: 500;
                 font-stretch: normal;
                 font-style: normal;
                 line-height: 1.5;
@@ -72,6 +72,11 @@
                     .locker-image {
                         position: relative;
 
+                        img {
+                            width: 125px;
+                            height: 100px;
+                        }
+
                         .image-caption {
                             position: absolute;
                             bottom: 0;
@@ -93,6 +98,8 @@
                     }
 
                     .locker-information {
+                        text-align: right;
+
                         .title p {
                             font-size: 18px;
                             font-weight: 500;
@@ -138,14 +145,25 @@
                 }
 
                 .media-marketplace {
+                    border-bottom: 1px solid rgba(238, 170, 53, 0.33);
+
                     .image {
                         text-align: center;
-                        margin-bottom: 19px;
+                        margin-bottom: 10px;
                     }
 
                     .caption p {
                         text-align: center;
-                        margin-bottom: -4px;
+                        margin-bottom: -3px;
+                        font-size: 16px;
+                        font-weight: 500;
+                        font-stretch: normal;
+                        font-style: normal;
+                        line-height: 1.75;
+                        letter-spacing: normal;
+                        text-align: center;
+                        color: $goodNightColor;
+
 
                     }
                 }
@@ -196,70 +214,164 @@
                 color: #ffffff;
             }
         }
-    }
-
-    //review
-    .locker-review {
-        color: #111741;
 
         .locker-empty {
-            p {
-                margin-bottom: 16px;
+            // max-width: 25%;
+            align-items: center;
+            // margin: 0 auto;
+
+            .media-marketplace {
+                .image {
+                    text-align: center;
+                    margin-bottom: 10px;
+                }
+
+                .caption p {
+                    text-align: center;
+                    margin-bottom: -3px;
+                    font-size: 16px;
+                    font-weight: 500;
+                    font-stretch: normal;
+                    font-style: normal;
+                    line-height: 1.75;
+                    letter-spacing: normal;
+                    text-align: center;
+                    color: $goodNightColor;
+
+
+                }
             }
 
-            .btn-start-review {
-                width: 168px;
-                height: 36px;
-                border-radius: 6px;
-                border: solid 1px #5ab88d;
-                background-color: #5ab88d;
-                color: #ffffff;
+            .locker-button {
+                .btn-resource {
+                    border-radius: 6px;
+                    border: solid 1.5px #5ab88d;
+                    background-color: #ffffff;
+                    font-size: 14px;
+                    font-weight: 500;
+                    font-stretch: normal;
+                    font-style: normal;
+                    line-height: 1.71;
+                    letter-spacing: normal;
+                    text-align: center;
+                    color: #337859;
+                }
+
+                .btn-marketplace {
+                    border-radius: 6px;
+                    background-color: #5ab88d;
+                    font-size: 14px;
+                    font-weight: 500;
+                    font-stretch: normal;
+                    font-style: normal;
+                    line-height: 1.71;
+                    letter-spacing: normal;
+                    text-align: center;
+                    color: #ffffff;
+                }
             }
+
+
         }
 
-        .review-list {
-            list-style: none;
+    }
+}
+
+//review
+.locker-review {
+    color: #111741;
+
+    .locker-empty {
+        p {
+            margin-bottom: 16px;
+        }
+
+        .btn-start-review {
+            width: 168px;
+            height: 36px;
+            border-radius: 6px;
+            border: solid 1px #5ab88d;
+            background-color: #5ab88d;
+            color: #ffffff;
+        }
+    }
+
+    .review-list {
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+        padding: 0;
+
+        .review-item {
+            padding: 0 15px;
+            float: left;
+            width: 33.3333333%;
+            margin-bottom: 8rem;
+
+        }
+
+        .review-title a {
+            font-weight: 500;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.4;
+            letter-spacing: normal;
+            color: #111741 !important;
+        }
+
+        .review-match {
             display: flex;
-            flex-wrap: wrap;
-            padding: 0;
 
-            .review-item {
-                padding: 0 15px;
-                float: left;
-                width: 33.3333333%;
-                margin-bottom: 8rem;
+            p {
+                padding-top: 4px;
 
             }
 
-            .review-title a {
-                font-weight: 500;
-                font-stretch: normal;
-                font-style: normal;
-                line-height: 1.4;
-                letter-spacing: normal;
-                color: #111741 !important;
+            .ant-rate {
+                margin-right: 10px;
             }
 
-            .review-match {
-                display: flex;
-
-                p {
-                    padding-top: 4px;
-
-                }
-
-                .ant-rate {
-                    margin-right: 10px;
-                }
-
-                .oval {
-                    margin-right: 10px;
-                }
-
+            .oval {
+                margin-right: 10px;
             }
 
-            .title-comment {
-                font-family: HelveticaNeue;
+        }
+
+        .title-comment {
+            font-family: HelveticaNeue;
+            font-size: 16px;
+            font-weight: bold;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.75;
+            letter-spacing: normal;
+            color: #337859;
+        }
+
+        .comment {
+            font-size: 16px;
+            font-weight: normal;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.5;
+            letter-spacing: normal;
+
+            min-height: 150px;
+            //200 max count
+        }
+
+        .user-information {
+            margin-top: 45px;
+            display: flex;
+
+            .profile-image img {
+                width: 45px;
+                height: 45px;
+                border-radius: 50%;
+            }
+
+            .profile-infor {
+                margin-left: 15px;
                 font-size: 16px;
                 font-weight: bold;
                 font-stretch: normal;
@@ -267,84 +379,51 @@
                 line-height: 1.75;
                 letter-spacing: normal;
                 color: #337859;
+
             }
 
-            .comment {
-                font-size: 16px;
-                font-weight: normal;
-                font-stretch: normal;
-                font-style: normal;
-                line-height: 1.5;
-                letter-spacing: normal;
-
-                min-height: 150px;
-                //200 max count
+            .verify-check {
+                margin-left: 0.675rem;
             }
 
-            .user-information {
-                margin-top: 45px;
+            .score {
                 display: flex;
+                list-style: none;
+                padding-left: 0;
 
-                .profile-image img {
-                    width: 45px;
-                    height: 45px;
-                    border-radius: 50%;
-                }
-
-                .profile-infor {
-                    margin-left: 15px;
-                    font-size: 16px;
-                    font-weight: bold;
+                li {
+                    padding-left: 5px;
+                    font-size: 14px;
+                    font-weight: 500;
                     font-stretch: normal;
                     font-style: normal;
-                    line-height: 1.75;
+                    line-height: 2;
                     letter-spacing: normal;
-                    color: #337859;
 
                 }
 
-                .verify-check {
-                    margin-left: 0.675rem;
-                }
-
-                .score {
-                    display: flex;
-                    list-style: none;
-                    padding-left: 0;
-
-                    li {
-                        padding-left: 5px;
-                        font-size: 14px;
-                        font-weight: 500;
-                        font-stretch: normal;
-                        font-style: normal;
-                        line-height: 2;
-                        letter-spacing: normal;
-
-                    }
-
-                    .separate {
-                        color: rgba(17, 23, 65, 0.22);
-                    }
+                .separate {
+                    color: rgba(17, 23, 65, 0.22);
                 }
             }
         }
-
-        .review-btn-wrap {
-            text-align: center;
-
-            .load-more {
-                width: 168px;
-                height: 36px;
-                border-radius: 6px;
-                border: solid 1px #5ab88d;
-                background-color: #5ab88d;
-                color: #ffffff;
-            }
-        }
-
     }
+
+    .review-btn-wrap {
+        text-align: center;
+
+        .load-more {
+            width: 168px;
+            height: 36px;
+            border-radius: 6px;
+            border: solid 1px #5ab88d;
+            background-color: #5ab88d;
+            color: #ffffff;
+        }
+    }
+
 }
+
 
 @media screen and (min-width: 1200px) {}
 

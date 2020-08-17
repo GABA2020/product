@@ -49,7 +49,6 @@ export const CVWork: FC<ICVWork> = props => {
     loading,
   } = useSelector(userSelector);
   const { program } = useSelector(programSelector);
-  const { avatar_url } = useSelector(storageSelector);
 
   const [stateWork, setStateWork] = useState<string>(arrayWork[0]);
 

@@ -1,7 +1,13 @@
 import { call, put, takeLatest, delay, cps } from 'redux-saga/effects';
 import { actions } from './slice';
 import { DTO } from 'types/DTO';
-import { getMoreReviews, getReviews, getResources } from 'services';
+import {
+  getMoreReviews,
+  getReviews,
+  getResources,
+  getMoreResources,
+  getResourceDetail,
+} from 'services';
 
 export function* getReviewSaga({ payload }) {
   delay(500);
@@ -46,9 +52,40 @@ export function* getResourcesSaga({ payload }) {
   }
 }
 
+export function* getMoreResourcesSaga({ payload }) {
+  delay(500);
+
+  try {
+    const response: DTO.Locker.Resource.getMoreResourcesResponse = yield call(
+      getMoreResources,
+      payload,
+    );
+
+    yield put(actions.getMoreResourcesActionSuccess(response));
+  } catch (error) {
+    yield put(actions.getMoreResourcesActionFailed());
+  }
+}
+
+export function* getResourceDetailSaga({ payload }) {
+  delay(500);
+
+  try {
+    const response: DTO.Locker.Resource.GetResourceDetailResponse = yield call(
+      getResourceDetail,
+      payload,
+    );
+
+    yield put(actions.getResourceDetailActionSuccess(response));
+  } catch (error) {
+    yield put(actions.getResourceDetailActionFailed());
+  }
+}
 export function* LockerSaga() {
   yield takeLatest(actions.getReviewsAction, getReviewSaga);
   yield takeLatest(actions.getMoreReviewsAction, getMoreReviewSaga);
 
   yield takeLatest(actions.getResourcesAction, getResourcesSaga);
+  yield takeLatest(actions.getMoreResourcesAction, getMoreResourcesSaga);
+  yield takeLatest(actions.getResourceDetailAction, getResourceDetailSaga);
 }

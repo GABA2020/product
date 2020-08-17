@@ -10,6 +10,7 @@ export const initialState: STATES.Locker = {
   resources: [],
   lastQuery: {},
   arrayLength: 0,
+  listResourceCache: {},
 };
 
 const LockerSlice = createSlice({
@@ -71,6 +72,32 @@ const LockerSlice = createSlice({
     getResourcesActionFailed(state) {
       state.loading = false;
     },
+    getMoreResourcesAction(
+      state,
+      action: PayloadAction<DTO.Locker.Resource.getMoreResourcesRequest>,
+    ) {},
+    getMoreResourcesActionSuccess(
+      state,
+      action: PayloadAction<DTO.Locker.Resource.getMoreResourcesResponse>,
+    ) {
+      state.resources = [...state.resources, ...action.payload.resources];
+      state.lastQuery = action.payload.lastQuery;
+    },
+    getMoreResourcesActionFailed(state) {},
+
+    getResourceDetailAction(
+      state,
+      action: PayloadAction<DTO.Locker.Resource.GetResourceDetailRequest>,
+    ) {
+      state.listResourceCache[action.payload.id] = null;
+    },
+    getResourceDetailActionSuccess(
+      state,
+      action: PayloadAction<DTO.Locker.Resource.GetResourceDetailResponse>,
+    ) {
+      state.listResourceCache[action.payload.id] = action.payload.resource;
+    },
+    getResourceDetailActionFailed(state) {},
   },
 });
 export const { actions, reducer, name: sliceKey } = LockerSlice;

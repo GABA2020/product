@@ -1,8 +1,18 @@
-.react-datepicker-wrapper {
-    width: 100%;
-}
+@import './common.scss';
 
-.btn-wrapper-submit {
-    display: flex;
-    justify-content: space-between;
+
+
+.modal-dialog {
+    .modal-title {
+        color: $goodNightColor;
+    }
+
+    .react-datepicker-wrapper {
+        width: 100%;
+    }
+
+    .btn-wrapper-submit {
+        display: flex;
+        justify-content: space-between;
+    }
 }

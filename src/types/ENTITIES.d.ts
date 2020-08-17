@@ -1,5 +1,10 @@
 declare namespace ENTITIES {
   export type Maybe<T> = T | null;
+
+  interface ITime {
+    seconds: number;
+  }
+
   interface UserProfile {
     email: string;
     avatar: string;
@@ -87,29 +92,83 @@ declare namespace ENTITIES {
     id: string;
     company: string;
     company_address: string;
-    date_end: string;
-    date_start: string;
+    date_end: ITime;
+    date_start: ITime;
     description: string;
     job_title: string;
   }
-  // interface Volunteer {
-  //   id: string;
-  //   date_end: string;
-  //   date_start: string;
-  //   description: string;
-  //   job_title: string;
-  //   number_of_hours_served: string;
-  //   organization_address: string;
-  //   organization_name: string;
-  // }
+  interface Volunteer {
+    id: string;
+    date_end: ITime;
+    date_start: ITime;
+    description: string;
+    job_title: string;
+    number_of_hours_served: string;
+    organization_address: string;
+    organization_name: string;
+  }
   interface Education {
     id: string;
-    date_end: string;
-    date_start: string;
+    date_end: ITime;
+    date_start: ITime;
     degree_type: string;
     honors: string;
     major: string;
     school: string;
     school_address: string;
+  }
+
+  interface Research {
+    id: string;
+    author: string;
+    event_address: string;
+    event_date: ITime;
+    event_name: string;
+    journal: string;
+    link: string;
+    is_show_link: boolean;
+    primary_investigator: string;
+    research_type: string[];
+    title_of_work: string;
+  }
+
+  interface Letter {
+    id: string;
+    document_name: string;
+    document_type: string;
+    link: string;
+    receive_date: ITime;
+    is_show_link: boolean;
+  }
+
+  interface File {
+    lastModified: number;
+    lastModifiedDate: string;
+    name: string;
+    size: number;
+    type: string;
+    webkitRelativePath: string;
+  }
+
+  interface ISelect {
+    label: string;
+    value: string;
+  }
+
+  interface Review {
+    id: string;
+    resource_id: string;
+    review_body: string;
+    subject: string;
+    date_time: ITime;
+  }
+
+  interface Resource {
+    id: string;
+    match_score: number;
+    name: string;
+    date: ITime;
+    picture_name: string;
+    rating: number;
   }
 }

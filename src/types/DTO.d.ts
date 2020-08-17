@@ -1,5 +1,8 @@
 // DTO only ref to ENTITIES.d.ts
 import { UserProfile } from 'redux/User/types';
+import { Volunteer } from 'app/components/Volunteer';
+import { Education } from 'app/components/Education';
+import { firestore } from 'firebase';
 
 declare namespace DTO {
   export namespace User {
@@ -113,17 +116,172 @@ declare namespace DTO {
       year_in_program: number;
     }
 
-    interface GetWorkExperiencesRequest {
-      email: string;
+    interface UpdateUserProfileRequest {
+      userProfile: ENTITIES.UserProfile;
     }
-    interface GetWorkExperiencesResponse {
-      workExperiences: ENTITIES.WorkExperience[];
+    namespace WorkExperience {
+      interface GetWorkExperiencesRequest {
+        email: string;
+      }
+      interface GetWorkExperiencesResponse {
+        workExperiences: ENTITIES.WorkExperience[];
+        arrayLength: number;
+        lastQuery: any;
+      }
+
+      interface GetMoreWorkExperiencesRequest {
+        email: string;
+        lastQuery: any;
+      }
+      interface GetMoreWorkExperiencesResponse {
+        workExperiences: ENTITIES.WorkExperience[];
+        lastQuery: any;
+      }
+
+      interface AddNewWorkExperiencesRequest {
+        email: string;
+        workExperience: ENTITIES.WorkExperience;
+      }
+
+      interface EditWorkExperiencesRequest {
+        email: string;
+        workExperience: ENTITIES.WorkExperience;
+      }
+
+      interface DeleteWorkExperiencesRequest {
+        email: string;
+        id: string;
+      }
     }
-    interface GetEducationsRequest {
-      email: string;
+    namespace Education {
+      interface GetEducationsRequest {
+        email: string;
+      }
+      interface GetEducationsResponse {
+        educations: ENTITIES.Education[];
+        arrayLength: number;
+        lastQuery: any;
+      }
+
+      interface GetMoreEducationsRequest {
+        email: string;
+        lastQuery: any;
+      }
+      interface GetMoreEducationsResponse {
+        educations: ENTITIES.Education[];
+        lastQuery: any;
+      }
+
+      interface AddNewEducationRequest {
+        email: string;
+        education: ENTITIES.Education;
+      }
+
+      interface EditEducationRequest {
+        email: string;
+        education: ENTITIES.Education;
+      }
+
+      interface DeleteEducationRequest {
+        email: string;
+        id: string;
+      }
     }
-    interface GetEducationsResponse {
-      educations: ENTITIES.Education[];
+
+    namespace Volunteer {
+      interface GetVolunteersRequest {
+        email: string;
+      }
+      interface GetVolunteersResponse {
+        volunteers: ENTITIES.Volunteer[];
+        arrayLength: number;
+        lastQuery: any;
+      }
+
+      interface GetMoreVolunteersRequest {
+        email: string;
+        lastQuery: any;
+      }
+      interface GetMoreVolunteersResponse {
+        volunteers: ENTITIES.Volunteer[];
+        lastQuery: any;
+      }
+
+      interface AddNewVolunteerRequest {
+        email: string;
+        volunteer: ENTITIES.Volunteer;
+      }
+      interface EditVolunteerRequest {
+        email: string;
+        volunteer: ENTITIES.Volunteer;
+      }
+      interface DeleteVolunteerRequest {
+        email: string;
+        id: string;
+      }
+    }
+    namespace Research {
+      interface GetResearchesRequest {
+        email: string;
+      }
+      interface GetResearchesResponse {
+        researches: ENTITIES.Research[];
+        arrayLength: number;
+        lastQuery: any;
+      }
+      interface GetMoreResearchesRequest {
+        email: string;
+        lastQuery: any;
+      }
+      interface GetMoreResearchesResponse {
+        researches: ENTITIES.Research[];
+        lastQuery: any;
+      }
+      interface AddNewResearchRequest {
+        email: string;
+        research: ENTITIES.Research;
+      }
+      interface EditResearchRequest {
+        email: string;
+        research: ENTITIES.Research;
+      }
+      interface DeleteResearchRequest {
+        email: string;
+        id: string;
+      }
+    }
+
+    namespace Letter {
+      interface GetLettersRequest {
+        email: string;
+      }
+      interface GetLettersResponse {
+        letters: ENTITIES.Letter[];
+        arrayLength: number;
+        lastQuery: any;
+      }
+
+      interface GetMoreLettersRequest {
+        email: string;
+        lastQuery: any;
+      }
+      interface GetMoreLettersResponse {
+        letters: ENTITIES.Letter[];
+        lastQuery: any;
+      }
+
+      interface AddNewLetterRequest {
+        email: string;
+        letter: ENTITIES.Letter;
+      }
+      interface EditLetterRequest {
+        email: string;
+        letter: ENTITIES.Letter;
+      }
+      interface DeleteLetterRequest {
+        email: string;
+        id: string;
+      }
     }
   }
 
@@ -165,6 +323,11 @@ declare namespace DTO {
       vacation_weeks: string;
       year: string;
     }
+
+    interface UpdateProgramRequest {
+      email: string;
+      program: ENTITIES.Program;
+    }
   }
 
   export namespace Auth {
@@ -174,6 +337,80 @@ declare namespace DTO {
     }
     interface LoginResponse {
       username: string;
+    }
+  }
+
+  export namespace Storage {
+    interface GetImageUrlRequest {
+      name: string;
+    }
+
+    interface GetImageUrlResponse {
+      name: string;
+      url: string;
+    }
+
+    interface UploadAvatarRequest {
+      name: string;
+      content: string;
+    }
+    interface UploadAvatarResponse {
+      name: string;
+      url: string;
+    }
+  }
+
+  export namespace Locker {
+    interface GetReviewsRequest {
+      email: string;
+    }
+
+    interface GetReviewsResponse {
+      reviews: ENTITIES.Review[];
+      lastQuery: any;
+      arrayLength: number;
+    }
+
+    interface GetMoreReviewsRequest {
+      email: string;
+      lastQuery: any;
+    }
+
+    interface GetMoreReviewsResponse {
+      reviews: ENTITIES.Review[];
+      lastQuery: any;
+    }
+
+    namespace Resource {
+      interface getResourcesRequest {
+        email: string;
+      }
+
+      interface getResourcesResponse {
+        resources: ENTITIES.Resource[];
+        lastQuery: any;
+        arrayLength: number;
+      }
+
+      interface getMoreResourcesRequest {
+        email: string;
+        lastQuery: any;
+      }
+
+      interface getMoreResourcesResponse {
+        resources: ENTITIES.Resource[];
+        lastQuery: any;
+      }
+
+      interface GetResourceDetailRequest {
+        id: string;
+        email: string;
+      }
+
+      interface GetResourceDetailResponse {
+        id: string;
+        resource: ENTITIES.Resource;
+      }
     }
   }
 }

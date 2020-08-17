@@ -14,12 +14,20 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from 'utils/@reduxjs/toolkit';
 import { DTO } from 'types/DTO';
+import { faBullseye } from '@fortawesome/free-solid-svg-icons';
+import { STATES } from 'types/STATE';
 
 export const initialState: STATES.User = {
   loading: true,
   loadingSearchBox: true,
+  loadingUserSearchProfile: true,
   workExperiences: [],
   educations: [],
+  volunteers: [],
+  researches: [],
+  letters: [],
+  arrayLength: 0,
+  lastQuery: {},
   userProfile: {
     email: '',
     avatar: '',
@@ -164,56 +172,442 @@ const UserSliceState = createSlice({
       state,
       action: PayloadAction<DTO.User.GetUserSearchProfileRequest>,
     ) {
-      state.loading = true;
+      state.loadingUserSearchProfile = true;
       state.userSearchProfile = initialState.userSearchProfile;
     },
     getUserSearchProfileActionSuccess(
       state,
       action: PayloadAction<DTO.User.GetUserSearchProfileResponse>,
     ) {
-      state.loading = false;
+      state.loadingUserSearchProfile = false;
       state.userSearchProfile = action.payload;
     },
     getUserSearchProfileActionFailed(state) {
+      state.loadingUserSearchProfile = false;
+    },
+    updateUserProfileAction(
+      state,
+      action: PayloadAction<DTO.User.UpdateUserProfileRequest>,
+    ) {
+      state.loading = true;
+      state.userProfile = action.payload.userProfile;
+    },
+    updateUserProfileActionSuccess(state) {
+      state.loading = false;
+    },
+    updateUserProfileActionFailed(state) {
       state.loading = false;
     },
     //CV
     // work experiences
     getWorkExperiencesAction(
       state,
-      action: PayloadAction<DTO.User.GetWorkExperiencesRequest>,
+      action: PayloadAction<DTO.User.WorkExperience.GetWorkExperiencesRequest>,
     ) {
       state.loading = true;
       state.workExperiences = [];
+      state.lastQuery = {};
+      state.arrayLength = 0;
     },
     getWorkExperiencesActionSuccess(
       state,
-      action: PayloadAction<DTO.User.GetWorkExperiencesResponse>,
+      action: PayloadAction<DTO.User.WorkExperience.GetWorkExperiencesResponse>,
     ) {
       state.loading = false;
       state.workExperiences = action.payload.workExperiences;
+      state.lastQuery = action.payload.lastQuery;
+      state.arrayLength = action.payload.arrayLength;
     },
     getWorkExperiencesActionFailed(state) {
       state.loading = false;
     },
+    getMoreWorkExperiencesAction(
+      state,
+      action: PayloadAction<
+        DTO.User.WorkExperience.GetMoreWorkExperiencesRequest
+      >,
+    ) {},
+    getMoreWorkExperiencesActionSuccess(
+      state,
+      action: PayloadAction<
+        DTO.User.WorkExperience.GetMoreWorkExperiencesResponse
+      >,
+    ) {
+      state.loading = false;
+      state.lastQuery = action.payload.lastQuery;
+      state.workExperiences = [
+        ...state.workExperiences,
+        ...action.payload.workExperiences,
+      ];
+    },
+    getMoreWorkExperiencesActionFailed(state) {
+      state.loading = false;
+    },
+    addNewWorkExperienceAction(
+      state,
+      action: PayloadAction<
+        DTO.User.WorkExperience.AddNewWorkExperiencesRequest
+      >,
+    ) {
+      state.loading = true;
+    },
+    addNewWorkExperienceActionSuccess(state) {
+      state.loading = false;
+    },
+    addNewWorkExperienceActionFailed(state) {
+      state.loading = false;
+    },
+    editWorkExperienceAction(
+      state,
+      action: PayloadAction<DTO.User.WorkExperience.EditWorkExperiencesRequest>,
+    ) {
+      state.loading = true;
+      // const workExperiencesTemp = state.workExperiences;
+      // const foundIndex = workExperiencesTemp.findIndex(
+      //   x => x.id === action.payload.workExperience.id,
+      // );
+      // workExperiencesTemp[foundIndex] = action.payload.workExperience;
+
+      // state.workExperiences = workExperiencesTemp.sort((a, b) =>
+      //   a.date_end < b.date_end ? 1 : a.date_end > b.date_end ? -1 : 0,
+      // );
+    },
+    editWorkExperienceActionSuccess(state) {
+      state.loading = false;
+    },
+    editWorkExperienceActionFailed(state) {
+      state.loading = false;
+    },
+    deleteWorkExperienceActionAction(
+      state,
+      action: PayloadAction<
+        DTO.User.WorkExperience.DeleteWorkExperiencesRequest
+      >,
+    ) {
+      state.loading = true;
+      state.workExperiences = state.workExperiences.filter(
+        item => item.id !== action.payload.id,
+      );
+    },
+    deleteWorkExperienceActionSuccess(state) {
+      state.loading = false;
+    },
+    deleteWorkExperienceActionFailed(state) {
+      state.loading = false;
+    },
+    // end work experiences
+
     //education
     getEducationsAction(
       state,
-      action: PayloadAction<DTO.User.GetEducationsRequest>,
+      action: PayloadAction<DTO.User.Education.GetEducationsRequest>,
     ) {
       state.loading = true;
       state.educations = [];
+      state.lastQuery = {};
+      state.arrayLength = 0;
     },
     getEducationsActionSuccess(
       state,
-      action: PayloadAction<DTO.User.GetEducationsResponse>,
+      action: PayloadAction<DTO.User.Education.GetEducationsResponse>,
     ) {
       state.loading = false;
       state.educations = action.payload.educations;
+      state.lastQuery = action.payload.lastQuery;
+      state.arrayLength = action.payload.arrayLength;
     },
     getEducationsActionFailed(state) {
       state.loading = false;
     },
+    getMoreEducationsAction(
+      state,
+      action: PayloadAction<DTO.User.Education.GetMoreEducationsRequest>,
+    ) {},
+    getMoreEducationsActionSuccess(
+      state,
+      action: PayloadAction<DTO.User.Education.GetMoreEducationsResponse>,
+    ) {
+      state.loading = false;
+      state.educations = [...state.educations, ...action.payload.educations];
+      state.lastQuery = action.payload.lastQuery;
+    },
+    getMoreEducationsActionFailed(state) {
+      state.loading = false;
+    },
+    addNewEducationAction(
+      state,
+      actions: PayloadAction<DTO.User.Education.AddNewEducationRequest>,
+    ) {
+      state.loading = true;
+    },
+    addNewEducationActionSuccess(state) {
+      state.loading = false;
+    },
+    addNewEducationActionFailed(state) {
+      state.loading = false;
+    },
+    editEducationAction(
+      state,
+      action: PayloadAction<DTO.User.Education.EditEducationRequest>,
+    ) {
+      state.loading = true;
+    },
+    editEducationActionSuccess(state) {
+      state.loading = false;
+    },
+    editEducationActionFailed(state) {
+      state.loading = false;
+    },
+    deleteEducationAction(
+      state,
+      action: PayloadAction<DTO.User.Education.DeleteEducationRequest>,
+    ) {
+      state.loading = true;
+      state.educations = state.educations.filter(
+        item => item.id !== action.payload.id,
+      );
+    },
+    deleteEducationActionSuccess(state) {
+      state.loading = false;
+    },
+    deleteEducationActionFailed(state) {
+      state.loading = false;
+    },
+    // end education
+
+    // volunteer
+    getVolunteersAction(
+      state,
+      action: PayloadAction<DTO.User.Volunteer.GetVolunteersRequest>,
+    ) {
+      state.loading = true;
+      state.volunteers = [];
+      state.lastQuery = {};
+      state.arrayLength = 0;
+    },
+    getVolunteersActionSuccess(
+      state,
+      action: PayloadAction<DTO.User.Volunteer.GetVolunteersResponse>,
+    ) {
+      state.loading = false;
+      state.volunteers = action.payload.volunteers;
+      state.arrayLength = action.payload.arrayLength;
+      state.lastQuery = action.payload.lastQuery;
+    },
+    getVolunteersActionFailed(state) {
+      state.loading = false;
+    },
+    getMoreVolunteersAction(
+      state,
+      action: PayloadAction<DTO.User.Volunteer.GetMoreVolunteersRequest>,
+    ) {},
+    getMoreVolunteersActionSuccess(
+      state,
+      action: PayloadAction<DTO.User.Volunteer.GetMoreVolunteersResponse>,
+    ) {
+      state.loading = false;
+      state.volunteers = [...state.volunteers, ...action.payload.volunteers];
+      state.lastQuery = action.payload.lastQuery;
+    },
+    getMoreVolunteersActionFailed(state) {
+      state.loading = false;
+    },
+    addNewVolunteerAction(
+      state,
+      action: PayloadAction<DTO.User.Volunteer.AddNewVolunteerRequest>,
+    ) {
+      state.loading = true;
+    },
+    addNewVolunteerActionSuccess(state) {
+      state.loading = false;
+    },
+    addNewVolunteerActionFailed(state) {
+      state.loading = false;
+    },
+    editVolunteerAction(
+      state,
+      action: PayloadAction<DTO.User.Volunteer.EditVolunteerRequest>,
+    ) {
+      state.loading = true;
+    },
+    editVolunteerActionSuccess(state) {
+      state.loading = false;
+    },
+    editVolunteerActionFailed(state) {
+      state.loading = false;
+    },
+    deleteVolunteerAction(
+      state,
+      action: PayloadAction<DTO.User.Volunteer.DeleteVolunteerRequest>,
+    ) {
+      state.loading = true;
+      state.volunteers = state.volunteers.filter(
+        item => item.id !== action.payload.id,
+      );
+    },
+    deleteVolunteerActionSuccess(state) {
+      state.loading = false;
+    },
+    deleteVolunteerActionFailed(state) {
+      state.loading = false;
+    },
+    // end volunteer
+
+    // research
+    getResearchesAction(
+      state,
+      action: PayloadAction<DTO.User.Research.GetResearchesRequest>,
+    ) {
+      state.loading = true;
+      state.researches = [];
+      state.lastQuery = {};
+      state.arrayLength = 0;
+    },
+    getResearchesActionSuccess(
+      state,
+      action: PayloadAction<DTO.User.Research.GetResearchesResponse>,
+    ) {
+      state.loading = false;
+      state.researches = action.payload.researches;
+      state.arrayLength = action.payload.arrayLength;
+      state.lastQuery = action.payload.lastQuery;
+    },
+    getResearchesActionFailed(state) {
+      state.loading = false;
+    },
+    getMoreResearchesAction(
+      state,
+      action: PayloadAction<DTO.User.Research.GetMoreResearchesRequest>,
+    ) {},
+    getMoreResearchesActionSuccess(
+      state,
+      action: PayloadAction<DTO.User.Research.GetMoreResearchesResponse>,
+    ) {
+      state.loading = false;
+      state.researches = [...state.researches, ...action.payload.researches];
+      state.lastQuery = action.payload.lastQuery;
+    },
+    getMoreResearchesActionFailed(state) {
+      state.loading = false;
+    },
+    addNewResearchAction(
+      state,
+      action: PayloadAction<DTO.User.Research.AddNewResearchRequest>,
+    ) {
+      state.loading = true;
+    },
+    addNewResearchActionSuccess(state) {
+      state.loading = false;
+    },
+    addNewResearchActionFailed(state) {
+      state.loading = false;
+    },
+    editResearchAction(
+      state,
+      action: PayloadAction<DTO.User.Research.EditResearchRequest>,
+    ) {
+      state.loading = true;
+    },
+    editResearchActionSuccess(state) {
+      state.loading = false;
+    },
+    editResearchActionFailed(state) {
+      state.loading = false;
+    },
+    deleteResearchAction(
+      state,
+      action: PayloadAction<DTO.User.Research.DeleteResearchRequest>,
+    ) {
+      state.loading = true;
+      state.researches = state.researches.filter(
+        item => item.id !== action.payload.id,
+      );
+    },
+    deleteResearchActionSuccess(state) {
+      state.loading = false;
+    },
+    deleteResearchActionFailed(state) {
+      state.loading = false;
+    },
+    // end research
+
+    // letter
+    getLettersAction(
+      state,
+      action: PayloadAction<DTO.User.Letter.GetLettersRequest>,
+    ) {
+      state.loading = true;
+      state.letters = [];
+      state.arrayLength = 0;
+      state.lastQuery = {};
+    },
+    getLettersActionSuccess(
+      state,
+      action: PayloadAction<DTO.User.Letter.GetLettersResponse>,
+    ) {
+      state.loading = false;
+      state.letters = action.payload.letters;
+      state.arrayLength = action.payload.arrayLength;
+      state.lastQuery = action.payload.lastQuery;
+    },
+    getLettersActionFailed(state) {
+      state.loading = false;
+    },
+    getMoreLettersAction(
+      state,
+      action: PayloadAction<DTO.User.Letter.GetMoreLettersRequest>,
+    ) {},
+    getMoreLettersActionSuccess(
+      state,
+      action: PayloadAction<DTO.User.Letter.GetMoreLettersResponse>,
+    ) {
+      state.loading = false;
+      state.letters = [...state.letters, ...action.payload.letters];
+      state.lastQuery = action.payload.lastQuery;
+    },
+    getMoreLettersActionFailed(state) {
+      state.loading = false;
+    },
+    addNewLetterAction(
+      state,
+      action: PayloadAction<DTO.User.Letter.AddNewLetterRequest>,
+    ) {
+      state.loading = true;
+    },
+    addNewLetterActionSuccess(state) {
+      state.loading = false;
+    },
+    addNewLetterActionFailed(state) {
+      state.loading = false;
+    },
+    editLetterAction(
+      state,
+      action: PayloadAction<DTO.User.Letter.EditLetterRequest>,
+    ) {
+      state.loading = true;
+    },
+    editLetterActionSuccess(state) {
+      state.loading = false;
+    },
+    editLetterActionFailed(state) {
+      state.loading = false;
+    },
+    deleteLetterAction(
+      state,
+      action: PayloadAction<DTO.User.Letter.DeleteLetterRequest>,
+    ) {
+      state.loading = true;
+      state.letters = state.letters.filter(
+        item => item.id !== action.payload.id,
+      );
+    },
+    deleteLetterActionSuccess(state) {
+      state.loading = false;
+    },
+    deleteLetterActionFailed(state) {
+      state.loading = false;
+    },
+    // end letter
   },
 });
 

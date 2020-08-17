@@ -1,0 +1,17 @@
+.accordion-content-company {
+    display: flex;
+    justify-content: space-between;
+}
+
+.accordion-content-publication {
+    margin-top: 14px;
+}
+
+.accordion-content-publication a {
+    color: #7280DB;
+    font-weight: 500;
+
+    .right-arrow {
+        margin-left: 10px;
+    }
+}

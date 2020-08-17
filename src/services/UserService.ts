@@ -1,4 +1,4 @@
-import { db } from 'helpers/firebase.module';
+import { db, storageAvatar } from 'helpers/firebase.module';
 import { DTO } from 'types/DTO';
 
 const getUserProfile = async (email: string) => {
@@ -37,44 +37,17 @@ const getUserSearchProfile = async (
     });
   return profileUser;
 };
-const getWorkExperiences = async (
-  payload: DTO.User.GetWorkExperiencesRequest,
+
+const updateUserProfile = async (
+  payload: DTO.User.UpdateUserProfileRequest,
 ) => {
-  const workExperiences: ENTITIES.WorkExperience[] = [];
-
   const userRef = await db
     .collection('member_data')
-    .doc(payload.email)
-    .collection('work');
-  const workCollection = await userRef.get();
-  workCollection.forEach(doc => {
-    workExperiences.push({
-      id: doc.id,
-      ...doc.data(),
-    } as ENTITIES.WorkExperience);
-  });
-  return { workExperiences: workExperiences };
+    .doc(payload.userProfile.email)
+    .set({
+      ...payload.userProfile,
+    });
+  return userRef;
 };
-const getEducations = async (payload: DTO.User.GetEducationsRequest) => {
-  const educations: ENTITIES.Education[] = [];
 
-  const userRef = await db
-    .collection('member_data')
-    .doc(payload.email)
-    .collection('education');
-  const educationCollection = await userRef.get();
-  educationCollection.forEach(doc => {
-    educations.push({
-      id: doc.id,
-      ...doc.data(),
-    } as ENTITIES.Education);
-  });
-  return { educations: educations };
-};
-export {
-  getUserProfile,
-  searchUsers,
-  getUserSearchProfile,
-  getWorkExperiences,
-  getEducations,
-};
+export { getUserProfile, searchUsers, getUserSearchProfile, updateUserProfile };

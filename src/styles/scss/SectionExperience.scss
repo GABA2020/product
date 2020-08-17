@@ -1,0 +1,144 @@
+@import './common.scss';
+
+.section-experiences {
+    color: $goodNightColor;
+
+    .experiences-slidebar {
+        .experiences-nav {
+            list-style-type: none;
+        }
+
+        .experiences-nav li a {
+            color: $goodNightColor;
+        }
+
+        .experiences-nav li.active a {
+            color: #337859;
+        }
+    }
+
+    .experiences-content {
+        max-width: 570px !important;
+        border-left: 2px solid $mangoColor !important;
+
+        .experiences-caption {
+            border-radius: 6px;
+            background-color: rgba(238, 170, 53, 0.11);
+            padding: 0.5rem 1rem;
+
+            p {
+                font-size: 14px;
+                font-weight: normal;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: 1.5;
+                letter-spacing: normal;
+                color: $goodNightColor;
+            }
+        }
+
+        .main-title {
+            .main-title-work {
+                display: flex;
+                justify-content: space-between;
+
+                h2 {
+                    font-size: 24px;
+                    font-weight: 400;
+                    font-stretch: normal;
+                    font-style: normal;
+                    line-height: 1.58;
+                    letter-spacing: -0.3px;
+                    color: $goodNightColor;
+                }
+
+                .svg-inline--fa.fa-plus-circle.fa-w-16 {
+                    width: 2.4rem;
+                    height: 2.4rem;
+                    color: $goodNightColor;
+                }
+            }
+        }
+
+        .accordion {
+            padding-bottom: 2.5rem;
+            border-bottom: 1px solid rgba(17, 23, 65, 0.16);
+            margin-bottom: 30px;
+
+            .accordion-item {
+                border-bottom: 0px !important
+            }
+
+            .title-wrapper {
+                display: flex;
+                justify-content: space-between;
+
+                .title {
+                    font-size: 18px;
+                    font-weight: 500;
+                    font-stretch: normal;
+                    font-style: normal;
+                    line-height: 1.56;
+                    letter-spacing: normal;
+
+                }
+
+                svg.svg-inline--fa.fa-edit.fa-w-18 {
+                    color: $goodNightColor;
+                }
+            }
+
+            .sub-title {
+                font-size: 14px;
+                font-weight: 500;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: 1.71;
+                letter-spacing: 0.09px;
+                color: #337859;
+            }
+
+            .content {
+                display: flex;
+                font-size: 16px;
+                font-weight: normal;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: 1.5;
+                letter-spacing: 0.1px;
+
+                .btn-see-more-less {
+                    text-align: right;
+                    align-self: flex-end !important;
+                }
+
+            }
+
+            .content-publication {
+                a {
+                    font-size: 16px;
+                    font-weight: bold;
+                    font-stretch: normal;
+                    font-style: normal;
+                    line-height: 1.5;
+                    letter-spacing: 0.1px;
+                    color: $blurpleColor;
+                }
+            }
+        }
+
+
+
+        .load-more-wrapper {
+            .load-more-btn {
+                font-size: 16px;
+                font-weight: bold;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: normal;
+                letter-spacing: 0.1px;
+                color: $goodNightColor;
+            }
+        }
+    }
+}

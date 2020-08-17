@@ -16,7 +16,7 @@ label {
     font-weight: 500;
 }
 
-.btn-primary {
+.btn-success {
     border-radius: 6px;
     border: solid 1px #5ab88d !important;
     background-color: #5ab88d !important;
@@ -46,4 +46,18 @@ label {
     background-color: #f8f9fa !important;
     border-color: #f8f9fa !important;
     color: #212529 !important;
+}
+
+svg.svg-inline--fa {
+    color: #111741;
+    width: 2.4rem;
+    height: 2.4rem;
+}
+
+.mt-2 {
+    margin-top: 20px;
+}
+
+.mt-1 {
+    margin-top: 10px;
 }

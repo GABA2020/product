@@ -18,7 +18,7 @@ export const GuestUserLocker = () => {
     lockerSelector,
   );
   const { userSearchProfile } = useSelector(userSelector);
-  const image = useStorage(`avatar/${userSearchProfile.avatar}`);
+  const image = useStorage(`avatars/${userSearchProfile.avatar}`);
 
   useEffect(() => {
     if (userSearchProfile.email !== '') {

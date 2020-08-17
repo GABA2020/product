@@ -21,6 +21,7 @@ export const initialState: STATES.User = {
   loading: true,
   loadingSearchBox: true,
   loadingUserSearchProfile: true,
+  imageUploadPreview: '',
   workExperiences: [],
   educations: [],
   volunteers: [],
@@ -49,6 +50,8 @@ export const initialState: STATES.User = {
     learning_style: '',
     match: false,
     mcat: 0,
+    mcat_document_name: '',
+    mcat_review_requested: false,
     name: '',
     number_of_apps_categorical: '',
     number_of_apps_preliminary_year: '',
@@ -64,8 +67,12 @@ export const initialState: STATES.User = {
     specialty_interest: '',
     specialty_specific_publications: '',
     step_1: 0,
+    step_1_document_name: '',
+    step_1_review_requested: false,
     step_1_resources_used: [],
     step_2: 0,
+    step_2_document_name: '',
+    step_2_review_requested: false,
     step_2_resources_used: [],
     student_location: '',
     student_status: '',
@@ -99,6 +106,8 @@ export const initialState: STATES.User = {
     learning_style: '',
     match: false,
     mcat: 0,
+    mcat_document_name: '',
+    mcat_review_requested: false,
     name: '',
     number_of_apps_categorical: '',
     number_of_apps_preliminary_year: '',
@@ -114,8 +123,12 @@ export const initialState: STATES.User = {
     specialty_interest: '',
     specialty_specific_publications: '',
     step_1: 0,
+    step_1_document_name: '',
+    step_1_review_requested: false,
     step_1_resources_used: [],
     step_2: 0,
+    step_2_document_name: '',
+    step_2_review_requested: false,
     step_2_resources_used: [],
     student_location: '',
     student_status: '',
@@ -196,6 +209,23 @@ const UserSliceState = createSlice({
       state.loading = false;
     },
     updateUserProfileActionFailed(state) {
+      state.loading = false;
+    },
+    uploadAvatarAction(
+      state,
+      action: PayloadAction<DTO.User.UploadAvatarRequest>,
+    ) {
+      state.loading = true;
+      state.imageUploadPreview = '';
+    },
+    uploadAvatarActionSuccess(
+      state,
+      action: PayloadAction<DTO.User.UploadAvatarResponse>,
+    ) {
+      state.loading = false;
+      state.imageUploadPreview = action.payload.name;
+    },
+    uploadAvatarActionFailed(state) {
       state.loading = false;
     },
     //CV

@@ -27,6 +27,8 @@ declare namespace DTO {
       learning_style: string;
       match: boolean;
       mcat: number;
+      mcat_document_name: string;
+      mcat_review_requested: boolean;
       name: string;
       number_of_apps_categorical: string;
       number_of_apps_preliminary_year: string;
@@ -42,9 +44,13 @@ declare namespace DTO {
       specialty_interest: string;
       specialty_specific_publications: string;
       step_1: number;
+      step_1_document_name: string;
+      step_1_review_requested: boolean;
       step_1_resources_used: string[];
       step_2: number;
       step_2_resources_used: string[];
+      step_2_document_name: string;
+      step_2_review_requested: boolean;
       student_location: string;
       student_status: string;
       total_interviews_attended: string;
@@ -87,6 +93,8 @@ declare namespace DTO {
       learning_style: string;
       match: boolean;
       mcat: number;
+      mcat_document_name: string;
+      mcat_review_requested: boolean;
       name: string;
       number_of_apps_categorical: string;
       number_of_apps_preliminary_year: string;
@@ -102,9 +110,13 @@ declare namespace DTO {
       specialty_interest: string;
       specialty_specific_publications: string;
       step_1: number;
+      step_1_document_name: string;
+      step_1_review_requested: boolean;
       step_1_resources_used: string[];
       step_2: number;
       step_2_resources_used: string[];
+      step_2_document_name: string;
+      step_2_review_requested: boolean;
       student_location: string;
       student_status: string;
       total_interviews_attended: string;
@@ -119,6 +131,15 @@ declare namespace DTO {
     interface UpdateUserProfileRequest {
       userProfile: ENTITIES.UserProfile;
     }
+
+    interface UploadAvatarRequest {
+      file: File;
+    }
+    interface UploadAvatarResponse {
+      name: string;
+      url: string;
+    }
+
     namespace WorkExperience {
       interface GetWorkExperiencesRequest {
         email: string;
@@ -342,7 +363,7 @@ declare namespace DTO {
 
   export namespace Storage {
     interface GetImageUrlRequest {
-      name: string;
+      name: string; //->avatar/file_name
     }
 
     interface GetImageUrlResponse {
@@ -350,11 +371,21 @@ declare namespace DTO {
       url: string;
     }
 
-    interface UploadAvatarRequest {
-      name: string;
-      content: string;
+    interface UploadFileRequest {
+      name: string; //->file/email/file_name
+      file: File;
     }
-    interface UploadAvatarResponse {
+
+    interface UploadFileResponse {
+      name: string;
+      url: string;
+    }
+
+    interface GetFileUrlRequest {
+      name: string; //->file/email/file_name
+    }
+
+    interface GetFileUrlResponse {
       name: string;
       url: string;
     }

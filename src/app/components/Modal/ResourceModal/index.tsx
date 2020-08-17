@@ -8,7 +8,6 @@ import 'styles/scss/ModalWorkExperience.scss';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { Formik } from 'formik';
-import { showDialogDelete } from 'helpers/Swal.module';
 import { convertDateToTimestamp } from 'helpers/Unity';
 
 // const schema = yup.object().shape({
@@ -53,7 +52,7 @@ export const ResourceModal: FC<IResource> = props => {
 
   return (
     <Fragment>
-      <Modal show={isShow} onHide={onHide}>
+      <Modal backdrop="static" show={isShow} onHide={onHide}>
         <Modal.Header closeButton>
           <Modal.Title>{resource.name}</Modal.Title>
         </Modal.Header>

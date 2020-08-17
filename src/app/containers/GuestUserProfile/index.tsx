@@ -13,6 +13,7 @@ import { programSelector } from 'redux/Program/selectors';
 import { ordinal_suffix_of } from 'helpers/Unity';
 import { GuestUserLocker } from '../GuestUserLocker';
 import { useStorage } from 'hook/useStorage';
+import { img_user } from 'assets/images';
 
 export const GuestUserProfile = props => {
   useInjectSaga({ key: userSliceKey, saga: UserSaga });
@@ -22,7 +23,7 @@ export const GuestUserProfile = props => {
   const { userSearchProfile } = useSelector(userSelector);
   const { program } = useSelector(programSelector);
 
-  const image = useStorage(`avatar/${userSearchProfile.avatar}`);
+  const image = useStorage(`avatars/${userSearchProfile.avatar}`);
 
   useEffect(() => {
     dispatch(
@@ -39,12 +40,21 @@ export const GuestUserProfile = props => {
           <div className="media media-profile">
             <div className="profile-images">
               <a href="#">
-                <img
-                  alt="user image"
-                  src={image ?? ''}
-                  width={140}
-                  height={140}
-                />
+                {image !== '' ? (
+                  <img
+                    alt="user image"
+                    src={image ?? ''}
+                    width={140}
+                    height={140}
+                  />
+                ) : (
+                  <img
+                    alt="user image"
+                    src={img_user}
+                    width={140}
+                    height={140}
+                  />
+                )}
               </a>
             </div>
             <div className="media-body">

@@ -19,7 +19,7 @@ interface IReview {
 const Review: FC<IReview> = props => {
   const { review, profile } = props;
 
-  const avatarUser = useStorage(`avatar/${profile.avatar}`);
+  const avatarUser = useStorage(`avatars/${profile.avatar}`);
   const resource = useResource(review.resource_id, profile.email);
 
   return (

@@ -3,25 +3,25 @@ import { Modal } from 'react-bootstrap';
 import { Formik } from 'formik';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
-import {
-  showDialogSizeImage,
-  showDialogUploadImage,
-} from 'helpers/Swal.module';
+import { Modal as ModalAnt, message } from 'antd';
 import { ImageCrop } from 'app/components/ImageCrop';
 import Select from 'react-select';
 import * as yup from 'yup';
+import { img_user } from 'assets/images';
+import { showWarningMessage } from 'helpers/Swal.module';
+import { Message } from 'helpers/Message';
 
 interface IEditProfile {
   isShow: boolean;
+  userProfile: ENTITIES.UserProfile;
+  program: ENTITIES.Program;
+  image_preview_url: string;
+  saveAvatar: (imageBase64: string, name: string) => void;
   onHide: () => void;
   saveProfile: (
     userProfile: ENTITIES.UserProfile,
     program: ENTITIES.Program,
-    imageBase64: string,
   ) => void;
-  userProfile: ENTITIES.UserProfile;
-  program: ENTITIES.Program;
-  avatar_url: string;
 }
 
 interface IImage {
@@ -83,17 +83,15 @@ const schema = yup.object().shape({
 export const EditProfileModal: FC<IEditProfile> = props => {
   const {
     isShow,
-    onHide,
     userProfile,
-    avatar_url,
     program,
+    image_preview_url,
+    onHide,
     saveProfile,
+    saveAvatar,
   } = props;
+
   const [imageState, setImageState] = useState<ENTITIES.File>(initFile);
-  const [imageBase64State, setImageBase64State] = useState<IImage>({
-    content: '',
-    name: '',
-  });
 
   const onHandleChangeAvatar = event => {
     const file = event.target.files[0];
@@ -108,31 +106,27 @@ export const EditProfileModal: FC<IEditProfile> = props => {
         if (file.size / 1024 / 1024 < 5) {
           setImageState(file);
         } else {
-          showDialogSizeImage();
+          showWarningMessage(Message.Format_Image);
         }
       } else {
-        showDialogUploadImage();
+        showWarningMessage(Message.Size_File_Too_Big);
       }
     }
   };
   const onCropDone = (imageBase64: string, name: string) => {
     setImageState(initFile);
-    setImageBase64State({
-      content: imageBase64,
-      name,
-    });
+    saveAvatar(imageBase64, name);
   };
   const onCropCancel = () => {
     setImageState(initFile);
-    setImageBase64State(initImage);
   };
   return (
     <Fragment>
       <div className="modal-edit-profile">
         <Modal
+          backdrop="static"
           show={isShow}
           onHide={() => {
-            setImageBase64State(initImage);
             onHide();
           }}
         >
@@ -154,20 +148,14 @@ export const EditProfileModal: FC<IEditProfile> = props => {
                   ...userProfile,
                   name: values.name,
                   year_in_program: values.year_in_program,
-                  avatar: imageBase64State.name
-                    ? imageBase64State.name
-                    : userProfile.avatar,
+                  avatar: userProfile.avatar,
                   degrees: values.degrees,
                 };
                 const newProgram: ENTITIES.Program = {
                   ...program,
                   specialty: values.specialty,
                 };
-                saveProfile(
-                  newUserProfile,
-                  newProgram,
-                  imageBase64State.content,
-                );
+                saveProfile(newUserProfile, newProgram);
               }}
             >
               {({
@@ -180,17 +168,24 @@ export const EditProfileModal: FC<IEditProfile> = props => {
                 <form onSubmit={handleSubmit}>
                   <div className="form-group">
                     <div className="profile-images-wrapper text-center">
-                      <img
-                        className="profile-image"
-                        alt="image preview"
-                        src={
-                          imageBase64State.content
-                            ? imageBase64State.content
-                            : avatar_url
-                        }
-                        width={140}
-                        height={140}
-                      />
+                      {image_preview_url !== '' ? (
+                        <img
+                          className="profile-image"
+                          alt="image preview"
+                          src={image_preview_url}
+                          width={140}
+                          height={140}
+                        />
+                      ) : (
+                        <img
+                          className="profile-image"
+                          alt="image preview"
+                          src={img_user}
+                          width={140}
+                          height={140}
+                        />
+                      )}
+
                       <input
                         type="file"
                         onChange={onHandleChangeAvatar}
@@ -276,7 +271,7 @@ export const EditProfileModal: FC<IEditProfile> = props => {
                   <div className="text-right mt-2">
                     <button
                       type="submit"
-                      className="btn btn-primary btn-save-profile"
+                      className="btn btn-success btn-save-profile"
                     >
                       Save
                     </button>

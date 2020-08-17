@@ -18,29 +18,41 @@ import { ProgramSaga } from 'redux/Program/saga';
 import { StorageSaga } from 'redux/Storage/saga';
 import { userSelector } from 'redux/User/selectors';
 import { programSelector } from 'redux/Program/selectors';
-import { ordinal_suffix_of } from 'helpers/Unity';
+import { ordinal_suffix_of, dataUrlFile } from 'helpers/Unity';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { EditProfileModal } from 'app/components/Modal/EditProfileModal';
 import { Locker } from '../Locker';
 import { CVWork } from '../CVWork';
 import { useStorage } from 'hook/useStorage';
+import { Score } from '../Score';
+import { img_user } from 'assets/images';
+import { REF } from 'helpers/firebase.module';
 
 export const MyProfile = props => {
   useInjectSaga({ key: userSliceKey, saga: UserSaga });
   useInjectSaga({ key: programSliceKey, saga: ProgramSaga });
   useInjectSaga({ key: storageSliceKey, saga: StorageSaga });
   const dispatch = useDispatch();
-  const { userProfile, educations } = useSelector(userSelector);
+  const { userProfile, educations, imageUploadPreview } = useSelector(
+    userSelector,
+  );
   const { program } = useSelector(programSelector);
 
-  const image = useStorage(`avatar/${userProfile.avatar}`);
-
   const [editModeState, setEditModeState] = useState<boolean>(true);
+  const [userProfileState, setUserProfileState] = useState<
+    ENTITIES.UserProfile
+  >({ ...userProfile });
   const [
     isShowModalEditProfileState,
     setIsShowModalEditProfileState,
   ] = useState<boolean>(false);
+
+  const image = useStorage(`${REF.avatars}/${userProfile.avatar}`);
+
+  const image_preview_url = useStorage(
+    `${REF.avatars}/${userProfileState.avatar}`,
+  );
 
   useEffect(() => {
     dispatch(
@@ -48,28 +60,17 @@ export const MyProfile = props => {
     );
   }, [userProfile.email]);
 
+  useEffect(() => {
+    if (imageUploadPreview !== '') {
+      setUserProfileState({ ...userProfile, avatar: imageUploadPreview });
+    }
+  }, [imageUploadPreview]);
+
   const saveProfile = async (
     userProfile: ENTITIES.UserProfile,
     program: ENTITIES.Program,
-    imageBase64: string,
   ) => {
     setIsShowModalEditProfileState(false);
-    if (imageBase64 !== '') {
-      dispatch(
-        storageActions.uploadAvatarAction({
-          name: userProfile.avatar,
-          content: imageBase64,
-        }),
-      );
-      dispatch(userActions.updateUserProfileAction({ userProfile }));
-      dispatch(
-        programActions.updateProgramAction({
-          email: userProfile.email,
-          program: program,
-        }),
-      );
-      return;
-    }
     dispatch(userActions.updateUserProfileAction({ userProfile }));
     dispatch(
       programActions.updateProgramAction({
@@ -79,13 +80,23 @@ export const MyProfile = props => {
     );
   };
 
+  const saveAvatar = (imageBase64: string, name: string) => {
+    const file: File = dataUrlFile(imageBase64, name);
+    dispatch(
+      userActions.uploadAvatarAction({
+        file,
+      }),
+    );
+  };
+
   return (
     <Fragment>
       <EditProfileModal
-        avatar_url={image ?? ''}
+        image_preview_url={image_preview_url}
         saveProfile={saveProfile}
+        saveAvatar={saveAvatar}
         program={program}
-        userProfile={userProfile}
+        userProfile={userProfileState}
         isShow={isShowModalEditProfileState}
         onHide={() => {
           setIsShowModalEditProfileState(false);
@@ -98,6 +109,7 @@ export const MyProfile = props => {
             href="#"
             onClick={e => {
               e.preventDefault();
+              setUserProfileState(userProfile);
               setIsShowModalEditProfileState(true);
             }}
           >
@@ -110,12 +122,21 @@ export const MyProfile = props => {
           <div className="media media-profile">
             <div className="profile-images">
               <a href="#">
-                <img
-                  alt="user image"
-                  src={image ?? ''}
-                  width={140}
-                  height={140}
-                />
+                {image !== '' ? (
+                  <img
+                    alt="user image"
+                    src={image ?? ''}
+                    width={140}
+                    height={140}
+                  />
+                ) : (
+                  <img
+                    alt="user image"
+                    src={img_user}
+                    width={140}
+                    height={140}
+                  />
+                )}
               </a>
             </div>
             <div className="media-body">
@@ -193,101 +214,7 @@ export const MyProfile = props => {
         </div>
       </section>
       {/* owner profile will use userProfile */}
-      <section className="section-step-scope">
-        <div className="container">
-          <ul className="section-step-category">
-            <li className="step-item">
-              <figure className="box-step">
-                <div className="service-icons">
-                  <a href="#">
-                    <span className="icons-grid">&nbsp;</span>
-                  </a>
-                </div>
-                <figcaption className="step-caption">
-                  <h3 className="step-name">
-                    <a href="#">MCAT</a>
-                  </h3>
-                  <p className="step-paragraph">
-                    <span className="step-num">{userProfile.mcat}</span>
-                    {userProfile.mcat >= 246 && (
-                      <span className="step-gloss"> / Pass</span>
-                    )}
-                  </p>
-                  <div className="scope-link">
-                    <a href="#">Manage Scores</a>
-                  </div>
-                </figcaption>
-              </figure>
-            </li>
-            <li className="step-item">
-              <figure className="box-step">
-                <div className="service-icons">
-                  <a href="#">
-                    <span className="icons-point">&nbsp;</span>
-                  </a>
-                </div>
-                <figcaption className="step-caption">
-                  <h3 className="step-name">
-                    <a href="#">Step One</a>
-                  </h3>
-                  <p className="step-paragraph">
-                    <span className="step-num">{userProfile.step_1}</span>
-                    {userProfile.step_1 >= 246 && (
-                      <span className="step-gloss"> / Pass</span>
-                    )}
-                  </p>
-                  <div className="scope-link">
-                    <a href="#">Manage Scores</a>
-                  </div>
-                </figcaption>
-              </figure>
-            </li>
-            <li className="step-item">
-              <figure className="box-step">
-                <div className="service-icons">
-                  <a href="#">
-                    <span className="icons-image">&nbsp;</span>
-                  </a>
-                </div>
-                <figcaption className="step-caption">
-                  <h3 className="step-name">
-                    <a href="#">Step Two CK / CS</a>
-                  </h3>
-                  <p className="step-paragraph">
-                    <span className="step-num">{userProfile.step_2}</span>
-                    {userProfile.step_2 >= 246 && (
-                      <span className="step-gloss"> / Pass</span>
-                    )}
-                  </p>
-                  <div className="scope-link">
-                    <a href="#">Manage Scores</a>
-                  </div>
-                </figcaption>
-              </figure>
-            </li>
-            <li className="step-item">
-              <figure className="box-step">
-                <div className="service-icons">
-                  <a href="#">
-                    <span className="icons-pi">&nbsp;</span>
-                  </a>
-                </div>
-                <figcaption className="step-caption">
-                  <h3 className="step-name">
-                    <a href="#">Step Three</a>
-                  </h3>
-                  <p className="step-paragraph step-paragraph-verify">
-                    Once we verify your scores, you will see them here.
-                  </p>
-                  <div className="scope-link">
-                    <a href="#">Manage Scores</a>
-                  </div>
-                </figcaption>
-              </figure>
-            </li>
-          </ul>
-        </div>
-      </section>
+      <Score />
       {/* CV work */}
       <CVWork editMode={editModeState} />
       {/* locker */}

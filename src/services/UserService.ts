@@ -1,4 +1,4 @@
-import { db, storageAvatar } from 'helpers/firebase.module';
+import { db, storageAvatar, storageFB } from 'helpers/firebase.module';
 import { DTO } from 'types/DTO';
 
 const getUserProfile = async (email: string) => {
@@ -50,4 +50,18 @@ const updateUserProfile = async (
   return userRef;
 };
 
-export { getUserProfile, searchUsers, getUserSearchProfile, updateUserProfile };
+const uploadAvatar = async (payload: DTO.User.UploadAvatarRequest) => {
+  const avatarRef = await storageFB
+    .ref(`avatars/${payload.file.name}`)
+    .put(payload.file);
+  const url = await avatarRef.ref.getDownloadURL();
+  return { name: payload.file.name, url };
+};
+
+export {
+  getUserProfile,
+  searchUsers,
+  getUserSearchProfile,
+  updateUserProfile,
+  uploadAvatar,
+};

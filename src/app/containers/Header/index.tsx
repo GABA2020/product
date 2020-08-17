@@ -32,6 +32,7 @@ export const Header = () => {
       return;
     }
   }, [isAuth, dispatch]);
+
   const onchangeSearchText = (text: string) => {
     if (text.trim() !== '') {
       dispatch(userActions.searchUsersAction({ text }));

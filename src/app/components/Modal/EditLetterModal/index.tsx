@@ -6,8 +6,9 @@ import * as yup from 'yup';
 import moment from 'moment';
 import 'styles/scss/ModalWorkExperience.scss';
 import { Formik } from 'formik';
-import { showDialogDelete } from 'helpers/Swal.module';
+import { showConfirmMessage } from 'helpers/Swal.module';
 import { convertDateToTimestamp } from 'helpers/Unity';
+import { Message } from 'helpers/Message';
 
 const schema = yup.object().shape({
   document_name: yup
@@ -55,7 +56,11 @@ export const EditLetterModal: FC<IEditLetterModal> = props => {
   const { isShow, onHide, letter, editLetter, deleteLetter } = props;
 
   const onHandleDelete = async () => {
-    const isDelete = await showDialogDelete();
+    const isDelete = await showConfirmMessage(
+      Message.Delete_Question,
+      '',
+      'warning',
+    );
     if (isDelete.value === true) {
       deleteLetter(letter);
     }
@@ -63,7 +68,7 @@ export const EditLetterModal: FC<IEditLetterModal> = props => {
 
   return (
     <Fragment>
-      <Modal show={isShow} onHide={onHide}>
+      <Modal backdrop="static" show={isShow} onHide={onHide}>
         <Modal.Header closeButton>
           <Modal.Title>Add letter</Modal.Title>
         </Modal.Header>
@@ -179,7 +184,7 @@ export const EditLetterModal: FC<IEditLetterModal> = props => {
                     Show link ?
                   </label>
                 </div>
-                <div className="btn-wrapper-submit">
+                <div className="btn-wrapper-submit mt-2">
                   <button
                     type="button"
                     className="btn btn-light btn-save-profile"
@@ -189,7 +194,7 @@ export const EditLetterModal: FC<IEditLetterModal> = props => {
                   </button>
                   <button
                     type="submit"
-                    className="btn btn-primary btn-save-profile"
+                    className="btn btn-success btn-save-profile"
                   >
                     Save
                   </button>

@@ -18,7 +18,7 @@ export const Locker = () => {
     lockerSelector,
   );
   const { userProfile } = useSelector(userSelector);
-  const image = useStorage(`avatar/${userProfile.avatar}`);
+  const image = useStorage(`avatars/${userProfile.avatar}`);
   const [resourceModal, setResourceModal] = useState<boolean>(false);
   const [resourceState, setResourceState] = useState<ENTITIES.Resource>({
     id: '',

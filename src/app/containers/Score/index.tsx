@@ -21,6 +21,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { UserSaga } from 'redux/User/saga';
 import 'styles/scss/SectionScore.scss';
 import { MCATModal } from 'app/components/Modal/MCATModal';
+import { Step1Modal } from 'app/components/Modal/Step1Modal';
+import { Step2Modal } from 'app/components/Modal/Step2Modal';
 
 export const Score = () => {
   useInjectSaga({ key: userSliceKey, saga: UserSaga });
@@ -28,11 +30,31 @@ export const Score = () => {
   const dispatch = useDispatch();
   const { userProfile } = useSelector(userSelector);
   const [mcatModal, setMCATModal] = useState<boolean>(false);
+  const [step1Modal, setStep1Modal] = useState<boolean>(false);
+  const [step2Modal, setStep2Modal] = useState<boolean>(false);
 
   const uploadFileMCAT = (file: File) => {
     dispatch(
       storageActions.uploadFileAction({
-        name: `${userProfile.email}/MCAT/${file.name}`,
+        name: `files/${userProfile.email}/MCAT/${file.name}`,
+        file,
+      }),
+    );
+  };
+
+  const uploadFileStep1 = (file: File) => {
+    dispatch(
+      storageActions.uploadFileAction({
+        name: `files/${userProfile.email}/Step1/${file.name}`,
+        file,
+      }),
+    );
+  };
+
+  const uploadFileStep2 = (file: File) => {
+    dispatch(
+      storageActions.uploadFileAction({
+        name: `files/${userProfile.email}/Step2/${file.name}`,
         file,
       }),
     );
@@ -49,7 +71,51 @@ export const Score = () => {
         uploadFileMCAT={uploadFileMCAT}
         updateUserProfile={newUserProfile => {
           if (JSON.stringify(newUserProfile) !== JSON.stringify(userProfile)) {
-            dispatch(userActions.updateUserProfileAction({ userProfile }));
+            dispatch(
+              userActions.updateUserProfileAction({
+                userProfile: { ...newUserProfile, mcat_review_requested: true },
+              }),
+            );
+          }
+        }}
+      />
+      <Step1Modal
+        userProfile={userProfile}
+        isShow={step1Modal}
+        onHide={() => {
+          setStep1Modal(false);
+        }}
+        uploadFileStep1={uploadFileStep1}
+        updateUserProfile={newUserProfile => {
+          if (JSON.stringify(newUserProfile) !== JSON.stringify(userProfile)) {
+            dispatch(
+              userActions.updateUserProfileAction({
+                userProfile: {
+                  ...newUserProfile,
+                  step_1_review_requested: true,
+                },
+              }),
+            );
+          }
+        }}
+      />
+      <Step2Modal
+        userProfile={userProfile}
+        isShow={step2Modal}
+        onHide={() => {
+          setStep2Modal(false);
+        }}
+        uploadFileStep2={uploadFileStep2}
+        updateUserProfile={newUserProfile => {
+          if (JSON.stringify(newUserProfile) !== JSON.stringify(userProfile)) {
+            dispatch(
+              userActions.updateUserProfileAction({
+                userProfile: {
+                  ...newUserProfile,
+                  step_2_review_requested: true,
+                },
+              }),
+            );
           }
         }}
       />
@@ -67,7 +133,9 @@ export const Score = () => {
                   </h3>
                   <p className="step-paragraph">
                     <span className="step-num">{userProfile.mcat}</span>
-                    <span className="step-gloss">/ Pass</span>
+                    {userProfile.is_passed_mcat === true && (
+                      <span className="step-gloss">/ Pass</span>
+                    )}
                   </p>
                   <div className="manage-scope-link">
                     <a
@@ -95,10 +163,20 @@ export const Score = () => {
                   </h3>
                   <p className="step-paragraph">
                     <span className="step-num">{userProfile.step_1}</span>
-                    <span className="step-gloss"> / Pass</span>
+                    {userProfile.is_passed_step1 === true && (
+                      <span className="step-gloss">/ Pass</span>
+                    )}
                   </p>
                   <div className="manage-scope-link">
-                    <a href="#">Manage Scores</a>
+                    <a
+                      href="#"
+                      onClick={e => {
+                        e.preventDefault();
+                        setStep1Modal(true);
+                      }}
+                    >
+                      Manage Scores
+                    </a>
                     <img src={right_arrow_black} alt="image" />
                   </div>
                 </figcaption>
@@ -115,10 +193,20 @@ export const Score = () => {
                   </h3>
                   <p className="step-paragraph">
                     <span className="step-num">{userProfile.step_2}</span>
-                    <span className="step-gloss"> / Pass</span>
+                    {userProfile.is_passed_step2 === true && (
+                      <span className="step-gloss">/ Pass</span>
+                    )}
                   </p>
                   <div className="manage-scope-link">
-                    <a href="#">Manage Scores</a>
+                    <a
+                      href="#"
+                      onClick={e => {
+                        e.preventDefault();
+                        setStep2Modal(true);
+                      }}
+                    >
+                      Manage Scores
+                    </a>
                     <img src={right_arrow_black} alt="image" />
                   </div>
                 </figcaption>
@@ -133,6 +221,9 @@ export const Score = () => {
                   <h3 className="step-name">
                     <a href="#">Step Three</a>
                   </h3>
+                  {/* {userProfile.is_passed_step2 === true && (
+                      <span className="step-gloss">/ Pass</span>
+                    )} */}
                   <p className="step-paragraph step-paragraph-verify">
                     Once we verify your scores, you will see them here.
                   </p>

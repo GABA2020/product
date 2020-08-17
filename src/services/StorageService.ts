@@ -8,13 +8,11 @@ const getImageURL = async (payload: DTO.Storage.GetImageUrlRequest) => {
 };
 
 const uploadFile = async (payload: DTO.Storage.UploadFileRequest) => {
-  const fileRef = await storageFB
-    .ref(`files/${payload.name}`)
-    .put(payload.file);
+  const fileRef = await storageFB.ref(payload.name).put(payload.file);
 
   const url = await fileRef.ref.getDownloadURL();
 
-  return { name: `files/${payload.name}`, url: url };
+  return { name: payload.name, url: url };
 };
 
 const getFileURL = async (payload: DTO.Storage.GetFileUrlRequest) => {

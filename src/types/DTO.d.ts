@@ -27,6 +27,7 @@ declare namespace DTO {
       learning_style: string;
       match: boolean;
       mcat: number;
+      is_passed_mcat: boolean;
       mcat_document_name: string;
       mcat_review_requested: boolean;
       name: string;
@@ -44,10 +45,12 @@ declare namespace DTO {
       specialty_interest: string;
       specialty_specific_publications: string;
       step_1: number;
+      is_passed_step1: boolean;
       step_1_document_name: string;
       step_1_review_requested: boolean;
       step_1_resources_used: string[];
       step_2: number;
+      is_passed_step2: boolean;
       step_2_resources_used: string[];
       step_2_document_name: string;
       step_2_review_requested: boolean;
@@ -60,6 +63,11 @@ declare namespace DTO {
       waitlists: number;
       year: string;
       year_in_program: number;
+      step_3: number;
+      is_passed_step3: boolean;
+      step_3_document_name: string;
+      step_3_resources_used: string[];
+      step_3_review_requested: boolean;
     }
 
     interface SearchUsersRequest {
@@ -93,6 +101,7 @@ declare namespace DTO {
       learning_style: string;
       match: boolean;
       mcat: number;
+      is_passed_mcat: boolean;
       mcat_document_name: string;
       mcat_review_requested: boolean;
       name: string;
@@ -110,10 +119,12 @@ declare namespace DTO {
       specialty_interest: string;
       specialty_specific_publications: string;
       step_1: number;
+      is_passed_step1: boolean;
       step_1_document_name: string;
       step_1_review_requested: boolean;
       step_1_resources_used: string[];
       step_2: number;
+      is_passed_step2: boolean;
       step_2_resources_used: string[];
       step_2_document_name: string;
       step_2_review_requested: boolean;
@@ -126,6 +137,11 @@ declare namespace DTO {
       waitlists: number;
       year: string;
       year_in_program: number;
+      step_3: number;
+      is_passed_step3: boolean;
+      step_3_document_name: string;
+      step_3_resources_used: string[];
+      step_3_review_requested: boolean;
     }
 
     interface UpdateUserProfileRequest {

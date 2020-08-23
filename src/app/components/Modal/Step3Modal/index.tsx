@@ -11,40 +11,40 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import 'styles/scss/ModalWorkExperience.scss';
 import { useFormik } from 'formik';
 
-interface IMCat {
+interface IStep3 {
   isShow: boolean;
   onHide: () => void;
   userProfile: ENTITIES.UserProfile;
-  uploadFileMCAT: (file: File) => void;
+  uploadFileStep3: (file: File) => void;
   updateUserProfile: (newUserProfile: ENTITIES.UserProfile) => void;
 }
 
 const schema = yup.object().shape({
-  mcat: yup
+  step_3: yup
     .number()
     .typeError('Score must be a number')
     .min(0)
     .max(1000, 'Score  must be less than or equal to 1000')
     .required('Score  is a required field'),
-  mcat_document_name: yup.string().required('Please upload your document'),
-  is_passed_mcat: yup.boolean().required('Please choose passed or failed'),
+  step_3_document_name: yup.string().required('Please upload your document'),
+  is_passed_step3: yup.boolean().required('Please choose passed or failed'),
 });
-interface MCATForm {
-  mcat: number;
-  mcat_document_name: string;
-  is_passed_mcat: boolean;
+interface IStep3Form {
+  step_3: number;
+  step_3_document_name: string;
+  is_passed_step3: boolean;
 }
-const initialValues: MCATForm = {
-  mcat: 0,
-  mcat_document_name: '',
-  is_passed_mcat: false,
+const initialValues: IStep3Form = {
+  step_3: 0,
+  step_3_document_name: '',
+  is_passed_step3: false,
 };
 
-export const MCATModal: FC<IMCat> = props => {
+export const Step3Modal: FC<IStep3> = props => {
   const {
     isShow,
     onHide,
-    uploadFileMCAT,
+    uploadFileStep3,
     userProfile,
     updateUserProfile,
   } = props;
@@ -52,9 +52,9 @@ export const MCATModal: FC<IMCat> = props => {
   useEffect(() => {
     setErrors({});
     if (isShow === true) {
-      setFieldValue('mcat_document_name', userProfile.mcat_document_name);
-      setFieldValue('mcat', userProfile.mcat);
-      setFieldValue('is_passed_mcat', userProfile.is_passed_mcat);
+      setFieldValue('step_3_document_name', userProfile.step_3_document_name);
+      setFieldValue('step_3', userProfile.step_3);
+      setFieldValue('is_passed_step3', userProfile.is_passed_step3);
     }
   }, [userProfile, isShow]);
 
@@ -80,9 +80,9 @@ export const MCATModal: FC<IMCat> = props => {
       if (isUpdate.value === true) {
         updateUserProfile({
           ...userProfile,
-          mcat: values.mcat,
-          mcat_document_name: values.mcat_document_name,
-          is_passed_mcat: values.is_passed_mcat,
+          step_3: values.step_3,
+          step_3_document_name: values.step_3_document_name,
+          is_passed_step3: values.is_passed_step3,
         });
         onHide();
       }
@@ -90,7 +90,7 @@ export const MCATModal: FC<IMCat> = props => {
   });
 
   const url_file = useStorage(
-    `files/${userProfile.email}/MCAT/${values.mcat_document_name}`,
+    `files/${userProfile.email}/Step3/${values.step_3_document_name}`,
   );
 
   const beforeUpload = (file: File) => {
@@ -98,8 +98,8 @@ export const MCATModal: FC<IMCat> = props => {
     if (!isLt5M) {
       showWarningMessage(Message.Size_File_Too_Big);
     } else {
-      setFieldValue('mcat_document_name', file.name);
-      uploadFileMCAT(file);
+      setFieldValue('step_3_document_name', file.name);
+      uploadFileStep3(file);
     }
     return false;
   };
@@ -108,23 +108,23 @@ export const MCATModal: FC<IMCat> = props => {
     <Fragment>
       <Modal backdrop="static" show={isShow} onHide={onHide}>
         <Modal.Header closeButton>
-          <Modal.Title>MCAT</Modal.Title>
+          <Modal.Title>Step 3</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form onSubmit={handleSubmit}>
             <div className="form-group">
               <label htmlFor="exampleInputEmail1">Score</label>
               <input
-                name="mcat"
+                name="step_3"
                 type="number"
-                value={values.mcat}
+                value={values.step_3}
                 className="form-control"
                 id="exampleInputEmail1"
                 placeholder="Enter your Score"
                 onChange={handleChange}
               />
-              {touched.mcat && errors.mcat && (
-                <span className={'text-danger'}>{errors.mcat}</span>
+              {touched.step_3 && errors.step_3 && (
+                <span className={'text-danger'}>{errors.step_3}</span>
               )}
             </div>
             <div className="form-group">
@@ -132,9 +132,9 @@ export const MCATModal: FC<IMCat> = props => {
                 <label>
                   <input
                     type="radio"
-                    name="is_passed_mcat"
-                    checked={values.is_passed_mcat === true}
-                    onChange={() => setFieldValue('is_passed_mcat', true)}
+                    name="is_passed_step3"
+                    checked={values.is_passed_step3 === true}
+                    onChange={() => setFieldValue('is_passed_step3', true)}
                   />
                   Pass
                 </label>
@@ -143,9 +143,9 @@ export const MCATModal: FC<IMCat> = props => {
                 <label>
                   <input
                     type="radio"
-                    name="is_passed_mcat"
-                    checked={values.is_passed_mcat === false}
-                    onChange={() => setFieldValue('is_passed_mcat', false)}
+                    name="is_passed_step3"
+                    checked={values.is_passed_step3 === false}
+                    onChange={() => setFieldValue('is_passed_step3', false)}
                   />
                   Fail
                 </label>
@@ -161,15 +161,15 @@ export const MCATModal: FC<IMCat> = props => {
                     Click or drag file to this area to upload your document
                   </p>
                 </Dragger>
-                {values.mcat_document_name && (
+                {values.step_3_document_name && (
                   <div className="file-name-link">
                     <a target="_blank" href={url_file}>
-                      {values.mcat_document_name}
+                      {values.step_3_document_name}
                     </a>
                     <a
                       onClick={e => {
                         e.preventDefault();
-                        setFieldValue('mcat_document_name', '');
+                        setFieldValue('step_3_document_name', '');
                       }}
                       href="#"
                     >
@@ -180,16 +180,17 @@ export const MCATModal: FC<IMCat> = props => {
 
                 <input
                   type="text"
-                  value={values.mcat_document_name}
-                  name="mcat_document_name"
+                  value={values.step_3_document_name}
+                  name="step_3_document_name"
                   onChange={handleChange}
                   hidden
                 />
-                {touched.mcat_document_name && errors.mcat_document_name && (
-                  <span className={'text-danger'}>
-                    {errors.mcat_document_name}
-                  </span>
-                )}
+                {touched.step_3_document_name &&
+                  errors.step_3_document_name && (
+                    <span className={'text-danger'}>
+                      {errors.step_3_document_name}
+                    </span>
+                  )}
               </div>
             </div>
             <div className="text-right mt-2">

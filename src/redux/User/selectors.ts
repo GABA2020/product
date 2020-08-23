@@ -21,7 +21,6 @@ export const userSelector = createSelector(
     arrayLength,
     loading,
     loadingUserSearchProfile,
-    imageUploadPreview,
   }) => ({
     userProfile,
     userSearchResults,
@@ -35,6 +34,5 @@ export const userSelector = createSelector(
     lastQuery,
     arrayLength,
     loadingUserSearchProfile,
-    imageUploadPreview,
   }),
 );

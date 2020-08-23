@@ -50,18 +50,4 @@ const updateUserProfile = async (
   return userRef;
 };
 
-const uploadAvatar = async (payload: DTO.User.UploadAvatarRequest) => {
-  const avatarRef = await storageFB
-    .ref(`avatars/${payload.file.name}`)
-    .put(payload.file);
-  const url = await avatarRef.ref.getDownloadURL();
-  return { name: payload.file.name, url };
-};
-
-export {
-  getUserProfile,
-  searchUsers,
-  getUserSearchProfile,
-  updateUserProfile,
-  uploadAvatar,
-};
+export { getUserProfile, searchUsers, getUserSearchProfile, updateUserProfile };

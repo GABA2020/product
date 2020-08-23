@@ -51,9 +51,11 @@ export const Step1Modal: FC<IStep1> = props => {
 
   useEffect(() => {
     setErrors({});
-    setFieldValue('step_1_document_name', userProfile.step_1_document_name);
-    setFieldValue('step_1', userProfile.step_1);
-    setFieldValue('is_passed_step1', userProfile.is_passed_step1);
+    if (isShow === true) {
+      setFieldValue('step_1_document_name', userProfile.step_1_document_name);
+      setFieldValue('step_1', userProfile.step_1);
+      setFieldValue('is_passed_step1', userProfile.is_passed_step1);
+    }
   }, [userProfile, isShow]);
 
   const {

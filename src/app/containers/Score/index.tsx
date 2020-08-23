@@ -23,6 +23,7 @@ import 'styles/scss/SectionScore.scss';
 import { MCATModal } from 'app/components/Modal/MCATModal';
 import { Step1Modal } from 'app/components/Modal/Step1Modal';
 import { Step2Modal } from 'app/components/Modal/Step2Modal';
+import { Step3Modal } from 'app/components/Modal/Step3Modal';
 
 export const Score = () => {
   useInjectSaga({ key: userSliceKey, saga: UserSaga });
@@ -32,6 +33,7 @@ export const Score = () => {
   const [mcatModal, setMCATModal] = useState<boolean>(false);
   const [step1Modal, setStep1Modal] = useState<boolean>(false);
   const [step2Modal, setStep2Modal] = useState<boolean>(false);
+  const [step3Modal, setStep3Modal] = useState<boolean>(false);
 
   const uploadFileMCAT = (file: File) => {
     dispatch(
@@ -60,6 +62,14 @@ export const Score = () => {
     );
   };
 
+  const uploadFileStep3 = (file: File) => {
+    dispatch(
+      storageActions.uploadFileAction({
+        name: `files/${userProfile.email}/Step3/${file.name}`,
+        file,
+      }),
+    );
+  };
   return (
     <Fragment>
       <MCATModal
@@ -119,6 +129,26 @@ export const Score = () => {
           }
         }}
       />
+      <Step3Modal
+        userProfile={userProfile}
+        isShow={step3Modal}
+        onHide={() => {
+          setStep3Modal(false);
+        }}
+        uploadFileStep3={uploadFileStep3}
+        updateUserProfile={newUserProfile => {
+          if (JSON.stringify(newUserProfile) !== JSON.stringify(userProfile)) {
+            dispatch(
+              userActions.updateUserProfileAction({
+                userProfile: {
+                  ...newUserProfile,
+                  step_3_review_requested: true,
+                },
+              }),
+            );
+          }
+        }}
+      />
       <section className="section-step-scope">
         <div className="container">
           <ul className="section-step-category">
@@ -138,16 +168,22 @@ export const Score = () => {
                     )}
                   </p>
                   <div className="manage-scope-link">
-                    <a
-                      href="#"
-                      onClick={e => {
-                        e.preventDefault();
-                        setMCATModal(true);
-                      }}
-                    >
-                      Manage Scores
-                    </a>
-                    <img src={right_arrow_black} alt="image" />
+                    {!userProfile.mcat_review_requested ? (
+                      <Fragment>
+                        <a
+                          href="#"
+                          onClick={e => {
+                            e.preventDefault();
+                            setMCATModal(true);
+                          }}
+                        >
+                          Manage Scores
+                        </a>
+                        <img src={right_arrow_black} alt="image" />
+                      </Fragment>
+                    ) : (
+                      <p>Waiting for review</p>
+                    )}
                   </div>
                 </figcaption>
               </figure>
@@ -168,16 +204,22 @@ export const Score = () => {
                     )}
                   </p>
                   <div className="manage-scope-link">
-                    <a
-                      href="#"
-                      onClick={e => {
-                        e.preventDefault();
-                        setStep1Modal(true);
-                      }}
-                    >
-                      Manage Scores
-                    </a>
-                    <img src={right_arrow_black} alt="image" />
+                    {!userProfile.step_1_review_requested ? (
+                      <Fragment>
+                        <a
+                          href="#"
+                          onClick={e => {
+                            e.preventDefault();
+                            setStep1Modal(true);
+                          }}
+                        >
+                          Manage Scores
+                        </a>
+                        <img src={right_arrow_black} alt="image" />
+                      </Fragment>
+                    ) : (
+                      <p>Waiting for review</p>
+                    )}
                   </div>
                 </figcaption>
               </figure>
@@ -198,16 +240,22 @@ export const Score = () => {
                     )}
                   </p>
                   <div className="manage-scope-link">
-                    <a
-                      href="#"
-                      onClick={e => {
-                        e.preventDefault();
-                        setStep2Modal(true);
-                      }}
-                    >
-                      Manage Scores
-                    </a>
-                    <img src={right_arrow_black} alt="image" />
+                    {!userProfile.step_2_review_requested ? (
+                      <Fragment>
+                        <a
+                          href="#"
+                          onClick={e => {
+                            e.preventDefault();
+                            setStep2Modal(true);
+                          }}
+                        >
+                          Manage Scores
+                        </a>
+                        <img src={right_arrow_black} alt="image" />
+                      </Fragment>
+                    ) : (
+                      <p>Waiting for review</p>
+                    )}
                   </div>
                 </figcaption>
               </figure>
@@ -221,15 +269,32 @@ export const Score = () => {
                   <h3 className="step-name">
                     <a href="#">Step Three</a>
                   </h3>
-                  {/* {userProfile.is_passed_step2 === true && (
+                  <p className="step-paragraph">
+                    <span className="step-num">{userProfile.step_3}</span>
+                    {userProfile.is_passed_step3 === true && (
                       <span className="step-gloss">/ Pass</span>
-                    )} */}
-                  <p className="step-paragraph step-paragraph-verify">
-                    Once we verify your scores, you will see them here.
+                    )}
                   </p>
+                  {/* <p className="step-paragraph step-paragraph-verify">
+                    Once we verify your scores, you will see them here.
+                  </p> */}
                   <div className="manage-scope-link">
-                    <a href="#">Manage Scores</a>
-                    <img src={right_arrow_black} alt="image" />
+                    {!userProfile.step_3_review_requested ? (
+                      <Fragment>
+                        <a
+                          href="#"
+                          onClick={e => {
+                            e.preventDefault();
+                            setStep3Modal(true);
+                          }}
+                        >
+                          Manage Scores
+                        </a>
+                        <img src={right_arrow_black} alt="image" />
+                      </Fragment>
+                    ) : (
+                      <p>Waiting for review</p>
+                    )}
                   </div>
                 </figcaption>
               </figure>

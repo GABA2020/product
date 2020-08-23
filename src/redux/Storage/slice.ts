@@ -4,9 +4,7 @@ import { DTO } from 'types/DTO';
 import { STATES } from 'types/STATE';
 
 export const initialState: STATES.Storage = {
-  loadingImage: true,
   loadingFile: true,
-  imageUrls: {},
   fileUrls: {},
 };
 
@@ -14,23 +12,6 @@ const StorageSliceState = createSlice({
   name: 'storage',
   initialState,
   reducers: {
-    getImageUrlAction(
-      state,
-      action: PayloadAction<DTO.Storage.GetImageUrlRequest>,
-    ) {
-      state.loadingImage = true;
-      state.imageUrls[action.payload.name] = null;
-    },
-    getImageUrlActionSuccess(
-      state,
-      action: PayloadAction<DTO.Storage.GetImageUrlResponse>,
-    ) {
-      state.loadingImage = false;
-      state.imageUrls[action.payload.name] = action.payload.url;
-    },
-    getImageUrlActionFailed(state) {
-      state.loadingImage = false;
-    },
     uploadFileAction(
       state,
       action: PayloadAction<DTO.Storage.UploadFileRequest>,
@@ -42,7 +23,7 @@ const StorageSliceState = createSlice({
       action: PayloadAction<DTO.Storage.UploadFileResponse>,
     ) {
       state.loadingFile = false;
-      state.imageUrls[action.payload.name] = action.payload.url;
+      state.fileUrls[action.payload.name] = action.payload.url;
     },
     uploadFileActionFailed(state) {
       state.loadingFile = false;

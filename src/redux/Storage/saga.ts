@@ -1,25 +1,10 @@
 import { takeLatest, call, put } from 'redux-saga/effects';
 import { actions } from './slice';
-import {
-  getImageURL,
-  uploadAvatar,
-  uploadFile,
-  getFileURL,
-} from 'services/index';
+import { uploadFile, getFileURL } from 'services/index';
 import { DTO } from 'types/DTO';
 /**
  * Root saga manages watcher lifecycle
  */
-export function* getAvatarUrl({ payload }) {
-  try {
-    const response: string = yield call(getImageURL, payload);
-    yield put(
-      actions.getImageUrlActionSuccess({ name: payload.name, url: response }),
-    );
-  } catch (e) {
-    yield put(actions.getImageUrlActionFailed());
-  }
-}
 
 export function* uploadFileSaga({ payload }) {
   try {
@@ -45,8 +30,6 @@ export function* getFileUrlSaga({ payload }) {
   }
 }
 export function* StorageSaga() {
-  yield takeLatest(actions.getImageUrlAction, getAvatarUrl);
-
   yield takeLatest(actions.uploadFileAction, uploadFileSaga);
   yield takeLatest(actions.getFileUrlAction, getFileUrlSaga);
 }

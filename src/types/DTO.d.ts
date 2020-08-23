@@ -148,14 +148,6 @@ declare namespace DTO {
       userProfile: ENTITIES.UserProfile;
     }
 
-    interface UploadAvatarRequest {
-      file: File;
-    }
-    interface UploadAvatarResponse {
-      name: string;
-      url: string;
-    }
-
     namespace WorkExperience {
       interface GetWorkExperiencesRequest {
         email: string;
@@ -378,15 +370,6 @@ declare namespace DTO {
   }
 
   export namespace Storage {
-    interface GetImageUrlRequest {
-      name: string; //->avatar/file_name
-    }
-
-    interface GetImageUrlResponse {
-      name: string;
-      url: string;
-    }
-
     interface UploadFileRequest {
       name: string; //->file/email/file_name
       file: File;

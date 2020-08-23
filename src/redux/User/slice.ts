@@ -14,14 +14,12 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from 'utils/@reduxjs/toolkit';
 import { DTO } from 'types/DTO';
-import { faBullseye } from '@fortawesome/free-solid-svg-icons';
 import { STATES } from 'types/STATE';
 
 export const initialState: STATES.User = {
   loading: true,
   loadingSearchBox: true,
   loadingUserSearchProfile: true,
-  imageUploadPreview: '',
   workExperiences: [],
   educations: [],
   volunteers: [],
@@ -225,23 +223,6 @@ const UserSliceState = createSlice({
       state.loading = false;
     },
     updateUserProfileActionFailed(state) {
-      state.loading = false;
-    },
-    uploadAvatarAction(
-      state,
-      action: PayloadAction<DTO.User.UploadAvatarRequest>,
-    ) {
-      state.loading = true;
-      state.imageUploadPreview = '';
-    },
-    uploadAvatarActionSuccess(
-      state,
-      action: PayloadAction<DTO.User.UploadAvatarResponse>,
-    ) {
-      state.loading = false;
-      state.imageUploadPreview = action.payload.name;
-    },
-    uploadAvatarActionFailed(state) {
       state.loading = false;
     },
     //CV

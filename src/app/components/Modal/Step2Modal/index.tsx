@@ -51,9 +51,11 @@ export const Step2Modal: FC<IStep2> = props => {
 
   useEffect(() => {
     setErrors({});
-    setFieldValue('step_2_document_name', userProfile.step_2_document_name);
-    setFieldValue('step_2', userProfile.step_2);
-    setFieldValue('is_passed_step2', userProfile.is_passed_step2);
+    if (isShow === true) {
+      setFieldValue('step_2_document_name', userProfile.step_2_document_name);
+      setFieldValue('step_2', userProfile.step_2);
+      setFieldValue('is_passed_step2', userProfile.is_passed_step2);
+    }
   }, [userProfile, isShow]);
 
   const {
@@ -88,7 +90,7 @@ export const Step2Modal: FC<IStep2> = props => {
   });
 
   const url_file = useStorage(
-    `files/${userProfile.email}/Step1/${values.step_2_document_name}`,
+    `files/${userProfile.email}/Step2/${values.step_2_document_name}`,
   );
 
   const beforeUpload = (file: File) => {

@@ -15,7 +15,6 @@ declare namespace STATES {
     letters: ENTITIES.Letter[];
     arrayLength: number;
     lastQuery: any;
-    imageUploadPreview: string;
   }
   interface Program {
     loading: boolean;
@@ -28,9 +27,7 @@ declare namespace STATES {
     username: string;
   }
   interface Storage {
-    loadingImage: boolean;
     loadingFile: boolean;
-    imageUrls: { [image_url: string]: string | null };
     fileUrls: { [file_url: string]: string | null };
   }
   interface Locker {

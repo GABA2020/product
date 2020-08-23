@@ -26,23 +26,20 @@ import { Locker } from '../Locker';
 import { CVWork } from '../CVWork';
 import { useStorage } from 'hook/useStorage';
 import { Score } from '../Score';
-import { img_user } from 'assets/images';
+import { img_user, verified_check } from 'assets/images';
 import { REF } from 'helpers/firebase.module';
+import Helmet from 'react-helmet';
 
 export const MyProfile = props => {
   useInjectSaga({ key: userSliceKey, saga: UserSaga });
   useInjectSaga({ key: programSliceKey, saga: ProgramSaga });
   useInjectSaga({ key: storageSliceKey, saga: StorageSaga });
   const dispatch = useDispatch();
-  const { userProfile, educations, imageUploadPreview } = useSelector(
-    userSelector,
-  );
+  const { userProfile, educations } = useSelector(userSelector);
   const { program } = useSelector(programSelector);
 
   const [editModeState, setEditModeState] = useState<boolean>(true);
-  const [userProfileState, setUserProfileState] = useState<
-    ENTITIES.UserProfile
-  >({ ...userProfile });
+
   const [
     isShowModalEditProfileState,
     setIsShowModalEditProfileState,
@@ -50,53 +47,53 @@ export const MyProfile = props => {
 
   const image = useStorage(`${REF.avatars}/${userProfile.avatar}`);
 
-  const image_preview_url = useStorage(
-    `${REF.avatars}/${userProfileState.avatar}`,
-  );
-
   useEffect(() => {
     dispatch(
       programActions.getProgramReviewAction({ email: userProfile.email }),
     );
+    dispatch(userActions.getEducationsAction({ email: userProfile.email }));
   }, [userProfile.email]);
 
-  useEffect(() => {
-    if (imageUploadPreview !== '') {
-      setUserProfileState({ ...userProfile, avatar: imageUploadPreview });
-    }
-  }, [imageUploadPreview]);
-
   const saveProfile = async (
-    userProfile: ENTITIES.UserProfile,
-    program: ENTITIES.Program,
+    newUserProfile: ENTITIES.UserProfile,
+    newProgram: ENTITIES.Program,
   ) => {
-    setIsShowModalEditProfileState(false);
-    dispatch(userActions.updateUserProfileAction({ userProfile }));
-    dispatch(
-      programActions.updateProgramAction({
-        email: userProfile.email,
-        program: program,
-      }),
-    );
+    if (JSON.stringify(newProgram) !== JSON.stringify(program)) {
+      dispatch(
+        programActions.updateProgramAction({
+          email: userProfile.email,
+          program: { ...newProgram },
+        }),
+      );
+    }
+
+    if (JSON.stringify(newUserProfile) !== JSON.stringify(userProfile)) {
+      dispatch(
+        userActions.updateUserProfileAction({
+          userProfile: { ...newUserProfile },
+        }),
+      );
+    }
   };
 
-  const saveAvatar = (imageBase64: string, name: string) => {
+  const uploadAvatar = (imageBase64: string, name: string) => {
     const file: File = dataUrlFile(imageBase64, name);
     dispatch(
-      userActions.uploadAvatarAction({
-        file,
-      }),
+      storageActions.uploadFileAction({ name: `${REF.avatars}/${name}`, file }),
     );
   };
 
   return (
     <Fragment>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>{userProfile.name}</title>
+      </Helmet>
       <EditProfileModal
-        image_preview_url={image_preview_url}
         saveProfile={saveProfile}
-        saveAvatar={saveAvatar}
+        uploadAvatar={uploadAvatar}
         program={program}
-        userProfile={userProfileState}
+        userProfile={userProfile}
         isShow={isShowModalEditProfileState}
         onHide={() => {
           setIsShowModalEditProfileState(false);
@@ -109,7 +106,6 @@ export const MyProfile = props => {
             href="#"
             onClick={e => {
               e.preventDefault();
-              setUserProfileState(userProfile);
               setIsShowModalEditProfileState(true);
             }}
           >
@@ -141,24 +137,23 @@ export const MyProfile = props => {
             </div>
             <div className="media-body">
               <div className="profile-body">
-                <h2 className="profile-user">
-                  {userProfile.verified ? (
-                    <span className="tick_mark">
-                      {userProfile.name} <sup>{userProfile.degrees}</sup>
-                    </span>
-                  ) : (
-                    <span>
-                      {userProfile.name} <sup>{userProfile.degrees}</sup>
-                    </span>
-                  )}
-                </h2>
-
-                {/* owner profile will use userProfile */}
-                {educations.length > 0 && (
-                  <p className="morehouse-des">
-                    {educations[0].school} • {educations[0].school_address}
+                <div className="profile-user">
+                  <p className="user-name">
+                    {userProfile.name}
+                    <sup>
+                      {userProfile.degrees}{' '}
+                      {userProfile.verified ?? (
+                        <img src={verified_check} alt="" />
+                      )}
+                    </sup>
                   </p>
-                )}
+                  {educations.length > 0 && (
+                    <p className="morehouse-des">
+                      {educations[0].school} • {educations[0].school_address}
+                    </p>
+                  )}
+                </div>
+                {/* owner profile will use userProfile */}
                 <ul className="profile-tag">
                   <li>
                     <a href="#" className="btn-profile-tag">

@@ -1,6 +1,6 @@
 export const img_user = require('../images/sprites/avatar-person.svg');
 export const img_locker = require('./photos/img-locker.jpg');
-export const img_account = require('./sprites/icons-account@2x.png');
+export const img_account = require('./sprites/icons-account.svg');
 export const img_board = require('../images/photos/img-board.jpg');
 export const right_arrow = require('../images/sprites/right-arrow.png');
 export const down_arrow = require('../images/sprites/arrow-down.png');
@@ -12,3 +12,6 @@ export const step_one = require('../images/sprites/step-one-icon.svg');
 export const step_two = require('../images/sprites/step-two-icon.svg');
 export const step_three = require('../images/sprites/step-three-icon.png');
 export const mcat = require('../images/sprites/mcat-icon.svg');
+export const gaba = require('../images/sprites/GABA.svg');
+export const search_icon = require('../images/sprites/search-icon.svg');
+export const nav_icon = require('../images/sprites/nav-icon.svg');

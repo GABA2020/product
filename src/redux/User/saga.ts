@@ -21,7 +21,6 @@ import {
   getMoreWorkExperiences,
   getMoreLetters,
   getMoreEducations,
-  uploadAvatar,
 } from '../../services';
 import {
   getVolunteers,
@@ -78,19 +77,6 @@ export function* getUserSearchProfileSaga({ payload }) {
     }
   } catch (e) {
     yield put(actions.getUserSearchProfileActionFailed());
-  }
-}
-
-function* uploadAvatarSaga({ payload }) {
-  yield delay(500);
-  try {
-    const response: DTO.User.UploadAvatarResponse = yield call(
-      uploadAvatar,
-      payload,
-    );
-    yield put(actions.uploadAvatarActionSuccess(response));
-  } catch (e) {
-    yield put(actions.uploadAvatarActionFailed());
   }
 }
 
@@ -404,9 +390,7 @@ export function* UserSaga() {
     actions.getUserSearchProfileAction,
     getUserSearchProfileSaga,
   );
-
   yield takeLatest(actions.updateUserProfileAction, updateUserProfileSaga);
-  yield takeLatest(actions.uploadAvatarAction, uploadAvatarSaga);
 
   // work
   yield takeLatest(actions.getWorkExperiencesAction, getWorkExperiencesSaga);

@@ -398,7 +398,7 @@ declare namespace DTO {
     interface GetReviewsResponse {
       reviews: ENTITIES.Review[];
       lastQuery: any;
-      arrayLength: number;
+      reviewLength: number;
     }
 
     interface GetMoreReviewsRequest {
@@ -411,35 +411,53 @@ declare namespace DTO {
       lastQuery: any;
     }
 
+    interface AddReviewRequest {
+      email: string;
+      review: ENTITIES.Review;
+    }
+
+    interface AddReviewResponse {
+      review: ENTITIES.Review;
+    }
+
     namespace Resource {
-      interface getResourcesRequest {
-        email: string;
-      }
-
-      interface getResourcesResponse {
-        resources: ENTITIES.Resource[];
-        lastQuery: any;
-        arrayLength: number;
-      }
-
-      interface getMoreResourcesRequest {
-        email: string;
-        lastQuery: any;
-      }
-
-      interface getMoreResourcesResponse {
-        resources: ENTITIES.Resource[];
-        lastQuery: any;
-      }
-
       interface GetResourceDetailRequest {
         id: string;
-        email: string;
       }
 
       interface GetResourceDetailResponse {
         id: string;
         resource: ENTITIES.Resource;
+      }
+    }
+
+    namespace UserResource {
+      interface getUserResourcesRequest {
+        email: string;
+      }
+
+      interface getUserResourcesResponse {
+        userResources: ENTITIES.UserResource[];
+        lastQuery: any;
+        userResourceLength: number;
+      }
+
+      interface getMoreUserResourcesRequest {
+        email: string;
+        lastQuery: any;
+      }
+
+      interface getMoreUserResourcesResponse {
+        userResources: ENTITIES.UserResource[];
+        lastQuery: any;
+      }
+
+      interface AddUserResourceRequest {
+        email: string;
+        userResource: ENTITIES.UserResource;
+      }
+      interface AddUserResourceResponse {
+        userResource: ENTITIES.UserResource;
       }
     }
   }

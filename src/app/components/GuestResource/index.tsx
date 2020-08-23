@@ -4,11 +4,13 @@ import { img_locker } from 'assets/images';
 import RoutesTypes from 'types/Routes';
 import { useStorage } from 'hook/useStorage';
 import Rate from 'antd/lib/rate';
-interface IResource {
+
+interface IGuestResource {
+  userResource: ENTITIES.UserResource;
   resource: ENTITIES.Resource;
 }
-export const GuestResource: FC<IResource> = props => {
-  const { resource } = props;
+export const GuestResource: FC<IGuestResource> = props => {
+  const { userResource, resource } = props;
   const image = useStorage(`resources/${resource.picture_name}`);
 
   return (
@@ -23,17 +25,17 @@ export const GuestResource: FC<IResource> = props => {
         <div className="locker-information">
           <div className="title">{resource.name}</div>
           <div className="match">
-            <p>{resource.match_score} % match</p>
+            <p>{userResource.match_score} % match</p>
           </div>
-          <div className="review">
-            {resource.rating > 0 ? (
+          {/* <div className="review">
+            {userResource.rating > 0 ? (
               <div className="vote-star">
-                <Rate disabled defaultValue={resource.rating}></Rate>
+                <Rate disabled defaultValue={userResource.rating}></Rate>
               </div>
             ) : (
               <p>No review</p>
             )}
-          </div>
+          </div> */}
         </div>
       </div>
     </Fragment>

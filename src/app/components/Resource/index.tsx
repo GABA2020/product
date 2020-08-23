@@ -4,31 +4,43 @@ import { img_locker } from 'assets/images';
 import RoutesTypes from 'types/Routes';
 import { useStorage } from 'hook/useStorage';
 import Rate from 'antd/lib/rate';
+import { useResource } from 'hook/useResource';
 
 interface IResource {
-  resource: ENTITIES.Resource;
-  openManageResource(resource: ENTITIES.Resource);
+  userResources: ENTITIES.UserResource;
+  openManageResource(userResources: ENTITIES.UserResource);
 }
 
 export const Resource: FC<IResource> = props => {
-  const { resource, openManageResource } = props;
-  const imageResource = useStorage(`resources/${resource.picture_name}`);
+  const { userResources, openManageResource } = props;
+
+  const resource = useResource(userResources.resource_id);
+  const imageResource = useStorage(
+    `resources/${
+      resource && resource.picture_name !== '' ? resource.picture_name : ''
+    }`,
+  );
 
   return (
     <Fragment>
       <div className="media media-locker-item">
         <div className="locker-image">
-          <img alt="user image" src={imageResource} width={125} height={100} />
+          <img
+            alt="user image"
+            src={imageResource ? imageResource : img_locker}
+            width={125}
+            height={100}
+          />
           <div className="image-caption">
             <Link to={RoutesTypes.PRODUCT}>Path</Link>
           </div>
         </div>
         <div className="locker-information">
-          <div className="title">{resource.name}</div>
+          <div className="title">{resource && resource.name}</div>
           <div className="match">
-            <p>{resource.match_score} % match</p>
+            <p>{userResources.match_score} % match</p>
           </div>
-          <div className="review">
+          {/* <div className="review">
             {resource.rating > 0 ? (
               <div className="vote-star">
                 <Rate disabled defaultValue={resource.rating}></Rate>
@@ -36,7 +48,7 @@ export const Resource: FC<IResource> = props => {
             ) : (
               <p>No review</p>
             )}
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="locker-button">
@@ -44,7 +56,7 @@ export const Resource: FC<IResource> = props => {
           href="#"
           onClick={e => {
             e.preventDefault();
-            openManageResource(resource);
+            openManageResource(userResources);
           }}
           className="btn btn-resource"
         >

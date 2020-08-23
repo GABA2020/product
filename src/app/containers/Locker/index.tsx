@@ -6,35 +6,45 @@ import { LockerSaga } from 'redux/Locker/saga';
 import { useDispatch, useSelector } from 'react-redux';
 import { lockerSelector } from 'redux/Locker/selectors';
 import { userSelector } from 'redux/User/selectors';
-import { ResourceModal } from 'app/components/Modal/ResourceModal';
+import { AddResource } from 'app/components/Modal/ResourceModal/AddResource';
 import { useStorage } from 'hook/useStorage';
 import { Resource } from 'app/components/Resource';
 import Review from 'app/components/Review';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 
 export const Locker = () => {
   useInjectSaga({ key: sliceKey, saga: LockerSaga });
   const dispatch = useDispatch();
-  const { reviews, resources, arrayLength, lastQuery, loading } = useSelector(
-    lockerSelector,
-  );
+  const {
+    reviews,
+    userResources,
+    reviewLength,
+    userResourceLength,
+    lastQuery,
+    loading,
+  } = useSelector(lockerSelector);
+
   const { userProfile } = useSelector(userSelector);
   const image = useStorage(`avatars/${userProfile.avatar}`);
-  const [resourceModal, setResourceModal] = useState<boolean>(false);
-  const [resourceState, setResourceState] = useState<ENTITIES.Resource>({
-    id: '',
-    match_score: 0,
-    name: '',
-    date: {
-      seconds: 0,
-    },
-    picture_name: '',
-    rating: 0,
-  });
+  const [addResourceModal, setAddResourceModal] = useState<boolean>(false);
+  // const [resourceState, setResourceState] = useState<ENTITIES.UserResource>({
+  //   id: '',
+  //   match_score: 0,
+  //   name: '',
+  //   date: {
+  //     seconds: 0,
+  //   },
+  //   picture_name: '',
+  //   rating: 0,
+  //   actual_exam: '',
+  //   actual_exam_score: 0,
+  // });
 
   useEffect(() => {
     if (userProfile.email !== '') {
       dispatch(
-        actions.getResourcesAction({
+        actions.getUserResourcesAction({
           email: userProfile.email,
         }),
       );
@@ -55,7 +65,7 @@ export const Locker = () => {
     );
   };
 
-  const renderResource = (resources: ENTITIES.Resource[]) => {
+  const renderResource = (resources: ENTITIES.UserResource[]) => {
     return (
       <ul className="locker-list">
         <li className="locker-item">
@@ -77,11 +87,10 @@ export const Locker = () => {
           return (
             <li key={index} className="locker-item">
               <Resource
-                openManageResource={resource => {
-                  setResourceState(resource);
-                  setResourceModal(true);
+                openManageResource={userResources => {
+                  // setResourceState(userResources);
                 }}
-                resource={item}
+                userResources={item}
               />
             </li>
           );
@@ -91,11 +100,21 @@ export const Locker = () => {
   };
   return (
     <Fragment>
-      <ResourceModal
-        resource={resourceState}
-        isShow={resourceModal}
-        onHide={() => {
-          setResourceModal(false);
+      <AddResource
+        isShow={addResourceModal}
+        onHide={() => setAddResourceModal(false)}
+        addNewUserResource={userResource => {
+          dispatch(
+            actions.addUserResourceAction({
+              email: userProfile.email,
+              userResource,
+            }),
+          );
+        }}
+        addResourceReview={review => {
+          dispatch(
+            actions.addReviewAction({ email: userProfile.email, review }),
+          );
         }}
       />
       <section className="section-locker">
@@ -104,6 +123,15 @@ export const Locker = () => {
             <div className="locker-col">
               <div className="main-title">
                 <h2>Locker</h2>
+                <a
+                  href="#"
+                  onClick={e => {
+                    e.preventDefault();
+                    setAddResourceModal(true);
+                  }}
+                >
+                  <FontAwesomeIcon icon={faPlusCircle} />
+                </a>
               </div>
             </div>
             <div className="locker-col">
@@ -113,7 +141,7 @@ export const Locker = () => {
                     <a
                       onClick={() => {
                         dispatch(
-                          actions.getResourcesAction({
+                          actions.getUserResourcesAction({
                             email: userProfile.email,
                           }),
                         );
@@ -156,26 +184,27 @@ export const Locker = () => {
             <div className="tab-content">
               <div role="tabpanel" className="tab-pane active" id="frame-1">
                 {!loading &&
-                  (resources.length > 0 ? (
+                  (userResources.length > 0 ? (
                     <div className="locker-category">
-                      {renderResource(resources)}
-                      {resources.length > 0 && resources.length < arrayLength && (
-                        <div className="review-btn-wrap">
-                          <button
-                            onClick={() => {
-                              dispatch(
-                                actions.getMoreResourcesAction({
-                                  email: userProfile.email,
-                                  lastQuery,
-                                }),
-                              );
-                            }}
-                            className="load-more"
-                          >
-                            Load More Resources
-                          </button>
-                        </div>
-                      )}
+                      {renderResource(userResources)}
+                      {userResources.length > 0 &&
+                        userResources.length < userResourceLength && (
+                          <div className="review-btn-wrap">
+                            <button
+                              onClick={() => {
+                                dispatch(
+                                  actions.getMoreUserResourcesAction({
+                                    email: userProfile.email,
+                                    lastQuery,
+                                  }),
+                                );
+                              }}
+                              className="load-more"
+                            >
+                              Load More Resources
+                            </button>
+                          </div>
+                        )}
                     </div>
                   ) : (
                     <div className="locker-category">
@@ -202,7 +231,7 @@ export const Locker = () => {
                   (reviews.length > 0 ? (
                     <div className="locker-review">
                       {renderReviews(reviews)}
-                      {reviews.length > 0 && reviews.length < arrayLength ? (
+                      {reviews.length > 0 && reviews.length < reviewLength ? (
                         <div className="review-btn-wrap">
                           <button
                             onClick={() => {

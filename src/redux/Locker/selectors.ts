@@ -8,17 +8,19 @@ export const lockerSelector = createSelector(
   [selectState],
   ({
     reviews,
-    resources,
-    arrayLength,
+    userResources,
     lastQuery,
     loading,
     listResourceCache,
+    reviewLength,
+    userResourceLength,
   }) => ({
     reviews,
-    arrayLength,
     lastQuery,
-    resources,
+    userResources,
     loading,
     listResourceCache,
+    reviewLength,
+    userResourceLength,
   }),
 );

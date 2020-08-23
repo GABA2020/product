@@ -169,20 +169,35 @@ declare namespace ENTITIES {
     value: string;
   }
 
+  interface IResourceSelected {
+    label: string;
+    value: Resource;
+  }
+
   interface Review {
     id: string;
     resource_id: string;
     review_body: string;
     subject: string;
     date_time: ITime;
+    updated_at: ITime;
+    rating: number;
+  }
+
+  interface UserResource {
+    id: string;
+    resource_id: string;
+    match_score: number;
+    date: ITime;
+    actual_exam: string;
+    actual_exam_score: number;
   }
 
   interface Resource {
     id: string;
-    match_score: number;
     name: string;
-    date: ITime;
     picture_name: string;
     rating: number;
+    link: string;
   }
 }

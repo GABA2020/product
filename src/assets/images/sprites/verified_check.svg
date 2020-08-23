@@ -1,20 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="12px" height="12px" viewBox="0 0 12 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="18px" height="18px" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <title>verified check</title>
     <g id="user-profile-mockups" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Mockup---Hot-Public-Profile---Reviews" transform="translate(-325.000000, -859.000000)">
-            <g id="LOCKER" transform="translate(0.000000, 383.000000)">
-                <g id="Customers-7" transform="translate(0.000000, 190.000000)">
-                    <g id="Review-#1" transform="translate(165.000000, 0.000000)">
-                        <g id="Customer" transform="translate(0.000000, 281.000000)">
-                            <g id="Group-10" transform="translate(60.000000, 0.000000)">
-                                <g id="verified-check" transform="translate(100.000000, 5.000000)">
-                                    <path d="M6,11 C8.76142375,11 11,8.76142375 11,6 C11,3.23857625 8.76142375,1 6,1 C3.23857625,1 1,3.23857625 1,6 C1,8.76142375 3.23857625,11 6,11 Z" id="Oval" fill="#5AB88D"></path>
-                                    <path d="M6,12 C2.6862915,12 0,9.3137085 0,6 C0,2.6862915 2.6862915,0 6,0 C9.3137085,0 12,2.6862915 12,6 C12,9.3137085 9.3137085,12 6,12 Z" id="Oval" fill="#5AB88D"></path>
-                                    <polygon id="Path" fill="#FFFFFF" points="5.28347732 7.32063357 8.81611406 3.78017132 9.52400274 4.48649535 5.2844759 8.73541358 2.64655455 6.09910229 3.35344545 5.39177969"></polygon>
-                                </g>
-                            </g>
-                        </g>
+        <g id="Mockup---Hot-Private-Profile---Volunteer" transform="translate(-629.000000, -168.000000)">
+            <g id="DETAILS" transform="translate(-15.000000, 0.000000)">
+                <g id="Content" transform="translate(180.000000, 154.000000)">
+                    <g id="verified-check" transform="translate(464.000000, 14.000000)">
+                        <path d="M9,16.5 C13.1421356,16.5 16.5,13.1421356 16.5,9 C16.5,4.85786438 13.1421356,1.5 9,1.5 C4.85786438,1.5 1.5,4.85786438 1.5,9 C1.5,13.1421356 4.85786438,16.5 9,16.5 Z" id="Oval" fill="#5AB88D"></path>
+                        <path d="M9,18 C4.02943725,18 0,13.9705627 0,9 C0,4.02943725 4.02943725,0 9,0 C13.9705627,0 18,4.02943725 18,9 C18,13.9705627 13.9705627,18 9,18 Z" id="Oval" fill="#5AB88D"></path>
+                        <polygon id="Path" fill="#FFFFFF" points="7.92521598 10.9809503 13.2241711 5.67025698 14.2860041 6.72974302 7.92671386 13.1031204 3.96983183 9.14865344 5.03016817 8.08766953"></polygon>
                     </g>
                 </g>
             </g>

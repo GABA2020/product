@@ -11,6 +11,7 @@ import { NotFoundPage } from '../NotFoundPage/Loadable';
 import Helmet from 'react-helmet';
 import 'styles/scss/SearchUser.scss';
 import 'styles/scss/ModalEditProfile.scss';
+import 'styles/scss/SectionProfile.scss';
 import { MyProfile } from '../MyProfile';
 import { GuestUserProfile } from '../GuestUserProfile';
 

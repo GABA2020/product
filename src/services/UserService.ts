@@ -1,4 +1,4 @@
-import { db, storageAvatar } from 'helpers/firebase.module';
+import { db, storageAvatar, storageFB } from 'helpers/firebase.module';
 import { DTO } from 'types/DTO';
 
 const getUserProfile = async (email: string) => {

@@ -8,8 +8,9 @@ import 'styles/scss/ModalWorkExperience.scss';
 import { Formik } from 'formik';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { showDialogDelete } from 'helpers/Swal.module';
+import { showConfirmMessage } from 'helpers/Swal.module';
 import { convertDateToTimestamp } from 'helpers/Unity';
+import { Message } from 'helpers/Message';
 
 const schema = yup.object().shape({
   job_title: yup
@@ -77,14 +78,18 @@ export const EditVolunteerModal: FC<IEditVolunteerModal> = props => {
   const { isShow, onHide, editVolunteer, deleteVolunteer, volunteer } = props;
 
   const onHandleDelete = async () => {
-    const isDelete = await showDialogDelete();
+    const isDelete = await showConfirmMessage(
+      Message.Delete_Question,
+      '',
+      'warning',
+    );
     if (isDelete.value === true) {
       deleteVolunteer(volunteer);
     }
   };
   return (
     <Fragment>
-      <Modal show={isShow} onHide={onHide}>
+      <Modal backdrop="static" show={isShow} onHide={onHide}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Volunteer</Modal.Title>
         </Modal.Header>
@@ -263,7 +268,7 @@ export const EditVolunteerModal: FC<IEditVolunteerModal> = props => {
                     <span className={'text-danger'}>{errors.description}</span>
                   )}
                 </div>
-                <div className="btn-wrapper-submit">
+                <div className="btn-wrapper-submit mt-2">
                   <button
                     type="button"
                     className="btn btn-light btn-save-profile"
@@ -273,7 +278,7 @@ export const EditVolunteerModal: FC<IEditVolunteerModal> = props => {
                   </button>
                   <button
                     type="submit"
-                    className="btn btn-primary btn-save-profile"
+                    className="btn btn-success btn-save-profile"
                   >
                     Save
                   </button>

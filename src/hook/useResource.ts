@@ -1,7 +1,6 @@
 import react, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useInjectSaga } from 'redux-injectors';
-import { storageSelector } from 'redux/Storage/selectors';
 import { LockerSaga } from 'redux/Locker/saga';
 import { actions, sliceKey } from 'redux/Locker/slice';
 import { lockerSelector } from 'redux/Locker/selectors';

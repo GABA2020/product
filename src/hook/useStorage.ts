@@ -12,12 +12,17 @@ export const useStorage = (fileName: string) => {
   useInjectSaga({ key: storageSliceKey, saga: StorageSaga });
   const dispatch = useDispatch();
 
-  const { imageUrls } = useSelector(storageSelector);
+  const { fileUrls } = useSelector(storageSelector);
   useEffect(() => {
-    if (fileName !== '' && !imageUrls[fileName]) {
-      dispatch(storageActions.getImageUrlAction({ name: fileName }));
+    const parts: string[] = fileName.split('/');
+    if (
+      parts[parts.length - 1] !== '' &&
+      fileName !== '' &&
+      !fileUrls[fileName]
+    ) {
+      dispatch(storageActions.getFileUrlAction({ name: fileName }));
     }
-  }, [fileName, imageUrls]);
+  }, [fileName, fileUrls]);
 
-  return imageUrls[fileName] ?? '';
+  return fileUrls[fileName] ?? '';
 };

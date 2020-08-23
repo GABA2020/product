@@ -18,13 +18,17 @@ import { ProgramSaga } from 'redux/Program/saga';
 import { StorageSaga } from 'redux/Storage/saga';
 import { userSelector } from 'redux/User/selectors';
 import { programSelector } from 'redux/Program/selectors';
-import { ordinal_suffix_of } from 'helpers/Unity';
+import { ordinal_suffix_of, dataUrlFile } from 'helpers/Unity';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { EditProfileModal } from 'app/components/Modal/EditProfileModal';
 import { Locker } from '../Locker';
 import { CVWork } from '../CVWork';
 import { useStorage } from 'hook/useStorage';
+import { Score } from '../Score';
+import { img_user, verified_check } from 'assets/images';
+import { REF } from 'helpers/firebase.module';
+import Helmet from 'react-helmet';
 
 export const MyProfile = props => {
   useInjectSaga({ key: userSliceKey, saga: UserSaga });
@@ -34,56 +38,60 @@ export const MyProfile = props => {
   const { userProfile, educations } = useSelector(userSelector);
   const { program } = useSelector(programSelector);
 
-  const image = useStorage(`avatar/${userProfile.avatar}`);
-
   const [editModeState, setEditModeState] = useState<boolean>(true);
+
   const [
     isShowModalEditProfileState,
     setIsShowModalEditProfileState,
   ] = useState<boolean>(false);
 
+  const image = useStorage(`${REF.avatars}/${userProfile.avatar}`);
+
   useEffect(() => {
     dispatch(
       programActions.getProgramReviewAction({ email: userProfile.email }),
     );
+    dispatch(userActions.getEducationsAction({ email: userProfile.email }));
   }, [userProfile.email]);
 
   const saveProfile = async (
-    userProfile: ENTITIES.UserProfile,
-    program: ENTITIES.Program,
-    imageBase64: string,
+    newUserProfile: ENTITIES.UserProfile,
+    newProgram: ENTITIES.Program,
   ) => {
-    setIsShowModalEditProfileState(false);
-    if (imageBase64 !== '') {
-      dispatch(
-        storageActions.uploadAvatarAction({
-          name: userProfile.avatar,
-          content: imageBase64,
-        }),
-      );
-      dispatch(userActions.updateUserProfileAction({ userProfile }));
+    if (JSON.stringify(newProgram) !== JSON.stringify(program)) {
       dispatch(
         programActions.updateProgramAction({
           email: userProfile.email,
-          program: program,
+          program: { ...newProgram },
         }),
       );
-      return;
     }
-    dispatch(userActions.updateUserProfileAction({ userProfile }));
+
+    if (JSON.stringify(newUserProfile) !== JSON.stringify(userProfile)) {
+      dispatch(
+        userActions.updateUserProfileAction({
+          userProfile: { ...newUserProfile },
+        }),
+      );
+    }
+  };
+
+  const uploadAvatar = (imageBase64: string, name: string) => {
+    const file: File = dataUrlFile(imageBase64, name);
     dispatch(
-      programActions.updateProgramAction({
-        email: userProfile.email,
-        program: program,
-      }),
+      storageActions.uploadFileAction({ name: `${REF.avatars}/${name}`, file }),
     );
   };
 
   return (
     <Fragment>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>{userProfile.name}</title>
+      </Helmet>
       <EditProfileModal
-        avatar_url={image ?? ''}
         saveProfile={saveProfile}
+        uploadAvatar={uploadAvatar}
         program={program}
         userProfile={userProfile}
         isShow={isShowModalEditProfileState}
@@ -110,34 +118,42 @@ export const MyProfile = props => {
           <div className="media media-profile">
             <div className="profile-images">
               <a href="#">
-                <img
-                  alt="user image"
-                  src={image ?? ''}
-                  width={140}
-                  height={140}
-                />
+                {image !== '' ? (
+                  <img
+                    alt="user image"
+                    src={image ?? ''}
+                    width={140}
+                    height={140}
+                  />
+                ) : (
+                  <img
+                    alt="user image"
+                    src={img_user}
+                    width={140}
+                    height={140}
+                  />
+                )}
               </a>
             </div>
             <div className="media-body">
               <div className="profile-body">
-                <h2 className="profile-user">
-                  {userProfile.verified ? (
-                    <span className="tick_mark">
-                      {userProfile.name} <sup>{userProfile.degrees}</sup>
-                    </span>
-                  ) : (
-                    <span>
-                      {userProfile.name} <sup>{userProfile.degrees}</sup>
-                    </span>
-                  )}
-                </h2>
-
-                {/* owner profile will use userProfile */}
-                {educations.length > 0 && (
-                  <p className="morehouse-des">
-                    {educations[0].school} • {educations[0].school_address}
+                <div className="profile-user">
+                  <p className="user-name">
+                    {userProfile.name}
+                    <sup>
+                      {userProfile.degrees}{' '}
+                      {userProfile.verified ?? (
+                        <img src={verified_check} alt="" />
+                      )}
+                    </sup>
                   </p>
-                )}
+                  {educations.length > 0 && (
+                    <p className="morehouse-des">
+                      {educations[0].school} • {educations[0].school_address}
+                    </p>
+                  )}
+                </div>
+                {/* owner profile will use userProfile */}
                 <ul className="profile-tag">
                   <li>
                     <a href="#" className="btn-profile-tag">
@@ -193,101 +209,7 @@ export const MyProfile = props => {
         </div>
       </section>
       {/* owner profile will use userProfile */}
-      <section className="section-step-scope">
-        <div className="container">
-          <ul className="section-step-category">
-            <li className="step-item">
-              <figure className="box-step">
-                <div className="service-icons">
-                  <a href="#">
-                    <span className="icons-grid">&nbsp;</span>
-                  </a>
-                </div>
-                <figcaption className="step-caption">
-                  <h3 className="step-name">
-                    <a href="#">MCAT</a>
-                  </h3>
-                  <p className="step-paragraph">
-                    <span className="step-num">{userProfile.mcat}</span>
-                    {userProfile.mcat >= 246 && (
-                      <span className="step-gloss"> / Pass</span>
-                    )}
-                  </p>
-                  <div className="scope-link">
-                    <a href="#">Manage Scores</a>
-                  </div>
-                </figcaption>
-              </figure>
-            </li>
-            <li className="step-item">
-              <figure className="box-step">
-                <div className="service-icons">
-                  <a href="#">
-                    <span className="icons-point">&nbsp;</span>
-                  </a>
-                </div>
-                <figcaption className="step-caption">
-                  <h3 className="step-name">
-                    <a href="#">Step One</a>
-                  </h3>
-                  <p className="step-paragraph">
-                    <span className="step-num">{userProfile.step_1}</span>
-                    {userProfile.step_1 >= 246 && (
-                      <span className="step-gloss"> / Pass</span>
-                    )}
-                  </p>
-                  <div className="scope-link">
-                    <a href="#">Manage Scores</a>
-                  </div>
-                </figcaption>
-              </figure>
-            </li>
-            <li className="step-item">
-              <figure className="box-step">
-                <div className="service-icons">
-                  <a href="#">
-                    <span className="icons-image">&nbsp;</span>
-                  </a>
-                </div>
-                <figcaption className="step-caption">
-                  <h3 className="step-name">
-                    <a href="#">Step Two CK / CS</a>
-                  </h3>
-                  <p className="step-paragraph">
-                    <span className="step-num">{userProfile.step_2}</span>
-                    {userProfile.step_2 >= 246 && (
-                      <span className="step-gloss"> / Pass</span>
-                    )}
-                  </p>
-                  <div className="scope-link">
-                    <a href="#">Manage Scores</a>
-                  </div>
-                </figcaption>
-              </figure>
-            </li>
-            <li className="step-item">
-              <figure className="box-step">
-                <div className="service-icons">
-                  <a href="#">
-                    <span className="icons-pi">&nbsp;</span>
-                  </a>
-                </div>
-                <figcaption className="step-caption">
-                  <h3 className="step-name">
-                    <a href="#">Step Three</a>
-                  </h3>
-                  <p className="step-paragraph step-paragraph-verify">
-                    Once we verify your scores, you will see them here.
-                  </p>
-                  <div className="scope-link">
-                    <a href="#">Manage Scores</a>
-                  </div>
-                </figcaption>
-              </figure>
-            </li>
-          </ul>
-        </div>
-      </section>
+      <Score />
       {/* CV work */}
       <CVWork editMode={editModeState} />
       {/* locker */}

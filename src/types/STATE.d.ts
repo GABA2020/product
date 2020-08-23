@@ -27,8 +27,8 @@ declare namespace STATES {
     username: string;
   }
   interface Storage {
-    loading: boolean;
-    imageUrls: { [image_url: string]: string | null };
+    loadingFile: boolean;
+    fileUrls: { [file_url: string]: string | null };
   }
   interface Locker {
     loading: boolean;

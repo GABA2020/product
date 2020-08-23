@@ -89,6 +89,7 @@ function* updateUserProfileSaga({ payload }) {
     yield put(actions.getUserProfileActionFailed());
   }
 }
+
 export function* getWorkExperiencesSaga({ payload }) {
   yield delay(500);
   try {
@@ -389,8 +390,8 @@ export function* UserSaga() {
     actions.getUserSearchProfileAction,
     getUserSearchProfileSaga,
   );
-
   yield takeLatest(actions.updateUserProfileAction, updateUserProfileSaga);
+
   // work
   yield takeLatest(actions.getWorkExperiencesAction, getWorkExperiencesSaga);
   yield takeLatest(

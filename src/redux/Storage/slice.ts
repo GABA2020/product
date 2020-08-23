@@ -2,47 +2,47 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from 'utils/@reduxjs/toolkit';
 import { DTO } from 'types/DTO';
 import { STATES } from 'types/STATE';
+
 export const initialState: STATES.Storage = {
-  loading: true,
-  imageUrls: {},
+  loadingFile: true,
+  fileUrls: {},
 };
 
 const StorageSliceState = createSlice({
   name: 'storage',
   initialState,
   reducers: {
-    getImageUrlAction(
+    uploadFileAction(
       state,
-      action: PayloadAction<DTO.Storage.GetImageUrlRequest>,
+      action: PayloadAction<DTO.Storage.UploadFileRequest>,
     ) {
-      state.loading = true;
-      state.imageUrls[action.payload.name] = null;
+      state.loadingFile = true;
     },
-    getImageUrlActionSuccess(
+    uploadFileActionSuccess(
       state,
-      action: PayloadAction<DTO.Storage.GetImageUrlResponse>,
+      action: PayloadAction<DTO.Storage.UploadFileResponse>,
     ) {
-      state.loading = false;
-      state.imageUrls[action.payload.name] = action.payload.url;
+      state.loadingFile = false;
+      state.fileUrls[action.payload.name] = action.payload.url;
     },
-    getImageUrlActionFailed(state) {
-      state.loading = false;
+    uploadFileActionFailed(state) {
+      state.loadingFile = false;
     },
-    uploadAvatarAction(
+    getFileUrlAction(
       state,
-      action: PayloadAction<DTO.Storage.UploadAvatarRequest>,
+      action: PayloadAction<DTO.Storage.GetFileUrlRequest>,
     ) {
-      state.loading = true;
+      state.loadingFile = true;
     },
-    uploadAvatarActionSuccess(
+    getFileUrlActionSuccess(
       state,
-      action: PayloadAction<DTO.Storage.UploadAvatarResponse>,
+      action: PayloadAction<DTO.Storage.GetFileUrlResponse>,
     ) {
-      state.loading = false;
-      state.imageUrls[action.payload.name] = action.payload.url;
+      state.loadingFile = false;
+      state.fileUrls[action.payload.name] = action.payload.url;
     },
-    uploadAvatarActionFailed(state) {
-      state.loading = false;
+    getFileUrlActionFailed(state) {
+      state.loadingFile = false;
     },
   },
 });

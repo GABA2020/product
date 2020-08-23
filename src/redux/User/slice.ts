@@ -14,7 +14,6 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from 'utils/@reduxjs/toolkit';
 import { DTO } from 'types/DTO';
-import { faBullseye } from '@fortawesome/free-solid-svg-icons';
 import { STATES } from 'types/STATE';
 
 export const initialState: STATES.User = {
@@ -49,6 +48,9 @@ export const initialState: STATES.User = {
     learning_style: '',
     match: false,
     mcat: 0,
+    is_passed_mcat: false,
+    mcat_document_name: '',
+    mcat_review_requested: false,
     name: '',
     number_of_apps_categorical: '',
     number_of_apps_preliminary_year: '',
@@ -64,8 +66,14 @@ export const initialState: STATES.User = {
     specialty_interest: '',
     specialty_specific_publications: '',
     step_1: 0,
+    is_passed_step1: false,
+    step_1_document_name: '',
+    step_1_review_requested: false,
     step_1_resources_used: [],
     step_2: 0,
+    is_passed_step2: false,
+    step_2_document_name: '',
+    step_2_review_requested: false,
     step_2_resources_used: [],
     student_location: '',
     student_status: '',
@@ -76,6 +84,11 @@ export const initialState: STATES.User = {
     waitlists: 0,
     year: '',
     year_in_program: 0,
+    step_3: 0,
+    is_passed_step3: false,
+    step_3_document_name: '',
+    step_3_resources_used: [],
+    step_3_review_requested: false,
   },
   userSearchResults: [],
   userSearchProfile: {
@@ -99,6 +112,9 @@ export const initialState: STATES.User = {
     learning_style: '',
     match: false,
     mcat: 0,
+    is_passed_mcat: false,
+    mcat_document_name: '',
+    mcat_review_requested: false,
     name: '',
     number_of_apps_categorical: '',
     number_of_apps_preliminary_year: '',
@@ -114,8 +130,14 @@ export const initialState: STATES.User = {
     specialty_interest: '',
     specialty_specific_publications: '',
     step_1: 0,
+    is_passed_step1: false,
+    step_1_document_name: '',
+    step_1_review_requested: false,
     step_1_resources_used: [],
     step_2: 0,
+    is_passed_step2: false,
+    step_2_document_name: '',
+    step_2_review_requested: false,
     step_2_resources_used: [],
     student_location: '',
     student_status: '',
@@ -126,6 +148,11 @@ export const initialState: STATES.User = {
     waitlists: 0,
     year: '',
     year_in_program: 0,
+    step_3: 0,
+    is_passed_step3: false,
+    step_3_document_name: '',
+    step_3_resources_used: [],
+    step_3_review_requested: false,
   },
 };
 

@@ -13,6 +13,8 @@ import { programSelector } from 'redux/Program/selectors';
 import { ordinal_suffix_of } from 'helpers/Unity';
 import { GuestUserLocker } from '../GuestUserLocker';
 import { useStorage } from 'hook/useStorage';
+import { img_user, verified_check } from 'assets/images';
+import Helmet from 'react-helmet';
 
 export const GuestUserProfile = props => {
   useInjectSaga({ key: userSliceKey, saga: UserSaga });
@@ -22,7 +24,7 @@ export const GuestUserProfile = props => {
   const { userSearchProfile } = useSelector(userSelector);
   const { program } = useSelector(programSelector);
 
-  const image = useStorage(`avatar/${userSearchProfile.avatar}`);
+  const image = useStorage(`avatars/${userSearchProfile.avatar}`);
 
   useEffect(() => {
     dispatch(
@@ -34,37 +36,46 @@ export const GuestUserProfile = props => {
 
   return (
     <Fragment>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>{userSearchProfile.name}</title>
+      </Helmet>
       <section className="section-profile">
         <div className="container">
           <div className="media media-profile">
             <div className="profile-images">
               <a href="#">
-                <img
-                  alt="user image"
-                  src={image ?? ''}
-                  width={140}
-                  height={140}
-                />
+                {image !== '' ? (
+                  <img
+                    alt="user image"
+                    src={image ?? ''}
+                    width={140}
+                    height={140}
+                  />
+                ) : (
+                  <img
+                    alt="user image"
+                    src={img_user}
+                    width={140}
+                    height={140}
+                  />
+                )}
               </a>
             </div>
             <div className="media-body">
               <div className="profile-body">
-                <h2 className="profile-user">
-                  {userSearchProfile.verified ? (
-                    <span className="tick_mark">
-                      {userSearchProfile.name}{' '}
-                      <sup>{userSearchProfile.degrees}</sup>
-                    </span>
-                  ) : (
-                    <span>
-                      {userSearchProfile.name}{' '}
-                      <sup>{userSearchProfile.degrees}</sup>
-                    </span>
-                  )}
-                </h2>
-
-                {/* owner profile will use userProfile */}
-                <p className="morehouse-des">{program.program_name}</p>
+                <div className="profile-user">
+                  <p className="user-name">
+                    {userSearchProfile.name}
+                    <sup>
+                      {userSearchProfile.degrees}{' '}
+                      {userSearchProfile.verified ?? (
+                        <img src={verified_check} alt="" />
+                      )}
+                    </sup>
+                  </p>
+                </div>
+                {/* owner profile will use userSearchProfile */}
                 <ul className="profile-tag">
                   <li>
                     <a href="#" className="btn-profile-tag">
@@ -88,12 +99,6 @@ export const GuestUserProfile = props => {
                     </a>
                   </li>
                 </ul>
-              </div>
-              {/* owner profile will use userProfile */}
-              <div className="profile-modifile">
-                <a href="#" className="btn btn-edit-profile">
-                  Connect
-                </a>
               </div>
             </div>
           </div>

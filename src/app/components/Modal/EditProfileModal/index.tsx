@@ -1,27 +1,28 @@
 import React, { Fragment, useEffect, useState, FC } from 'react';
 import { Modal } from 'react-bootstrap';
-import { Formik } from 'formik';
+import { Formik, useFormik } from 'formik';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
-import {
-  showDialogSizeImage,
-  showDialogUploadImage,
-} from 'helpers/Swal.module';
+import { Modal as ModalAnt, message } from 'antd';
 import { ImageCrop } from 'app/components/ImageCrop';
 import Select from 'react-select';
 import * as yup from 'yup';
+import { img_user } from 'assets/images';
+import { showWarningMessage } from 'helpers/Swal.module';
+import { Message } from 'helpers/Message';
+import { useStorage } from 'hook/useStorage';
+import { REF } from 'helpers/firebase.module';
 
 interface IEditProfile {
   isShow: boolean;
-  onHide: () => void;
-  saveProfile: (
-    userProfile: ENTITIES.UserProfile,
-    program: ENTITIES.Program,
-    imageBase64: string,
-  ) => void;
   userProfile: ENTITIES.UserProfile;
   program: ENTITIES.Program;
-  avatar_url: string;
+  uploadAvatar: (imageBase64: string, name: string) => void;
+  onHide: () => void;
+  saveProfile: (
+    newUserProfile: ENTITIES.UserProfile,
+    newProgram: ENTITIES.Program,
+  ) => void;
 }
 
 interface IImage {
@@ -34,6 +35,7 @@ interface IForm {
   specialty: string;
   year_in_program: number;
   degrees: string;
+  avatar: string;
 }
 
 const degreesOptions = [
@@ -47,6 +49,7 @@ const initialValues: IForm = {
   specialty: '',
   year_in_program: 0,
   degrees: '',
+  avatar: '',
 };
 
 const initImage: IImage = {
@@ -78,22 +81,59 @@ const schema = yup.object().shape({
     .max(20, 'Year In Program must be less than or equal to 20')
     .required('Year in Program is a required field'),
   degrees: yup.string().required('Name is a required field'),
+  avatar: yup.string(),
 });
 
 export const EditProfileModal: FC<IEditProfile> = props => {
   const {
     isShow,
-    onHide,
     userProfile,
-    avatar_url,
     program,
+    onHide,
     saveProfile,
+    uploadAvatar,
   } = props;
+
   const [imageState, setImageState] = useState<ENTITIES.File>(initFile);
-  const [imageBase64State, setImageBase64State] = useState<IImage>({
-    content: '',
-    name: '',
+  const {
+    errors,
+    handleChange,
+    handleSubmit,
+    values,
+    setFieldValue,
+    touched,
+  } = useFormik({
+    initialValues: {
+      ...initialValues,
+    },
+    validationSchema: schema,
+    onSubmit: values => {
+      const newUserProfile: ENTITIES.UserProfile = {
+        ...userProfile,
+        name: values.name,
+        year_in_program: values.year_in_program,
+        avatar: values.avatar,
+        degrees: values.degrees,
+      };
+      const newProgram: ENTITIES.Program = {
+        ...program,
+        specialty: values.specialty,
+      };
+      saveProfile(newUserProfile, newProgram);
+      onHide();
+    },
   });
+  useEffect(() => {
+    if (isShow === true) {
+      setFieldValue('name', userProfile.name);
+      setFieldValue('specialty', program.specialty);
+      setFieldValue('year_in_program', userProfile.year_in_program);
+      setFieldValue('degrees', userProfile.degrees);
+      setFieldValue('avatar', userProfile.avatar);
+    }
+  }, [userProfile, program, isShow]);
+
+  const image_preview = useStorage(`${REF.avatars}/${values.avatar}`);
 
   const onHandleChangeAvatar = event => {
     const file = event.target.files[0];
@@ -108,31 +148,31 @@ export const EditProfileModal: FC<IEditProfile> = props => {
         if (file.size / 1024 / 1024 < 5) {
           setImageState(file);
         } else {
-          showDialogSizeImage();
+          showWarningMessage(Message.Format_Image);
         }
       } else {
-        showDialogUploadImage();
+        showWarningMessage(Message.Size_File_Too_Big);
       }
     }
   };
+
   const onCropDone = (imageBase64: string, name: string) => {
     setImageState(initFile);
-    setImageBase64State({
-      content: imageBase64,
-      name,
-    });
+    uploadAvatar(imageBase64, name);
+    setFieldValue('avatar', name);
   };
+
   const onCropCancel = () => {
     setImageState(initFile);
-    setImageBase64State(initImage);
   };
+
   return (
     <Fragment>
       <div className="modal-edit-profile">
         <Modal
+          backdrop="static"
           show={isShow}
           onHide={() => {
-            setImageBase64State(initImage);
             onHide();
           }}
         >
@@ -140,150 +180,116 @@ export const EditProfileModal: FC<IEditProfile> = props => {
             <Modal.Title>Edit Profile</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Formik
-              initialValues={{
-                ...initialValues,
-                name: userProfile.name,
-                specialty: program.specialty,
-                year_in_program: userProfile.year_in_program,
-                degrees: userProfile.degrees,
-              }}
-              validationSchema={schema}
-              onSubmit={values => {
-                const newUserProfile: ENTITIES.UserProfile = {
-                  ...userProfile,
-                  name: values.name,
-                  year_in_program: values.year_in_program,
-                  avatar: imageBase64State.name
-                    ? imageBase64State.name
-                    : userProfile.avatar,
-                  degrees: values.degrees,
-                };
-                const newProgram: ENTITIES.Program = {
-                  ...program,
-                  specialty: values.specialty,
-                };
-                saveProfile(
-                  newUserProfile,
-                  newProgram,
-                  imageBase64State.content,
-                );
-              }}
-            >
-              {({
-                errors,
-                handleChange,
-                handleSubmit,
-                values,
-                setFieldValue,
-              }) => (
-                <form onSubmit={handleSubmit}>
-                  <div className="form-group">
-                    <div className="profile-images-wrapper text-center">
-                      <img
-                        className="profile-image"
-                        alt="image preview"
-                        src={
-                          imageBase64State.content
-                            ? imageBase64State.content
-                            : avatar_url
-                        }
-                        width={140}
-                        height={140}
-                      />
-                      <input
-                        type="file"
-                        onChange={onHandleChangeAvatar}
-                        className="upload-image"
-                      />
-                      <div className="upload-image-icon">
-                        <FontAwesomeIcon icon={faEdit}></FontAwesomeIcon>
-                      </div>
-                    </div>
-                    <div className="upload-image-crop text-center">
-                      {imageState.name !== '' ? (
-                        <ImageCrop
-                          onCropCancel={onCropCancel}
-                          onCropDone={onCropDone}
-                          imageSrc={imageState}
-                        ></ImageCrop>
-                      ) : null}
-                    </div>
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="exampleInputEmail1">Name</label>
-                    <input
-                      name="name"
-                      value={values.name}
-                      type="text"
-                      className="form-control"
-                      placeholder="Enter your name"
-                      onChange={handleChange}
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <div className="profile-images-wrapper text-center">
+                  {image_preview !== '' ? (
+                    <img
+                      className="profile-image"
+                      alt="image preview"
+                      src={image_preview}
+                      width={140}
+                      height={140}
                     />
-                    {errors.name && (
-                      <span className={'text-danger'}>{errors.name}</span>
-                    )}
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="exampleInputPassword1">Specialty</label>
-                    <input
-                      name="specialty"
-                      value={values.specialty}
-                      type="text"
-                      className="form-control"
-                      placeholder="Specialty"
-                      onChange={handleChange}
+                  ) : (
+                    <img
+                      className="profile-image"
+                      alt="image preview"
+                      src={img_user}
+                      width={140}
+                      height={140}
                     />
-                    {errors.specialty && (
-                      <span className={'text-danger'}>{errors.specialty}</span>
-                    )}
+                  )}
+
+                  <input
+                    type="file"
+                    onChange={onHandleChangeAvatar}
+                    className="upload-image"
+                  />
+                  <div className="upload-image-icon">
+                    <FontAwesomeIcon icon={faEdit}></FontAwesomeIcon>
                   </div>
-                  <div className="form-group">
-                    <label htmlFor="exampleInputPassword1">Degrees</label>
-                    <Select
-                      name="degrees"
-                      isMulti={false}
-                      value={degreesOptions.find(
-                        option => option.value === values.degrees,
-                      )}
-                      onChange={(opt, e) => {
-                        setFieldValue('degrees', opt.value);
-                      }}
-                      options={degreesOptions}
-                    />
-                    {errors.degrees && (
-                      <span className={'text-danger'}>{errors.degrees}</span>
-                    )}
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="exampleInputPassword1">
-                      Year of School
-                    </label>
-                    <input
-                      name="year_in_program"
-                      value={values.year_in_program}
-                      type="number"
-                      className="form-control"
-                      placeholder="Year of School"
-                      onChange={handleChange}
-                    />
-                    {errors.year_in_program && (
-                      <span className={'text-danger'}>
-                        {errors.year_in_program}
-                      </span>
-                    )}
-                  </div>
-                  <div className="text-right mt-2">
-                    <button
-                      type="submit"
-                      className="btn btn-primary btn-save-profile"
-                    >
-                      Save
-                    </button>
-                  </div>
-                </form>
-              )}
-            </Formik>
+                </div>
+                <div className="upload-image-crop text-center">
+                  {imageState.name !== '' ? (
+                    <ImageCrop
+                      onCropCancel={onCropCancel}
+                      onCropDone={onCropDone}
+                      imageSrc={imageState}
+                    ></ImageCrop>
+                  ) : null}
+                </div>
+              </div>
+              <div className="form-group">
+                <label htmlFor="exampleInputEmail1">Name</label>
+                <input
+                  name="name"
+                  value={values.name}
+                  type="text"
+                  className="form-control"
+                  placeholder="Enter your name"
+                  onChange={handleChange}
+                />
+                {touched.name && errors.name && (
+                  <span className={'text-danger'}>{errors.name}</span>
+                )}
+              </div>
+              <div className="form-group">
+                <label htmlFor="exampleInputPassword1">Specialty</label>
+                <input
+                  name="specialty"
+                  value={values.specialty}
+                  type="text"
+                  className="form-control"
+                  placeholder="Specialty"
+                  onChange={handleChange}
+                />
+                {touched.specialty && errors.specialty && (
+                  <span className={'text-danger'}>{errors.specialty}</span>
+                )}
+              </div>
+              <div className="form-group">
+                <label htmlFor="exampleInputPassword1">Degrees</label>
+                <Select
+                  name="degrees"
+                  isMulti={false}
+                  value={degreesOptions.find(
+                    option => option.value === values.degrees,
+                  )}
+                  onChange={(opt, e) => {
+                    setFieldValue('degrees', opt.value);
+                  }}
+                  options={degreesOptions}
+                />
+                {touched.degrees && errors.degrees && (
+                  <span className={'text-danger'}>{errors.degrees}</span>
+                )}
+              </div>
+              <div className="form-group">
+                <label htmlFor="exampleInputPassword1">Year of School</label>
+                <input
+                  name="year_in_program"
+                  value={values.year_in_program}
+                  type="number"
+                  className="form-control"
+                  placeholder="Year of School"
+                  onChange={handleChange}
+                />
+                {touched.year_in_program && errors.year_in_program && (
+                  <span className={'text-danger'}>
+                    {errors.year_in_program}
+                  </span>
+                )}
+              </div>
+              <div className="text-right mt-2">
+                <button
+                  type="submit"
+                  className="btn btn-success btn-save-profile"
+                >
+                  Save
+                </button>
+              </div>
+            </form>
           </Modal.Body>
         </Modal>
       </div>

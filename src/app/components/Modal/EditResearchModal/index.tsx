@@ -7,8 +7,9 @@ import moment from 'moment';
 import 'styles/scss/ModalWorkExperience.scss';
 import Select from 'react-select';
 import { Formik, useFormik } from 'formik';
-import { showDialogDelete } from 'helpers/Swal.module';
+import { showConfirmMessage } from 'helpers/Swal.module';
 import { convertDateToTimestamp } from 'helpers/Unity';
+import { Message } from 'helpers/Message';
 
 const schema = yup.object().shape({
   title_of_work: yup
@@ -114,14 +115,18 @@ export const EditResearchModal: FC<IEditResearchModal> = props => {
   const { isShow, onHide, research, editResearch, deleteResearch } = props;
 
   const onHandleDelete = async () => {
-    const isDelete = await showDialogDelete();
+    const isDelete = await showConfirmMessage(
+      Message.Delete_Question,
+      '',
+      'warning',
+    );
     if (isDelete.value === true) {
       deleteResearch(research);
     }
   };
   return (
     <Fragment>
-      <Modal show={isShow} onHide={onHide}>
+      <Modal backdrop="static" show={isShow} onHide={onHide}>
         <Modal.Header closeButton>
           <Modal.Title>Add Research</Modal.Title>
         </Modal.Header>
@@ -333,7 +338,7 @@ export const EditResearchModal: FC<IEditResearchModal> = props => {
                   </label>
                 </div>
 
-                <div className="btn-wrapper-submit">
+                <div className="btn-wrapper-submit mt-2">
                   <button
                     type="button"
                     className="btn btn-light btn-save-profile"
@@ -343,7 +348,7 @@ export const EditResearchModal: FC<IEditResearchModal> = props => {
                   </button>
                   <button
                     type="submit"
-                    className="btn btn-primary btn-save-profile"
+                    className="btn btn-success btn-save-profile"
                   >
                     Save
                   </button>

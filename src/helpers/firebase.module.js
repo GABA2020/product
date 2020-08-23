@@ -25,4 +25,10 @@ const storageAvatar = async name => {
   return await firebase.storage().ref('avatar').child(name);
 };
 
-export { auth, db, storageAvatar, storageFB };
+const REF = {
+  avatars: 'avatars',
+  resources: 'resources',
+  files: 'files',
+};
+
+export { auth, db, storageAvatar, storageFB, REF };

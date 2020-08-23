@@ -75,7 +75,7 @@ export const AddVolunteerModal: FC<IAddVolunteerModal> = props => {
 
   return (
     <Fragment>
-      <Modal show={isShow} onHide={onHide}>
+      <Modal backdrop="static" show={isShow} onHide={onHide}>
         <Modal.Header closeButton>
           <Modal.Title>Add Volunteer</Modal.Title>
         </Modal.Header>
@@ -253,7 +253,7 @@ export const AddVolunteerModal: FC<IAddVolunteerModal> = props => {
                 <div className="text-right mt-2">
                   <button
                     type="submit"
-                    className="btn btn-primary btn-save-profile"
+                    className="btn btn-success btn-save-profile"
                   >
                     Save
                   </button>

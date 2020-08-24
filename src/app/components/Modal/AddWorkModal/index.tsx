@@ -12,15 +12,15 @@ import { Formik } from 'formik';
 const schema = yup.object().shape({
   job_title: yup
     .string()
-    .max(100, 'Title must be at most 100 characters')
+    .max(200, 'Title must be at most 200 characters')
     .required('Title is a required field'),
   company: yup
     .string()
-    .max(100, 'Company must be at most 100 characters')
+    .max(200, 'Company must be at most 200 characters')
     .required('Company is a required field'),
   company_address: yup
     .string()
-    .max(100, 'Company Address must be at most 100 characters')
+    .max(200, 'Company Address must be at most 200 characters')
     .required('Company Address is a required field'),
   description: yup
     .string()
@@ -90,6 +90,7 @@ export const AddWorkModal: FC<IAddWorkModal> = props => {
               handleChange,
               handleSubmit,
               values,
+              touched,
               setFieldValue,
             }) => (
               <form onSubmit={handleSubmit}>
@@ -103,7 +104,7 @@ export const AddWorkModal: FC<IAddWorkModal> = props => {
                     value={values.job_title}
                     onChange={handleChange}
                   />
-                  {errors.job_title && (
+                  {touched.job_title && errors.job_title && (
                     <span className={'text-danger'}>{errors.job_title}</span>
                   )}
                 </div>
@@ -117,7 +118,7 @@ export const AddWorkModal: FC<IAddWorkModal> = props => {
                     value={values.company}
                     onChange={handleChange}
                   />
-                  {errors.company && (
+                  {touched.company && errors.company && (
                     <span className={'text-danger'}>{errors.company}</span>
                   )}
                 </div>
@@ -139,7 +140,7 @@ export const AddWorkModal: FC<IAddWorkModal> = props => {
                           selected={values.date_start}
                         />
                       </div>
-                      {errors.date_start && (
+                      {touched.date_start && errors.date_start && (
                         <span className={'text-danger'}>
                           {errors.date_start}
                         </span>
@@ -161,7 +162,7 @@ export const AddWorkModal: FC<IAddWorkModal> = props => {
                           selected={values.date_end}
                         />
                       </div>
-                      {errors.date_end && (
+                      {touched.date_end && errors.date_end && (
                         <span className={'text-danger'}>{errors.date_end}</span>
                       )}
                     </div>
@@ -177,7 +178,7 @@ export const AddWorkModal: FC<IAddWorkModal> = props => {
                     value={values.company_address}
                     onChange={handleChange}
                   />
-                  {errors.company_address && (
+                  {touched.company_address && errors.company_address && (
                     <span className={'text-danger'}>
                       {errors.company_address}
                     </span>
@@ -195,7 +196,7 @@ export const AddWorkModal: FC<IAddWorkModal> = props => {
                       setFieldValue('description', editor.getData());
                     }}
                   />
-                  {errors.description && (
+                  {touched.description && errors.description && (
                     <span className={'text-danger'}>{errors.description}</span>
                   )}
                 </div>

@@ -92,16 +92,16 @@ declare namespace ENTITIES {
     description: string;
     job_title: string;
   }
-  // interface Volunteer {
-  //   id: string;
-  //   date_end: string;
-  //   date_start: string;
-  //   description: string;
-  //   job_title: string;
-  //   number_of_hours_served: string;
-  //   organization_address: string;
-  //   organization_name: string;
-  // }
+  interface Volunteer {
+    id: string;
+    date_end: string;
+    date_start: string;
+    description: string;
+    job_title: string;
+    number_of_hours_served: string;
+    organization_address: string;
+    organization_name: string;
+  }
   interface Education {
     id: string;
     date_end: string;
@@ -111,5 +111,41 @@ declare namespace ENTITIES {
     major: string;
     school: string;
     school_address: string;
+  }
+
+  interface Research {
+    id: string;
+    author: string;
+    event_address: string;
+    event_date: string;
+    event_name: string;
+    journal: string;
+    link: string;
+    is_show_link: boolean;
+    primary_investigator: string;
+    research_type: string[];
+    title_of_work: string;
+  }
+
+  interface Letter {
+    id: string;
+    document_name: string;
+    document_type: string;
+    link: string;
+    receive_date: string;
+  }
+
+  interface File {
+    lastModified: number;
+    lastModifiedDate: string;
+    name: string;
+    size: number;
+    type: string;
+    webkitRelativePath: string;
+  }
+
+  interface ISelect {
+    label: string;
+    value: string;
   }
 }

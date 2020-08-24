@@ -5,24 +5,32 @@ import 'react-datepicker/dist/react-datepicker.css';
 import * as yup from 'yup';
 import moment from 'moment';
 import 'styles/scss/ModalWorkExperience.scss';
+import { Formik } from 'formik';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { Formik } from 'formik';
-import { showDialogDelete } from 'helpers/Swal.module';
 
 const schema = yup.object().shape({
   job_title: yup
     .string()
-    .max(200, 'Title must be at most 200 characters')
-    .required('Title is a required field'),
-  company: yup
+    .max(200, 'Job title must be at most 200 characters')
+    .required('Job title is a required field'),
+  number_of_hours_served: yup
+    .number()
+    .typeError('Number of hours served must be a number')
+    .min(0)
+    .max(
+      2000000,
+      'Number of hours served  must be less than or equal to 2000000',
+    )
+    .required('Number of hours served  is a required field'),
+  organization_address: yup
     .string()
-    .max(200, 'Company must be at most 200 characters')
-    .required('Company is a required field'),
-  company_address: yup
+    .max(200, 'Organization address must be at most 200 characters')
+    .required('Organization address is a required field'),
+  organization_name: yup
     .string()
-    .max(200, 'Company Address must be at most 200 characters')
-    .required('Company Address is a required field'),
+    .max(200, 'Organization name must be at most 200 characters')
+    .required('Organization name is a required field'),
   description: yup
     .string()
     .max(500, 'Description must be at most 500 characters')
@@ -30,79 +38,64 @@ const schema = yup.object().shape({
   date_start: yup.string().required('Date Start is a required field'),
   date_end: yup.string().required('Date End is a required field'),
 });
-interface IEditWorkModal {
-  isShow: boolean;
-  onHide: () => void;
-  editWorkExperience: (workExperience: ENTITIES.WorkExperience) => void;
-  deleteWorkExperience: (workExperience: ENTITIES.WorkExperience) => void;
-  workExperience: ENTITIES.WorkExperience;
-}
+
 const editorConfiguration = {
   toolbar: ['bulletedList', 'numberedList', 'blockQuote', 'undo', 'redo'],
 };
 
+interface IAddVolunteerModal {
+  isShow: boolean;
+  onHide: () => void;
+  addNewVolunteer: (volunteer: ENTITIES.Volunteer) => void;
+}
+
 interface IForm {
-  company: string;
-  company_address: string;
   date_end: Date;
   date_start: Date;
   description: string;
   job_title: string;
+  number_of_hours_served: string;
+  organization_address: string;
+  organization_name: string;
 }
 
 const initialValues: IForm = {
-  company: '',
-  company_address: '',
   date_end: new Date(),
   date_start: new Date(),
   description: '',
   job_title: '',
+  number_of_hours_served: '',
+  organization_address: '',
+  organization_name: '',
 };
 
-export const EditWorkModal: FC<IEditWorkModal> = props => {
-  const {
-    isShow,
-    onHide,
-    editWorkExperience,
-    deleteWorkExperience,
-    workExperience,
-  } = props;
+export const AddVolunteerModal: FC<IAddVolunteerModal> = props => {
+  const { isShow, onHide, addNewVolunteer } = props;
 
-  const onHandleDelete = async () => {
-    const isDelete = await showDialogDelete();
-    if (isDelete.value === true) {
-      deleteWorkExperience(workExperience);
-    }
-  };
   return (
     <Fragment>
       <Modal show={isShow} onHide={onHide}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit experience</Modal.Title>
+          <Modal.Title>Add Volunteer</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Formik
             initialValues={{
               ...initialValues,
-              company: workExperience.company,
-              company_address: workExperience.company_address,
-              date_end: moment(workExperience.date_end).toDate(),
-              date_start: moment(workExperience.date_start).toDate(),
-              description: workExperience.description,
-              job_title: workExperience.job_title,
             }}
             validationSchema={schema}
             onSubmit={values => {
-              const newEx: ENTITIES.WorkExperience = {
-                ...workExperience,
-                company: values.company,
-                company_address: values.company_address,
+              const newVolunteer: ENTITIES.Volunteer = {
+                id: '',
                 date_end: moment(values.date_end).format('yyyy/MM'),
                 date_start: moment(values.date_start).format('yyyy/MM'),
                 description: values.description,
                 job_title: values.job_title,
+                number_of_hours_served: values.number_of_hours_served,
+                organization_address: values.organization_address,
+                organization_name: values.organization_name,
               };
-              editWorkExperience(newEx);
+              addNewVolunteer(newVolunteer);
             }}
           >
             {({
@@ -110,37 +103,10 @@ export const EditWorkModal: FC<IEditWorkModal> = props => {
               handleChange,
               handleSubmit,
               values,
+              touched,
               setFieldValue,
             }) => (
               <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                  <label htmlFor="exampleInputEmail1">Title</label>
-                  <input
-                    name="job_title"
-                    type="text"
-                    className="form-control"
-                    placeholder="Title"
-                    value={values.job_title}
-                    onChange={handleChange}
-                  />
-                  {errors.job_title && (
-                    <span className={'text-danger'}>{errors.job_title}</span>
-                  )}
-                </div>
-                <div className="form-group">
-                  <label htmlFor="exampleInputPassword1">Company</label>
-                  <input
-                    name="company"
-                    type="text"
-                    className="form-control"
-                    placeholder="Company"
-                    value={values.company}
-                    onChange={handleChange}
-                  />
-                  {errors.company && (
-                    <span className={'text-danger'}>{errors.company}</span>
-                  )}
-                </div>
                 <div className="form-group">
                   <div className="row">
                     <div className="col-md-6">
@@ -159,7 +125,7 @@ export const EditWorkModal: FC<IEditWorkModal> = props => {
                           selected={values.date_start}
                         />
                       </div>
-                      {errors.date_start && (
+                      {touched.date_start && errors.date_start && (
                         <span className={'text-danger'}>
                           {errors.date_start}
                         </span>
@@ -181,27 +147,83 @@ export const EditWorkModal: FC<IEditWorkModal> = props => {
                           selected={values.date_end}
                         />
                       </div>
-                      {errors.date_end && (
+                      {touched.date_end && errors.date_end && (
                         <span className={'text-danger'}>{errors.date_end}</span>
                       )}
                     </div>
                   </div>
                 </div>
                 <div className="form-group">
-                  <label htmlFor="exampleInputPassword1">Company Address</label>
+                  <label htmlFor="exampleInputPassword1">
+                    Organization Name
+                  </label>
                   <input
-                    name="company_address"
+                    name="organization_name"
                     type="text"
                     className="form-control"
-                    placeholder="Company Address"
-                    value={values.company_address}
+                    placeholder="Organization Name"
+                    value={values.organization_name}
                     onChange={handleChange}
                   />
-                  {errors.company_address && (
+                  {touched.organization_name && errors.organization_name && (
                     <span className={'text-danger'}>
-                      {errors.company_address}
+                      {errors.organization_name}
                     </span>
                   )}
+                </div>
+                <div className="form-group">
+                  <label htmlFor="exampleInputPassword1">
+                    Organization address
+                  </label>
+                  <input
+                    name="organization_address"
+                    type="text"
+                    className="form-control"
+                    placeholder="Organization address"
+                    value={values.organization_address}
+                    onChange={handleChange}
+                  />
+                  {touched.organization_address &&
+                    errors.organization_address && (
+                      <span className={'text-danger'}>
+                        {errors.organization_address}
+                      </span>
+                    )}
+                </div>
+                <div className="form-group">
+                  <label htmlFor="exampleInputEmail1">Job title</label>
+                  <input
+                    name="job_title"
+                    type="text"
+                    className="form-control"
+                    placeholder="Job title"
+                    value={values.job_title}
+                    onChange={handleChange}
+                  />
+                  {touched.job_title && errors.job_title && (
+                    <span className={'text-danger'}>{errors.job_title}</span>
+                  )}
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="exampleInputPassword1">
+                    Number of hours served
+                  </label>
+                  <input
+                    name="number_of_hours_served"
+                    type="number"
+                    min={0}
+                    className="form-control"
+                    placeholder="Number of hours served"
+                    value={values.number_of_hours_served}
+                    onChange={handleChange}
+                  />
+                  {touched.number_of_hours_served &&
+                    errors.number_of_hours_served && (
+                      <span className={'text-danger'}>
+                        {errors.number_of_hours_served}
+                      </span>
+                    )}
                 </div>
                 <div className="form-group">
                   <label htmlFor="exampleInputPassword1">Description</label>
@@ -215,18 +237,11 @@ export const EditWorkModal: FC<IEditWorkModal> = props => {
                       setFieldValue('description', editor.getData());
                     }}
                   />
-                  {errors.description && (
+                  {touched.description && errors.description && (
                     <span className={'text-danger'}>{errors.description}</span>
                   )}
                 </div>
-                <div className="btn-wrapper-submit">
-                  <button
-                    type="button"
-                    className="btn btn-light btn-save-profile"
-                    onClick={() => onHandleDelete()}
-                  >
-                    Delete
-                  </button>
+                <div className="text-right mt-2">
                   <button
                     type="submit"
                     className="btn btn-primary btn-save-profile"

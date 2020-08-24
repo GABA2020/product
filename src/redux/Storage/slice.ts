@@ -24,6 +24,19 @@ const StorageSliceState = createSlice({
     getAvatarURLActionFailed(state) {
       state.loading = false;
     },
+    uploadAvatarAction(
+      state,
+      action: PayloadAction<DTO.Storage.UploadAvatarRequest>,
+    ) {
+      state.loading = true;
+    },
+    uploadAvatarActionSuccess(state, action: PayloadAction<string>) {
+      state.loading = false;
+      state.avatar_url = action.payload;
+    },
+    uploadAvatarActionFailed(state) {
+      state.loading = false;
+    },
   },
 });
 

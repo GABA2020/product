@@ -10,9 +10,27 @@ import {
   addNewWorkExperience,
   editWorkExperience,
   deleteWorkExperience,
-  getImageURL,
   updateUserProfile,
+  addNewEducation,
+  editEducation,
+  deleteEducation,
+  getLetters,
+  addNewLetter,
+  editLetter,
+  deleteLetter,
 } from '../../services';
+import {
+  getVolunteers,
+  addNewVolunteer,
+  editVolunteer,
+  deleteVolunteer,
+} from 'services/VolunteerService';
+import {
+  getResearches,
+  addNewResearch,
+  editResearch,
+  deleteResearch,
+} from 'services/ResearchService';
 
 export function* GetUserProfile({ payload }) {
   yield delay(500);
@@ -21,9 +39,6 @@ export function* GetUserProfile({ payload }) {
       getUserProfile,
       payload,
     );
-    // const imageURL = yield call(getImageURL, response.avatar);
-    // response = imageURL;
-
     yield put(actions.getUserProfileActionSuccess(response));
   } catch (e) {
     yield put(actions.getUserProfileActionFailed());
@@ -51,9 +66,6 @@ export function* getUserSearchProfileSaga({ payload }) {
       payload,
     );
     if (response) {
-      // const imageURL = yield call(getImageURL, response.avatar);
-      // response.avatar = imageURL;
-
       yield put(actions.getUserSearchProfileActionSuccess(response));
     } else {
       yield put(actions.getUserSearchProfileActionFailed());
@@ -76,7 +88,7 @@ function* updateUserProfileSaga({ payload }) {
 export function* getWorkExperiencesSaga({ payload }) {
   yield delay(500);
   try {
-    const response: DTO.User.GetWorkExperiencesResponse = yield call(
+    const response: DTO.User.WorkExperience.GetWorkExperiencesResponse = yield call(
       getWorkExperiences,
       payload,
     );
@@ -119,13 +131,180 @@ export function* deleteWorkExperienceSaga({ payload }) {
 export function* getEducationsSaga({ payload }) {
   yield delay(500);
   try {
-    const response: DTO.User.GetEducationsResponse = yield call(
+    const response: DTO.User.Education.GetEducationsResponse = yield call(
       getEducations,
       payload,
     );
     yield put(actions.getEducationsActionSuccess(response));
   } catch (e) {
     yield put(actions.getEducationsActionFailed());
+  }
+}
+
+export function* addNewEducationsSaga({ payload }) {
+  yield delay(500);
+  try {
+    const response = yield call(addNewEducation, payload);
+    yield put(actions.addNewEducationActionSuccess());
+    yield put(actions.getEducationsAction({ email: payload.email }));
+  } catch (e) {
+    yield put(actions.addNewEducationActionFailed());
+  }
+}
+
+export function* editEducationsSaga({ payload }) {
+  yield delay(500);
+  try {
+    const response = yield call(editEducation, payload);
+    yield put(actions.editEducationActionSuccess());
+    yield put(actions.getEducationsAction({ email: payload.email }));
+  } catch (e) {
+    yield put(actions.editEducationActionFailed());
+  }
+}
+
+export function* deleteEducationsSaga({ payload }) {
+  yield delay(500);
+  try {
+    const response = yield call(deleteEducation, payload);
+    yield put(actions.deleteEducationActionSuccess());
+  } catch (e) {
+    yield put(actions.deleteEducationActionFailed());
+  }
+}
+
+export function* getVolunteersSaga({ payload }) {
+  yield delay(500);
+  try {
+    const response: DTO.User.Volunteer.GetVolunteersResponse = yield call(
+      getVolunteers,
+      payload,
+    );
+    yield put(actions.getVolunteersActionSuccess(response));
+  } catch (e) {
+    yield put(actions.getVolunteersActionFailed());
+  }
+}
+
+export function* addVolunteerSaga({ payload }) {
+  yield delay(500);
+  try {
+    const response = yield call(addNewVolunteer, payload);
+    yield put(actions.addNewVolunteerActionSuccess());
+    yield put(actions.getVolunteersAction({ email: payload.email }));
+  } catch (e) {
+    yield put(actions.addNewVolunteerActionFailed());
+  }
+}
+
+export function* editVolunteerSaga({ payload }) {
+  yield delay(500);
+  try {
+    const response = yield call(editVolunteer, payload);
+    yield put(actions.editVolunteerActionSuccess());
+    yield put(actions.getVolunteersAction({ email: payload.email }));
+  } catch (e) {
+    yield put(actions.editVolunteerActionFailed());
+  }
+}
+
+export function* deleteVolunteerSaga({ payload }) {
+  yield delay(500);
+  try {
+    const response = yield call(deleteVolunteer, payload);
+    yield put(actions.deleteVolunteerActionSuccess());
+  } catch (e) {
+    yield put(actions.deleteVolunteerActionFailed());
+  }
+}
+
+export function* getResearchesSaga({ payload }) {
+  yield delay(500);
+  try {
+    const response: DTO.User.Research.GetResearchesResponse = yield call(
+      getResearches,
+      payload,
+    );
+    yield put(actions.getResearchesActionSuccess(response));
+  } catch (e) {
+    yield put(actions.getResearchesActionFailed());
+  }
+}
+
+export function* addResearchSaga({ payload }) {
+  yield delay(500);
+  try {
+    const response = yield call(addNewResearch, payload);
+    yield put(actions.addNewResearchActionSuccess());
+    yield put(actions.getResearchesAction({ email: payload.email }));
+  } catch (e) {
+    yield put(actions.addNewResearchActionFailed());
+  }
+}
+
+export function* editResearchSaga({ payload }) {
+  yield delay(500);
+  try {
+    const response = yield call(editResearch, payload);
+    yield put(actions.editResearchActionSuccess());
+    yield put(actions.getResearchesAction({ email: payload.email }));
+  } catch (e) {
+    yield put(actions.editResearchActionFailed());
+  }
+}
+
+export function* deleteResearchSaga({ payload }) {
+  yield delay(500);
+  try {
+    const response = yield call(deleteResearch, payload);
+    yield put(actions.deleteResearchActionSuccess());
+  } catch (e) {
+    yield put(actions.deleteResearchActionFailed());
+  }
+}
+
+export function* getLettersSaga({ payload }) {
+  yield delay(500);
+  try {
+    const response: DTO.User.Letter.GetLettersResponse = yield call(
+      getLetters,
+      payload,
+    );
+    yield put(actions.getLettersActionSuccess(response));
+  } catch (e) {
+    yield put(actions.getLettersActionFailed());
+  }
+}
+
+export function* addLetterSaga({ payload }) {
+  yield delay(500);
+  try {
+    const response = yield call(addNewLetter, payload);
+    yield put(actions.addNewLetterActionSuccess());
+    yield put(actions.getLettersAction({ email: payload.email }));
+  } catch (e) {
+    yield put(actions.addNewLetterActionFailed());
+  }
+}
+
+export function* editLetterSaga({ payload }) {
+  yield delay(500);
+  try {
+    const response = yield call(editLetter, payload);
+    yield put(actions.editLetterActionSuccess());
+    yield put(actions.getLettersAction({ email: payload.email }));
+  } catch (e) {
+    yield put(actions.editLetterActionFailed());
+  }
+}
+
+export function* deleteLetterSaga({ payload }) {
+  yield delay(500);
+  try {
+    const response = yield call(deleteLetter, payload);
+    yield put(actions.deleteLetterActionSuccess());
+  } catch (e) {
+    yield put(actions.deleteLetterActionFailed());
   }
 }
 
@@ -156,4 +335,25 @@ export function* UserSaga() {
 
   //education
   yield takeLatest(actions.getEducationsAction, getEducationsSaga);
+  yield takeLatest(actions.addNewEducationAction, addNewEducationsSaga);
+  yield takeLatest(actions.editEducationAction, editEducationsSaga);
+  yield takeLatest(actions.deleteEducationAction, deleteEducationsSaga);
+
+  //volunteer
+  yield takeLatest(actions.getVolunteersAction, getVolunteersSaga);
+  yield takeLatest(actions.addNewVolunteerAction, addVolunteerSaga);
+  yield takeLatest(actions.editVolunteerAction, editVolunteerSaga);
+  yield takeLatest(actions.deleteVolunteerAction, deleteVolunteerSaga);
+
+  //research
+  yield takeLatest(actions.getResearchesAction, getResearchesSaga);
+  yield takeLatest(actions.addNewResearchAction, addResearchSaga);
+  yield takeLatest(actions.editResearchAction, editResearchSaga);
+  yield takeLatest(actions.deleteResearchAction, deleteResearchSaga);
+
+  //letter
+  yield takeLatest(actions.getLettersAction, getLettersSaga);
+  yield takeLatest(actions.addNewLetterAction, addLetterSaga);
+  yield takeLatest(actions.editLetterAction, editLetterSaga);
+  yield takeLatest(actions.deleteLetterAction, deleteLetterSaga);
 }

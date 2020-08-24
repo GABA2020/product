@@ -60,6 +60,19 @@ const ProgramSliceState = createSlice({
     getProgramReviewActionFailed(state) {
       state.loading = false;
     },
+    updateProgramAction(
+      state,
+      action: PayloadAction<DTO.Program.UpdateProgramRequest>,
+    ) {
+      state.loading = true;
+      state.program = { ...action.payload.program };
+    },
+    updateProgramActionSuccess(state) {
+      state.loading = false;
+    },
+    updateProgramActionFailed(state) {
+      state.loading = false;
+    },
   },
 });
 

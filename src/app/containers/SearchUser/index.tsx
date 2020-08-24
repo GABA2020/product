@@ -5,21 +5,14 @@ import {
   sliceKey as userSliceKey,
   actions as userActions,
 } from 'redux/User/slice';
-import {
-  sliceKey as programSliceKey,
-  actions as programActions,
-} from 'redux/Program/slice';
 import { UserSaga } from 'redux/User/saga';
-import { ProgramSaga } from 'redux/Program/saga';
 import { userSelector } from 'redux/User/selectors';
-import { img_user, img_locker } from 'assets/images';
 import { NotFoundPage } from '../NotFoundPage/Loadable';
 import Helmet from 'react-helmet';
-import { GuestUserProfile } from 'app/components/GuestUserProfile';
-import { programSelector } from 'redux/Program/selectors';
 import 'styles/scss/SearchUser.scss';
 import 'styles/scss/ModalEditProfile.scss';
 import { MyProfile } from '../MyProfile';
+import { GuestUserProfile } from '../GuestUserProfile';
 
 interface IProfile {
   match: {
@@ -32,17 +25,12 @@ interface IProfile {
 export const SearchUser: FC<IProfile> = props => {
   const { match } = props;
   useInjectSaga({ key: userSliceKey, saga: UserSaga });
-  useInjectSaga({ key: programSliceKey, saga: ProgramSaga });
   const dispatch = useDispatch();
   const {
     userProfile,
     userSearchProfile,
-    workExperiences,
-    educations,
-    loading,
     loadingUserSearchProfile,
   } = useSelector(userSelector);
-  const { program } = useSelector(programSelector);
 
   useEffect(() => {
     dispatch(
@@ -51,23 +39,6 @@ export const SearchUser: FC<IProfile> = props => {
       }),
     );
   }, [match.params.username]);
-  useEffect(() => {
-    // if (userSearchProfile.username === userProfile.username) {
-    //   dispatch(
-    //     programActions.getProgramReviewAction({ email: userProfile.email }),
-    //   );
-    //   dispatch(
-    //     userActions.getWorkExperiencesAction({ email: userProfile.email }),
-    //   );
-    //   dispatch(userActions.getEducationsAction({ email: userProfile.email }));
-    //   return;
-    // }
-    dispatch(
-      programActions.getProgramReviewAction({
-        email: userSearchProfile.email,
-      }),
-    );
-  }, [userSearchProfile.username, userProfile.username]);
 
   return (
     <Fragment>
@@ -98,10 +69,7 @@ export const SearchUser: FC<IProfile> = props => {
                 {userProfile.username === userSearchProfile.username ? (
                   <MyProfile></MyProfile>
                 ) : (
-                  <GuestUserProfile
-                    program={program}
-                    userGuestProfile={userSearchProfile}
-                  ></GuestUserProfile>
+                  <GuestUserProfile></GuestUserProfile>
                 )}
               </Fragment>
             )}

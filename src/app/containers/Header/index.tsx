@@ -39,7 +39,6 @@ export const Header = () => {
   };
 
   const signOut = () => {
-    // console.log(123);
     dispatch(authActions.logoutAction());
   };
   return (

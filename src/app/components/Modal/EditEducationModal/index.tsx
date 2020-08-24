@@ -5,104 +5,102 @@ import 'react-datepicker/dist/react-datepicker.css';
 import * as yup from 'yup';
 import moment from 'moment';
 import 'styles/scss/ModalWorkExperience.scss';
-import CKEditor from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { Formik } from 'formik';
 import { showDialogDelete } from 'helpers/Swal.module';
 
 const schema = yup.object().shape({
-  job_title: yup
+  school: yup
     .string()
-    .max(200, 'Title must be at most 200 characters')
-    .required('Title is a required field'),
-  company: yup
+    .max(200, 'School must be at most 200 characters')
+    .required('School is a required field'),
+  school_address: yup
     .string()
-    .max(200, 'Company must be at most 200 characters')
-    .required('Company is a required field'),
-  company_address: yup
+    .max(200, 'School address must be at most 200 characters')
+    .required('School address is a required field'),
+  major: yup
     .string()
-    .max(200, 'Company Address must be at most 200 characters')
-    .required('Company Address is a required field'),
-  description: yup
+    .max(200, 'Major must be at most 200 characters')
+    .required('Major is a required field'),
+  honors: yup
     .string()
-    .max(500, 'Description must be at most 500 characters')
-    .required('Description is a required field'),
+    .max(200, 'Honors must be at most 200 characters')
+    .required('Honors is a required field'),
+  degree_type: yup
+    .string()
+    .max(200, 'Degree type must be at most 200 characters')
+    .required('Degree type is a required field'),
   date_start: yup.string().required('Date Start is a required field'),
   date_end: yup.string().required('Date End is a required field'),
 });
-interface IEditWorkModal {
+interface IEditEducationModal {
   isShow: boolean;
   onHide: () => void;
-  editWorkExperience: (workExperience: ENTITIES.WorkExperience) => void;
-  deleteWorkExperience: (workExperience: ENTITIES.WorkExperience) => void;
-  workExperience: ENTITIES.WorkExperience;
+  education: ENTITIES.Education;
+  editEducation: (education: ENTITIES.Education) => void;
+  deleteEducation: (education: ENTITIES.Education) => void;
 }
-const editorConfiguration = {
-  toolbar: ['bulletedList', 'numberedList', 'blockQuote', 'undo', 'redo'],
-};
 
 interface IForm {
-  company: string;
-  company_address: string;
-  date_end: Date;
+  school: string;
+  school_address: string;
+  major: string;
+  honors: string;
+  degree_type: string;
   date_start: Date;
-  description: string;
-  job_title: string;
+  date_end: Date;
 }
 
 const initialValues: IForm = {
-  company: '',
-  company_address: '',
+  school: '',
+  school_address: '',
+  degree_type: '',
+  major: '',
+  honors: '',
   date_end: new Date(),
   date_start: new Date(),
-  description: '',
-  job_title: '',
 };
 
-export const EditWorkModal: FC<IEditWorkModal> = props => {
-  const {
-    isShow,
-    onHide,
-    editWorkExperience,
-    deleteWorkExperience,
-    workExperience,
-  } = props;
+export const EditEducationModal: FC<IEditEducationModal> = props => {
+  const { isShow, onHide, editEducation, deleteEducation, education } = props;
 
   const onHandleDelete = async () => {
     const isDelete = await showDialogDelete();
     if (isDelete.value === true) {
-      deleteWorkExperience(workExperience);
+      deleteEducation(education);
     }
   };
+
   return (
     <Fragment>
       <Modal show={isShow} onHide={onHide}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit experience</Modal.Title>
+          <Modal.Title>Edit education</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Formik
             initialValues={{
               ...initialValues,
-              company: workExperience.company,
-              company_address: workExperience.company_address,
-              date_end: moment(workExperience.date_end).toDate(),
-              date_start: moment(workExperience.date_start).toDate(),
-              description: workExperience.description,
-              job_title: workExperience.job_title,
+              school: education.school,
+              school_address: education.school_address,
+              degree_type: education.degree_type,
+              major: education.major,
+              honors: education.honors,
+              date_start: moment(education.date_start).toDate(),
+              date_end: moment(education.date_end).toDate(),
             }}
             validationSchema={schema}
             onSubmit={values => {
-              const newEx: ENTITIES.WorkExperience = {
-                ...workExperience,
-                company: values.company,
-                company_address: values.company_address,
+              const newEducation: ENTITIES.Education = {
+                id: education.id,
+                school: values.school,
+                school_address: values.school_address,
+                degree_type: values.degree_type,
+                major: values.major,
+                honors: values.honors,
                 date_end: moment(values.date_end).format('yyyy/MM'),
                 date_start: moment(values.date_start).format('yyyy/MM'),
-                description: values.description,
-                job_title: values.job_title,
               };
-              editWorkExperience(newEx);
+              editEducation(newEducation);
             }}
           >
             {({
@@ -114,31 +112,33 @@ export const EditWorkModal: FC<IEditWorkModal> = props => {
             }) => (
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                  <label htmlFor="exampleInputEmail1">Title</label>
+                  <label htmlFor="exampleInputEmail1">School</label>
                   <input
-                    name="job_title"
+                    name="school"
                     type="text"
                     className="form-control"
-                    placeholder="Title"
-                    value={values.job_title}
+                    placeholder="School"
+                    value={values.school}
                     onChange={handleChange}
                   />
-                  {errors.job_title && (
-                    <span className={'text-danger'}>{errors.job_title}</span>
+                  {errors.school && (
+                    <span className={'text-danger'}>{errors.school}</span>
                   )}
                 </div>
                 <div className="form-group">
-                  <label htmlFor="exampleInputPassword1">Company</label>
+                  <label htmlFor="exampleInputPassword1">School address</label>
                   <input
-                    name="company"
+                    name="school_address"
                     type="text"
                     className="form-control"
-                    placeholder="Company"
-                    value={values.company}
+                    placeholder="School address"
+                    value={values.school_address}
                     onChange={handleChange}
                   />
-                  {errors.company && (
-                    <span className={'text-danger'}>{errors.company}</span>
+                  {errors.school_address && (
+                    <span className={'text-danger'}>
+                      {errors.school_address}
+                    </span>
                   )}
                 </div>
                 <div className="form-group">
@@ -188,35 +188,45 @@ export const EditWorkModal: FC<IEditWorkModal> = props => {
                   </div>
                 </div>
                 <div className="form-group">
-                  <label htmlFor="exampleInputPassword1">Company Address</label>
+                  <label htmlFor="exampleInputPassword1">Majors</label>
                   <input
-                    name="company_address"
+                    name="major"
                     type="text"
                     className="form-control"
-                    placeholder="Company Address"
-                    value={values.company_address}
+                    placeholder="Majors"
+                    value={values.major}
                     onChange={handleChange}
                   />
-                  {errors.company_address && (
-                    <span className={'text-danger'}>
-                      {errors.company_address}
-                    </span>
+                  {errors.major && (
+                    <span className={'text-danger'}>{errors.major}</span>
                   )}
                 </div>
                 <div className="form-group">
-                  <label htmlFor="exampleInputPassword1">Description</label>
-                  <CKEditor
-                    name="description"
-                    config={editorConfiguration}
-                    data={values.description}
+                  <label htmlFor="exampleInputPassword1">Honors</label>
+                  <input
+                    name="honors"
+                    type="text"
                     className="form-control"
-                    editor={ClassicEditor}
-                    onChange={(event, editor) => {
-                      setFieldValue('description', editor.getData());
-                    }}
+                    placeholder="Honors"
+                    value={values.honors}
+                    onChange={handleChange}
                   />
-                  {errors.description && (
-                    <span className={'text-danger'}>{errors.description}</span>
+                  {errors.honors && (
+                    <span className={'text-danger'}>{errors.honors}</span>
+                  )}
+                </div>
+                <div className="form-group">
+                  <label htmlFor="exampleInputPassword1">Degree type</label>
+                  <input
+                    name="degree_type"
+                    type="text"
+                    className="form-control"
+                    placeholder="Degree type"
+                    value={values.degree_type}
+                    onChange={handleChange}
+                  />
+                  {errors.degree_type && (
+                    <span className={'text-danger'}>{errors.degree_type}</span>
                   )}
                 </div>
                 <div className="btn-wrapper-submit">

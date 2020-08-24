@@ -14,6 +14,7 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from 'utils/@reduxjs/toolkit';
 import { DTO } from 'types/DTO';
+import { faBullseye } from '@fortawesome/free-solid-svg-icons';
 
 export const initialState: STATES.User = {
   loading: true,
@@ -21,6 +22,9 @@ export const initialState: STATES.User = {
   loadingUserSearchProfile: true,
   workExperiences: [],
   educations: [],
+  volunteers: [],
+  researches: [],
+  letters: [],
   userProfile: {
     email: '',
     avatar: '',
@@ -195,14 +199,14 @@ const UserSliceState = createSlice({
     // work experiences
     getWorkExperiencesAction(
       state,
-      action: PayloadAction<DTO.User.GetWorkExperiencesRequest>,
+      action: PayloadAction<DTO.User.WorkExperience.GetWorkExperiencesRequest>,
     ) {
       state.loading = true;
       state.workExperiences = [];
     },
     getWorkExperiencesActionSuccess(
       state,
-      action: PayloadAction<DTO.User.GetWorkExperiencesResponse>,
+      action: PayloadAction<DTO.User.WorkExperience.GetWorkExperiencesResponse>,
     ) {
       state.loading = false;
       state.workExperiences = action.payload.workExperiences.sort((a, b) =>
@@ -214,7 +218,9 @@ const UserSliceState = createSlice({
     },
     addNewWorkExperienceAction(
       state,
-      action: PayloadAction<DTO.User.AddNewWorkExperiencesRequest>,
+      action: PayloadAction<
+        DTO.User.WorkExperience.AddNewWorkExperiencesRequest
+      >,
     ) {
       state.loading = true;
     },
@@ -226,7 +232,7 @@ const UserSliceState = createSlice({
     },
     editWorkExperienceAction(
       state,
-      action: PayloadAction<DTO.User.EditWorkExperiencesRequest>,
+      action: PayloadAction<DTO.User.WorkExperience.EditWorkExperiencesRequest>,
     ) {
       state.loading = true;
       // const workExperiencesTemp = state.workExperiences;
@@ -247,7 +253,9 @@ const UserSliceState = createSlice({
     },
     deleteWorkExperienceActionAction(
       state,
-      action: PayloadAction<DTO.User.DeleteWorkExperiencesRequest>,
+      action: PayloadAction<
+        DTO.User.WorkExperience.DeleteWorkExperiencesRequest
+      >,
     ) {
       state.loading = true;
       state.workExperiences = state.workExperiences.filter(
@@ -261,17 +269,18 @@ const UserSliceState = createSlice({
       state.loading = false;
     },
     // end work experiences
+
     //education
     getEducationsAction(
       state,
-      action: PayloadAction<DTO.User.GetEducationsRequest>,
+      action: PayloadAction<DTO.User.Education.GetEducationsRequest>,
     ) {
       state.loading = true;
       state.educations = [];
     },
     getEducationsActionSuccess(
       state,
-      action: PayloadAction<DTO.User.GetEducationsResponse>,
+      action: PayloadAction<DTO.User.Education.GetEducationsResponse>,
     ) {
       state.loading = false;
       state.educations = action.payload.educations.sort((a, b) =>
@@ -281,6 +290,232 @@ const UserSliceState = createSlice({
     getEducationsActionFailed(state) {
       state.loading = false;
     },
+    addNewEducationAction(
+      state,
+      actions: PayloadAction<DTO.User.Education.AddNewEducationRequest>,
+    ) {
+      state.loading = true;
+    },
+    addNewEducationActionSuccess(state) {
+      state.loading = false;
+    },
+    addNewEducationActionFailed(state) {
+      state.loading = false;
+    },
+    editEducationAction(
+      state,
+      action: PayloadAction<DTO.User.Education.EditEducationRequest>,
+    ) {
+      state.loading = true;
+    },
+    editEducationActionSuccess(state) {
+      state.loading = false;
+    },
+    editEducationActionFailed(state) {
+      state.loading = false;
+    },
+    deleteEducationAction(
+      state,
+      action: PayloadAction<DTO.User.Education.DeleteEducationRequest>,
+    ) {
+      state.loading = true;
+      state.educations = state.educations.filter(
+        item => item.id !== action.payload.id,
+      );
+    },
+    deleteEducationActionSuccess(state) {
+      state.loading = false;
+    },
+    deleteEducationActionFailed(state) {
+      state.loading = false;
+    },
+    // end education
+
+    // volunteer
+    getVolunteersAction(
+      state,
+      action: PayloadAction<DTO.User.Volunteer.GetVolunteersRequest>,
+    ) {
+      state.loading = true;
+      state.volunteers = [];
+    },
+    getVolunteersActionSuccess(
+      state,
+      action: PayloadAction<DTO.User.Volunteer.GetVolunteersResponse>,
+    ) {
+      state.loading = false;
+      state.volunteers = action.payload.volunteers.sort((a, b) =>
+        a.date_end < b.date_end ? 1 : a.date_end > b.date_end ? -1 : 0,
+      );
+    },
+    getVolunteersActionFailed(state) {
+      state.loading = false;
+    },
+    addNewVolunteerAction(
+      state,
+      action: PayloadAction<DTO.User.Volunteer.AddNewVolunteerRequest>,
+    ) {
+      state.loading = true;
+    },
+    addNewVolunteerActionSuccess(state) {
+      state.loading = false;
+    },
+    addNewVolunteerActionFailed(state) {
+      state.loading = false;
+    },
+    editVolunteerAction(
+      state,
+      action: PayloadAction<DTO.User.Volunteer.EditVolunteerRequest>,
+    ) {
+      state.loading = true;
+    },
+    editVolunteerActionSuccess(state) {
+      state.loading = false;
+    },
+    editVolunteerActionFailed(state) {
+      state.loading = false;
+    },
+    deleteVolunteerAction(
+      state,
+      action: PayloadAction<DTO.User.Volunteer.DeleteVolunteerRequest>,
+    ) {
+      state.loading = true;
+      state.volunteers = state.volunteers.filter(
+        item => item.id !== action.payload.id,
+      );
+    },
+    deleteVolunteerActionSuccess(state) {
+      state.loading = false;
+    },
+    deleteVolunteerActionFailed(state) {
+      state.loading = false;
+    },
+    // end volunteer
+
+    // research
+    getResearchesAction(
+      state,
+      action: PayloadAction<DTO.User.Research.GetResearchesRequest>,
+    ) {
+      state.loading = true;
+      state.researches = [];
+    },
+    getResearchesActionSuccess(
+      state,
+      action: PayloadAction<DTO.User.Research.GetResearchesResponse>,
+    ) {
+      state.loading = false;
+      state.researches = action.payload.researches.sort((a, b) => {
+        const date1 = new Date(a.event_date);
+        const date2 = new Date(b.event_date);
+        return date1 < date2 ? 1 : date1 > date2 ? -1 : 0;
+      });
+    },
+    getResearchesActionFailed(state) {
+      state.loading = false;
+    },
+    addNewResearchAction(
+      state,
+      action: PayloadAction<DTO.User.Research.AddNewResearchRequest>,
+    ) {
+      state.loading = true;
+    },
+    addNewResearchActionSuccess(state) {
+      state.loading = false;
+    },
+    addNewResearchActionFailed(state) {
+      state.loading = false;
+    },
+    editResearchAction(
+      state,
+      action: PayloadAction<DTO.User.Research.EditResearchRequest>,
+    ) {
+      state.loading = true;
+    },
+    editResearchActionSuccess(state) {
+      state.loading = false;
+    },
+    editResearchActionFailed(state) {
+      state.loading = false;
+    },
+    deleteResearchAction(
+      state,
+      action: PayloadAction<DTO.User.Research.DeleteResearchRequest>,
+    ) {
+      state.loading = true;
+      state.researches = state.researches.filter(
+        item => item.id !== action.payload.id,
+      );
+    },
+    deleteResearchActionSuccess(state) {
+      state.loading = false;
+    },
+    deleteResearchActionFailed(state) {
+      state.loading = false;
+    },
+    // end research
+
+    // letter
+    getLettersAction(
+      state,
+      action: PayloadAction<DTO.User.Letter.GetLettersRequest>,
+    ) {
+      state.loading = true;
+    },
+    getLettersActionSuccess(
+      state,
+      action: PayloadAction<DTO.User.Letter.GetLettersResponse>,
+    ) {
+      state.loading = false;
+      state.letters = action.payload.letters.sort((a, b) => {
+        const date1 = new Date(a.receive_date);
+        const date2 = new Date(b.receive_date);
+        return date1 < date2 ? 1 : date1 > date2 ? -1 : 0;
+      });
+    },
+    getLettersActionFailed(state) {
+      state.loading = false;
+    },
+    addNewLetterAction(
+      state,
+      action: PayloadAction<DTO.User.Letter.AddNewLetterRequest>,
+    ) {
+      state.loading = true;
+    },
+    addNewLetterActionSuccess(state) {
+      state.loading = false;
+    },
+    addNewLetterActionFailed(state) {
+      state.loading = false;
+    },
+    editLetterAction(
+      state,
+      action: PayloadAction<DTO.User.Letter.EditLetterRequest>,
+    ) {
+      state.loading = true;
+    },
+    editLetterActionSuccess(state) {
+      state.loading = false;
+    },
+    editLetterActionFailed(state) {
+      state.loading = false;
+    },
+    deleteLetterAction(
+      state,
+      action: PayloadAction<DTO.User.Letter.DeleteLetterRequest>,
+    ) {
+      state.loading = true;
+      state.letters = state.letters.filter(
+        item => item.id !== action.payload.id,
+      );
+    },
+    deleteLetterActionSuccess(state) {
+      state.loading = false;
+    },
+    deleteLetterActionFailed(state) {
+      state.loading = false;
+    },
+    // end letter
   },
 });
 

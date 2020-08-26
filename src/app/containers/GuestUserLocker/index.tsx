@@ -70,7 +70,7 @@ export const GuestUserLocker = () => {
         {resources.map((item, index) => {
           return (
             <li key={index} className="locker-item">
-              {/* <GuestResource resource={item} /> */}
+              <GuestResource userResource={item} />
             </li>
           );
         })}

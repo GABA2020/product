@@ -14,6 +14,7 @@ export const lockerSelector = createSelector(
     listResourceCache,
     reviewLength,
     userResourceLength,
+    allUserResources,
   }) => ({
     reviews,
     lastQuery,
@@ -22,5 +23,6 @@ export const lockerSelector = createSelector(
     listResourceCache,
     reviewLength,
     userResourceLength,
+    allUserResources,
   }),
 );

@@ -8,14 +8,16 @@ import {
   getMoreUserResources,
   getResourceDetail,
   addNewUserResource,
-  addNewReview,
+  getAllUserResources,
+  editUserResource,
+  deleteUserResource,
 } from 'services';
 
 export function* getReviewSaga({ payload }) {
   delay(500);
 
   try {
-    const response: DTO.Locker.GetReviewsResponse = yield call(
+    const response: DTO.Locker.Review.GetReviewsResponse = yield call(
       getReviews,
       payload,
     );
@@ -29,7 +31,7 @@ export function* getReviewSaga({ payload }) {
 export function* getMoreReviewSaga({ payload }) {
   delay(500);
   try {
-    const response: DTO.Locker.GetMoreReviewsResponse = yield call(
+    const response: DTO.Locker.Review.GetMoreReviewsResponse = yield call(
       getMoreReviews,
       payload,
     );
@@ -93,23 +95,59 @@ export function* addUserResourceSaga({ payload }) {
     );
 
     yield put(actions.addUserResourceActionSuccess(response));
+    yield put(actions.getUserResourcesAction({ email: payload.email }));
+    yield put(actions.getReviewsAction({ email: payload.email }));
+    //update list all user resource
+    yield put(actions.getAllUserResourceAction({ email: payload.email }));
   } catch (error) {
     yield put(actions.addUserResourceActionFailed());
   }
 }
 
-export function* addReviewSaga({ payload }) {
+export function* editUserResourceSaga({ payload }) {
   delay(500);
 
   try {
-    const response: DTO.Locker.AddReviewResponse = yield call(
-      addNewReview,
+    const response: DTO.Locker.UserResource.EditUserResourceResponse = yield call(
+      editUserResource,
       payload,
     );
 
-    yield put(actions.addReviewActionSuccess(response));
+    yield put(actions.editUserResourceActionSuccess(response));
+    yield put(actions.getUserResourcesAction({ email: payload.email }));
   } catch (error) {
-    yield put(actions.addReviewActionFailed());
+    yield put(actions.editUserResourceActionFailed());
+  }
+}
+
+export function* deleteUserResourceSaga({ payload }) {
+  delay(500);
+
+  try {
+    const response: DTO.Locker.UserResource.DeleteUserResourceResponse = yield call(
+      deleteUserResource,
+      payload,
+    );
+
+    yield put(actions.deleteUserResourceActionSuccess(response));
+    yield put(actions.getUserResourcesAction({ email: payload.email }));
+  } catch (error) {
+    yield put(actions.deleteUserResourceActionFailed());
+  }
+}
+
+export function* getAllUserResourceSaga({ payload }) {
+  delay(500);
+
+  try {
+    const response: DTO.Locker.UserResource.getAllUserResourcesResponse = yield call(
+      getAllUserResources,
+      payload,
+    );
+
+    yield put(actions.getAllUserResourceActionSuccess(response));
+  } catch (error) {
+    yield put(actions.getAllUserResourceActionFailed());
   }
 }
 
@@ -124,5 +162,7 @@ export function* LockerSaga() {
   );
   yield takeLatest(actions.getResourceDetailAction, getUserResourceDetailSaga);
   yield takeLatest(actions.addUserResourceAction, addUserResourceSaga);
-  yield takeLatest(actions.addReviewAction, addReviewSaga);
+  yield takeLatest(actions.editUserResourceAction, editUserResourceSaga);
+  yield takeLatest(actions.deleteUserResourceAction, deleteUserResourceSaga);
+  yield takeLatest(actions.getAllUserResourceAction, getAllUserResourceSaga);
 }

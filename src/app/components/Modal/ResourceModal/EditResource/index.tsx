@@ -11,6 +11,8 @@ import Rate from 'antd/lib/rate';
 import { getResourcesWithConditionName } from 'services';
 import { showConfirmMessage } from 'helpers/Swal.module';
 import { Message } from 'helpers/Message';
+import { useResource } from 'hook/useResource';
+import moment from 'moment';
 
 const schema = yup.object().shape({
   name: yup
@@ -41,10 +43,12 @@ const schema = yup.object().shape({
     .required('Review is a required field'),
 });
 interface IResource {
+  allUserResources: ENTITIES.UserResource[];
+  userResource: ENTITIES.UserResource;
   isShow: boolean;
   onHide: () => void;
-  addNewUserResource: (userResource: ENTITIES.UserResource) => void;
-  allUserResources: ENTITIES.UserResource[];
+  editUserResource: (newUserResource: ENTITIES.UserResource) => void;
+  deleteUserResource: (userResource: ENTITIES.UserResource) => void;
 }
 
 interface IForm {
@@ -78,19 +82,68 @@ const initResourceSelected: ENTITIES.IResourceSelected = {
   },
 };
 
-export const AddResource: FC<IResource> = props => {
-  const { isShow, onHide, addNewUserResource, allUserResources } = props;
+const iniUserResource: ENTITIES.UserResource = {
+  id: '',
+  resource_id: '',
+  match_score: 0,
+  date: {
+    seconds: 0,
+  },
+  actual_exam: '',
+  actual_exam_score: 0,
+  subject: '',
+  review_body: '',
+  created_at: {
+    seconds: 0,
+  },
+  updated_at: {
+    seconds: 0,
+  },
+  rating: 0,
+};
+
+export const EditResource: FC<IResource> = props => {
+  const {
+    isShow,
+    userResource,
+    allUserResources,
+    onHide,
+    editUserResource,
+    deleteUserResource,
+  } = props;
+  const resourceCache = useResource(userResource.resource_id);
+
+  const [disableButton, setDisableButton] = useState(true);
+
+  const [resourceState, setResourceState] = useState<ENTITIES.UserResource>(
+    iniUserResource,
+  );
   const [resourceSelectedState, setResourceSelectedState] = useState<
     ENTITIES.IResourceSelected
   >(initResourceSelected);
+  const [defaultOptionState, setDefaultOptionState] = useState<
+    ENTITIES.IResourceSelected[]
+  >([]);
 
   useEffect(() => {
-    if (isShow === true) {
-      setResourceSelectedState(initResourceSelected);
-      resetForm({});
-      setFieldValue('actual_exam_score', 0);
+    if (isShow === true && resourceCache) {
+      setResourceState(userResource);
+
+      setFieldValue('name', resourceCache.name);
+      setFieldValue('actual_exam', userResource.actual_exam);
+      setFieldValue('actual_exam_score', userResource.actual_exam_score);
+      setFieldValue('date', moment.unix(userResource.date.seconds).toDate());
+      setFieldValue('subject', userResource.subject);
+      setFieldValue('review_body', userResource.review_body);
+      setFieldValue('rating', userResource.rating);
+
+      setResourceSelectedState({
+        label: resourceCache.name,
+        value: resourceCache,
+      });
+      getDefaultOptions('');
     }
-  }, [isShow]);
+  }, [isShow, resourceCache, userResource]);
 
   const {
     handleSubmit,
@@ -98,7 +151,6 @@ export const AddResource: FC<IResource> = props => {
     values,
     errors,
     touched,
-    resetForm,
     setFieldValue,
   } = useFormik({
     initialValues: {
@@ -106,10 +158,10 @@ export const AddResource: FC<IResource> = props => {
     },
     validationSchema: schema,
     onSubmit: async values => {
-      const userResource: ENTITIES.UserResource = {
-        id: '',
+      const newUserResource: ENTITIES.UserResource = {
+        id: userResource.id,
         resource_id: resourceSelectedState.value.id,
-        match_score: 0,
+        match_score: userResource.match_score,
         date: {
           seconds: convertDateToTimestamp(values.date.toDateString()),
         },
@@ -121,22 +173,27 @@ export const AddResource: FC<IResource> = props => {
         updated_at: {
           seconds: convertDateToTimestamp(new Date().toString()),
         },
-        created_at: {
-          seconds: convertDateToTimestamp(new Date().toString()),
-        },
+        created_at: userResource.created_at,
       };
-
       const confirm = await showConfirmMessage(
-        Message.Add_New_Resource_Question,
+        Message.Edit_Resource_Question,
         '',
         'question',
       );
       if (confirm.value === true) {
-        addNewUserResource(userResource);
+        editUserResource(newUserResource);
         onHide();
       }
     },
   });
+
+  useEffect(() => {
+    if (JSON.stringify(resourceState) !== JSON.stringify(userResource)) {
+      setDisableButton(false);
+    } else {
+      setDisableButton(true);
+    }
+  }, [resourceState]);
 
   const getAsyncOptions = (input: string) => {
     const resourceOptions: ENTITIES.IResourceSelected[] = [];
@@ -163,12 +220,45 @@ export const AddResource: FC<IResource> = props => {
         });
     });
   };
+  const getDefaultOptions = (input: string) => {
+    const resourceOptions: ENTITIES.IResourceSelected[] = [];
+    getResourcesWithConditionName(input.trim())
+      .then(resources => {
+        resources.forEach(item => {
+          const newResource = {
+            label: item.get('name'),
+            value: { id: item.id, ...item.data() } as ENTITIES.Resource,
+          };
+          if (
+            allUserResources.find(
+              item => item.resource_id === newResource.value.id,
+            ) === undefined
+          ) {
+            resourceOptions.push(newResource);
+          }
+        });
+        setDefaultOptionState(resourceOptions);
+      })
+      .catch(() => {});
+  };
+
+  const onDelete = async () => {
+    const confirm = await showConfirmMessage(
+      Message.Delete_Resource_Question,
+      '',
+      'question',
+    );
+    if (confirm.value === true) {
+      deleteUserResource(userResource);
+      onHide();
+    }
+  };
 
   return (
     <Fragment>
       <Modal backdrop="static" show={isShow} onHide={onHide}>
         <Modal.Header closeButton>
-          <Modal.Title>Add resource</Modal.Title>
+          <Modal.Title>Edit resource</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form onSubmit={handleSubmit}>
@@ -180,11 +270,15 @@ export const AddResource: FC<IResource> = props => {
                     <AsyncSelect
                       cacheOptions
                       value={resourceSelectedState}
-                      onChange={select => {
+                      onChange={(select: ENTITIES.IResourceSelected) => {
                         setResourceSelectedState(select);
                         setFieldValue('name', select.label);
+                        setResourceState({
+                          ...userResource,
+                          resource_id: select.value.id,
+                        });
                       }}
-                      defaultOptions
+                      defaultOptions={defaultOptionState}
                       loadOptions={getAsyncOptions}
                     ></AsyncSelect>
                   </div>
@@ -197,7 +291,7 @@ export const AddResource: FC<IResource> = props => {
                           }
                         }}
                         type="button"
-                        className="btn btn-primary search-btn"
+                        className="btn btn-success search-btn"
                       >
                         Go to resource
                       </button>
@@ -217,7 +311,14 @@ export const AddResource: FC<IResource> = props => {
                 className="form-control"
                 id="exampleInputEmail1"
                 placeholder="Subject"
-                onChange={handleChange}
+                onChange={e => {
+                  handleChange(e);
+                  setResourceState({
+                    ...userResource,
+                    subject: e.target.value,
+                  });
+                }}
+                value={values.subject}
               />
               {touched.subject && errors.subject && (
                 <span className={'text-danger'}>{errors.subject}</span>
@@ -231,7 +332,14 @@ export const AddResource: FC<IResource> = props => {
                 className="form-control"
                 id="exampleInputEmail1"
                 placeholder="Exam"
-                onChange={handleChange}
+                onChange={e => {
+                  handleChange(e);
+                  setResourceState({
+                    ...userResource,
+                    actual_exam: e.target.value,
+                  });
+                }}
+                value={values.actual_exam}
               />
               {touched.actual_exam && errors.actual_exam && (
                 <span className={'text-danger'}>{errors.actual_exam}</span>
@@ -246,8 +354,15 @@ export const AddResource: FC<IResource> = props => {
                   maxDate={new Date()}
                   dateFormat="dd/MM/yyyy"
                   placeholderText="Date start using"
-                  onChange={e => {
+                  onChange={(e: Date) => {
                     setFieldValue('date', e);
+                    setResourceState({
+                      ...userResource,
+                      date: {
+                        ...userResource.date,
+                        seconds: convertDateToTimestamp(e.toDateString()),
+                      },
+                    });
                   }}
                   selected={values.date}
                 />
@@ -265,7 +380,13 @@ export const AddResource: FC<IResource> = props => {
                 className="form-control"
                 id="exampleInputEmail1"
                 placeholder="Actual exam score"
-                onChange={handleChange}
+                onChange={e => {
+                  handleChange(e);
+                  setResourceState({
+                    ...userResource,
+                    actual_exam_score: parseInt(e.target.value),
+                  });
+                }}
                 value={values.actual_exam_score}
               />
               {touched.actual_exam_score && errors.actual_exam_score && (
@@ -280,6 +401,10 @@ export const AddResource: FC<IResource> = props => {
                 value={values.rating}
                 onChange={value => {
                   setFieldValue('rating', value);
+                  setResourceState({
+                    ...userResource,
+                    rating: value,
+                  });
                 }}
               />
               {touched.rating && errors.rating && (
@@ -290,18 +415,35 @@ export const AddResource: FC<IResource> = props => {
               <label htmlFor="exampleFormControlTextarea1">Review</label>
               <textarea
                 name="review_body"
-                onChange={handleChange}
+                onChange={e => {
+                  handleChange(e);
+                  setResourceState({
+                    ...userResource,
+                    review_body: e.target.value,
+                  });
+                }}
                 className="form-control"
                 id="exampleFormControlTextarea1"
                 rows={3}
+                value={values.review_body}
               />
               {touched.review_body && errors.review_body && (
                 <span className={'text-danger'}>{errors.review_body}</span>
               )}
             </div>
 
-            <div className="text-right mt-2">
+            <div className="btn-wrapper-submit mt-2">
               <button
+                type="button"
+                onClick={() => {
+                  onDelete();
+                }}
+                className="btn btn-light btn-save-profile"
+              >
+                Delete
+              </button>
+              <button
+                disabled={disableButton}
                 type="submit"
                 className="btn btn-success btn-save-profile"
               >

@@ -174,16 +174,6 @@ declare namespace ENTITIES {
     value: Resource;
   }
 
-  interface Review {
-    id: string;
-    resource_id: string;
-    review_body: string;
-    subject: string;
-    date_time: ITime;
-    updated_at: ITime;
-    rating: number;
-  }
-
   interface UserResource {
     id: string;
     resource_id: string;
@@ -191,6 +181,11 @@ declare namespace ENTITIES {
     date: ITime;
     actual_exam: string;
     actual_exam_score: number;
+    review_body: string;
+    subject: string;
+    created_at: ITime;
+    updated_at: ITime;
+    rating: number;
   }
 
   interface Resource {

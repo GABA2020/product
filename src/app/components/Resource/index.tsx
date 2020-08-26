@@ -40,15 +40,15 @@ export const Resource: FC<IResource> = props => {
           <div className="match">
             <p>{userResources.match_score} % match</p>
           </div>
-          {/* <div className="review">
-            {resource.rating > 0 ? (
+          <div className="review">
+            {resource && resource.rating > 0 ? (
               <div className="vote-star">
                 <Rate disabled defaultValue={resource.rating}></Rate>
               </div>
             ) : (
               <p>No review</p>
             )}
-          </div> */}
+          </div>
         </div>
       </div>
       <div className="locker-button">

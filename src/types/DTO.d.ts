@@ -391,33 +391,26 @@ declare namespace DTO {
   }
 
   export namespace Locker {
-    interface GetReviewsRequest {
-      email: string;
-    }
+    namespace Review {
+      interface GetReviewsRequest {
+        email: string;
+      }
 
-    interface GetReviewsResponse {
-      reviews: ENTITIES.Review[];
-      lastQuery: any;
-      reviewLength: number;
-    }
+      interface GetReviewsResponse {
+        reviews: ENTITIES.UserResource[];
+        lastQuery: any;
+        reviewLength: number;
+      }
 
-    interface GetMoreReviewsRequest {
-      email: string;
-      lastQuery: any;
-    }
+      interface GetMoreReviewsRequest {
+        email: string;
+        lastQuery: any;
+      }
 
-    interface GetMoreReviewsResponse {
-      reviews: ENTITIES.Review[];
-      lastQuery: any;
-    }
-
-    interface AddReviewRequest {
-      email: string;
-      review: ENTITIES.Review;
-    }
-
-    interface AddReviewResponse {
-      review: ENTITIES.Review;
+      interface GetMoreReviewsResponse {
+        reviews: ENTITIES.UserResource[];
+        lastQuery: any;
+      }
     }
 
     namespace Resource {
@@ -432,6 +425,14 @@ declare namespace DTO {
     }
 
     namespace UserResource {
+      interface getAllUserResourcesRequest {
+        email: string;
+      }
+
+      interface getAllUserResourcesResponse {
+        userResources: ENTITIES.UserResource[];
+      }
+
       interface getUserResourcesRequest {
         email: string;
       }
@@ -457,6 +458,22 @@ declare namespace DTO {
         userResource: ENTITIES.UserResource;
       }
       interface AddUserResourceResponse {
+        userResource: ENTITIES.UserResource;
+      }
+
+      interface EditUserResourceRequest {
+        email: string;
+        userResource: ENTITIES.UserResource;
+      }
+      interface EditUserResourceResponse {
+        userResource: ENTITIES.UserResource;
+      }
+
+      interface DeleteUserResourceRequest {
+        email: string;
+        userResource: ENTITIES.UserResource;
+      }
+      interface DeleteUserResourceResponse {
         userResource: ENTITIES.UserResource;
       }
     }

@@ -32,11 +32,12 @@ declare namespace STATES {
   }
   interface Locker {
     loading: boolean;
-    reviews: ENTITIES.Review[];
     reviewLength: number;
-    lastQuery: any;
     userResourceLength: number;
+    lastQuery: any;
+    reviews: ENTITIES.UserResource[];
     userResources: ENTITIES.UserResource[];
+    allUserResources: ENTITIES.UserResource[];
     listResourceCache: { [id: string]: ENTITIES.Resource | null };
   }
 }

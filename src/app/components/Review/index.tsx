@@ -5,7 +5,7 @@ import { useStorage } from 'hook/useStorage';
 import { useResource } from 'hook/useResource';
 
 interface IReview {
-  review: ENTITIES.Review;
+  review: ENTITIES.UserResource;
   profile: ENTITIES.UserProfile;
 }
 

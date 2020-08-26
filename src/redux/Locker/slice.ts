@@ -12,6 +12,7 @@ export const initialState: STATES.Locker = {
   userResourceLength: 0,
   lastQuery: {},
   listResourceCache: {},
+  allUserResources: [],
 };
 
 const LockerSlice = createSlice({
@@ -20,7 +21,7 @@ const LockerSlice = createSlice({
   reducers: {
     getReviewsAction(
       state,
-      action: PayloadAction<DTO.Locker.GetReviewsRequest>,
+      action: PayloadAction<DTO.Locker.Review.GetReviewsRequest>,
     ) {
       state.loading = true;
       state.reviews = initialState.reviews;
@@ -29,7 +30,7 @@ const LockerSlice = createSlice({
     },
     getReviewsActionSuccess(
       state,
-      action: PayloadAction<DTO.Locker.GetReviewsResponse>,
+      action: PayloadAction<DTO.Locker.Review.GetReviewsResponse>,
     ) {
       state.loading = false;
       state.reviews = action.payload.reviews;
@@ -41,11 +42,11 @@ const LockerSlice = createSlice({
     },
     getMoreReviewsAction(
       state,
-      action: PayloadAction<DTO.Locker.GetMoreReviewsRequest>,
+      action: PayloadAction<DTO.Locker.Review.GetMoreReviewsRequest>,
     ) {},
     getMoreReviewsActionSuccess(
       state,
-      action: PayloadAction<DTO.Locker.GetMoreReviewsResponse>,
+      action: PayloadAction<DTO.Locker.Review.GetMoreReviewsResponse>,
     ) {
       state.reviews = [...state.reviews, ...action.payload.reviews];
       state.lastQuery = action.payload.lastQuery;
@@ -114,25 +115,79 @@ const LockerSlice = createSlice({
       state,
       action: PayloadAction<DTO.Locker.UserResource.AddUserResourceResponse>,
     ) {
-      state.userResources = [
-        ...state.userResources,
-        action.payload.userResource,
-      ];
-      state.userResourceLength = state.userResourceLength++;
+      // state.userResources = [
+      //   ...state.userResources,
+      //   action.payload.userResource,
+      // ];
+      // state.reviews = [...state.userResources, action.payload.userResource];
+      // state.userResourceLength = state.userResourceLength++;
+      // state.reviewLength = state.reviewLength++;
     },
     addUserResourceActionFailed(state) {},
-    addReviewAction(
+    getAllUserResourceAction(
       state,
-      action: PayloadAction<DTO.Locker.AddReviewRequest>,
-    ) {},
-    addReviewActionSuccess(
-      state,
-      action: PayloadAction<DTO.Locker.AddReviewResponse>,
+      action: PayloadAction<DTO.Locker.UserResource.getAllUserResourcesRequest>,
     ) {
-      state.reviews = [...state.reviews, action.payload.review];
-      state.reviewLength = state.reviewLength++;
+      state.allUserResources = initialState.allUserResources;
     },
-    addReviewActionFailed(state) {},
+    getAllUserResourceActionSuccess(
+      state,
+      action: PayloadAction<
+        DTO.Locker.UserResource.getAllUserResourcesResponse
+      >,
+    ) {
+      state.allUserResources = action.payload.userResources;
+    },
+    getAllUserResourceActionFailed(state) {},
+    editUserResourceAction(
+      state,
+      action: PayloadAction<DTO.Locker.UserResource.EditUserResourceRequest>,
+    ) {},
+    editUserResourceActionSuccess(
+      state,
+      action: PayloadAction<DTO.Locker.UserResource.EditUserResourceResponse>,
+    ) {
+      //update allUserResources;
+      const index = state.allUserResources.findIndex(
+        item => item.id === action.payload.userResource.id,
+      );
+      state.allUserResources[index] = action.payload.userResource;
+      // //update userResources
+      // const index2 = state.userResources.findIndex(
+      //   item => item.id === action.payload.userResource.id,
+      // );
+
+      // state.userResources[index2] = action.payload.userResource;
+
+      // //update reviews
+      // const index3 = state.reviews.findIndex(
+      //   item => item.id === action.payload.userResource.id,
+      // );
+
+      // state.reviews[index3] = action.payload.userResource;
+    },
+    editUserResourceActionFailed(state) {},
+    deleteUserResourceAction(
+      state,
+      action: PayloadAction<DTO.Locker.UserResource.DeleteUserResourceRequest>,
+    ) {},
+    deleteUserResourceActionSuccess(
+      state,
+      action: PayloadAction<DTO.Locker.UserResource.DeleteUserResourceResponse>,
+    ) {
+      state.allUserResources = state.allUserResources.filter(
+        item => item.id !== action.payload.userResource.id,
+      );
+      // state.userResources = state.userResources.filter(
+      //   item => item.id !== action.payload.userResource.id,
+      // );
+      // state.userResourceLength = state.userResourceLength - 1;
+      // state.reviews = state.reviews.filter(
+      //   item => item.id !== action.payload.userResource.id,
+      // );
+      // state.reviewLength = state.reviewLength - 1;
+    },
+    deleteUserResourceActionFailed(state) {},
   },
 });
 export const { actions, reducer, name: sliceKey } = LockerSlice;

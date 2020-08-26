@@ -35,7 +35,7 @@ export const GuestUserLocker = () => {
     }
   }, [userSearchProfile.email]);
 
-  const renderReviews = (reviews: ENTITIES.Review[]) => {
+  const renderReviews = (reviews: ENTITIES.UserResource[]) => {
     return (
       <ul className="review-list">
         {reviews.map((item, index) => {

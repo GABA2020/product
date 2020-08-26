@@ -12,6 +12,27 @@ import { Resource } from 'app/components/Resource';
 import Review from 'app/components/Review';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import { EditResource } from 'app/components/Modal/ResourceModal/EditResource';
+
+const iniUserResource: ENTITIES.UserResource = {
+  id: '',
+  resource_id: '',
+  match_score: 0,
+  date: {
+    seconds: 0,
+  },
+  actual_exam: '',
+  actual_exam_score: 0,
+  subject: '',
+  review_body: '',
+  created_at: {
+    seconds: 0,
+  },
+  updated_at: {
+    seconds: 0,
+  },
+  rating: 0,
+};
 
 export const Locker = () => {
   useInjectSaga({ key: sliceKey, saga: LockerSaga });
@@ -23,26 +44,24 @@ export const Locker = () => {
     userResourceLength,
     lastQuery,
     loading,
+    allUserResources,
   } = useSelector(lockerSelector);
 
   const { userProfile } = useSelector(userSelector);
   const image = useStorage(`avatars/${userProfile.avatar}`);
   const [addResourceModal, setAddResourceModal] = useState<boolean>(false);
-  // const [resourceState, setResourceState] = useState<ENTITIES.UserResource>({
-  //   id: '',
-  //   match_score: 0,
-  //   name: '',
-  //   date: {
-  //     seconds: 0,
-  //   },
-  //   picture_name: '',
-  //   rating: 0,
-  //   actual_exam: '',
-  //   actual_exam_score: 0,
-  // });
+  const [editResourceModal, setEditResourceModal] = useState<boolean>(false);
+  const [resourceState, setResourceState] = useState<ENTITIES.UserResource>(
+    iniUserResource,
+  );
 
   useEffect(() => {
     if (userProfile.email !== '') {
+      dispatch(
+        actions.getAllUserResourceAction({
+          email: userProfile.email,
+        }),
+      );
       dispatch(
         actions.getUserResourcesAction({
           email: userProfile.email,
@@ -51,7 +70,7 @@ export const Locker = () => {
     }
   }, [userProfile.email]);
 
-  const renderReviews = (reviews: ENTITIES.Review[]) => {
+  const renderReviews = (reviews: ENTITIES.UserResource[]) => {
     return (
       <ul className="review-list">
         {reviews.map((item, index) => {
@@ -88,7 +107,8 @@ export const Locker = () => {
             <li key={index} className="locker-item">
               <Resource
                 openManageResource={userResources => {
-                  // setResourceState(userResources);
+                  setResourceState(userResources);
+                  setEditResourceModal(true);
                 }}
                 userResources={item}
               />
@@ -111,9 +131,28 @@ export const Locker = () => {
             }),
           );
         }}
-        addResourceReview={review => {
+        allUserResources={allUserResources}
+      />
+      <EditResource
+        isShow={editResourceModal}
+        onHide={() => setEditResourceModal(false)}
+        userResource={resourceState}
+        allUserResources={allUserResources}
+        editUserResource={newUserResource => {
           dispatch(
-            actions.addReviewAction({ email: userProfile.email, review }),
+            actions.editUserResourceAction({
+              email: userProfile.email,
+              userResource: newUserResource,
+            }),
+          );
+          setResourceState(newUserResource);
+        }}
+        deleteUserResource={userResource => {
+          dispatch(
+            actions.deleteUserResourceAction({
+              email: userProfile.email,
+              userResource,
+            }),
           );
         }}
       />

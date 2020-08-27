@@ -24,5 +24,6 @@ const storageFB = firebase.storage();
 const storageAvatar = async name => {
   return await firebase.storage().ref('avatar').child(name);
 };
+const timestamp = firebase.firestore.FieldValue.serverTimestamp;
 
-export { auth, db, storageAvatar, storageFB };
+export { auth, db, storageAvatar, storageFB, timestamp };

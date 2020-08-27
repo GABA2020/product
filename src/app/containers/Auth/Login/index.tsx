@@ -11,7 +11,6 @@ import RoutesTypes from '../../../../types/Routes';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers';
 import 'styles/scss/login.scss';
-import { SignUp } from 'app/containers/SignUp/index';
 
 const loginSchema = yup.object().shape({
   email: yup.string().required('Email is a required field'),

@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { storageFB } from '../helpers/firebase.module';
+import { db } from '../helpers/firebase.module';
 
 const useFirestore = collection => {
   const [docs, setDocs] = useState([]);
 
   useEffect(() => {
-    const unsub = storageFB
+    const unsub = db
       .collection(collection)
       .where('isVerified', '==', false)
       .orderBy('creationDate', 'desc')

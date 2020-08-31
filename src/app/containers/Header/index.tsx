@@ -50,7 +50,6 @@ export const Header = () => {
             <div className="header-brand">
               <div className="nav-action">
                 <a href="#" className="nav-open">
-                  {/* <span className="menu-icon"></span> */}
                   <img src={nav_icon} alt="logo" />
                 </a>
               </div>
@@ -58,14 +57,11 @@ export const Header = () => {
                 <img src={gaba} alt="logo" />
               </div>
             </div>
-            {/*end header-col*/}
             <SearchBox
               searchResults={userSearchResults}
               onchangeSearchText={onchangeSearchText}
             ></SearchBox>
-            {/*end header-col*/}
             <div className="header-account">
-              {/*end account-cart*/}
               <div className="account-member dropdown">
                 {isAuth && (
                   <Fragment>
@@ -85,9 +81,7 @@ export const Header = () => {
                   </a>
                 </div>
               </div>
-              {/*end account-member*/}
             </div>
-            {/*end header-col*/}
           </div>
         </div>
       </header>

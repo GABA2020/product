@@ -195,4 +195,19 @@ declare namespace ENTITIES {
     rating: number;
     link: string;
   }
+
+  interface Message {
+    id: strting;
+    content: string;
+    sender_email: string;
+    created_at: ITime;
+  }
+
+  interface LastMessage {
+    created_at: ITime;
+    is_received: boolean;
+    last_message: string;
+    sender_email: string;
+    users: string[];
+  }
 }

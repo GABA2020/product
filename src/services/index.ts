@@ -9,3 +9,4 @@ export * from './LetterService';
 export * from './ResourceService';
 export * from './ReviewService';
 export * from './UserResourceService';
+export * from './ChatService';

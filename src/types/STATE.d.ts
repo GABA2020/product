@@ -40,4 +40,11 @@ declare namespace STATES {
     allUserResources: ENTITIES.UserResource[];
     listResourceCache: { [id: string]: ENTITIES.Resource | null };
   }
+
+  interface Chat {
+    loading_listLastMessage: boolean;
+    loading_listMessage: boolean;
+    listMessages: ENTITIES.Message[];
+    listLastMessage: ENTITIES.LastMessage[];
+  }
 }

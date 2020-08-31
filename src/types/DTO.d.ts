@@ -478,4 +478,14 @@ declare namespace DTO {
       }
     }
   }
+
+  export namespace Chat {
+    interface GetListLastMessageRequest {
+      email: string;
+    }
+
+    interface GetListLastMessageResponse {
+      listLastMessage: ENTITIES.LastMessage[];
+    }
+  }
 }

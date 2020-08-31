@@ -14,7 +14,7 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from 'utils/@reduxjs/toolkit';
 import { DTO } from 'types/DTO';
-import { faBullseye } from '@fortawesome/free-solid-svg-icons';
+import { STATES } from 'types/STATE';
 
 export const initialState: STATES.User = {
   loading: true,
@@ -25,6 +25,8 @@ export const initialState: STATES.User = {
   volunteers: [],
   researches: [],
   letters: [],
+  arrayLength: 0,
+  lastQuery: {},
   userProfile: {
     email: '',
     avatar: '',
@@ -46,6 +48,9 @@ export const initialState: STATES.User = {
     learning_style: '',
     match: false,
     mcat: 0,
+    is_passed_mcat: false,
+    mcat_document_name: '',
+    mcat_review_requested: false,
     name: '',
     number_of_apps_categorical: '',
     number_of_apps_preliminary_year: '',
@@ -61,8 +66,14 @@ export const initialState: STATES.User = {
     specialty_interest: '',
     specialty_specific_publications: '',
     step_1: 0,
+    is_passed_step1: false,
+    step_1_document_name: '',
+    step_1_review_requested: false,
     step_1_resources_used: [],
     step_2: 0,
+    is_passed_step2: false,
+    step_2_document_name: '',
+    step_2_review_requested: false,
     step_2_resources_used: [],
     student_location: '',
     student_status: '',
@@ -73,6 +84,11 @@ export const initialState: STATES.User = {
     waitlists: 0,
     year: '',
     year_in_program: 0,
+    step_3: 0,
+    is_passed_step3: false,
+    step_3_document_name: '',
+    step_3_resources_used: [],
+    step_3_review_requested: false,
   },
   userSearchResults: [],
   userSearchProfile: {
@@ -96,6 +112,9 @@ export const initialState: STATES.User = {
     learning_style: '',
     match: false,
     mcat: 0,
+    is_passed_mcat: false,
+    mcat_document_name: '',
+    mcat_review_requested: false,
     name: '',
     number_of_apps_categorical: '',
     number_of_apps_preliminary_year: '',
@@ -111,8 +130,14 @@ export const initialState: STATES.User = {
     specialty_interest: '',
     specialty_specific_publications: '',
     step_1: 0,
+    is_passed_step1: false,
+    step_1_document_name: '',
+    step_1_review_requested: false,
     step_1_resources_used: [],
     step_2: 0,
+    is_passed_step2: false,
+    step_2_document_name: '',
+    step_2_review_requested: false,
     step_2_resources_used: [],
     student_location: '',
     student_status: '',
@@ -123,6 +148,11 @@ export const initialState: STATES.User = {
     waitlists: 0,
     year: '',
     year_in_program: 0,
+    step_3: 0,
+    is_passed_step3: false,
+    step_3_document_name: '',
+    step_3_resources_used: [],
+    step_3_review_requested: false,
   },
 };
 
@@ -203,17 +233,41 @@ const UserSliceState = createSlice({
     ) {
       state.loading = true;
       state.workExperiences = [];
+      state.lastQuery = {};
+      state.arrayLength = 0;
     },
     getWorkExperiencesActionSuccess(
       state,
       action: PayloadAction<DTO.User.WorkExperience.GetWorkExperiencesResponse>,
     ) {
       state.loading = false;
-      state.workExperiences = action.payload.workExperiences.sort((a, b) =>
-        a.date_end < b.date_end ? 1 : a.date_end > b.date_end ? -1 : 0,
-      );
+      state.workExperiences = action.payload.workExperiences;
+      state.lastQuery = action.payload.lastQuery;
+      state.arrayLength = action.payload.arrayLength;
     },
     getWorkExperiencesActionFailed(state) {
+      state.loading = false;
+    },
+    getMoreWorkExperiencesAction(
+      state,
+      action: PayloadAction<
+        DTO.User.WorkExperience.GetMoreWorkExperiencesRequest
+      >,
+    ) {},
+    getMoreWorkExperiencesActionSuccess(
+      state,
+      action: PayloadAction<
+        DTO.User.WorkExperience.GetMoreWorkExperiencesResponse
+      >,
+    ) {
+      state.loading = false;
+      state.lastQuery = action.payload.lastQuery;
+      state.workExperiences = [
+        ...state.workExperiences,
+        ...action.payload.workExperiences,
+      ];
+    },
+    getMoreWorkExperiencesActionFailed(state) {
       state.loading = false;
     },
     addNewWorkExperienceAction(
@@ -277,17 +331,34 @@ const UserSliceState = createSlice({
     ) {
       state.loading = true;
       state.educations = [];
+      state.lastQuery = {};
+      state.arrayLength = 0;
     },
     getEducationsActionSuccess(
       state,
       action: PayloadAction<DTO.User.Education.GetEducationsResponse>,
     ) {
       state.loading = false;
-      state.educations = action.payload.educations.sort((a, b) =>
-        a.date_end < b.date_end ? 1 : a.date_end > b.date_end ? -1 : 0,
-      );
+      state.educations = action.payload.educations;
+      state.lastQuery = action.payload.lastQuery;
+      state.arrayLength = action.payload.arrayLength;
     },
     getEducationsActionFailed(state) {
+      state.loading = false;
+    },
+    getMoreEducationsAction(
+      state,
+      action: PayloadAction<DTO.User.Education.GetMoreEducationsRequest>,
+    ) {},
+    getMoreEducationsActionSuccess(
+      state,
+      action: PayloadAction<DTO.User.Education.GetMoreEducationsResponse>,
+    ) {
+      state.loading = false;
+      state.educations = [...state.educations, ...action.payload.educations];
+      state.lastQuery = action.payload.lastQuery;
+    },
+    getMoreEducationsActionFailed(state) {
       state.loading = false;
     },
     addNewEducationAction(
@@ -338,17 +409,34 @@ const UserSliceState = createSlice({
     ) {
       state.loading = true;
       state.volunteers = [];
+      state.lastQuery = {};
+      state.arrayLength = 0;
     },
     getVolunteersActionSuccess(
       state,
       action: PayloadAction<DTO.User.Volunteer.GetVolunteersResponse>,
     ) {
       state.loading = false;
-      state.volunteers = action.payload.volunteers.sort((a, b) =>
-        a.date_end < b.date_end ? 1 : a.date_end > b.date_end ? -1 : 0,
-      );
+      state.volunteers = action.payload.volunteers;
+      state.arrayLength = action.payload.arrayLength;
+      state.lastQuery = action.payload.lastQuery;
     },
     getVolunteersActionFailed(state) {
+      state.loading = false;
+    },
+    getMoreVolunteersAction(
+      state,
+      action: PayloadAction<DTO.User.Volunteer.GetMoreVolunteersRequest>,
+    ) {},
+    getMoreVolunteersActionSuccess(
+      state,
+      action: PayloadAction<DTO.User.Volunteer.GetMoreVolunteersResponse>,
+    ) {
+      state.loading = false;
+      state.volunteers = [...state.volunteers, ...action.payload.volunteers];
+      state.lastQuery = action.payload.lastQuery;
+    },
+    getMoreVolunteersActionFailed(state) {
       state.loading = false;
     },
     addNewVolunteerAction(
@@ -399,19 +487,34 @@ const UserSliceState = createSlice({
     ) {
       state.loading = true;
       state.researches = [];
+      state.lastQuery = {};
+      state.arrayLength = 0;
     },
     getResearchesActionSuccess(
       state,
       action: PayloadAction<DTO.User.Research.GetResearchesResponse>,
     ) {
       state.loading = false;
-      state.researches = action.payload.researches.sort((a, b) => {
-        const date1 = new Date(a.event_date);
-        const date2 = new Date(b.event_date);
-        return date1 < date2 ? 1 : date1 > date2 ? -1 : 0;
-      });
+      state.researches = action.payload.researches;
+      state.arrayLength = action.payload.arrayLength;
+      state.lastQuery = action.payload.lastQuery;
     },
     getResearchesActionFailed(state) {
+      state.loading = false;
+    },
+    getMoreResearchesAction(
+      state,
+      action: PayloadAction<DTO.User.Research.GetMoreResearchesRequest>,
+    ) {},
+    getMoreResearchesActionSuccess(
+      state,
+      action: PayloadAction<DTO.User.Research.GetMoreResearchesResponse>,
+    ) {
+      state.loading = false;
+      state.researches = [...state.researches, ...action.payload.researches];
+      state.lastQuery = action.payload.lastQuery;
+    },
+    getMoreResearchesActionFailed(state) {
       state.loading = false;
     },
     addNewResearchAction(
@@ -461,19 +564,35 @@ const UserSliceState = createSlice({
       action: PayloadAction<DTO.User.Letter.GetLettersRequest>,
     ) {
       state.loading = true;
+      state.letters = [];
+      state.arrayLength = 0;
+      state.lastQuery = {};
     },
     getLettersActionSuccess(
       state,
       action: PayloadAction<DTO.User.Letter.GetLettersResponse>,
     ) {
       state.loading = false;
-      state.letters = action.payload.letters.sort((a, b) => {
-        const date1 = new Date(a.receive_date);
-        const date2 = new Date(b.receive_date);
-        return date1 < date2 ? 1 : date1 > date2 ? -1 : 0;
-      });
+      state.letters = action.payload.letters;
+      state.arrayLength = action.payload.arrayLength;
+      state.lastQuery = action.payload.lastQuery;
     },
     getLettersActionFailed(state) {
+      state.loading = false;
+    },
+    getMoreLettersAction(
+      state,
+      action: PayloadAction<DTO.User.Letter.GetMoreLettersRequest>,
+    ) {},
+    getMoreLettersActionSuccess(
+      state,
+      action: PayloadAction<DTO.User.Letter.GetMoreLettersResponse>,
+    ) {
+      state.loading = false;
+      state.letters = [...state.letters, ...action.payload.letters];
+      state.lastQuery = action.payload.lastQuery;
+    },
+    getMoreLettersActionFailed(state) {
       state.loading = false;
     },
     addNewLetterAction(

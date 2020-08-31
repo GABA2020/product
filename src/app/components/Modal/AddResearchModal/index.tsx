@@ -7,6 +7,7 @@ import moment from 'moment';
 import 'styles/scss/ModalWorkExperience.scss';
 import Select from 'react-select';
 import { Formik } from 'formik';
+import { convertDateToTimestamp } from 'helpers/Unity';
 
 const schema = yup.object().shape({
   title_of_work: yup
@@ -96,7 +97,7 @@ export const AddResearchModal: FC<IAddResearchModal> = props => {
 
   return (
     <Fragment>
-      <Modal show={isShow} onHide={onHide}>
+      <Modal backdrop="static" show={isShow} onHide={onHide}>
         <Modal.Header closeButton>
           <Modal.Title>Add Research</Modal.Title>
         </Modal.Header>
@@ -115,7 +116,11 @@ export const AddResearchModal: FC<IAddResearchModal> = props => {
                 id: '',
                 author: values.author,
                 event_address: values.event_address,
-                event_date: moment(values.event_date).format('yyyy/MM/DD'),
+                event_date: {
+                  seconds: convertDateToTimestamp(
+                    values.event_date.toDateString(),
+                  ),
+                },
                 event_name: values.event_name,
                 journal: values.journal,
                 link: values.link,
@@ -293,7 +298,7 @@ export const AddResearchModal: FC<IAddResearchModal> = props => {
                 <div className="text-right mt-2">
                   <button
                     type="submit"
-                    className="btn btn-primary btn-save-profile"
+                    className="btn btn-success btn-save-profile"
                   >
                     Save
                   </button>

@@ -5,10 +5,8 @@ import { initialState } from './slice';
 // First select the relevant part from the state
 const selectDomain = (state: RootState) => state.storage || initialState;
 
-export const storageSelector = createSelector(
-  [selectDomain],
-  ({ avatar_url, loading }) => ({
-    avatar_url,
-    loading,
-  }),
-);
+export const storageSelector = createSelector(selectDomain, ({ fileUrls }) => {
+  return {
+    fileUrls,
+  };
+});

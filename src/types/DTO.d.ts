@@ -2,6 +2,7 @@
 import { UserProfile } from 'redux/User/types';
 import { Volunteer } from 'app/components/Volunteer';
 import { Education } from 'app/components/Education';
+import { firestore } from 'firebase';
 
 declare namespace DTO {
   export namespace User {
@@ -26,6 +27,9 @@ declare namespace DTO {
       learning_style: string;
       match: boolean;
       mcat: number;
+      is_passed_mcat: boolean;
+      mcat_document_name: string;
+      mcat_review_requested: boolean;
       name: string;
       number_of_apps_categorical: string;
       number_of_apps_preliminary_year: string;
@@ -41,9 +45,15 @@ declare namespace DTO {
       specialty_interest: string;
       specialty_specific_publications: string;
       step_1: number;
+      is_passed_step1: boolean;
+      step_1_document_name: string;
+      step_1_review_requested: boolean;
       step_1_resources_used: string[];
       step_2: number;
+      is_passed_step2: boolean;
       step_2_resources_used: string[];
+      step_2_document_name: string;
+      step_2_review_requested: boolean;
       student_location: string;
       student_status: string;
       total_interviews_attended: string;
@@ -53,6 +63,11 @@ declare namespace DTO {
       waitlists: number;
       year: string;
       year_in_program: number;
+      step_3: number;
+      is_passed_step3: boolean;
+      step_3_document_name: string;
+      step_3_resources_used: string[];
+      step_3_review_requested: boolean;
     }
 
     interface SearchUsersRequest {
@@ -86,6 +101,9 @@ declare namespace DTO {
       learning_style: string;
       match: boolean;
       mcat: number;
+      is_passed_mcat: boolean;
+      mcat_document_name: string;
+      mcat_review_requested: boolean;
       name: string;
       number_of_apps_categorical: string;
       number_of_apps_preliminary_year: string;
@@ -101,9 +119,15 @@ declare namespace DTO {
       specialty_interest: string;
       specialty_specific_publications: string;
       step_1: number;
+      is_passed_step1: boolean;
+      step_1_document_name: string;
+      step_1_review_requested: boolean;
       step_1_resources_used: string[];
       step_2: number;
+      is_passed_step2: boolean;
       step_2_resources_used: string[];
+      step_2_document_name: string;
+      step_2_review_requested: boolean;
       student_location: string;
       student_status: string;
       total_interviews_attended: string;
@@ -113,17 +137,34 @@ declare namespace DTO {
       waitlists: number;
       year: string;
       year_in_program: number;
+      step_3: number;
+      is_passed_step3: boolean;
+      step_3_document_name: string;
+      step_3_resources_used: string[];
+      step_3_review_requested: boolean;
     }
 
     interface UpdateUserProfileRequest {
       userProfile: ENTITIES.UserProfile;
     }
+
     namespace WorkExperience {
       interface GetWorkExperiencesRequest {
         email: string;
       }
       interface GetWorkExperiencesResponse {
         workExperiences: ENTITIES.WorkExperience[];
+        arrayLength: number;
+        lastQuery: any;
+      }
+
+      interface GetMoreWorkExperiencesRequest {
+        email: string;
+        lastQuery: any;
+      }
+      interface GetMoreWorkExperiencesResponse {
+        workExperiences: ENTITIES.WorkExperience[];
+        lastQuery: any;
       }
 
       interface AddNewWorkExperiencesRequest {
@@ -147,6 +188,17 @@ declare namespace DTO {
       }
       interface GetEducationsResponse {
         educations: ENTITIES.Education[];
+        arrayLength: number;
+        lastQuery: any;
+      }
+
+      interface GetMoreEducationsRequest {
+        email: string;
+        lastQuery: any;
+      }
+      interface GetMoreEducationsResponse {
+        educations: ENTITIES.Education[];
+        lastQuery: any;
       }
 
       interface AddNewEducationRequest {
@@ -171,7 +223,19 @@ declare namespace DTO {
       }
       interface GetVolunteersResponse {
         volunteers: ENTITIES.Volunteer[];
+        arrayLength: number;
+        lastQuery: any;
       }
+
+      interface GetMoreVolunteersRequest {
+        email: string;
+        lastQuery: any;
+      }
+      interface GetMoreVolunteersResponse {
+        volunteers: ENTITIES.Volunteer[];
+        lastQuery: any;
+      }
+
       interface AddNewVolunteerRequest {
         email: string;
         volunteer: ENTITIES.Volunteer;
@@ -191,6 +255,16 @@ declare namespace DTO {
       }
       interface GetResearchesResponse {
         researches: ENTITIES.Research[];
+        arrayLength: number;
+        lastQuery: any;
+      }
+      interface GetMoreResearchesRequest {
+        email: string;
+        lastQuery: any;
+      }
+      interface GetMoreResearchesResponse {
+        researches: ENTITIES.Research[];
+        lastQuery: any;
       }
       interface AddNewResearchRequest {
         email: string;
@@ -212,7 +286,19 @@ declare namespace DTO {
       }
       interface GetLettersResponse {
         letters: ENTITIES.Letter[];
+        arrayLength: number;
+        lastQuery: any;
       }
+
+      interface GetMoreLettersRequest {
+        email: string;
+        lastQuery: any;
+      }
+      interface GetMoreLettersResponse {
+        letters: ENTITIES.Letter[];
+        lastQuery: any;
+      }
+
       interface AddNewLetterRequest {
         email: string;
         letter: ENTITIES.Letter;
@@ -284,15 +370,77 @@ declare namespace DTO {
   }
 
   export namespace Storage {
-    interface GetAvatarUrlRequest {
-      name: string;
+    interface UploadFileRequest {
+      name: string; //->file/email/file_name
+      file: File;
     }
-    interface UploadAvatarRequest {
+
+    interface UploadFileResponse {
       name: string;
-      content: string;
+      url: string;
     }
-    // interface UploadAvatarResponse {
-    //   url: string;
-    // }
+
+    interface GetFileUrlRequest {
+      name: string; //->file/email/file_name
+    }
+
+    interface GetFileUrlResponse {
+      name: string;
+      url: string;
+    }
+  }
+
+  export namespace Locker {
+    interface GetReviewsRequest {
+      email: string;
+    }
+
+    interface GetReviewsResponse {
+      reviews: ENTITIES.Review[];
+      lastQuery: any;
+      arrayLength: number;
+    }
+
+    interface GetMoreReviewsRequest {
+      email: string;
+      lastQuery: any;
+    }
+
+    interface GetMoreReviewsResponse {
+      reviews: ENTITIES.Review[];
+      lastQuery: any;
+    }
+
+    namespace Resource {
+      interface getResourcesRequest {
+        email: string;
+      }
+
+      interface getResourcesResponse {
+        resources: ENTITIES.Resource[];
+        lastQuery: any;
+        arrayLength: number;
+      }
+
+      interface getMoreResourcesRequest {
+        email: string;
+        lastQuery: any;
+      }
+
+      interface getMoreResourcesResponse {
+        resources: ENTITIES.Resource[];
+        lastQuery: any;
+      }
+
+      interface GetResourceDetailRequest {
+        id: string;
+        email: string;
+      }
+
+      interface GetResourceDetailResponse {
+        id: string;
+        resource: ENTITIES.Resource;
+      }
+    }
   }
 }

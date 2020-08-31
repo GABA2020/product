@@ -6,7 +6,9 @@ import * as yup from 'yup';
 import moment from 'moment';
 import 'styles/scss/ModalWorkExperience.scss';
 import { Formik } from 'formik';
-import { showDialogDelete } from 'helpers/Swal.module';
+import { convertDateToTimestamp } from 'helpers/Unity';
+import { showConfirmMessage } from 'helpers/Swal.module';
+import { Message } from 'helpers/Message';
 
 const schema = yup.object().shape({
   school: yup
@@ -64,7 +66,11 @@ export const EditEducationModal: FC<IEditEducationModal> = props => {
   const { isShow, onHide, editEducation, deleteEducation, education } = props;
 
   const onHandleDelete = async () => {
-    const isDelete = await showDialogDelete();
+    const isDelete = await showConfirmMessage(
+      Message.Delete_Question,
+      '',
+      'warning',
+    );
     if (isDelete.value === true) {
       deleteEducation(education);
     }
@@ -72,7 +78,7 @@ export const EditEducationModal: FC<IEditEducationModal> = props => {
 
   return (
     <Fragment>
-      <Modal show={isShow} onHide={onHide}>
+      <Modal backdrop="static" show={isShow} onHide={onHide}>
         <Modal.Header closeButton>
           <Modal.Title>Edit education</Modal.Title>
         </Modal.Header>
@@ -85,8 +91,8 @@ export const EditEducationModal: FC<IEditEducationModal> = props => {
               degree_type: education.degree_type,
               major: education.major,
               honors: education.honors,
-              date_start: moment(education.date_start).toDate(),
-              date_end: moment(education.date_end).toDate(),
+              date_start: moment.unix(education.date_start.seconds).toDate(),
+              date_end: moment.unix(education.date_end.seconds).toDate(),
             }}
             validationSchema={schema}
             onSubmit={values => {
@@ -97,8 +103,16 @@ export const EditEducationModal: FC<IEditEducationModal> = props => {
                 degree_type: values.degree_type,
                 major: values.major,
                 honors: values.honors,
-                date_end: moment(values.date_end).format('yyyy/MM'),
-                date_start: moment(values.date_start).format('yyyy/MM'),
+                date_end: {
+                  seconds: convertDateToTimestamp(
+                    values.date_end.toDateString(),
+                  ),
+                },
+                date_start: {
+                  seconds: convertDateToTimestamp(
+                    values.date_start.toDateString(),
+                  ),
+                },
               };
               editEducation(newEducation);
             }}
@@ -229,7 +243,7 @@ export const EditEducationModal: FC<IEditEducationModal> = props => {
                     <span className={'text-danger'}>{errors.degree_type}</span>
                   )}
                 </div>
-                <div className="btn-wrapper-submit">
+                <div className="btn-wrapper-submit mt-2">
                   <button
                     type="button"
                     className="btn btn-light btn-save-profile"
@@ -239,7 +253,7 @@ export const EditEducationModal: FC<IEditEducationModal> = props => {
                   </button>
                   <button
                     type="submit"
-                    className="btn btn-primary btn-save-profile"
+                    className="btn btn-success btn-save-profile"
                   >
                     Save
                   </button>

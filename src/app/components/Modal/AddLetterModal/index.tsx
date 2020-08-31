@@ -6,6 +6,7 @@ import * as yup from 'yup';
 import moment from 'moment';
 import 'styles/scss/ModalWorkExperience.scss';
 import { Formik } from 'formik';
+import { convertDateToTimestamp } from 'helpers/Unity';
 
 const schema = yup.object().shape({
   document_name: yup
@@ -36,6 +37,7 @@ interface IForm {
   document_type: string;
   link: string;
   receive_date: Date;
+  is_show_link: boolean;
 }
 
 const initialValues: IForm = {
@@ -43,6 +45,7 @@ const initialValues: IForm = {
   document_type: '',
   link: '',
   receive_date: new Date(),
+  is_show_link: false,
 };
 
 export const AddLetterModal: FC<IAddLetterModal> = props => {
@@ -50,7 +53,7 @@ export const AddLetterModal: FC<IAddLetterModal> = props => {
 
   return (
     <Fragment>
-      <Modal show={isShow} onHide={onHide}>
+      <Modal backdrop="static" show={isShow} onHide={onHide}>
         <Modal.Header closeButton>
           <Modal.Title>Add letter</Modal.Title>
         </Modal.Header>
@@ -66,7 +69,12 @@ export const AddLetterModal: FC<IAddLetterModal> = props => {
                 document_name: values.document_name,
                 document_type: values.document_type,
                 link: values.link,
-                receive_date: moment(values.receive_date).format('yyyy/MM/DD'),
+                receive_date: {
+                  seconds: convertDateToTimestamp(
+                    values.receive_date.toDateString(),
+                  ),
+                },
+                is_show_link: values.is_show_link,
               };
               addNewLetter(newLetter);
             }}
@@ -142,10 +150,20 @@ export const AddLetterModal: FC<IAddLetterModal> = props => {
                     <span className={'text-danger'}>{errors.link}</span>
                   )}
                 </div>
+                <div className="checkbox">
+                  <label>
+                    <input
+                      onChange={handleChange}
+                      type="checkbox"
+                      name="is_show_link"
+                    />{' '}
+                    Show link ?
+                  </label>
+                </div>
                 <div className="text-right mt-2">
                   <button
                     type="submit"
-                    className="btn btn-primary btn-save-profile"
+                    className="btn btn-success btn-save-profile"
                   >
                     Save
                   </button>

@@ -1,27 +1,35 @@
 import { takeLatest, call, put } from 'redux-saga/effects';
 import { actions } from './slice';
+import { uploadFile, getFileURL } from 'services/index';
 import { DTO } from 'types/DTO';
-import { getImageURL, uploadAvatar } from 'services/index';
 /**
  * Root saga manages watcher lifecycle
  */
-export function* getAvatarUrl({ payload }) {
+
+export function* uploadFileSaga({ payload }) {
   try {
-    const response: string = yield call(getImageURL, payload);
-    yield put(actions.getAvatarURLActionSuccess(response));
+    const response: DTO.Storage.UploadFileResponse = yield call(
+      uploadFile,
+      payload,
+    );
+    yield put(actions.uploadFileActionSuccess(response));
   } catch (e) {
-    yield put(actions.getAvatarURLActionFailed());
+    yield put(actions.uploadFileActionFailed());
   }
 }
-export function* uploadAvatarSaga({ payload }) {
+
+export function* getFileUrlSaga({ payload }) {
   try {
-    const response: string = yield call(uploadAvatar, payload);
-    yield put(actions.uploadAvatarActionSuccess(response));
+    const response: DTO.Storage.GetFileUrlResponse = yield call(
+      getFileURL,
+      payload,
+    );
+    yield put(actions.getFileUrlActionSuccess(response));
   } catch (e) {
-    yield put(actions.uploadAvatarActionFailed());
+    yield put(actions.getFileUrlActionFailed());
   }
 }
 export function* StorageSaga() {
-  yield takeLatest(actions.getAvatarURLAction, getAvatarUrl);
-  yield takeLatest(actions.uploadAvatarAction, uploadAvatarSaga);
+  yield takeLatest(actions.uploadFileAction, uploadFileSaga);
+  yield takeLatest(actions.getFileUrlAction, getFileUrlSaga);
 }

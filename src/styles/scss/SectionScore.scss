@@ -1,0 +1,61 @@
+@import './common.scss';
+
+.section-step-scope {
+    .step-caption {
+        .step-name a {
+            font-size: 16px;
+            font-weight: 500;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.5;
+            letter-spacing: 0.1px;
+            color: #337859;
+        }
+
+        .step-paragraph {
+            color: #337859;
+
+            span.step-num {
+                font-size: 4rem;
+                font-weight: 700;
+                vertical-align: top;
+            }
+
+            span.step-gloss {
+                font-size: 2rem;
+                font-weight: 400;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: 1.5;
+                letter-spacing: -0.71px;
+                text-align: center;
+            }
+        }
+
+        .manage-scope-link {
+            a {
+                display: inline;
+                font-size: 16px;
+                font-weight: bold;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: 1.5;
+                letter-spacing: 0.1px;
+                color: $goodNightColor;
+                margin-right: 0.5rem;
+            }
+
+            p {
+                font-size: 16px;
+                font-weight: bold;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: 1.5;
+                letter-spacing: 0.1px;
+                color: $goodNightColor;
+                margin-right: 0.5rem;
+            }
+        }
+    }
+
+}

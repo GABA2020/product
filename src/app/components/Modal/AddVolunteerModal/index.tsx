@@ -8,6 +8,7 @@ import 'styles/scss/ModalWorkExperience.scss';
 import { Formik } from 'formik';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { convertDateToTimestamp } from 'helpers/Unity';
 
 const schema = yup.object().shape({
   job_title: yup
@@ -74,7 +75,7 @@ export const AddVolunteerModal: FC<IAddVolunteerModal> = props => {
 
   return (
     <Fragment>
-      <Modal show={isShow} onHide={onHide}>
+      <Modal backdrop="static" show={isShow} onHide={onHide}>
         <Modal.Header closeButton>
           <Modal.Title>Add Volunteer</Modal.Title>
         </Modal.Header>
@@ -87,8 +88,16 @@ export const AddVolunteerModal: FC<IAddVolunteerModal> = props => {
             onSubmit={values => {
               const newVolunteer: ENTITIES.Volunteer = {
                 id: '',
-                date_end: moment(values.date_end).format('yyyy/MM'),
-                date_start: moment(values.date_start).format('yyyy/MM'),
+                date_end: {
+                  seconds: convertDateToTimestamp(
+                    values.date_end.toDateString(),
+                  ),
+                },
+                date_start: {
+                  seconds: convertDateToTimestamp(
+                    values.date_start.toDateString(),
+                  ),
+                },
                 description: values.description,
                 job_title: values.job_title,
                 number_of_hours_served: values.number_of_hours_served,
@@ -244,7 +253,7 @@ export const AddVolunteerModal: FC<IAddVolunteerModal> = props => {
                 <div className="text-right mt-2">
                   <button
                     type="submit"
-                    className="btn btn-primary btn-save-profile"
+                    className="btn btn-success btn-save-profile"
                   >
                     Save
                   </button>

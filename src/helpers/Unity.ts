@@ -1,4 +1,7 @@
 import moment from 'moment';
+const MonthYearFormat = 'MMM yyyy';
+const DayMonthYearFormat = 'MMM DD, yyyy';
+const YearFormat = 'yyyy';
 
 const ordinal_suffix_of = (i: number) => {
   switch (i) {
@@ -12,6 +15,14 @@ const ordinal_suffix_of = (i: number) => {
       return `${i}th`;
   }
 };
+
+const windowOpen = url => {
+  if (!url.match(/^https?:\/\//i)) {
+    url = 'https://' + url;
+  }
+  return window.open(url);
+};
+
 const generateNewNameImage = () => {
   return `${`${Math.floor(Math.random() * 99999999999999)}-${Math.floor(
     Math.random() * 99999999999999,
@@ -32,12 +43,40 @@ const dataUrlFile = (dataUrl, filename) => {
   return new File([u8arr], filename, { type: mime });
 };
 
-const getDifferenceTwoDate = (date1: string, date2: string) => {
-  const firstDate = moment(date1, 'YYYY-MM-DD'); //Create date using string-format constructor
-  const secondDate = moment(date2, 'YYYY-MM-DD');
+const getDifferenceMonthYear = (second1: number, second2: number) => {
+  const a = moment(moment.unix(second2).format('YYYY/MM/DD'));
+  const b = moment(moment.unix(second1).format('YYYY/MM/DD'));
+
+  var years = a.diff(b, 'year');
+  b.add(years, 'years');
+
+  var months = a.diff(b, 'months');
+  b.add(months, 'months');
+
+  let text = ``;
+  if (years === 0 && months === 0) {
+    return text;
+  }
+  if (years === 1) {
+    text = `• 1 year`;
+  }
+  if (years > 1) {
+    text = `• ${years} years `;
+  }
+  if (months === 1) {
+    text = `${text} 1 month`;
+  }
+  if (months > 1) {
+    text = `${text} ${months} months`;
+  }
+  return text;
+};
+const getDifferenceYear = (second1: number, second2: number) => {
+  const firstDate = moment(moment.unix(second1).format('YYYY-MM-DD'));
+  const secondDate = moment(moment.unix(second2).format('YYYY-MM-DD'));
 
   const duration = moment.duration(secondDate.diff(firstDate));
-  const years = duration.asYears();
+  const years = duration.asYears() - 1;
   if (Math.round(years) < 1) {
     return '';
   }
@@ -46,9 +85,20 @@ const getDifferenceTwoDate = (date1: string, date2: string) => {
   }
   return ` • ${Math.round(years)} year`;
 };
+
+const convertDateToTimestamp = (date: string) => {
+  const timestamp = moment(date).format('X');
+  return parseInt(timestamp);
+};
 export {
   ordinal_suffix_of,
   generateNewNameImage,
   dataUrlFile,
-  getDifferenceTwoDate,
+  getDifferenceMonthYear,
+  getDifferenceYear,
+  convertDateToTimestamp,
+  windowOpen,
+  MonthYearFormat,
+  DayMonthYearFormat,
+  YearFormat,
 };

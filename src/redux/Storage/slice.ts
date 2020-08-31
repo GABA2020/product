@@ -1,41 +1,48 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from 'utils/@reduxjs/toolkit';
 import { DTO } from 'types/DTO';
+import { STATES } from 'types/STATE';
+
 export const initialState: STATES.Storage = {
-  loading: true,
-  avatar_url: '',
+  loadingFile: true,
+  fileUrls: {},
 };
 
 const StorageSliceState = createSlice({
   name: 'storage',
   initialState,
   reducers: {
-    getAvatarURLAction(
+    uploadFileAction(
       state,
-      action: PayloadAction<DTO.Storage.GetAvatarUrlRequest>,
+      action: PayloadAction<DTO.Storage.UploadFileRequest>,
     ) {
-      state.loading = true;
-      state.avatar_url = initialState.avatar_url;
+      state.loadingFile = true;
     },
-    getAvatarURLActionSuccess(state, action: PayloadAction<string>) {
-      state.loading = false;
-      state.avatar_url = action.payload;
-    },
-    getAvatarURLActionFailed(state) {
-      state.loading = false;
-    },
-    uploadAvatarAction(
+    uploadFileActionSuccess(
       state,
-      action: PayloadAction<DTO.Storage.UploadAvatarRequest>,
+      action: PayloadAction<DTO.Storage.UploadFileResponse>,
     ) {
-      state.loading = true;
+      state.loadingFile = false;
+      state.fileUrls[action.payload.name] = action.payload.url;
     },
-    uploadAvatarActionSuccess(state, action: PayloadAction<string>) {
-      state.loading = false;
-      state.avatar_url = action.payload;
+    uploadFileActionFailed(state) {
+      state.loadingFile = false;
     },
-    uploadAvatarActionFailed(state) {
-      state.loading = false;
+    getFileUrlAction(
+      state,
+      action: PayloadAction<DTO.Storage.GetFileUrlRequest>,
+    ) {
+      state.loadingFile = true;
+    },
+    getFileUrlActionSuccess(
+      state,
+      action: PayloadAction<DTO.Storage.GetFileUrlResponse>,
+    ) {
+      state.loadingFile = false;
+      state.fileUrls[action.payload.name] = action.payload.url;
+    },
+    getFileUrlActionFailed(state) {
+      state.loadingFile = false;
     },
   },
 });

@@ -4,13 +4,19 @@ import { faPlusCircle, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { AddEducationModal } from '../Modal/AddEducationModal';
 import { EditEducationModal } from '../Modal/EditEducationModal';
 import moment from 'moment';
+import { YearFormat } from 'helpers/Unity';
+import { down_arrow } from 'assets/images';
 interface IEducation {
   userProfile: ENTITIES.UserProfile;
   educations: ENTITIES.Education[];
   editMode: boolean;
+  arrayLength: number;
+  loading: boolean;
   addNewEducation: (education: ENTITIES.Education) => void;
   editEducation: (education: ENTITIES.Education) => void;
   deleteEducation: (education: ENTITIES.Education) => void;
+  getEducations: () => void;
+  getMoreEducations: () => void;
 }
 
 const initEducation: ENTITIES.Education = {
@@ -20,74 +26,64 @@ const initEducation: ENTITIES.Education = {
   degree_type: '',
   major: '',
   honors: '',
-  date_end: '',
-  date_start: '',
+  date_end: { seconds: 0 },
+  date_start: { seconds: 0 },
 };
 
 export const Education: FC<IEducation> = props => {
   const {
     educations,
     editMode,
+    arrayLength,
+    loading,
     addNewEducation,
     editEducation,
     deleteEducation,
+    getEducations,
+    getMoreEducations,
     userProfile,
   } = props;
   /* state modal display */
-  const [
-    isShowModalEditEducationState,
-    setIsShowModalEditEducationState,
-  ] = useState<boolean>(false);
-  const [
-    isShowModalAddEducationState,
-    setIsShowModalAddEducationState,
-  ] = useState<boolean>(false);
+  const [editEducationModalState, setEditEducationModalState] = useState<
+    boolean
+  >(false);
+  const [addEducationModalState, setAddEducationModalState] = useState<boolean>(
+    false,
+  );
   /* end state modal display */
   const [educationState, setEducationState] = useState<ENTITIES.Education>(
     initEducation,
   );
-
   useEffect(() => {
-    var accordion = new (jQuery as any).DEVFUNC.accordion();
-    accordion.handleAccordion();
-    /*****Smartphone menu settings*****/
-    (jQuery as any).DEVFUNC.spMenu({
-      menuBtn: [
-        {
-          oBtn: '#btn-nav-sp a',
-          target: '#sub-menu-sp',
-        },
-      ],
-      closeBtn: '.close_btn',
-      addClass: 'spmenu_open',
-    });
+    getEducations();
   }, []);
+
   const onAddNewEducation = (education: ENTITIES.Education) => {
     addNewEducation(education);
-    setIsShowModalAddEducationState(false);
+    setAddEducationModalState(false);
   };
 
   const onEditEducation = (education: ENTITIES.Education) => {
     editEducation(education);
-    setIsShowModalEditEducationState(false);
+    setEditEducationModalState(false);
   };
 
   const onDeleteEducation = (education: ENTITIES.Education) => {
     deleteEducation(education);
-    setIsShowModalEditEducationState(false);
+    setEditEducationModalState(false);
   };
   return (
     <Fragment>
       <AddEducationModal
-        isShow={isShowModalAddEducationState}
+        isShow={addEducationModalState}
         addNewEducation={onAddNewEducation}
         onHide={() => {
-          setIsShowModalAddEducationState(false);
+          setAddEducationModalState(false);
         }}
       ></AddEducationModal>
       <EditEducationModal
-        isShow={isShowModalEditEducationState}
-        onHide={() => setIsShowModalEditEducationState(false)}
+        isShow={editEducationModalState}
+        onHide={() => setEditEducationModalState(false)}
         editEducation={onEditEducation}
         deleteEducation={onDeleteEducation}
         education={educationState}
@@ -99,13 +95,13 @@ export const Education: FC<IEducation> = props => {
         </div>
         <div className="main-title">
           <div className="main-title-work">
-            <h2> Education</h2>
+            <h2> Schools</h2>
             {editMode === true ? (
               <a
                 href="#"
                 onClick={e => {
                   e.preventDefault();
-                  setIsShowModalAddEducationState(true);
+                  setAddEducationModalState(true);
                 }}
               >
                 <FontAwesomeIcon icon={faPlusCircle} />
@@ -113,52 +109,65 @@ export const Education: FC<IEducation> = props => {
             ) : null}
           </div>
         </div>
-        <div className="accordion">
-          {educations.map((item, index) => {
-            return (
-              <Fragment>
-                <div key={index} className="accordion-item active">
-                  <div className="accordion-title">
-                    <a href="#">{`${item.degree_type} in ${item.major}`}</a>
-                  </div>
-                  <div className="accordion-content">
-                    <div className="accordion-content-company">
-                      <p>{item.school}</p>
-                      {editMode === true ? (
-                        <a
-                          onClick={e => {
-                            e.preventDefault();
-                            setEducationState(item);
-                            setIsShowModalEditEducationState(true);
-                          }}
-                          href="#"
-                        >
-                          <FontAwesomeIcon icon={faEdit}></FontAwesomeIcon>
-                        </a>
-                      ) : null}
+        {!loading &&
+          (educations.length > 0 ? (
+            educations.map((item, index) => {
+              return (
+                <Fragment key={index}>
+                  <div className="accordion">
+                    <div className="accordion-item">
+                      <div className="title-wrapper">
+                        <p className="title">{`${item.degree_type} in ${item.major}`}</p>
+                        {editMode === true ? (
+                          <a
+                            onClick={e => {
+                              e.preventDefault();
+                              setEducationState(item);
+                              setEditEducationModalState(true);
+                            }}
+                            href="#"
+                          >
+                            <FontAwesomeIcon icon={faEdit}></FontAwesomeIcon>
+                          </a>
+                        ) : null}
+                      </div>
+                      <div className="sub-title">
+                        <p>{item.school}</p>
+                        <p>{item.school_address}</p>
+                        <p>
+                          {moment
+                            .unix(item.date_start.seconds)
+                            .format(YearFormat)}
+                          {' - '}
+                          {moment
+                            .unix(item.date_end.seconds)
+                            .format(YearFormat)}
+                        </p>
+                      </div>
                     </div>
-                    <p>{item.school_address}</p>
-                    <p>{`${moment(item.date_start).format(
-                      'MMM yyyy',
-                    )} - ${moment(item.date_end).format('MMM yyyy')}`}</p>
-                    <p>{item.honors}</p>
                   </div>
-                </div>
-              </Fragment>
-            );
-          })}
-
-          {/* <div className="accordion-item">
-            <div className="accordion-title">
-              <a href="#">Professional Experience Title and Place 2</a>
+                </Fragment>
+              );
+            })
+          ) : (
+            <div className="text-empty text-center">
+              <p>There is no experiences available</p>
             </div>
-            <div className="accordion-content">
-              <p>Boston, Massachusetts</p>
-              <p>Harvard Medical School • Full-time</p>
-              <p>Jun 2016 – Present • 4 years 1 month</p>
-            </div>
-          </div> */}
-        </div>
+          ))}
+        {educations.length > 0 && educations.length < arrayLength ? (
+          <div className="load-more-wrapper text-center">
+            <a
+              className="load-more-btn"
+              href="#"
+              onClick={e => {
+                e.preventDefault();
+                getMoreEducations();
+              }}
+            >
+              Load More Experiences <img src={down_arrow} alt="img" />
+            </a>
+          </div>
+        ) : null}
       </div>
     </Fragment>
   );

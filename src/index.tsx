@@ -45,9 +45,7 @@ const ConnectedApp = ({ Component }: Props) => (
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <HelmetProvider>
-        <React.StrictMode>
-          <Component />
-        </React.StrictMode>
+        <Component />
       </HelmetProvider>
     </PersistGate>
   </Provider>

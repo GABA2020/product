@@ -1,8 +1,38 @@
-.react-datepicker-wrapper {
-    width: 100%;
+@import './common.scss';
+
+
+
+.modal-dialog {
+    .modal-title {
+        color: $goodNightColor;
+    }
+
+    .react-datepicker-wrapper {
+        width: 100%;
+    }
+
+    .btn-wrapper-submit {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .upload-file {
+        .file-name-link {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 5px;
+
+            a {
+                font-size: 15px;
+
+            }
+        }
+    }
+
 }
 
-.btn-wrapper-submit {
-    display: flex;
-    justify-content: space-between;
+.radio-box-inline {
+    display: inline;
+    margin-right: 20px;
 }

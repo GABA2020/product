@@ -6,3 +6,4 @@ export * from './StorageService';
 export * from './WorkExperienceService';
 export * from './EducationService';
 export * from './LetterService';
+export * from './LockerService';

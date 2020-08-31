@@ -7,8 +7,13 @@
  */
 
 import * as React from 'react';
+import 'antd/dist/antd.css';
 import 'assets/css/common.css';
+import 'styles/scss/common.scss';
 import 'styles/scss/LoadingPage.scss';
+import 'styles/scss/LockerReview.scss';
+import 'styles/scss/PageContent.scss';
+import 'styles/scss/SectionFooter.scss';
 import { Slide, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 // import { HomePage } from './containers/HomePage/Loadable';
@@ -36,6 +41,10 @@ import {
   sliceKey as storageSlice,
   reducer as storageReducer,
 } from 'redux/Storage/slice';
+import {
+  sliceKey as lockerSlice,
+  reducer as lockerReducer,
+} from 'redux/Locker/slice';
 import { useInjectReducer } from 'utils/redux-injectors';
 import { MainPage } from './containers/MainPage';
 import { Login } from './containers/Auth/Login';
@@ -68,6 +77,7 @@ export function App() {
   useInjectReducer({ key: userSlice, reducer: userReducer });
   useInjectReducer({ key: programSlice, reducer: programReducer });
   useInjectReducer({ key: storageSlice, reducer: storageReducer });
+  useInjectReducer({ key: lockerSlice, reducer: lockerReducer });
 
   React.useEffect(() => {
     auth().onAuthStateChanged(user => {

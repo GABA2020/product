@@ -26,4 +26,10 @@ const storageAvatar = async name => {
 };
 const timestamp = firebase.firestore.FieldValue.serverTimestamp;
 
-export { auth, db, storageAvatar, storageFB, timestamp };
+const REF = {
+  avatars: 'avatars',
+  resources: 'resources',
+  files: 'files',
+};
+
+export { auth, db, storageAvatar, storageFB, REF, timestamp };

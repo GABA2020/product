@@ -1,3 +1,5 @@
+import { firestore } from 'firebase';
+
 declare namespace STATES {
   interface User {
     loading: boolean;
@@ -11,6 +13,8 @@ declare namespace STATES {
     volunteers: ENTITIES.Volunteer[];
     researches: ENTITIES.Research[];
     letters: ENTITIES.Letter[];
+    arrayLength: number;
+    lastQuery: any;
   }
   interface Program {
     loading: boolean;
@@ -23,7 +27,15 @@ declare namespace STATES {
     username: string;
   }
   interface Storage {
+    loadingFile: boolean;
+    fileUrls: { [file_url: string]: string | null };
+  }
+  interface Locker {
     loading: boolean;
-    avatar_url: string;
+    reviews: ENTITIES.Review[];
+    lastQuery: any;
+    arrayLength: number;
+    resources: ENTITIES.Resource[];
+    listResourceCache: { [id: string]: ENTITIES.Resource | null };
   }
 }

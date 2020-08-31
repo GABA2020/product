@@ -6,6 +6,7 @@ import * as yup from 'yup';
 import moment from 'moment';
 import 'styles/scss/ModalWorkExperience.scss';
 import { Formik } from 'formik';
+import { convertDateToTimestamp } from 'helpers/Unity';
 
 const schema = yup.object().shape({
   school: yup
@@ -62,7 +63,7 @@ export const AddEducationModal: FC<IAddEducationModal> = props => {
 
   return (
     <Fragment>
-      <Modal show={isShow} onHide={onHide}>
+      <Modal backdrop="static" show={isShow} onHide={onHide}>
         <Modal.Header closeButton>
           <Modal.Title>Add education</Modal.Title>
         </Modal.Header>
@@ -80,8 +81,16 @@ export const AddEducationModal: FC<IAddEducationModal> = props => {
                 degree_type: values.degree_type,
                 major: values.major,
                 honors: values.honors,
-                date_end: moment(values.date_end).format('yyyy/MM'),
-                date_start: moment(values.date_start).format('yyyy/MM'),
+                date_end: {
+                  seconds: convertDateToTimestamp(
+                    values.date_end.toDateString(),
+                  ),
+                },
+                date_start: {
+                  seconds: convertDateToTimestamp(
+                    values.date_start.toDateString(),
+                  ),
+                },
               };
               addNewEducation(newEducation);
             }}
@@ -216,7 +225,7 @@ export const AddEducationModal: FC<IAddEducationModal> = props => {
                 <div className="text-right mt-2">
                   <button
                     type="submit"
-                    className="btn btn-primary btn-save-profile"
+                    className="btn btn-success btn-save-profile"
                   >
                     Save
                   </button>

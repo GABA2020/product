@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import useFirestore from '../../../hooks/useFirestore';
+import { AdminVerifyProfileModal } from '../../components/Modal/AdminVerifyProfileModal';
 
-export const AdminConsole = ({
-  setSelectedImg,
-  setName,
-  setEmail,
-  setUsername,
-}) => {
+export const AdminConsole = () => {
+  const [selectedImg, setSelectedImg] = useState(null);
+  const [name, setName] = useState(null);
+  const [email, setEmail] = useState(null);
+
   const { docs } = useFirestore('member_data') as any;
   console.log('docs', docs);
   return (
@@ -26,7 +26,6 @@ export const AdminConsole = ({
                 setSelectedImg(doc.schoolVerification);
                 setName(doc.firstName);
                 setEmail(doc.email);
-                setUsername(doc.id);
               }}
               className="button"
             >
@@ -34,6 +33,14 @@ export const AdminConsole = ({
             </button>
           </div>
         ))}
+      {selectedImg && (
+        <AdminVerifyProfileModal
+          selectedImg={selectedImg}
+          setSelectedImg={setSelectedImg}
+          name={name}
+          email={email}
+        />
+      )}
     </>
   );
 };

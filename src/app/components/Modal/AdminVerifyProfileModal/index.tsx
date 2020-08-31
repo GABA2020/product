@@ -1,25 +1,28 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import emailjs from 'emailjs-com';
 import { db } from '../../../../helpers/firebase.module';
 
-const Modal = ({ selectedImg, setSelectedImg, name, email, username }) => {
+export const AdminVerifyProfileModal = ({
+  selectedImg,
+  setSelectedImg,
+  name,
+  email,
+}) => {
   const sendVerificationEmail = async () => {
     const template_params = {
-      email: email,
-      to_name: name,
-      message_html: "Congratulations! You've been verified!",
+      contactEmail: email,
+      contactFirstName: name,
     };
 
     const service_id = 'default_service';
-    const template_id = 'template_wI6uIxWm';
-    const user_id = 'user_f73GApkRJtLhlOTpAdhQN';
+    const template_id = 'welcome_to_gaba_bronze_';
+    const user_id = 'user_yIq3IIfTQ8ruKbjBAqYaQ';
     await emailjs.send(service_id, template_id, template_params, user_id);
     console.log('Email sent successfully to ', email);
   };
 
   const verifyUser = async () => {
-    await db.collection('users').doc(username).set(
+    await db.collection('member_data').doc(email).set(
       {
         isVerified: true,
       },
@@ -40,18 +43,8 @@ const Modal = ({ selectedImg, setSelectedImg, name, email, username }) => {
     setSelectedImg(null);
   };
   return (
-    <motion.div
-      className="backdrop"
-      onClick={handleClick}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-    >
-      <motion.img
-        src={selectedImg}
-        alt="enlarged pic"
-        initial={{ y: '-100vh' }}
-        animate={{ y: 0 }}
-      />
+    <div className="backdrop" onClick={handleClick}>
+      <img src={selectedImg} alt="enlarged pic" />
       <button
         className="button is-success has-text-centered"
         style={{ display: 'block', margin: 'auto' }}
@@ -59,8 +52,6 @@ const Modal = ({ selectedImg, setSelectedImg, name, email, username }) => {
       >
         Verify
       </button>
-    </motion.div>
+    </div>
   );
 };
-
-export default Modal;

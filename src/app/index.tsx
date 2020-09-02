@@ -51,6 +51,7 @@ import { Login } from './containers/Auth/Login';
 import { CVPage } from './containers/CVPage';
 import { SignUp } from './containers/SignUp';
 import { AdminConsole } from './containers/AdminConsole';
+import { PaymentPage } from './containers/PaymentPage';
 
 // Auth Route
 const AuthRoute = ({ component: Component, ...rest }) => {
@@ -101,7 +102,7 @@ export function App() {
         <Switch>
           <Route exact path={RoutesTypes.SIGN_IN} component={Login} />
           <Route exact path={RoutesTypes.SIGN_UP} component={SignUp} />
-          <Route exact path={'/test'} component={AdminConsole} />
+          <Route exact path={'/test'} component={PaymentPage} />
           <AuthRoute
             isAuth={isAuth}
             exact

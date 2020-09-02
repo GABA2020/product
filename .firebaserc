@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "gaba-hosting"
+    "hosting": "gaba-hosting",
+    "default": "august-water-280101"
   }
 }

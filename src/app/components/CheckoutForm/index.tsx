@@ -8,6 +8,7 @@ export const CheckoutForm = () => {
   const [customerCity, setCustomerCity] = useState('');
   const [customerAddress, setCustomerAddress] = useState('');
   const [customerState, setCustomerState] = useState('');
+  const [selectedMembership, setSelectedMembership] = useState(null);
 
   const [customerZipcode, setCustomerZipcode] = useState('');
   const stripe = useStripe() as any;
@@ -23,6 +24,9 @@ export const CheckoutForm = () => {
     setCustomerState((document.querySelector('#customerState') as any)!.value);
     setCustomerZipcode(
       (document.querySelector('#customerZipcode') as any)!.value,
+    );
+    setSelectedMembership(
+      document.querySelector('#selectedMembership' as any)!.value,
     );
   };
 
@@ -44,7 +48,7 @@ export const CheckoutForm = () => {
       `https://us-central1-august-water-280101.cloudfunctions.net/paymentProcessing
     `,
       {
-        amount: 9 * 100,
+        amount: selectedMembership,
       },
     );
     const cardElement = elements.getElement(CardElement);
@@ -172,6 +176,23 @@ export const CheckoutForm = () => {
               onChange={e => updateValues()}
               required
             ></input>
+          </section>
+        </section>
+        <section className="field">
+          <label htmlFor="selectedMembership" className="label">
+            GABA Membership Plan
+          </label>
+          <section className="control">
+            <select
+              id="selectedMembership"
+              name="selectedMembership"
+              className="input is-rounded"
+              onChange={e => updateValues()}
+            >
+              <option value="GABABronze">GABA Bronze</option>
+              <option value="GABASilver">GABA Silver</option>
+              <option value="PreMed">Pre-Med</option>
+            </select>
           </section>
         </section>
         <CardElement options={cardElementOptions} />

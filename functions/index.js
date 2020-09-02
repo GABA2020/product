@@ -15,10 +15,22 @@ exports.paymentProcessing = functions.https.onRequest(async (req, res) => {
   }
   if (req.method === 'POST') {
     try {
-      const { amount } = req.body;
+      const GABABronze = 9 * 12 * 100;
+      const GABASilver = 20 * 12 * 100;
+      const PreMed = 35 * 12 * 100;
+      req.body.amount === 'GABABronze'
+        ? (membership = GABABronze)
+        : req.body.amount === 'GABASilver'
+        ? (membership = GABASilver)
+        : req.body.amount === 'PreMed'
+        ? (membership = PreMed)
+        : err;
+
+      console.log(req.body.amount);
+      console.log(membership);
 
       const paymentIntent = await stripe.paymentIntents.create({
-        amount,
+        amount: membership,
         currency: 'usd',
       });
       res.status(200).send(paymentIntent.client_secret);

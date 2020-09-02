@@ -40,9 +40,13 @@ export const CheckoutForm = () => {
       },
     };
 
-    const { data: clientSecret } = await axios.post('/api/payment_intents', {
-      amount: 9 * 100,
-    });
+    const { data: clientSecret } = await axios.post(
+      `https://us-central1-august-water-280101.cloudfunctions.net/paymentProcessing
+    `,
+      {
+        amount: 9 * 100,
+      },
+    );
     const cardElement = elements.getElement(CardElement);
 
     const paymentMethodReq = await stripe.createPaymentMethod({

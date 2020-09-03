@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="18px" height="18px" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>verified check</title>
+    <g id="user-profile-mockups" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Mockup---Hot-Private-Profile---Volunteer" transform="translate(-629.000000, -168.000000)">
+            <g id="DETAILS" transform="translate(-15.000000, 0.000000)">
+                <g id="Content" transform="translate(180.000000, 154.000000)">
+                    <g id="verified-check" transform="translate(464.000000, 14.000000)">
+                        <path d="M9,16.5 C13.1421356,16.5 16.5,13.1421356 16.5,9 C16.5,4.85786438 13.1421356,1.5 9,1.5 C4.85786438,1.5 1.5,4.85786438 1.5,9 C1.5,13.1421356 4.85786438,16.5 9,16.5 Z" id="Oval" fill="#5AB88D"></path>
+                        <path d="M9,18 C4.02943725,18 0,13.9705627 0,9 C0,4.02943725 4.02943725,0 9,0 C13.9705627,0 18,4.02943725 18,9 C18,13.9705627 13.9705627,18 9,18 Z" id="Oval" fill="#5AB88D"></path>
+                        <polygon id="Path" fill="#FFFFFF" points="7.92521598 10.9809503 13.2241711 5.67025698 14.2860041 6.72974302 7.92671386 13.1031204 3.96983183 9.14865344 5.03016817 8.08766953"></polygon>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

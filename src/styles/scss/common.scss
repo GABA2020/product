@@ -1,0 +1,78 @@
+$goodNightColor: #111741;
+$arielColor: #59B88D;
+$emeraldColor : #59B88D;
+$mangoColor : #EEAA35;
+$greenColor : #337859;
+$blurpleColor: #7280DA;
+
+body {
+    color: $goodNightColor
+}
+
+::placeholder {
+    color: #8e8e8e !important;
+}
+
+label {
+    font-weight: 500;
+}
+
+.btn-success {
+    border-radius: 6px;
+    border: solid 1px #5ab88d !important;
+    background-color: #5ab88d !important;
+    font-size: 14px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.71;
+    letter-spacing: 0.09px;
+    text-align: center;
+    color: #ffffff;
+}
+
+.btn-primary {
+    border-radius: 6px;
+    border: solid 1px #007bff !important;
+    background-color: #007bff !important;
+    font-size: 14px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.71;
+    letter-spacing: 0.09px;
+    text-align: center;
+    color: #ffffff;
+}
+
+.btn-light {
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    font-size: 14px;
+    line-height: 1.71;
+    border-radius: 6px;
+    background-color: #f8f9fa !important;
+    border-color: #f8f9fa !important;
+    color: #212529 !important;
+}
+
+svg.svg-inline--fa {
+    color: #111741;
+    width: 2.4rem;
+    height: 2.4rem;
+}
+
+.mt-2 {
+    margin-top: 20px;
+}
+
+.mt-1 {
+    margin-top: 10px;
+}

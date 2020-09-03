@@ -16,7 +16,12 @@ export const GuestUserProfile: FC<IGuestProfile> = props => {
           <div className="media media-profile">
             <div className="profile-images">
               <a href="#">
-                <img alt="user image" src={img_user} width={140} height={140} />
+                <img
+                  alt="user image"
+                  src={userGuestProfile.avatar}
+                  width={140}
+                  height={140}
+                />
               </a>
             </div>
             <div className="media-body">

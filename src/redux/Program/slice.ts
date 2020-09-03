@@ -1,6 +1,7 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from 'utils/@reduxjs/toolkit';
 import { DTO } from 'types/DTO';
+import { STATES } from 'types/STATE';
 export const initialState: STATES.Program = {
   loading: true,
   program: {
@@ -58,6 +59,19 @@ const ProgramSliceState = createSlice({
       state.program = action.payload;
     },
     getProgramReviewActionFailed(state) {
+      state.loading = false;
+    },
+    updateProgramAction(
+      state,
+      action: PayloadAction<DTO.Program.UpdateProgramRequest>,
+    ) {
+      state.loading = true;
+      state.program = { ...action.payload.program };
+    },
+    updateProgramActionSuccess(state) {
+      state.loading = false;
+    },
+    updateProgramActionFailed(state) {
       state.loading = false;
     },
   },

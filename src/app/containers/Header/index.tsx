@@ -2,7 +2,7 @@ import React, { Fragment, useEffect } from 'react';
 import { authSelector } from 'redux/Auth/selectors';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { img_account } from 'assets/images';
+import { img_account, gaba, nav_icon } from 'assets/images';
 import RoutesTypes from 'types/Routes';
 import {
   actions as userActions,
@@ -32,6 +32,7 @@ export const Header = () => {
       return;
     }
   }, [isAuth, dispatch]);
+
   const onchangeSearchText = (text: string) => {
     if (text.trim() !== '') {
       dispatch(userActions.searchUsersAction({ text }));
@@ -39,7 +40,6 @@ export const Header = () => {
   };
 
   const signOut = () => {
-    // console.log(123);
     dispatch(authActions.logoutAction());
   };
   return (
@@ -50,23 +50,18 @@ export const Header = () => {
             <div className="header-brand">
               <div className="nav-action">
                 <a href="#" className="nav-open">
-                  <span className="menu-icon">&nbsp;</span>
+                  <img src={nav_icon} alt="logo" />
                 </a>
               </div>
               <div id="logo">
-                <h1>
-                  <span>Global Design information technology</span>
-                </h1>
+                <img src={gaba} alt="logo" />
               </div>
             </div>
-            {/*end header-col*/}
             <SearchBox
               searchResults={userSearchResults}
               onchangeSearchText={onchangeSearchText}
             ></SearchBox>
-            {/*end header-col*/}
             <div className="header-account">
-              {/*end account-cart*/}
               <div className="account-member dropdown">
                 {isAuth && (
                   <Fragment>
@@ -86,9 +81,7 @@ export const Header = () => {
                   </a>
                 </div>
               </div>
-              {/*end account-member*/}
             </div>
-            {/*end header-col*/}
           </div>
         </div>
       </header>

@@ -6,7 +6,7 @@ import {
   timestamp,
 } from '../../../helpers/firebase.module';
 import emailjs from 'emailjs-com';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers';
 import * as yup from 'yup';
 import 'bulma/css/bulma.css';
@@ -36,16 +36,16 @@ export const SignUp = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [createFirstName, setCreateFirstName] = useState('');
   const [createLastName, setCreateLastName] = useState('');
-  const [createMedicalSchoolYear, setCreateMedicalSchoolYear] = useState('');
+  const [createMedicalSchoolYear, setCreateMedicalSchoolYear] = useState('MS1');
   const [createMedicalSchool, setCreateMedicalSchool] = useState('');
   const [file, setFile] = useState(null);
   const [error, setError] = useState('');
   const [validationError, setValidationError] = useState(null);
 
   const types = ['image/png', 'image/jpeg', 'application/pdf'];
-  const { register, handleSubmit, control, errors } = useForm({
-    resolver: yupResolver(SignupSchema),
-  });
+  //Yup completely invalidates my submission process for some reason. It's likely an issue with all inputs being controlled by state instead of the actual input field.
+  const { register, handleSubmit, control, errors } = useForm();
+  // {resolver: yupResolver(SignupSchema)}
 
   const updateValues = () => {
     setCreateUsername((document.querySelector('#username') as any)!.value);
@@ -105,6 +105,7 @@ export const SignUp = () => {
     console.log('Email sent successfully to ', createEmail);
   };
 
+  //Despite the create user function being a single function from the firebase docs, I can't login with any account I've created, or even either of the default accounts we already had. I'm told my credentials are invalid when signing in to a new account, and when attempting to sign in to an old account I get a status code 400 error.
   const createUser = async () => {
     await auth.createUserWithEmailAndPassword(createEmail, createPassword);
   };
@@ -125,6 +126,7 @@ export const SignUp = () => {
     console.log('Document successfully written!');
   };
 
+  //This extremely messy series of trying and catching doesn't stop the function when any the other functions being referenced throw errors.
   const onSubmit = data => {
     console.log(data);
     try {
@@ -170,21 +172,15 @@ export const SignUp = () => {
           </label>
           <section className="control">
             {' '}
-            <Controller
-              as={
-                <input
-                  className="input is-rounded"
-                  type="text"
-                  id="firstname"
-                  value={createFirstName}
-                  onChange={e => updateValues()}
-                  ref={register}
-                  required
-                />
-              }
+            <input
+              className="input is-rounded"
+              type="text"
+              id="firstname"
+              value={createFirstName}
+              onChange={e => updateValues()}
+              ref={register}
+              required
               name="firstname"
-              control={control}
-              defaultValue=""
             />
             {errors.firstname && <p>{errors.firstname.message}</p>}
           </section>
@@ -194,21 +190,15 @@ export const SignUp = () => {
             Last Name
           </label>
           <section className="control">
-            <Controller
-              as={
-                <input
-                  className="input is-rounded"
-                  type="text"
-                  id="lastname"
-                  ref={register}
-                  value={createLastName}
-                  onChange={e => updateValues()}
-                  required
-                />
-              }
-              name="lastname"
-              control={control}
-              defaultValue=""
+            <input
+              className="input is-rounded"
+              type="text"
+              id="lastname"
+              name="firstname"
+              ref={register}
+              value={createLastName}
+              onChange={e => updateValues()}
+              required
             />
             <p>{errors.lastname?.message}</p>
           </section>
@@ -218,21 +208,15 @@ export const SignUp = () => {
             Username
           </label>
           <section className="control">
-            <Controller
-              as={
-                <input
-                  className="input is-rounded"
-                  type="text"
-                  id="username"
-                  value={createUsername}
-                  onChange={e => updateValues()}
-                  ref={register}
-                  required
-                />
-              }
+            <input
+              className="input is-rounded"
+              type="text"
+              id="username"
               name="username"
-              control={control}
-              defaultValue=""
+              value={createUsername}
+              onChange={e => updateValues()}
+              ref={register}
+              required
             />
             <span>{errors.username?.message}</span>
           </section>
@@ -242,22 +226,16 @@ export const SignUp = () => {
             Password
           </label>
           <section className="control">
-            <Controller
-              as={
-                <input
-                  className="input is-rounded"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
-                  value={createPassword}
-                  onChange={e => updateValues()}
-                  ref={register}
-                  required
-                />
-              }
+            <input
+              className="input is-rounded"
+              type="password"
+              id="password"
               name="password"
-              control={control}
-              defaultValue=""
+              autoComplete="new-password"
+              value={createPassword}
+              onChange={e => updateValues()}
+              ref={register}
+              required
             />
             <p>{errors.password?.message}</p>
           </section>

@@ -92,9 +92,9 @@ export const SignUp = () => {
     }
   };
 
-  const sendVerificationEmail = async (data) => {
+  const sendVerificationEmail = async () => {
     const template_params = {
-      contactEmail: data.email,
+      contactEmail: createEmail,
       contactFirstName: createFirstName,
     };
 
@@ -102,14 +102,14 @@ export const SignUp = () => {
     const template_id = 'welcome_to_gaba_bronze_';
     const user_id = 'user_yIq3IIfTQ8ruKbjBAqYaQ';
     await emailjs.send(service_id, template_id, template_params, user_id);
-    console.log('Email sent successfully to ', data.email);
+    console.log('Email sent successfully to ', createEmail);
   };
 
-  const createUser = async (data) => {
+  const createUser = async () => {
     await auth.createUserWithEmailAndPassword(createEmail, createPassword);
   };
 
-  const userDatabaseEntry = async (data) => {
+  const userDatabaseEntry = async () => {
     await db.collection('member_data').doc(createEmail).set(
       {
         username: createUsername,
@@ -128,7 +128,7 @@ export const SignUp = () => {
   const onSubmit = data => {
     console.log(data);
     try {
-      createUser(data)
+      createUser()
         .catch(error => {
           let errorCode = error.code;
           let errorMessage = error.message;
@@ -142,13 +142,13 @@ export const SignUp = () => {
           console.error(error);
         })
         .then(async () => {
-          await userDatabaseEntry(data);
+          await userDatabaseEntry();
         })
         .catch(error => {
           console.error(error);
         })
         .then(() => {
-          sendVerificationEmail(data);
+          sendVerificationEmail();
         })
         .catch(error => {
           console.error('Error sending email', error);
@@ -366,12 +366,7 @@ export const SignUp = () => {
             {file && <section className="file">{(file! as any).name}</section>}
           </section>
         </section>{' '}
-        <Controller
-          as={<input type="submit" className="button is-success" />}
-          name="submit"
-          control={control}
-          defaultValue="Submit"
-        />
+        <input type="submit" className="button is-success" />
       </form>
     </section>
   );

@@ -8,10 +8,12 @@ export const CheckoutForm = () => {
   const [customerCity, setCustomerCity] = useState('');
   const [customerAddress, setCustomerAddress] = useState('');
   const [customerState, setCustomerState] = useState('');
-  const [selectedMembership, setSelectedMembership] = useState('GABABronze');
-  const [isProcessing, setIsProcessing] = useState(false);
-
   const [customerZipcode, setCustomerZipcode] = useState('');
+  const [selectedMembership, setSelectedMembership] = useState('GABABronze');
+
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [checkoutError, setCheckoutError] = useState('');
+
   const stripe = useStripe() as any;
   const elements = useElements() as any;
 
@@ -40,7 +42,7 @@ export const CheckoutForm = () => {
       price = 20 * 12;
     }
     if (selectedMembership === 'PreMed') {
-      price = 35 * 12;
+      price = 30 * 12;
     }
     return price;
   };
@@ -84,7 +86,7 @@ export const CheckoutForm = () => {
     });
 
     if (confirmedCardPayment.error) {
-      console.log(confirmedCardPayment.error.message);
+      setCheckoutError(confirmedCardPayment.error.message);
     } else {
       if (confirmedCardPayment.paymentIntent.status === 'succeeded') {
         alert('Payment Received. Thank you for your patronage!');
@@ -223,6 +225,7 @@ export const CheckoutForm = () => {
           </section>
         </section>
         <CardElement options={cardElementOptions} />
+        {checkoutError && <span>{checkoutError}</span>}
         <p>
           Your total for the {selectedMembership} membership comes out to $
           {membershipPrice()}.

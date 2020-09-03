@@ -17,7 +17,7 @@ exports.paymentProcessing = functions.https.onRequest(async (req, res) => {
     try {
       const GABABronze = 9 * 12 * 100;
       const GABASilver = 20 * 12 * 100;
-      const PreMed = 35 * 12 * 100;
+      const PreMed = 30 * 12 * 100;
       req.body.amount === 'GABABronze'
         ? (membership = GABABronze)
         : req.body.amount === 'GABASilver'

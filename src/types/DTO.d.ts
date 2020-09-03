@@ -6,6 +6,17 @@ import { firestore } from 'firebase';
 
 declare namespace DTO {
   export namespace User {
+    interface GetGuestUserProfileCacheRequest {
+      email: string;
+    }
+
+    interface GetGuestUserProfileCacheResponse {
+      email: string;
+      avatar: string;
+      name: string;
+      username: string;
+    }
+
     interface GetUserProfileResponse {
       email: string;
       avatar: string;
@@ -391,56 +402,169 @@ declare namespace DTO {
   }
 
   export namespace Locker {
-    interface GetReviewsRequest {
-      email: string;
-    }
+    namespace Review {
+      interface GetReviewsRequest {
+        email: string;
+      }
 
-    interface GetReviewsResponse {
-      reviews: ENTITIES.Review[];
-      lastQuery: any;
-      arrayLength: number;
-    }
+      interface GetReviewsResponse {
+        reviews: ENTITIES.UserResource[];
+        lastQuery: any;
+        reviewLength: number;
+      }
 
-    interface GetMoreReviewsRequest {
-      email: string;
-      lastQuery: any;
-    }
+      interface GetMoreReviewsRequest {
+        email: string;
+        lastQuery: any;
+      }
 
-    interface GetMoreReviewsResponse {
-      reviews: ENTITIES.Review[];
-      lastQuery: any;
+      interface GetMoreReviewsResponse {
+        reviews: ENTITIES.UserResource[];
+        lastQuery: any;
+      }
     }
 
     namespace Resource {
-      interface getResourcesRequest {
-        email: string;
-      }
-
-      interface getResourcesResponse {
-        resources: ENTITIES.Resource[];
-        lastQuery: any;
-        arrayLength: number;
-      }
-
-      interface getMoreResourcesRequest {
-        email: string;
-        lastQuery: any;
-      }
-
-      interface getMoreResourcesResponse {
-        resources: ENTITIES.Resource[];
-        lastQuery: any;
-      }
-
       interface GetResourceDetailRequest {
         id: string;
-        email: string;
       }
 
       interface GetResourceDetailResponse {
         id: string;
         resource: ENTITIES.Resource;
       }
+    }
+
+    namespace UserResource {
+      interface getAllUserResourcesRequest {
+        email: string;
+      }
+
+      interface getAllUserResourcesResponse {
+        userResources: ENTITIES.UserResource[];
+      }
+
+      interface getUserResourcesRequest {
+        email: string;
+      }
+
+      interface getUserResourcesResponse {
+        userResources: ENTITIES.UserResource[];
+        lastQuery: any;
+        userResourceLength: number;
+      }
+
+      interface getMoreUserResourcesRequest {
+        email: string;
+        lastQuery: any;
+      }
+
+      interface getMoreUserResourcesResponse {
+        userResources: ENTITIES.UserResource[];
+        lastQuery: any;
+      }
+
+      interface AddUserResourceRequest {
+        email: string;
+        userResource: ENTITIES.UserResource;
+      }
+      interface AddUserResourceResponse {
+        userResource: ENTITIES.UserResource;
+      }
+
+      interface EditUserResourceRequest {
+        email: string;
+        userResource: ENTITIES.UserResource;
+      }
+      interface EditUserResourceResponse {
+        userResource: ENTITIES.UserResource;
+      }
+
+      interface DeleteUserResourceRequest {
+        email: string;
+        userResource: ENTITIES.UserResource;
+      }
+      interface DeleteUserResourceResponse {
+        userResource: ENTITIES.UserResource;
+      }
+    }
+  }
+
+  export namespace Chat {
+    interface ListenListLastMessageRequest {
+      email: string;
+    }
+
+    interface ListenListLastMessageResponse {
+      listLastMessage: ENTITIES.LastMessage[];
+    }
+
+    interface GetListMessageRequest {
+      users_mail_key: string;
+    }
+
+    interface GetListMessageResponse {
+      listMessage: ENTITIES.Message[];
+      last_query: any;
+      messages_length: number;
+    }
+
+    interface GetMoreListMessageRequest {
+      users_mail_key: string;
+      last_query: any;
+    }
+
+    interface GetMoreListMessageResponse {
+      listMessage: ENTITIES.Message[];
+      last_query: any;
+    }
+
+    interface SendMessageRequest {
+      users_mail_key: string;
+      message: ENTITIES.Message;
+      lastMessage: ENTITIES.LastMessage;
+    }
+
+    interface SendMessageResponse {
+      message: ENTITIES.Message;
+      lastMessage: ENTITIES.LastMessage;
+    }
+
+    interface listenNewMessageRequest {
+      users_mail_key: string;
+    }
+
+    interface listenNewMessageResponse {
+      message: ENTITIES.Message;
+    }
+
+    interface SetMessageToReadRequest {
+      users_mail_key: string;
+    }
+
+    interface ListenMessageNotificationRequest {
+      email: string;
+    }
+
+    interface ListenMessageNotificationResponse {
+      notificationCount: number;
+    }
+
+    interface ConnectUserRequest {
+      users_mail_key: string;
+      senderEmail: string;
+    }
+
+    interface ConnectUserResponse {
+      users_mail_key: string;
+    }
+
+    interface ResponseConnectRequest {
+      lastMessage: ENTITIES.LastMessage;
+    }
+
+    interface ResponseConnectResponse {
+      // lastMessage: ENTITIES.LastMessage;
     }
   }
 }

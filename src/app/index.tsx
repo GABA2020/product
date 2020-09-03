@@ -45,6 +45,10 @@ import {
   sliceKey as lockerSlice,
   reducer as lockerReducer,
 } from 'redux/Locker/slice';
+import {
+  sliceKey as chatSlice,
+  reducer as chatReducer,
+} from 'redux/Chat/slice';
 import { useInjectReducer } from 'utils/redux-injectors';
 import { MainPage } from './containers/MainPage';
 import { Login } from './containers/Auth/Login';
@@ -79,6 +83,7 @@ export function App() {
   useInjectReducer({ key: programSlice, reducer: programReducer });
   useInjectReducer({ key: storageSlice, reducer: storageReducer });
   useInjectReducer({ key: lockerSlice, reducer: lockerReducer });
+  useInjectReducer({ key: chatSlice, reducer: chatReducer });
 
   React.useEffect(() => {
     auth().onAuthStateChanged(user => {

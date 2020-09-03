@@ -7,6 +7,16 @@ const getUserProfile = async (email: string) => {
   return { email: userDoc.id, ...userDoc.data() };
 };
 
+const getGuestUserProfile = async (
+  payload: DTO.User.GetGuestUserProfileCacheRequest,
+) => {
+  const userRef = await db.collection('member_data').doc(payload.email).get();
+  return {
+    email: userRef.id,
+    ...userRef.data(),
+  } as DTO.User.GetGuestUserProfileCacheResponse;
+};
+
 const searchUsers = async (payload: DTO.User.SearchUsersRequest) => {
   const listUser: ENTITIES.UserProfile[] = [];
   const userRef = await db
@@ -50,4 +60,10 @@ const updateUserProfile = async (
   return userRef;
 };
 
-export { getUserProfile, searchUsers, getUserSearchProfile, updateUserProfile };
+export {
+  getUserProfile,
+  searchUsers,
+  getUserSearchProfile,
+  updateUserProfile,
+  getGuestUserProfile,
+};

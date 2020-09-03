@@ -55,6 +55,27 @@ section.section-profile {
                 margin-bottom: 0px;
             }
         }
+
+        .profile-connect {
+            text-align: right;
+
+            .btn-connect {
+                padding: 15px 14px 14px;
+                border-radius: 6px;
+                background-color: $mangoColor;
+                font-size: 16px;
+                font-weight: 500;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: 1.5;
+                letter-spacing: 0.1px;
+                text-align: center;
+                color: $goodNightColor;
+                min-width: 120px;
+                ;
+
+            }
+        }
     }
 
 }

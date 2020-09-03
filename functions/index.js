@@ -26,9 +26,6 @@ exports.paymentProcessing = functions.https.onRequest(async (req, res) => {
         ? (membership = PreMed)
         : err;
 
-      console.log(req.body.amount);
-      console.log(membership);
-
       const paymentIntent = await stripe.paymentIntents.create({
         amount: membership,
         currency: 'usd',

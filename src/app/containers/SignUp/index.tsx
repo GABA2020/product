@@ -6,15 +6,28 @@ import {
   timestamp,
 } from '../../../helpers/firebase.module';
 import emailjs from 'emailjs-com';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers';
+import * as yup from 'yup';
 import 'bulma/css/bulma.css';
 
-type FormData = {
-  createUsername: string;
-  createPassword: string;
-  createEmail: string;
-  confirmPassword: string;
-};
+const SignupSchema = yup.object().shape({
+  firstname: yup.string().required('First Name is a required field.'),
+  lastname: yup.string().required('Last Name is a required field'),
+  username: yup.string().required('Username is a required field'),
+  password: yup
+    .string()
+    .min(8)
+    .required('Passwords must be a minimum of 8 characters'),
+  confirmpassword: yup
+    .string()
+    .min(8)
+    .required('Passwords must be a minimum of 8 characters'),
+  emailAdress: yup.string().email().required(),
+  medicalschool: yup.string().required(),
+  medicalschoolyear: yup.string(),
+  filesubmission: yup.string().required(),
+});
 
 export const SignUp = () => {
   const [createUsername, setCreateUsername] = useState('');
@@ -30,7 +43,9 @@ export const SignUp = () => {
   const [validationError, setValidationError] = useState(null);
 
   const types = ['image/png', 'image/jpeg', 'application/pdf'];
-  const { register, handleSubmit, watch, errors } = useForm();
+  const { register, handleSubmit, control, errors } = useForm({
+    resolver: yupResolver(SignupSchema),
+  });
 
   const updateValues = () => {
     setCreateUsername((document.querySelector('#username') as any)!.value);
@@ -77,9 +92,9 @@ export const SignUp = () => {
     }
   };
 
-  const sendVerificationEmail = async () => {
+  const sendVerificationEmail = async (data) => {
     const template_params = {
-      contactEmail: createEmail,
+      contactEmail: data.email,
       contactFirstName: createFirstName,
     };
 
@@ -87,14 +102,14 @@ export const SignUp = () => {
     const template_id = 'welcome_to_gaba_bronze_';
     const user_id = 'user_yIq3IIfTQ8ruKbjBAqYaQ';
     await emailjs.send(service_id, template_id, template_params, user_id);
-    console.log('Email sent successfully to ', createEmail);
+    console.log('Email sent successfully to ', data.email);
   };
 
-  const createUser = async () => {
+  const createUser = async (data) => {
     await auth.createUserWithEmailAndPassword(createEmail, createPassword);
   };
 
-  const userDatabaseEntry = async () => {
+  const userDatabaseEntry = async (data) => {
     await db.collection('member_data').doc(createEmail).set(
       {
         username: createUsername,
@@ -110,16 +125,15 @@ export const SignUp = () => {
     console.log('Document successfully written!');
   };
 
-  const submitHandler = e => {
-    e.preventDefault();
+  const onSubmit = data => {
+    console.log(data);
     try {
-      createUser()
+      createUser(data)
         .catch(error => {
           let errorCode = error.code;
           let errorMessage = error.message;
           setValidationError(errorMessage);
           console.error(`Error Code: ${errorCode}. ${errorMessage}`);
-          throw error;
         })
         .then(() => {
           fileStorage(file);
@@ -128,13 +142,13 @@ export const SignUp = () => {
           console.error(error);
         })
         .then(async () => {
-          await userDatabaseEntry();
+          await userDatabaseEntry(data);
         })
         .catch(error => {
           console.error(error);
         })
         .then(() => {
-          sendVerificationEmail();
+          sendVerificationEmail(data);
         })
         .catch(error => {
           console.error('Error sending email', error);
@@ -149,20 +163,30 @@ export const SignUp = () => {
       <p className="has-text-centered" style={{ color: 'red' }}>
         All fields are required for submission.
       </p>
-      <form onSubmit={handleSubmit(submitHandler)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <section className="field">
           <label htmlFor="firstname" className="label">
             First Name
           </label>
           <section className="control">
-            <input
-              className="input is-rounded"
-              type="text"
-              id="firstname"
-              value={createFirstName}
-              onChange={e => updateValues()}
-              required
-            ></input>
+            {' '}
+            <Controller
+              as={
+                <input
+                  className="input is-rounded"
+                  type="text"
+                  id="firstname"
+                  value={createFirstName}
+                  onChange={e => updateValues()}
+                  ref={register}
+                  required
+                />
+              }
+              name="firstname"
+              control={control}
+              defaultValue=""
+            />
+            {errors.firstname && <p>{errors.firstname.message}</p>}
           </section>
         </section>
         <section className="field">
@@ -170,14 +194,23 @@ export const SignUp = () => {
             Last Name
           </label>
           <section className="control">
-            <input
-              className="input is-rounded"
-              type="text"
-              id="lastname"
-              value={createLastName}
-              onChange={e => updateValues()}
-              required
-            ></input>
+            <Controller
+              as={
+                <input
+                  className="input is-rounded"
+                  type="text"
+                  id="lastname"
+                  ref={register}
+                  value={createLastName}
+                  onChange={e => updateValues()}
+                  required
+                />
+              }
+              name="lastname"
+              control={control}
+              defaultValue=""
+            />
+            <p>{errors.lastname?.message}</p>
           </section>
         </section>
         <section className="field">
@@ -185,14 +218,23 @@ export const SignUp = () => {
             Username
           </label>
           <section className="control">
-            <input
-              className="input is-rounded"
-              type="text"
-              id="username"
-              value={createUsername}
-              onChange={e => updateValues()}
-              required
-            ></input>
+            <Controller
+              as={
+                <input
+                  className="input is-rounded"
+                  type="text"
+                  id="username"
+                  value={createUsername}
+                  onChange={e => updateValues()}
+                  ref={register}
+                  required
+                />
+              }
+              name="username"
+              control={control}
+              defaultValue=""
+            />
+            <span>{errors.username?.message}</span>
           </section>
         </section>
         <section className="field">
@@ -200,15 +242,24 @@ export const SignUp = () => {
             Password
           </label>
           <section className="control">
-            <input
-              className="input is-rounded"
-              type="password"
-              id="password"
-              autoComplete="new-password"
-              value={createPassword}
-              onChange={e => updateValues()}
-              required
-            ></input>
+            <Controller
+              as={
+                <input
+                  className="input is-rounded"
+                  type="password"
+                  id="password"
+                  autoComplete="new-password"
+                  value={createPassword}
+                  onChange={e => updateValues()}
+                  ref={register}
+                  required
+                />
+              }
+              name="password"
+              control={control}
+              defaultValue=""
+            />
+            <p>{errors.password?.message}</p>
           </section>
         </section>
         <section className="field">
@@ -223,8 +274,10 @@ export const SignUp = () => {
               autoComplete="new-password"
               value={confirmPassword}
               onChange={e => updateValues()}
+              ref={register}
+              name="confirmpassword"
               required
-            ></input>
+            />
             {createPassword !== confirmPassword ? (
               <p>Your passwords don't match.</p>
             ) : (
@@ -241,11 +294,14 @@ export const SignUp = () => {
               className="input is-rounded"
               type="email"
               autoComplete="email"
+              ref={register}
               value={createEmail}
               onChange={e => updateValues()}
               id="emailAddress"
+              name="emailAddress"
               required
             ></input>
+            <span>{errors.emailAddress?.message}</span>
             {validationError ? <p>{validationError}</p> : <p></p>}
           </section>
         </section>
@@ -258,10 +314,13 @@ export const SignUp = () => {
               className="input is-rounded"
               type="text"
               id="medicalschool"
+              name="medicalschool"
+              ref={register}
               value={createMedicalSchool}
               onChange={e => updateValues()}
               required
             ></input>
+            <span>{errors.medicalschool?.message}</span>
           </section>
         </section>
         <section className="field">
@@ -282,6 +341,7 @@ export const SignUp = () => {
               <option value="Resident">Resident</option>
               <option value="Fellow">Fellow</option>
             </select>
+            <span>{errors.medicalschoolyear?.message}</span>
           </section>
         </section>
         <section className="field">
@@ -294,22 +354,24 @@ export const SignUp = () => {
           </p>
           <input
             type="file"
+            ref={register}
             onChange={changeHandler}
             required
             id="filesubmission"
+            name="filesubmission"
           />
+          <span>{errors.filesubmission?.message}</span>
           <section className="output">
             {error && <section className="error">{error}</section>}
             {file && <section className="file">{(file! as any).name}</section>}
           </section>
         </section>{' '}
-        <button
-          type="submit"
-          className="button is-success"
-          onClick={submitHandler}
-        >
-          Create Account
-        </button>
+        <Controller
+          as={<input type="submit" className="button is-success" />}
+          name="submit"
+          control={control}
+          defaultValue="Submit"
+        />
       </form>
     </section>
   );

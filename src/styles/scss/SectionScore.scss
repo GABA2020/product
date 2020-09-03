@@ -1,234 +1,61 @@
 @import './common.scss';
 
-// .section-step-scope {
-//     .step-caption {
-//         .step-name a {
-//             font-size: 16px;
-//             font-weight: 500;
-//             font-stretch: normal;
-//             font-style: normal;
-//             line-height: 1.5;
-//             letter-spacing: 0.1px;
-//             color: #337859;
-//         }
-
-//         .step-paragraph {
-//             color: #337859;
-
-//             span.step-num {
-//                 font-size: 4rem;
-//                 font-weight: 700;
-//                 vertical-align: top;
-//             }
-
-//             span.step-gloss {
-//                 font-size: 2rem;
-//                 font-weight: 400;
-//                 font-stretch: normal;
-//                 font-style: normal;
-//                 line-height: 1.5;
-//                 letter-spacing: -0.71px;
-//                 text-align: center;
-//             }
-//         }
-
-//         .manage-scope-link {
-//             a {
-//                 display: inline;
-//                 font-size: 16px;
-//                 font-weight: bold;
-//                 font-stretch: normal;
-//                 font-style: normal;
-//                 line-height: 1.5;
-//                 letter-spacing: 0.1px;
-//                 color: $goodNightColor;
-//                 margin-right: 0.5rem;
-//             }
-
-//             p {
-//                 font-size: 16px;
-//                 font-weight: bold;
-//                 font-stretch: normal;
-//                 font-style: normal;
-//                 line-height: 1.5;
-//                 letter-spacing: 0.1px;
-//                 color: $goodNightColor;
-//                 margin-right: 0.5rem;
-//             }
-//         }//     }
-
-// }
 .section-step-scope {
-    .list-score {
-        display: flex;
-        justify-content: space-between;
+    .step-caption {
+        .step-name a {
+            font-size: 16px;
+            font-weight: 500;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.5;
+            letter-spacing: 0.1px;
+            color: #337859;
+        }
 
-        .card {
-            margin-bottom: 30px;
-            width: 25%;
-            padding: 0 15px;
+        .step-paragraph {
+            color: #337859;
 
-            .card-header {
-                .title {
-                    .image-score {
-                        margin-bottom: 16px;
-                    }
-
-                    p {
-                        font-size: 16px;
-                        font-weight: 400;
-                        font-stretch: normal;
-                        font-style: normal;
-                        line-height: 1.5;
-                        letter-spacing: 0.1px;
-                        color: $greenColor;
-
-                    }
-                }
+            span.step-num {
+                font-size: 4rem;
+                font-weight: 700;
+                vertical-align: top;
             }
 
-            .card-body {
-                .score-pass {
-                    .score {
-                        font-size: 40px;
-                        font-weight: 400;
-                        font-stretch: normal;
-                        font-style: normal;
-                        line-height: 1.5;
-                        letter-spacing: -0.71px;
-                        color: $greenColor;
+            span.step-gloss {
+                font-size: 2rem;
+                font-weight: 400;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: 1.5;
+                letter-spacing: -0.71px;
+                text-align: center;
+            }
+        }
 
-                        .score-gross {
-                            font-size: 20px;
-                            font-weight: 400;
-                            font-stretch: normal;
-                            font-style: normal;
-                            color: $greenColor;
-                            margin-left: 5px;
-
-                        }
-                    }
-
-
-                }
-
-                .score-waiting {
-                    margin-top: 2.1rem;
-                    padding-right: 30px;
-                    margin-bottom: 1.365rem;
-
-                    p {
-                        font-size: 14px;
-                        font-weight: 400;
-                        font-stretch: normal;
-                        font-style: normal;
-                        line-height: 1.43;
-                        letter-spacing: normal;
-                        color: #337859;
-                    }
-                }
-
-                .no-score {
-                    margin-top: 3.5rem;
-                    margin-bottom: 2.2rem;
-
-                    p {
-                        font-size: 14px;
-                        font-weight: 400;
-                        font-stretch: normal;
-                        font-style: normal;
-                        line-height: 1.43;
-                        letter-spacing: normal;
-                        color: $goodNightColor;
-                    }
-                }
+        .manage-scope-link {
+            a {
+                display: inline;
+                font-size: 16px;
+                font-weight: bold;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: 1.5;
+                letter-spacing: 0.1px;
+                color: $goodNightColor;
+                margin-right: 0.5rem;
             }
 
-            .card-footer {
-                .score-btn-wrapper {
-                    .add-score {
-                        a {
-                            font-size: 16px;
-                            font-weight: bold;
-                            font-stretch: normal;
-                            font-style: normal;
-                            line-height: 1.5;
-                            letter-spacing: 0.1px;
-                            color: $goodNightColor;
-                        }
-                    }
-
-                    .waiting-score {
-                        p {
-                            font-size: 16px;
-                            font-weight: bold;
-                            font-stretch: normal;
-                            font-style: normal;
-                            line-height: 1.5;
-                            letter-spacing: 0.1px;
-                            color: $goodNightColor;
-                            margin-bottom: 0;
-                        }
-                    }
-
-                }
+            p {
+                font-size: 16px;
+                font-weight: bold;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: 1.5;
+                letter-spacing: 0.1px;
+                color: $goodNightColor;
+                margin-right: 0.5rem;
             }
         }
     }
 
-}
-
-@media screen and (max-width: 992px) {
-    .section-step-scope {
-        .list-score {
-            display: flex;
-            flex-flow: row wrap;
-            text-align: center;
-
-            .card {
-                margin-bottom: 40px;
-                width: 50%;
-                padding: 0 15px;
-
-                .card-body {
-                    .score-waiting {
-                        margin-top: 2.1rem;
-                        padding-right: 30px;
-                        margin-bottom: 1.5rem;
-                    }
-
-                    .no-score {
-                        margin-top: 3.5rem;
-                        margin-bottom: 2.3rem;
-                    }
-                }
-            }
-        }
-
-    }
-}
-
-@media screen and (max-width: 767px) {
-    .section-step-scope {
-        .list-score {
-            display: flex;
-            flex-flow: row wrap;
-            text-align: center;
-
-            .card {
-                margin-bottom: 40px;
-                width: 100%;
-                padding: 0 15px;
-
-                .card-body {
-                    .score-waiting {
-                        margin-top: 2.1rem;
-                        margin-bottom: 2rem;
-                        padding-right: 0;
-                    }
-                }
-            }
-        }
-
-    }
 }

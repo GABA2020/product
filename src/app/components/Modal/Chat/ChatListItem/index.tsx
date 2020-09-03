@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { useStorage } from 'hook/useStorage';
 interface IChatListItem {
   lastMessageItem: ENTITIES.LastMessage;
-  openMessage: (lastMessageItem: ENTITIES.LastMessage, index: number) => void;
+  openMessage: (userKeyMail: string) => void;
   index: number;
 }
 export const ChatListitem: FC<IChatListItem> = props => {
@@ -22,14 +22,20 @@ export const ChatListitem: FC<IChatListItem> = props => {
 
   return (
     <Fragment>
-      <div
-        onClick={() => openMessage(lastMessageItem, index)}
-        className="chat_people"
-      >
+      <div className="chat_people">
         <div className="chat_img">
-          <img src={userImage ? userImage : img_user} alt="sunil" />{' '}
+          <img
+            onClick={e => {
+              window.open(guestUser?.username ? guestUser?.username : '');
+            }}
+            src={userImage ? userImage : img_user}
+            alt="sunil"
+          />{' '}
         </div>
-        <div className="chat_ib">
+        <div
+          onClick={() => openMessage(lastMessageItem.users.join(':'))}
+          className="chat_ib"
+        >
           <h5>
             {guestUser?.name}{' '}
             <span className="chat_date">

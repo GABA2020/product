@@ -12,15 +12,7 @@ export const initialState: STATES.Chat = {
   listMessages: [],
   last_query: {},
   messages_length: 0,
-  notificationCount: 0,
-  lastMessageConnect: {
-    created_at: { seconds: 0 },
-    is_received: false,
-    last_message: '',
-    sender_email: '',
-    users: [],
-    connect_status: 2,
-  },
+  currentUserKey: '',
 };
 
 const ChatSlice = createSlice({
@@ -49,6 +41,7 @@ const ChatSlice = createSlice({
       state,
       action: PayloadAction<DTO.Chat.GetListMessageRequest>,
     ) {
+      state.loading_listMessage = true;
       state.listMessages = [];
       state.last_query = initialState.last_query;
       state.messages_length = initialState.messages_length;
@@ -64,6 +57,7 @@ const ChatSlice = createSlice({
     },
     getListMessageActionFailed(state) {
       state.loading_listMessage = false;
+      state.listMessages = [];
     },
     getMoreListMessageAction(
       state,
@@ -106,37 +100,35 @@ const ChatSlice = createSlice({
     ) {},
     setMessageToReadActionSuccess(state) {},
     setMessageToReadActionFailed(state) {},
-
-    listMessageNotificationAction(
-      state,
-      action: PayloadAction<DTO.Chat.ListenMessageNotificationRequest>,
-    ) {
-      state.notificationCount = 0;
-    },
-    listMessageNotificationActionSuccess(
-      state,
-      action: PayloadAction<DTO.Chat.ListenMessageNotificationResponse>,
-    ) {
-      state.notificationCount = action.payload.notificationCount;
-    },
-    listMessageNotificationActionFailed(state) {},
-    resetLastMessageConnect(state) {
-      state.lastMessageConnect = initialState.lastMessageConnect;
+    setCurrentUserKey(state, action: PayloadAction<string>) {
+      state.currentUserKey = action.payload;
     },
     connectUserAction(
       state,
       action: PayloadAction<DTO.Chat.ConnectUserRequest>,
     ) {
-      state.lastMessageConnect = initialState.lastMessageConnect;
+      state.loading_connectUser = true;
     },
     connectUserActionSuccess(
       state,
       action: PayloadAction<DTO.Chat.ConnectUserResponse>,
     ) {
       state.loading_connectUser = false;
-      state.lastMessageConnect = action.payload.lastMessage;
+      state.currentUserKey = action.payload.users_mail_key;
     },
     connectUserActionFailed(state) {
+      state.loading_connectUser = false;
+    },
+    responseConnectAction(
+      state,
+      action: PayloadAction<DTO.Chat.ResponseConnectRequest>,
+    ) {
+      state.loading_connectUser = true;
+    },
+    responseConnectActionSuccess(state) {
+      state.loading_connectUser = false;
+    },
+    responseConnectActionFailed(state) {
       state.loading_connectUser = false;
     },
   },

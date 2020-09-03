@@ -35,10 +35,11 @@ export const Header = () => {
 
   const { isAuth, email } = useSelector(authSelector);
   const { userProfile, userSearchResults } = useSelector(userSelector);
-  const { notificationCount } = useSelector(ChatSelector);
+  const { listLastMessage } = useSelector(ChatSelector);
   const dispatch = useDispatch();
 
   const [chatModal, setChatModal] = useState(false);
+  const [notificationCount, setNotificationCount] = useState(0);
 
   useEffect(() => {
     if (isAuth) {
@@ -48,10 +49,17 @@ export const Header = () => {
   }, [isAuth, dispatch]);
 
   useEffect(() => {
-    if (isAuth) {
-      dispatch(chatActions.listMessageNotificationAction({ email }));
-    }
-  }, [isAuth]);
+    let count = 0;
+    listLastMessage.forEach(item => {
+      if (
+        item.is_received === false &&
+        userProfile.email !== item.sender_email
+      ) {
+        count = count + 1;
+      }
+    });
+    setNotificationCount(count);
+  }, [listLastMessage, userProfile]);
 
   const onchangeSearchText = (text: string) => {
     if (text.trim() !== '') {

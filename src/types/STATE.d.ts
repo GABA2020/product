@@ -50,7 +50,6 @@ declare namespace STATES {
     listLastMessage: ENTITIES.LastMessage[];
     last_query: any;
     messages_length: number;
-    notificationCount: number;
-    lastMessageConnect: ENTITIES.LastMessage;
+    currentUserKey: string;
   }
 }

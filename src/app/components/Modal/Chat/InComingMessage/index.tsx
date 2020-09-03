@@ -3,6 +3,7 @@ import { img_user } from 'assets/images';
 import { useUser } from 'hook/useUser';
 import { useStorage } from 'hook/useStorage';
 import moment from 'moment';
+import { history } from 'utils/history';
 
 interface Message {
   message: ENTITIES.Message;
@@ -19,7 +20,13 @@ export const InComingMessage: FC<Message> = props => {
       <div className="incoming_msg">
         <div className="incoming_msg_img">
           {' '}
-          <img src={userImage ? userImage : img_user} alt="img_user" />{' '}
+          <img
+            onClick={e => {
+              window.open(guestUser?.username ? guestUser?.username : '');
+            }}
+            src={userImage ? userImage : img_user}
+            alt="img_user"
+          />{' '}
         </div>
         <div className="received_msg">
           <div className="received_withd_msg">

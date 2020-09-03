@@ -34,7 +34,7 @@ export const GuestUserProfile = props => {
   const dispatch = useDispatch();
   const { userSearchProfile, userProfile } = useSelector(userSelector);
   const { program } = useSelector(programSelector);
-  // const { loading_connectUser, lastMessageConnect } = useSelector(ChatSelector);
+  const { listLastMessage } = useSelector(ChatSelector);
 
   const [chatModal, setChatModal] = useState(false);
 
@@ -58,11 +58,10 @@ export const GuestUserProfile = props => {
       const isConnected = await isUserConnected(user_email_array.join(':'));
 
       if (isConnected) {
-        dispatch(
-          chatActions.connectUserAction({
-            users_mail_key: user_email_array.join(':'),
-          }),
+        const index = listLastMessage.findIndex(
+          item => item.users.join(':') === user_email_array.join(':'),
         );
+        dispatch(chatActions.setCurrentUserKey(user_email_array.join(':')));
         setChatModal(true);
       } else {
         const isConfirm = await showConfirmMessage(
@@ -71,7 +70,16 @@ export const GuestUserProfile = props => {
           'question',
         );
         if (isConfirm.value) {
-          //send request connect
+          // dispatch(
+          //   chatActions.setCurrentUserKey(user_email_array.join(':')),
+          // );
+          dispatch(
+            chatActions.connectUserAction({
+              users_mail_key: user_email_array.join(':'),
+              senderEmail: userProfile.email,
+            }),
+          );
+          setChatModal(true);
         }
       }
     }

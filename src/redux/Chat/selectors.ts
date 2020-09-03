@@ -14,8 +14,7 @@ export const ChatSelector = createSelector(
     listMessages,
     messages_length,
     last_query,
-    notificationCount,
-    lastMessageConnect,
+    currentUserKey,
   }) => ({
     loading_connectUser,
     loading_listLastMessage,
@@ -24,7 +23,6 @@ export const ChatSelector = createSelector(
     listMessages,
     messages_length,
     last_query,
-    notificationCount,
-    lastMessageConnect,
+    currentUserKey,
   }),
 );

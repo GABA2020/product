@@ -8,6 +8,7 @@ declare namespace ENTITIES {
     email: string;
     avatar: string;
     name: string;
+    username: string;
   }
 
   interface UserProfile {

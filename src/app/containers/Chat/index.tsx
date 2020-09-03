@@ -1,4 +1,11 @@
-import React, { Fragment, FC, useEffect, useState } from 'react';
+import React, {
+  Fragment,
+  FC,
+  useEffect,
+  useState,
+  useCallback,
+  useLayoutEffect,
+} from 'react';
 import { Modal } from 'react-bootstrap';
 import '../../../styles/scss/Chat.scss';
 import { ChatListitem } from 'app/components/Modal/Chat/ChatListItem';
@@ -13,18 +20,17 @@ import { userSelector } from 'redux/User/selectors';
 import { FormInputText } from 'app/components/Modal/Chat/FormInputText';
 import { convertDateToTimestamp } from 'helpers/Unity';
 import moment from 'moment';
+import { ConnectQuestion } from 'app/components/Modal/Chat/ConnectQuestion';
 
 interface IChat {
   isShow: boolean;
   onHide: () => void;
 }
-const initLastMessage: ENTITIES.LastMessage = {
-  created_at: { seconds: 0 },
-  is_received: false,
-  last_message: '',
-  sender_email: '',
-  users: [],
-  connect_status: 2,
+const findLastMessageIndex = (
+  currentUserKey: string,
+  lastMessage: ENTITIES.LastMessage[],
+) => {
+  return lastMessage.findIndex(item => item.users.join(':') === currentUserKey);
 };
 
 export const Chat: FC<IChat> = props => {
@@ -38,47 +44,44 @@ export const Chat: FC<IChat> = props => {
     listMessages,
     messages_length,
     last_query,
-    lastMessageConnect,
+    loading_listMessage,
+    currentUserKey,
   } = useSelector(ChatSelector);
   const { userProfile } = useSelector(userSelector);
-
-  const [lastMessageState, setLastMessageState] = useState<
-    ENTITIES.LastMessage
-  >(initLastMessage);
-  const [indexLastMessageState, setIndexLastMessageState] = useState(0);
+  const [indexConversion, setIndexConversion] = useState(0);
 
   // const scrollToBottom = () => {
   //   const element = document.getElementById('msg_history') as HTMLElement;
   //   element.scrollTop = element.scrollHeight;
   // };
 
-  // Effect run when user click connect btn
-  useEffect(() => {
-    if (lastMessageConnect.users.length > 0) {
-      setLastMessageState(lastMessageConnect);
-    }
-  }, [lastMessageConnect]);
-  // End Effect run when user click connect btn
-
-  useEffect(() => {
-    dispatch(
-      actions.getListMessageAction({
-        users_mail_key: lastMessageState.users.join(':'),
-      }),
-    );
-  }, [lastMessageState, isShow, dispatch]);
-
   const onScroll = event => {
     const element: HTMLElement = event.target as HTMLElement;
     if (element.scrollTop === 0 && listMessages.length < messages_length) {
       dispatch(
         actions.getMoreListMessageAction({
-          users_mail_key: lastMessageState.users.join(':'),
+          users_mail_key: currentUserKey,
           last_query,
         }),
       );
     }
   };
+
+  useEffect(() => {
+    if (currentUserKey !== '' && listLastMessage.length > 0) {
+      setIndexConversion(findLastMessageIndex(currentUserKey, listLastMessage));
+    }
+  }, [currentUserKey, listLastMessage]);
+
+  useEffect(() => {
+    if (isShow && currentUserKey !== '') {
+      dispatch(
+        actions.getListMessageAction({
+          users_mail_key: currentUserKey,
+        }),
+      );
+    }
+  }, [currentUserKey, isShow, dispatch]);
 
   //listen when list last item when have new message
   useEffect(() => {
@@ -88,16 +91,17 @@ export const Chat: FC<IChat> = props => {
       );
     }
   }, [userProfile.email, dispatch]);
+
   //listen when list message when have new message
   useEffect(() => {
-    if (isShow === true) {
+    if (isShow === true && currentUserKey !== '') {
       dispatch(
         actions.listenNewMessageAction({
-          users_mail_key: lastMessageState.users.join(':'),
+          users_mail_key: currentUserKey,
         }),
       );
     }
-  }, [lastMessageState, isShow, dispatch]);
+  }, [currentUserKey, isShow, dispatch]);
 
   useEffect(() => {
     const element = document.getElementById('msg_history') as HTMLElement;
@@ -114,8 +118,12 @@ export const Chat: FC<IChat> = props => {
       <Fragment>
         {listLastMessage.map((item, index) => {
           return (
-            //active_chat class
-            <div key={index} className="chat_list">
+            <div
+              key={index}
+              className={`chat_list ${
+                item.users.join(':') === currentUserKey && 'active_chat'
+              }`}
+            >
               <ChatListitem
                 index={index}
                 openMessage={openMessage}
@@ -142,22 +150,33 @@ export const Chat: FC<IChat> = props => {
     );
   };
 
-  const openMessage = (
-    lastMessageItem: ENTITIES.LastMessage,
-    index: number,
-  ) => {
-    setIndexLastMessageState(index);
-    setLastMessageState(lastMessageItem);
-    dispatch(
-      actions.getListMessageAction({
-        users_mail_key: lastMessageItem.users.join(':'),
-      }),
+  // useLayoutEffect(() => {
+  //   if (!loading_listMessage && isShow) {
+  //     scrollToBottom();
+  //   }
+  // }, [loading_listMessage, isShow]);
+
+  const openMessage = (userKeyMail: string) => {
+    dispatch(actions.setCurrentUserKey(userKeyMail));
+    const index = listLastMessage.findIndex(
+      item => item.users.join(':') === userKeyMail,
     );
-    dispatch(
-      actions.setMessageToReadAction({
-        users_mail_key: lastMessageItem.users.join(':'),
-      }),
-    );
+
+    if (listLastMessage[index].connect_status === 1) {
+      if (listLastMessage[index].sender_email !== userProfile.email) {
+        dispatch(
+          actions.setMessageToReadAction({
+            users_mail_key: listLastMessage[index].users.join(':'),
+          }),
+        );
+      }
+    } else {
+      dispatch(
+        actions.setMessageToReadAction({
+          users_mail_key: listLastMessage[index].users.join(':'),
+        }),
+      );
+    }
   };
 
   const sendMessage = (message: string) => {
@@ -176,18 +195,24 @@ export const Chat: FC<IChat> = props => {
       is_received: false,
       last_message: message,
       sender_email: userProfile.email,
-      users: lastMessageState.users,
-      connect_status: lastMessageState.connect_status,
+      users: listLastMessage[indexConversion].users,
+      connect_status: 2,
     };
 
     dispatch(
       actions.sendMessageAction({
-        users_mail_key: lastMessageState.users.join(':'),
+        users_mail_key: listLastMessage[indexConversion].users.join(':'),
         message: { ...newMessage },
         lastMessage: { ...newLastMessage },
-        indexLastMessage: indexLastMessageState,
       }),
     );
+  };
+
+  const responseConnect = (lastMessage: ENTITIES.LastMessage) => {
+    if (lastMessage.connect_status === 0) {
+      dispatch(actions.setCurrentUserKey(''));
+    }
+    dispatch(actions.responseConnectAction({ lastMessage }));
   };
 
   return (
@@ -231,11 +256,27 @@ export const Chat: FC<IChat> = props => {
               </div>
               <div className="mesgs">
                 <div id="msg_history" className="msg_history">
-                  {renderListMessage(listMessages)}
+                  {currentUserKey !== '' &&
+                    listLastMessage[indexConversion] &&
+                    listLastMessage[indexConversion].connect_status === 1 && (
+                      <ConnectQuestion
+                        responseConnect={responseConnect}
+                        userProfile={userProfile}
+                        lastMessage={listLastMessage[indexConversion]}
+                      />
+                    )}
+                  {currentUserKey !== '' &&
+                    !loading_listMessage &&
+                    listLastMessage[indexConversion] &&
+                    listLastMessage[indexConversion].connect_status === 2 &&
+                    listMessages.length > 0 &&
+                    renderListMessage(listMessages)}
                 </div>
-                {lastMessageState.connect_status === 2 && (
-                  <FormInputText sendMessage={sendMessage} />
-                )}
+                {currentUserKey !== '' &&
+                  listLastMessage[indexConversion] &&
+                  listLastMessage[indexConversion].connect_status === 2 && (
+                    <FormInputText sendMessage={sendMessage} />
+                  )}
               </div>
             </div>
           </div>

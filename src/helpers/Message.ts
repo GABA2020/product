@@ -9,4 +9,6 @@ export const Message = {
   Edit_Resource_Question:
     'Are you sure you want to update review this resource?',
   Connect_Question: 'Are you sure you want to connect to this user?',
+  Accept_Question: 'Are you sure you want to accept request?',
+  Cancel_Question: 'Are you sure you want to cancel request?',
 };

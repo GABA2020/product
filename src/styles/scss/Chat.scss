@@ -1,3 +1,5 @@
+@import './common.scss';
+
 .chat-modal {
     width: 90%;
 }
@@ -11,12 +13,16 @@
 
                 .chat_list {
                     .chat_people {
-                        cursor: pointer;
 
                         .chat_img {
                             img {
                                 border-radius: 50%;
+                                cursor: pointer;
                             }
+                        }
+
+                        .chat_ib {
+                            cursor: pointer;
                         }
                     }
                 }
@@ -29,6 +35,38 @@
                     .incoming_msg_img {
                         img {
                             border-radius: 50%;
+                            cursor: pointer;
+                        }
+                    }
+                }
+
+                .wrapper-chat-connect-question {
+                    padding-top: 150px;
+                    text-align: center;
+                    margin: auto;
+
+                    .question {
+                        color: $goodNightColor;
+                    }
+
+                    .btn-chat-connect {
+                        margin-top: 15px;
+
+                        button {
+                            font-size: 14px;
+                            font-weight: 500;
+                            font-stretch: normal;
+                            font-style: normal;
+                            line-height: 1.71;
+                            letter-spacing: 0.09px;
+                            text-align: center;
+                            color: #ffffff;
+                            width: 100px;
+                            height: 36px;
+                        }
+
+                        .btn-accept {
+                            margin-right: 20px;
                         }
                     }
                 }

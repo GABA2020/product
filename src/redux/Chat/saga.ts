@@ -8,8 +8,8 @@ import {
   listenNewMessage,
   getMoreListMessage,
   setMessageToRead,
-  listenNewMessageNotification,
   connectUser,
+  responseConnect,
 } from 'services';
 import { eventChannel } from 'redux-saga';
 import { PayloadAction } from '@reduxjs/toolkit';
@@ -82,32 +82,18 @@ function* listenNewMessageSaga({ payload }) {
     );
     while (true) {
       const chats: ENTITIES.Message[] = yield take(channelChats);
-
-      yield put(
-        actions.listenNewMessageActionSuccess({
-          message: chats[chats.length - 1],
-        }),
-      );
+      if (chats.length > 0) {
+        yield put(
+          actions.listenNewMessageActionSuccess({
+            message: chats[chats.length - 1],
+          }),
+        );
+      } else {
+        yield put(actions.listenNewMessageActionFailed());
+      }
     }
   } catch (error) {
     yield put(actions.listenNewMessageActionFailed());
-  }
-}
-
-function* listMessageNotificationSaga({ payload }) {
-  try {
-    const channelChats = eventChannel(onChanges =>
-      listenNewMessageNotification(payload, onChanges),
-    );
-    while (true) {
-      const notificationCount = yield take(channelChats);
-
-      yield put(
-        actions.listMessageNotificationActionSuccess({ notificationCount }),
-      );
-    }
-  } catch (error) {
-    yield put(actions.listMessageNotificationActionFailed());
   }
 }
 
@@ -119,11 +105,24 @@ function* connectUserSaga(action: PayloadAction<DTO.Chat.ConnectUserRequest>) {
     );
     if (response !== undefined) {
       yield put(
-        actions.connectUserActionSuccess({ lastMessage: response.lastMessage }),
+        actions.connectUserActionSuccess({
+          users_mail_key: response.users_mail_key,
+        }),
       );
     }
   } catch (error) {
     yield put(actions.connectUserActionFailed());
+  }
+}
+
+function* responseConnectSaga(
+  action: PayloadAction<DTO.Chat.ResponseConnectRequest>,
+) {
+  try {
+    yield call(responseConnect, action.payload);
+    yield put(actions.responseConnectActionSuccess());
+  } catch (error) {
+    yield put(actions.responseConnectActionFailed());
   }
 }
 
@@ -134,9 +133,6 @@ export function* ChatSaga() {
   yield takeLatest(actions.sendMessageAction, sendMessageSaga);
   yield takeLatest(actions.listenNewMessageAction, listenNewMessageSaga);
   yield takeLatest(actions.setMessageToReadAction, setMessageToReadSaga);
-  yield takeLatest(
-    actions.listMessageNotificationAction,
-    listMessageNotificationSaga,
-  );
   yield takeLatest(actions.connectUserAction, connectUserSaga);
+  yield takeLatest(actions.responseConnectAction, responseConnectSaga);
 }

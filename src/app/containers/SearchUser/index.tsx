@@ -45,7 +45,6 @@ export const SearchUser: FC<IProfile> = props => {
         username: match.params.username,
       }),
     );
-    dispatch(chatActions.resetLastMessageConnect());
   }, [match.params.username, dispatch]);
 
   return (

@@ -14,6 +14,7 @@ declare namespace DTO {
       email: string;
       avatar: string;
       name: string;
+      username: string;
     }
 
     interface GetUserProfileResponse {
@@ -522,7 +523,6 @@ declare namespace DTO {
       users_mail_key: string;
       message: ENTITIES.Message;
       lastMessage: ENTITIES.LastMessage;
-      indexLastMessage: number;
     }
 
     interface SendMessageResponse {
@@ -552,10 +552,19 @@ declare namespace DTO {
 
     interface ConnectUserRequest {
       users_mail_key: string;
+      senderEmail: string;
     }
 
     interface ConnectUserResponse {
+      users_mail_key: string;
+    }
+
+    interface ResponseConnectRequest {
       lastMessage: ENTITIES.LastMessage;
+    }
+
+    interface ResponseConnectResponse {
+      // lastMessage: ENTITIES.LastMessage;
     }
   }
 }

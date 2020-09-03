@@ -1,6 +1,6 @@
 import React, { Fragment, FC, memo } from 'react';
 import Rate from 'antd/lib/rate';
-import { verified_check, oval } from 'assets/images';
+import { verified_check, oval, img_user } from 'assets/images';
 import { useStorage } from 'hook/useStorage';
 import { useResource } from 'hook/useResource';
 
@@ -38,7 +38,7 @@ const Review: FC<IReview> = props => {
         <div className="comment">{review.review_body}</div>
         <div className="user-information">
           <div className="profile-image">
-            <img src={avatarUser} alt="img" />
+            <img src={avatarUser ? avatarUser : img_user} alt="img" />
           </div>
           <div className="profile-infor">
             {profile.name}

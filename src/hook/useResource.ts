@@ -5,16 +5,16 @@ import { LockerSaga } from 'redux/Locker/saga';
 import { actions, sliceKey } from 'redux/Locker/slice';
 import { lockerSelector } from 'redux/Locker/selectors';
 
-export const useResource = (id: string, email: string) => {
+export const useResource = (id: string) => {
   useInjectSaga({ key: sliceKey, saga: LockerSaga });
   const dispatch = useDispatch();
   const { listResourceCache } = useSelector(lockerSelector);
 
   useEffect(() => {
-    if (id !== '' && email !== '' && !listResourceCache[id]) {
-      dispatch(actions.getResourceDetailAction({ id, email }));
+    if (id !== '' && !listResourceCache[id]) {
+      dispatch(actions.getResourceDetailAction({ id }));
     }
-  }, [id, email, listResourceCache]);
+  }, [id, listResourceCache]);
 
   return listResourceCache[id] ? listResourceCache[id] : null;
 };

@@ -4,6 +4,12 @@ declare namespace ENTITIES {
   interface ITime {
     seconds: number;
   }
+  interface GuestUserProfile {
+    email: string;
+    avatar: string;
+    name: string;
+    username: string;
+  }
 
   interface UserProfile {
     email: string;
@@ -169,20 +175,46 @@ declare namespace ENTITIES {
     value: string;
   }
 
-  interface Review {
+  interface IResourceSelected {
+    label: string;
+    value: Resource;
+  }
+
+  interface UserResource {
     id: string;
     resource_id: string;
+    match_score: number;
+    date: ITime;
+    actual_exam: string;
+    actual_exam_score: number;
     review_body: string;
     subject: string;
-    date_time: ITime;
+    created_at: ITime;
+    updated_at: ITime;
+    rating: number;
   }
 
   interface Resource {
     id: string;
-    match_score: number;
     name: string;
-    date: ITime;
     picture_name: string;
     rating: number;
+    link: string;
+  }
+
+  interface Message {
+    id: strting;
+    content: string;
+    sender_email: string;
+    created_at: ITime;
+  }
+
+  interface LastMessage {
+    created_at: ITime;
+    is_received: boolean;
+    last_message: string;
+    sender_email: string;
+    users: string[];
+    connect_status: number;
   }
 }

@@ -29,6 +29,7 @@ import { Score } from '../Score';
 import { img_user, verified_check } from 'assets/images';
 import { REF } from 'helpers/firebase.module';
 import Helmet from 'react-helmet';
+import { Chat } from '../Chat';
 
 export const MyProfile = props => {
   useInjectSaga({ key: userSliceKey, saga: UserSaga });
@@ -99,7 +100,6 @@ export const MyProfile = props => {
           setIsShowModalEditProfileState(false);
         }}
       ></EditProfileModal>
-
       {editModeState === true ? (
         <section className="section-profile-edit text-right">
           <a

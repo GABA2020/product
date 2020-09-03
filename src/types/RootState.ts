@@ -18,4 +18,5 @@ export interface RootState {
   auth?: STATES.Auth;
   storage?: STATES.Storage;
   locker?: STATES.Locker;
+  chat?: STATES.Chat;
 }

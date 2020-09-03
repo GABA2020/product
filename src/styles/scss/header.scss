@@ -1,9 +1,24 @@
 @import './common.scss';
 
 #header {
-  .header-brand {}
+  justify-content: space-between;
+  display: flex;
+  margin: 0 40px;
 
-  .header-search {
+  .brand {
+    width: 33%;
+    display: flex;
+    padding: 20px 0;
+
+    .nav-action {
+      margin-right: 20px;
+    }
+  }
+
+  .search {
+    width: 33%;
+    text-align: center;
+
     .search-pc {
       position: relative;
 
@@ -48,7 +63,16 @@
     }
   }
 
-  .header-account {
+  .account {
+    width: 33%;
+    display: flex;
+    justify-content: flex-end;
+
+    .notification {
+      padding-top: 19px;
+      margin-right: 10px;
+    }
+
     .icons {
       margin: 0 17px 0 0;
     }
@@ -94,8 +118,5 @@
       background-color: #3e8e41;
     }
   }
-
-
-
 
 }

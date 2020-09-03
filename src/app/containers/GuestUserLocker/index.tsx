@@ -14,23 +14,28 @@ import Review from 'app/components/Review';
 export const GuestUserLocker = () => {
   useInjectSaga({ key: sliceKey, saga: LockerSaga });
   const dispatch = useDispatch();
-  const { reviews, resources, arrayLength, lastQuery, loading } = useSelector(
-    lockerSelector,
-  );
+  const {
+    reviews,
+    userResources,
+    reviewLength,
+    userResourceLength,
+    lastQuery,
+    loading,
+  } = useSelector(lockerSelector);
   const { userSearchProfile } = useSelector(userSelector);
   const image = useStorage(`avatars/${userSearchProfile.avatar}`);
 
   useEffect(() => {
     if (userSearchProfile.email !== '') {
       dispatch(
-        actions.getResourcesAction({
+        actions.getUserResourcesAction({
           email: userSearchProfile.email,
         }),
       );
     }
   }, [userSearchProfile.email]);
 
-  const renderReviews = (reviews: ENTITIES.Review[]) => {
+  const renderReviews = (reviews: ENTITIES.UserResource[]) => {
     return (
       <ul className="review-list">
         {reviews.map((item, index) => {
@@ -44,7 +49,7 @@ export const GuestUserLocker = () => {
     );
   };
 
-  const renderResource = (resources: ENTITIES.Resource[]) => {
+  const renderResource = (resources: ENTITIES.UserResource[]) => {
     return (
       <ul className="locker-list">
         <li className="locker-item">
@@ -65,7 +70,7 @@ export const GuestUserLocker = () => {
         {resources.map((item, index) => {
           return (
             <li key={index} className="locker-item">
-              <GuestResource resource={item} />
+              <GuestResource userResource={item} />
             </li>
           );
         })}
@@ -89,7 +94,7 @@ export const GuestUserLocker = () => {
                     <a
                       onClick={() => {
                         dispatch(
-                          actions.getResourcesAction({
+                          actions.getUserResourcesAction({
                             email: userSearchProfile.email,
                           }),
                         );
@@ -132,26 +137,27 @@ export const GuestUserLocker = () => {
             <div className="tab-content">
               <div role="tabpanel" className="tab-pane active" id="frame-1">
                 {!loading &&
-                  (resources.length > 0 ? (
+                  (userResources.length > 0 ? (
                     <div className="locker-category">
-                      {renderResource(resources)}
-                      {resources.length > 0 && resources.length < arrayLength && (
-                        <div className="review-btn-wrap">
-                          <button
-                            onClick={() => {
-                              dispatch(
-                                actions.getMoreResourcesAction({
-                                  email: userSearchProfile.email,
-                                  lastQuery,
-                                }),
-                              );
-                            }}
-                            className="load-more"
-                          >
-                            Load More Resources
-                          </button>
-                        </div>
-                      )}
+                      {renderResource(userResources)}
+                      {userResources.length > 0 &&
+                        userResources.length < userResourceLength && (
+                          <div className="review-btn-wrap">
+                            <button
+                              onClick={() => {
+                                dispatch(
+                                  actions.getMoreUserResourcesAction({
+                                    email: userSearchProfile.email,
+                                    lastQuery,
+                                  }),
+                                );
+                              }}
+                              className="load-more"
+                            >
+                              Load More Resources
+                            </button>
+                          </div>
+                        )}
                     </div>
                   ) : (
                     <div className="locker-category">
@@ -166,7 +172,7 @@ export const GuestUserLocker = () => {
                   (reviews.length > 0 ? (
                     <div className="locker-review">
                       {renderReviews(reviews)}
-                      {reviews.length > 0 && reviews.length < arrayLength ? (
+                      {reviews.length > 0 && reviews.length < reviewLength ? (
                         <div className="review-btn-wrap">
                           <button
                             onClick={() => {

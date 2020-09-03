@@ -56,7 +56,7 @@ export const SearchBox: FC<SearchBoxProps> = props => {
   useOutsideAlerter(wrapperRef);
   return (
     <Fragment>
-      <div className="header-search" ref={wrapperRef}>
+      <div className="search" ref={wrapperRef}>
         <div className="search-pc">
           <div className="search-pc-inner">
             <div className="input-group">

@@ -21,6 +21,7 @@ import {
   getMoreWorkExperiences,
   getMoreLetters,
   getMoreEducations,
+  getGuestUserProfile,
 } from '../../services';
 import {
   getVolunteers,
@@ -379,6 +380,18 @@ export function* deleteLetterSaga({ payload }) {
   }
 }
 
+export function* getGuestUserProfileCacheSaga({ payload }) {
+  try {
+    const response: DTO.User.GetGuestUserProfileCacheResponse = yield call(
+      getGuestUserProfile,
+      payload,
+    );
+    yield put(actions.getGuestUserProfileCacheActionSuccess(response));
+  } catch (e) {
+    yield put(actions.getGuestUserProfileCacheActionFailed());
+  }
+}
+
 /**
  * Root saga manages watcher lifecycle
  */
@@ -436,4 +449,10 @@ export function* UserSaga() {
   yield takeLatest(actions.addNewLetterAction, addLetterSaga);
   yield takeLatest(actions.editLetterAction, editLetterSaga);
   yield takeLatest(actions.deleteLetterAction, deleteLetterSaga);
+
+  //cache user
+  yield takeLatest(
+    actions.getGuestUserProfileCacheAction,
+    getGuestUserProfileCacheSaga,
+  );
 }

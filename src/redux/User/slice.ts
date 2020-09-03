@@ -20,6 +20,7 @@ export const initialState: STATES.User = {
   loading: true,
   loadingSearchBox: true,
   loadingUserSearchProfile: true,
+  listGuestUserCache: {},
   workExperiences: [],
   educations: [],
   volunteers: [],
@@ -160,6 +161,21 @@ const UserSliceState = createSlice({
   name: 'user',
   initialState,
   reducers: {
+    // code user cache
+    getGuestUserProfileCacheAction(
+      state,
+      action: PayloadAction<DTO.User.GetGuestUserProfileCacheRequest>,
+    ) {
+      state.listGuestUserCache[action.payload.email] = null;
+    },
+    getGuestUserProfileCacheActionSuccess(
+      state,
+      action: PayloadAction<DTO.User.GetGuestUserProfileCacheResponse>,
+    ) {
+      state.listGuestUserCache[action.payload.email] = action.payload;
+    },
+    getGuestUserProfileCacheActionFailed(state) {},
+    // end code user cache
     getUserProfileAction(state, action: PayloadAction<string>) {
       state.loading = true;
       state.userProfile = initialState.userProfile;

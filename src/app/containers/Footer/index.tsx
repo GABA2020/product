@@ -1,123 +1,86 @@
 import React from 'react';
+import { gabaMidnight, twitter, In, icon_send_mail } from 'assets/images';
 
 export const Footer = () => {
   return (
     <footer id="footer">
-      <div className="container">
-        <div className="footer-front">
-          <div className="wrap-footer-logo">
-            <div className="footer-logo">
-              <p>
-                <span>Gaba</span>
+      <div className="footer-top">
+        <div className="container">
+          <div className="footer-logo">
+            <img src={gabaMidnight} alt="" width="42px" height="20px" />
+          </div>
+          <div className="footer-nav">
+            <div className="nav-item">
+              <h4 className="nav-title">Footer Column 1</h4>
+              <ul className="nav-list">
+                <li>First page</li>
+                <li>Second page</li>
+                <li>Third page</li>
+                <li>Forth page</li>
+              </ul>
+            </div>
+            <div className="nav-item">
+              <h4 className="nav-title">Footer Column 2</h4>
+              <ul className="nav-list">
+                <li>First page</li>
+                <li>Second page</li>
+                <li>Third page</li>
+                <li>Forth page</li>
+              </ul>
+            </div>
+            <div className="nav-item">
+              <h4 className="nav-title">Footer Column 3</h4>
+              <ul className="nav-list">
+                <li>First page</li>
+                <li>Second page</li>
+                <li>Third page</li>
+                <li>Forth page</li>
+              </ul>
+            </div>
+          </div>
+          <div className="form-send-email">
+            <form>
+              <h4 className="nav-title">Join GABA</h4>
+              <div className="input-group">
+                <input
+                  placeholder="Enter your email address"
+                  className="form-control"
+                  type="text"
+                />
+                <button className="submit-search">
+                  <span className="icons-email">
+                    <img src={icon_send_mail} alt="" />
+                  </span>
+                </button>
+              </div>
+
+              <p className="join-our-newsletter">
+                Join our newsletter to stay up to date on features and releases
               </p>
-            </div>
+            </form>
           </div>
-          {/*end wrap-footer-logo*/}
-          <div className="footer-navigation">
-            <h4 className="footer-title">Footer Column 1</h4>
-            <ul className="footer-nav-list">
-              <li>
-                <a href="#">First page</a>
-              </li>
-              <li>
-                <a href="#">Second page</a>
-              </li>
-              <li>
-                <a href="#">Third</a>
-              </li>
-              <li>
-                <a href="#">Fourth</a>
-              </li>
-            </ul>
-          </div>
-          {/*end footer-navigation*/}
-          <div className="footer-navigation">
-            <h4 className="footer-title">Footer Column 2</h4>
-            <ul className="footer-nav-list">
-              <li>
-                <a href="#">Fifth page</a>
-              </li>
-              <li>
-                <a href="#">Sixth page</a>
-              </li>
-              <li>
-                <a href="#">Eighth</a>
-              </li>
-            </ul>
-          </div>
-          {/*end footer-navigation*/}
-          <div className="footer-navigation">
-            <h4 className="footer-title">Footer Column 3</h4>
-            <ul className="footer-nav-list">
-              <li>
-                <a href="#">First page</a>
-              </li>
-              <li>
-                <a href="#">Second page</a>
-              </li>
-              <li>
-                <a href="#">Third</a>
-              </li>
-            </ul>
-          </div>
-          {/*end footer-navigation*/}
-          <div className="footer-join">
-            <h4 className="footer-title">Join GABA</h4>
-            <div className="form-join">
-              <form action="/" method="post">
-                <div className="input-group">
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Enter your email address"
-                  />
-                  <button className="submit-search">
-                    <span className="icons-submit-email">&nbsp;</span>
-                  </button>
-                </div>
-              </form>
-            </div>
-            <p className="paragraph-join">
-              Join our newsletter to stay up to date on features and releases
-            </p>
-          </div>
-          {/*end footer-join*/}
         </div>
-        {/*end footer-front*/}
-        <div className="footer-bellow">
-          <p className="copyright">© 2020 GABA. All rights reserved.</p>
-          <ul className="footer-link">
-            <li>
-              <a href="#">Privacy Policy</a>
-            </li>
-            <li>
-              <a href="#">Terms of Service</a>
-            </li>
-          </ul>
-          <ul className="footer-social">
-            <li>
-              <a href="#" target="_blank">
-                <span className="icons-facebook">&nbsp;</span>
-              </a>
-            </li>
-            <li>
-              <a href="#" target="_blank">
-                <span className="icons-linkedin">&nbsp;</span>
-              </a>
-            </li>
-            <li>
-              <a href="#" target="_blank">
-                <span className="icons-twitter">&nbsp;</span>
-              </a>
-            </li>
-            <li>
-              <a href="#" target="_blank">
-                <span className="icons-pinterest">&nbsp;</span>
-              </a>
-            </li>
-          </ul>
+      </div>
+      <div className="footer-bottom">
+        <div className="container">
+          <div className="footer-bottom-left">
+            <p className="GABA-All-rig">© 2020 GABA. All rights reserved.</p>
+            <a href="#" className="privacy-policy">
+              Privacy Policy.
+            </a>
+            <a href="#" className="term">
+              Terms of Service
+            </a>
+          </div>
+          <div className="footer-bottom-right">
+            <a className="link-twitter" href="#">
+              <img className="img-twitter" src={twitter} alt="img" />
+            </a>
+            <a className="link-In" href="#">
+              <img className="img-In" src={In} alt="img" />
+            </a>
+          </div>
         </div>
-        {/*end footer-bellow*/}
       </div>
     </footer>
   );

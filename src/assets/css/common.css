@@ -15931,7 +15931,7 @@ These are the styles for
 the footer section
 **************************************
 **************************************/
-#footer {
+/* #footer {
   color: #0065f2;
   background: url(../images/front/bg-footer.png) repeat scroll #eef6ff;
 }
@@ -16056,9 +16056,9 @@ the footer section
 
 .footer-bellow:after {
   clear: both;
-}
+} */
 
-.copyright,
+/* .copyright,
 p.copyright {
   float: left;
   margin: 0 17px 0 0;
@@ -16122,9 +16122,9 @@ p.copyright {
 .footer-social li {
   float: left;
   margin-left: 12px;
-}
+} */
 
-.paragraph-join {
+/* .paragraph-join {
   font-size: 1.4rem;
 }
 
@@ -16198,7 +16198,7 @@ p.copyright {
   margin: 0;
   z-index: 10;
   background: none;
-}
+} */
 
 /*************************************
 **************************************

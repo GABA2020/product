@@ -8,7 +8,8 @@ export const CheckoutForm = () => {
   const [customerCity, setCustomerCity] = useState('');
   const [customerAddress, setCustomerAddress] = useState('');
   const [customerState, setCustomerState] = useState('');
-  const [selectedMembership, setSelectedMembership] = useState(null);
+  const [selectedMembership, setSelectedMembership] = useState('GABABronze');
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const [customerZipcode, setCustomerZipcode] = useState('');
   const stripe = useStripe() as any;
@@ -30,6 +31,19 @@ export const CheckoutForm = () => {
     );
   };
 
+  const membershipPrice = () => {
+    let price;
+    if (selectedMembership === 'GABABronze') {
+      price = 9 * 12;
+    }
+    if (selectedMembership === 'GABASilver') {
+      price = 20 * 12;
+    }
+    if (selectedMembership === 'PreMed') {
+      price = 35 * 12;
+    }
+    return price;
+  };
   const handleFormSubmit = async e => {
     e.preventDefault();
 
@@ -43,6 +57,12 @@ export const CheckoutForm = () => {
         postal_code: customerZipcode,
       },
     };
+
+    setIsProcessing(true);
+
+    if (!stripe || !elements) {
+      return 'Loading Form';
+    }
 
     const { data: clientSecret } = await axios.post(
       `https://us-central1-august-water-280101.cloudfunctions.net/paymentProcessing
@@ -62,8 +82,15 @@ export const CheckoutForm = () => {
     const confirmedCardPayment = await stripe.confirmCardPayment(clientSecret, {
       payment_method: paymentMethodReq.paymentMethod.id,
     });
-    console.log('[PaymentMethod]', paymentMethodReq);
-    console.log(confirmedCardPayment);
+
+    if (confirmedCardPayment.error) {
+      console.log(confirmedCardPayment.error.message);
+    } else {
+      if (confirmedCardPayment.paymentIntent.status === 'succeeded') {
+        alert('Payment Received. Thank you for your patronage!');
+        setIsProcessing(false);
+      }
+    }
   };
 
   const cardElementOptions = {
@@ -196,8 +223,12 @@ export const CheckoutForm = () => {
           </section>
         </section>
         <CardElement options={cardElementOptions} />
-        <button type="submit" disabled={!stripe}>
-          Pay
+        <p>
+          Your total for the {selectedMembership} membership comes out to $
+          {membershipPrice()}.
+        </p>
+        <button type="submit" disabled={!stripe || isProcessing}>
+          {isProcessing ? 'Processing...' : `Pay $${membershipPrice()}.00`}
         </button>
       </form>
     </>

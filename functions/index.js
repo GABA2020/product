@@ -29,6 +29,7 @@ exports.paymentProcessing = functions.https.onRequest(async (req, res) => {
       const paymentIntent = await stripe.paymentIntents.create({
         amount: membership,
         currency: 'usd',
+        metadata: { integration_check: 'accept_a_payment' },
       });
       res.status(200).send(paymentIntent.client_secret);
     } catch (err) {

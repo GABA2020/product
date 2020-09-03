@@ -14,7 +14,6 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from 'utils/@reduxjs/toolkit';
 import { DTO } from 'types/DTO';
-import { STATES } from 'types/STATE';
 
 // The initial state of the GithubRepoForm container
 export const initialState: STATES.Auth = {

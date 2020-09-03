@@ -18,17 +18,5 @@ const config = {
 
 firebase.initializeApp(config);
 
-const auth = firebase.auth();
-const db = firebase.firestore();
-const storageFB = firebase.storage();
-const storageAvatar = async name => {
-  return await firebase.storage().ref('avatar').child(name);
-};
-
-const REF = {
-  avatars: 'avatars',
-  resources: 'resources',
-  files: 'files',
-};
-
-export { auth, db, storageAvatar, storageFB, REF };
+export const auth = firebase.auth();
+export const db = firebase.firestore();

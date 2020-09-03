@@ -1,7 +1,7 @@
 import { takeLatest, call, put } from 'redux-saga/effects';
 import { actions } from './slice';
 import { DTO } from 'types/DTO';
-import { getProgramOfUser, updateProgramOfUser } from 'services/index';
+import { getProgramOfUser } from 'services/index';
 /**
  * Root saga manages watcher lifecycle
  */
@@ -16,16 +16,6 @@ export function* getProgramReview({ payload }) {
     yield put(actions.getProgramReviewActionFailed());
   }
 }
-
-export function* updateProgramReview({ payload }) {
-  try {
-    const program = yield call(updateProgramOfUser, payload);
-    yield put(actions.updateProgramActionSuccess());
-  } catch (e) {
-    yield put(actions.updateProgramActionFailed());
-  }
-}
 export function* ProgramSaga() {
   yield takeLatest(actions.getProgramReviewAction, getProgramReview);
-  yield takeLatest(actions.updateProgramAction, updateProgramReview);
 }

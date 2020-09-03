@@ -1,16 +1,56 @@
-import React, { Fragment, FC } from 'react';
-import { img_locker, img_user } from '../../../assets/images';
+import React, { FC, Fragment, useState } from 'react';
+import { img_locker, img_user } from 'assets/images';
 import { ordinal_suffix_of } from 'helpers/Unity';
+import { Work } from '../Work';
+import { Volunteer } from '../Volunteer';
+import { Education } from '../Education';
+import { Research } from '../Research';
 import { Link } from 'react-router-dom';
 import RoutesTypes from 'types/Routes';
-interface IGuestProfile {
-  userGuestProfile: ENTITIES.UserProfile;
+//redux state
+
+interface IMyProfile {
+  userProfile: ENTITIES.UserProfile;
   program: ENTITIES.Program;
+  workExperiences: ENTITIES.WorkExperience[];
+  educations: ENTITIES.Education[];
 }
-export const GuestUserProfile: FC<IGuestProfile> = props => {
-  const { userGuestProfile, program } = props;
+
+export const MyProfile: FC<IMyProfile> = props => {
+  const { userProfile, program, workExperiences, educations } = props;
+  const arrayWork = [
+    'work',
+    'volunteer',
+    'research',
+    'publication',
+    'letter',
+    'school',
+  ];
+  const [stateWork, setStateWork] = useState<string>(arrayWork[0]);
+  const renderCVWithCondition = () => {
+    switch (stateWork) {
+      case arrayWork[0]:
+        return (
+          <Work
+            userProfile={userProfile}
+            workExperiences={workExperiences}
+          ></Work>
+        );
+      case arrayWork[1]:
+        return <Volunteer></Volunteer>;
+      case arrayWork[2]:
+        return <Research></Research>;
+      case arrayWork[5]:
+        return <Education educations={educations}></Education>;
+      default:
+        break;
+    }
+  };
   return (
     <Fragment>
+      {/* <section className="section-profile-edit text-right">
+        <a href="">edit</a>
+      </section> */}
       <section className="section-profile">
         <div className="container">
           <div className="media media-profile">
@@ -22,15 +62,13 @@ export const GuestUserProfile: FC<IGuestProfile> = props => {
             <div className="media-body">
               <div className="profile-body">
                 <h2 className="profile-user">
-                  {userGuestProfile.verified ? (
+                  {userProfile.verified ? (
                     <span className="tick_mark">
-                      {userGuestProfile.name}{' '}
-                      <sup>{userGuestProfile.degrees}</sup>
+                      {userProfile.name} <sup>{userProfile.degrees}</sup>
                     </span>
                   ) : (
                     <span>
-                      {userGuestProfile.name}{' '}
-                      <sup>{userGuestProfile.degrees}</sup>
+                      {userProfile.name} <sup>{userProfile.degrees}</sup>
                     </span>
                   )}
                 </h2>
@@ -45,7 +83,7 @@ export const GuestUserProfile: FC<IGuestProfile> = props => {
                   </li>
                   <li>
                     <a href="#" className="btn-profile-tag">
-                      {ordinal_suffix_of(userGuestProfile.year_in_program)} Year
+                      {ordinal_suffix_of(userProfile.year_in_program)} Year
                       Student
                     </a>
                   </li>
@@ -64,13 +102,198 @@ export const GuestUserProfile: FC<IGuestProfile> = props => {
               {/* owner profile will use userProfile */}
               <div className="profile-modifile">
                 <a href="#" className="btn btn-edit-profile">
-                  Connect
+                  Edit Profile
                 </a>
               </div>
             </div>
           </div>
         </div>
       </section>
+      {/* owner profile will use userProfile */}
+      <section className="section-step-scope">
+        <div className="container">
+          <ul className="section-step-category">
+            <li className="step-item">
+              <figure className="box-step">
+                <div className="service-icons">
+                  <a href="#">
+                    <span className="icons-grid">&nbsp;</span>
+                  </a>
+                </div>
+                <figcaption className="step-caption">
+                  <h3 className="step-name">
+                    <a href="#">MCAT</a>
+                  </h3>
+                  <p className="step-paragraph">
+                    <span className="step-num">{userProfile.mcat}</span>
+                    {userProfile.mcat >= 246 && (
+                      <span className="step-gloss"> / Pass</span>
+                    )}
+                  </p>
+                  <div className="scope-link">
+                    <a href="#">Manage Scores</a>
+                  </div>
+                </figcaption>
+              </figure>
+            </li>
+            <li className="step-item">
+              <figure className="box-step">
+                <div className="service-icons">
+                  <a href="#">
+                    <span className="icons-point">&nbsp;</span>
+                  </a>
+                </div>
+                <figcaption className="step-caption">
+                  <h3 className="step-name">
+                    <a href="#">Step One</a>
+                  </h3>
+                  <p className="step-paragraph">
+                    <span className="step-num">{userProfile.step_1}</span>
+                    {userProfile.step_1 >= 246 && (
+                      <span className="step-gloss"> / Pass</span>
+                    )}
+                  </p>
+                  <div className="scope-link">
+                    <a href="#">Manage Scores</a>
+                  </div>
+                </figcaption>
+              </figure>
+            </li>
+            <li className="step-item">
+              <figure className="box-step">
+                <div className="service-icons">
+                  <a href="#">
+                    <span className="icons-image">&nbsp;</span>
+                  </a>
+                </div>
+                <figcaption className="step-caption">
+                  <h3 className="step-name">
+                    <a href="#">Step Two CK / CS</a>
+                  </h3>
+                  <p className="step-paragraph">
+                    <span className="step-num">{userProfile.step_2}</span>
+                    {userProfile.step_2 >= 246 && (
+                      <span className="step-gloss"> / Pass</span>
+                    )}
+                  </p>
+                  <div className="scope-link">
+                    <a href="#">Manage Scores</a>
+                  </div>
+                </figcaption>
+              </figure>
+            </li>
+            <li className="step-item">
+              <figure className="box-step">
+                <div className="service-icons">
+                  <a href="#">
+                    <span className="icons-pi">&nbsp;</span>
+                  </a>
+                </div>
+                <figcaption className="step-caption">
+                  <h3 className="step-name">
+                    <a href="#">Step Three</a>
+                  </h3>
+                  <p className="step-paragraph step-paragraph-verify">
+                    Once we verify your scores, you will see them here.
+                  </p>
+                  <div className="scope-link">
+                    <a href="#">Manage Scores</a>
+                  </div>
+                </figcaption>
+              </figure>
+            </li>
+          </ul>
+        </div>
+      </section>
+      {/* owner profile will use userProfile */}
+      <section className="section-experiences">
+        <div className="container">
+          <div className="wrap-layout">
+            <div className="wrap-content">
+              <div className="experiences-slidebar">
+                <nav className="experiences-nav">
+                  <li
+                    className={
+                      stateWork === arrayWork[0] ? 'active' : undefined
+                    }
+                  >
+                    <a
+                      onClick={e => {
+                        e.preventDefault();
+                        setStateWork(arrayWork[0]);
+                      }}
+                      href="#"
+                    >
+                      Work
+                    </a>
+                  </li>
+                  <li
+                    className={
+                      stateWork === arrayWork[1] ? 'active' : undefined
+                    }
+                  >
+                    <a
+                      onClick={e => {
+                        e.preventDefault();
+                        setStateWork(arrayWork[1]);
+                      }}
+                      href="#"
+                    >
+                      Volunteer
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={e => {
+                        e.preventDefault();
+                        setStateWork(arrayWork[2]);
+                      }}
+                      href="#"
+                    >
+                      Research
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={e => {
+                        e.preventDefault();
+                        setStateWork(arrayWork[3]);
+                      }}
+                      href="#"
+                    >
+                      Publications
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={e => {
+                        e.preventDefault();
+                        setStateWork(arrayWork[4]);
+                      }}
+                      href="#"
+                    >
+                      Letters
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={e => {
+                        e.preventDefault();
+                        setStateWork(arrayWork[5]);
+                      }}
+                      href="#"
+                    >
+                      Schools
+                    </a>
+                  </li>
+                </nav>
+              </div>
+              <div className="experiences-main">{renderCVWithCondition()}</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="section-locker">
         <div className="container">
           <div className="locker-front">

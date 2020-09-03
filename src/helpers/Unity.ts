@@ -1,4 +1,5 @@
 import moment from 'moment';
+import lodash from 'lodash';
 const MonthYearFormat = 'MMM yyyy';
 const DayMonthYearFormat = 'MMM DD, yyyy';
 const YearFormat = 'yyyy';
@@ -90,6 +91,13 @@ const convertDateToTimestamp = (date: string) => {
   const timestamp = moment(date).format('X');
   return parseInt(timestamp);
 };
+
+const sortArrayAlphabetString = (array: string[]) => {
+  return array.sort((a, b) => {
+    return a < b ? -1 : a > b ? 1 : 0;
+  });
+};
+
 export {
   ordinal_suffix_of,
   generateNewNameImage,
@@ -98,6 +106,7 @@ export {
   getDifferenceYear,
   convertDateToTimestamp,
   windowOpen,
+  sortArrayAlphabetString,
   MonthYearFormat,
   DayMonthYearFormat,
   YearFormat,

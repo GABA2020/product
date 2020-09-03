@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { authSelector } from 'redux/Auth/selectors';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -12,19 +12,33 @@ import {
   actions as authActions,
   sliceKey as authSlice,
 } from 'redux/Auth/slice';
-import { UserSaga } from 'redux/User/saga';
+import {
+  actions as chatActions,
+  sliceKey as chatSlice,
+} from 'redux/Chat/slice';
 import { useInjectSaga } from 'redux-injectors';
 import { userSelector } from 'redux/User/selectors';
 import { AuthSaga } from 'redux/Auth/saga';
-import 'styles/scss/header.scss';
+import { ChatSaga } from 'redux/Chat/saga';
+import { UserSaga } from 'redux/User/saga';
 import { SearchBox } from 'app/components/SearchBox';
+import { Chat } from '../Chat';
+import { MessageOutlined } from '@ant-design/icons';
+import Badge from 'antd/lib/badge';
+import 'styles/scss/header.scss';
+import { ChatSelector } from 'redux/Chat/selectors';
 
 export const Header = () => {
-  const { isAuth, email } = useSelector(authSelector);
-  const { userProfile, userSearchResults } = useSelector(userSelector);
   useInjectSaga({ key: userSlice, saga: UserSaga });
   useInjectSaga({ key: authSlice, saga: AuthSaga });
+  useInjectSaga({ key: chatSlice, saga: ChatSaga });
+
+  const { isAuth, email } = useSelector(authSelector);
+  const { userProfile, userSearchResults } = useSelector(userSelector);
+  const { notificationCount } = useSelector(ChatSelector);
   const dispatch = useDispatch();
+
+  const [chatModal, setChatModal] = useState(false);
 
   useEffect(() => {
     if (isAuth) {
@@ -32,6 +46,12 @@ export const Header = () => {
       return;
     }
   }, [isAuth, dispatch]);
+
+  useEffect(() => {
+    if (isAuth) {
+      dispatch(chatActions.listMessageNotificationAction({ email }));
+    }
+  }, [isAuth]);
 
   const onchangeSearchText = (text: string) => {
     if (text.trim() !== '') {
@@ -44,50 +64,62 @@ export const Header = () => {
   };
   return (
     <Fragment>
+      <Chat
+        isShow={chatModal}
+        onHide={() => {
+          setChatModal(false);
+        }}
+      />
       <header id="header">
-        <div className="container-fluid">
-          <div className="header-inner">
-            <div className="header-brand">
-              <div className="nav-action">
-                <a href="#" className="nav-open">
-                  {/* <span className="menu-icon"></span> */}
-                  <img src={nav_icon} alt="logo" />
-                </a>
-              </div>
-              <div id="logo">
-                <img src={gaba} alt="logo" />
-              </div>
+        <div className="brand">
+          <div className="nav-action">
+            <a href="#" className="nav-open">
+              <img src={nav_icon} alt="logo" />
+            </a>
+          </div>
+          <div id="logo">
+            <img src={gaba} alt="logo" />
+          </div>
+        </div>
+        <SearchBox
+          searchResults={userSearchResults}
+          onchangeSearchText={onchangeSearchText}
+        ></SearchBox>
+        <div className="account">
+          <div className="notification">
+            <a
+              className="btn-chat-notification"
+              href="#"
+              onClick={e => {
+                e.preventDefault();
+                setChatModal(true);
+              }}
+            >
+              <Badge count={notificationCount}>
+                <MessageOutlined
+                  style={{ fontSize: '22px', color: '#111741' }}
+                />
+              </Badge>
+            </a>
+          </div>
+          <div className="account-member dropdown">
+            {isAuth && (
+              <Fragment>
+                <Link
+                  to={`/${userProfile.username}`}
+                  className="account-toggle"
+                >
+                  <img className="icons" src={img_account} alt="" />
+                  <span className="account-name">{userProfile.name}</span>
+                </Link>
+              </Fragment>
+            )}
+            <div className="dropdown-content">
+              <Link to={RoutesTypes.CV_PREVIEW}>Download CV</Link>
+              <a onClick={() => signOut()} href="#">
+                Sign out
+              </a>
             </div>
-            {/*end header-col*/}
-            <SearchBox
-              searchResults={userSearchResults}
-              onchangeSearchText={onchangeSearchText}
-            ></SearchBox>
-            {/*end header-col*/}
-            <div className="header-account">
-              {/*end account-cart*/}
-              <div className="account-member dropdown">
-                {isAuth && (
-                  <Fragment>
-                    <Link
-                      to={`/${userProfile.username}`}
-                      className="account-toggle"
-                    >
-                      <img className="icons" src={img_account} alt="" />
-                      <span className="account-name">{userProfile.name}</span>
-                    </Link>
-                  </Fragment>
-                )}
-                <div className="dropdown-content">
-                  <Link to={RoutesTypes.CV_PREVIEW}>Download CV</Link>
-                  <a onClick={() => signOut()} href="#">
-                    Sign out
-                  </a>
-                </div>
-              </div>
-              {/*end account-member*/}
-            </div>
-            {/*end header-col*/}
           </div>
         </div>
       </header>

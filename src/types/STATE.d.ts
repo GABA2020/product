@@ -6,6 +6,7 @@ declare namespace STATES {
     loadingSearchBox: boolean;
     loadingUserSearchProfile: boolean;
     userProfile: ENTITIES.UserProfile;
+    listGuestUserCache: { [email: string]: ENTITIES.GuestUserProfile | null };
     userSearchResults: ENTITIES.UserProfile[]; //search box
     userSearchProfile: ENTITIES.UserProfile;
     workExperiences: ENTITIES.WorkExperience[];
@@ -32,10 +33,24 @@ declare namespace STATES {
   }
   interface Locker {
     loading: boolean;
-    reviews: ENTITIES.Review[];
+    reviewLength: number;
+    userResourceLength: number;
     lastQuery: any;
-    arrayLength: number;
-    resources: ENTITIES.Resource[];
+    reviews: ENTITIES.UserResource[];
+    userResources: ENTITIES.UserResource[];
+    allUserResources: ENTITIES.UserResource[];
     listResourceCache: { [id: string]: ENTITIES.Resource | null };
+  }
+
+  interface Chat {
+    loading_listLastMessage: boolean;
+    loading_listMessage: boolean;
+    loading_connectUser: boolean;
+    listMessages: ENTITIES.Message[];
+    listLastMessage: ENTITIES.LastMessage[];
+    last_query: any;
+    messages_length: number;
+    notificationCount: number;
+    lastMessageConnect: ENTITIES.LastMessage;
   }
 }

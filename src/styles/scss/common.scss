@@ -2,6 +2,7 @@ $goodNightColor: #111741;
 $arielColor: #59B88D;
 $emeraldColor : #59B88D;
 $mangoColor : #EEAA35;
+$greenColor : #337859;
 $blurpleColor: #7280DA;
 
 body {
@@ -20,6 +21,20 @@ label {
     border-radius: 6px;
     border: solid 1px #5ab88d !important;
     background-color: #5ab88d !important;
+    font-size: 14px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.71;
+    letter-spacing: 0.09px;
+    text-align: center;
+    color: #ffffff;
+}
+
+.btn-primary {
+    border-radius: 6px;
+    border: solid 1px #007bff !important;
+    background-color: #007bff !important;
     font-size: 14px;
     font-weight: 500;
     font-stretch: normal;

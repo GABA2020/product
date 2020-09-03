@@ -1,18 +1,11 @@
-import React, {
-  Fragment,
-  FC,
-  useCallback,
-  useState,
-  useEffect,
-  memo,
-} from 'react';
+import React, { Fragment, FC, memo } from 'react';
 import Rate from 'antd/lib/rate';
 import { verified_check, oval } from 'assets/images';
 import { useStorage } from 'hook/useStorage';
 import { useResource } from 'hook/useResource';
 
 interface IReview {
-  review: ENTITIES.Review;
+  review: ENTITIES.UserResource;
   profile: ENTITIES.UserProfile;
 }
 
@@ -20,7 +13,7 @@ const Review: FC<IReview> = props => {
   const { review, profile } = props;
 
   const avatarUser = useStorage(`avatars/${profile.avatar}`);
-  const resource = useResource(review.resource_id, profile.email);
+  const resource = useResource(review.resource_id);
 
   return (
     <Fragment>
@@ -29,9 +22,9 @@ const Review: FC<IReview> = props => {
           <a href="#">{resource && resource.name}</a>
         </h4>
         <div className="review-match">
-          {resource && resource.rating > 0 ? (
+          {review && review.rating > 0 ? (
             <Fragment>
-              <Rate disabled value={resource.rating}></Rate>
+              <Rate disabled value={review.rating}></Rate>
               {/* <p className="oval">
                 <img src={oval} alt="" />
               </p>

@@ -4,4 +4,9 @@ export const Message = {
     'Make sure you are uploading a file of .png / .jpg / .jpeg / .raw format!',
   Delete_Question: 'Are you sure you want to delete this?',
   Update_Question: 'Are you sure you want to update this?',
+  Add_New_Resource_Question: 'Are you sure you want to review this resource?',
+  Delete_Resource_Question: 'Are you sure you want to delete this resource?',
+  Edit_Resource_Question:
+    'Are you sure you want to update review this resource?',
+  Connect_Question: 'Are you sure you want to connect to this user?',
 };

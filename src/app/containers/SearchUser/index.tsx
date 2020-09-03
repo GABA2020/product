@@ -5,7 +5,12 @@ import {
   sliceKey as userSliceKey,
   actions as userActions,
 } from 'redux/User/slice';
+import {
+  sliceKey as chatSliceKey,
+  actions as chatActions,
+} from 'redux/Chat/slice';
 import { UserSaga } from 'redux/User/saga';
+import { ChatSaga } from 'redux/Chat/saga';
 import { userSelector } from 'redux/User/selectors';
 import { NotFoundPage } from '../NotFoundPage/Loadable';
 import Helmet from 'react-helmet';
@@ -26,6 +31,7 @@ interface IProfile {
 export const SearchUser: FC<IProfile> = props => {
   const { match } = props;
   useInjectSaga({ key: userSliceKey, saga: UserSaga });
+  useInjectSaga({ key: chatSliceKey, saga: ChatSaga });
   const dispatch = useDispatch();
   const {
     userProfile,
@@ -39,7 +45,8 @@ export const SearchUser: FC<IProfile> = props => {
         username: match.params.username,
       }),
     );
-  }, [match.params.username]);
+    dispatch(chatActions.resetLastMessageConnect());
+  }, [match.params.username, dispatch]);
 
   return (
     <Fragment>

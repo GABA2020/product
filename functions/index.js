@@ -4,7 +4,7 @@ const stripe = require('stripe')(
 );
 
 exports.paymentProcessing = functions.https.onRequest(async (req, res) => {
-  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Origin', 'http://localhost:3000');
 
   if (req.method === 'OPTIONS') {
     // Send response to OPTIONS requests

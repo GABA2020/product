@@ -23,10 +23,18 @@ const SignupSchema = yup.object().shape({
     .string()
     .min(8)
     .required('Passwords must be a minimum of 8 characters'),
-  emailAdress: yup.string().email().required(),
-  medicalschool: yup.string().required(),
-  medicalschoolyear: yup.string(),
-  filesubmission: yup.string().required(),
+  emailAddress: yup
+    .string()
+    .email()
+    .required('Email Address is a required field.'),
+  medicalschool: yup
+    .string()
+    .required('Please provide the name of your medical school.'),
+  filesubmission: yup
+    .string()
+    .required(
+      'We require a file submission to verify you are a medical student.',
+    ),
 });
 
 export const SignUp = () => {
@@ -44,8 +52,10 @@ export const SignUp = () => {
 
   const types = ['image/png', 'image/jpeg', 'application/pdf'];
   //Yup completely invalidates my submission process for some reason. It's likely an issue with all inputs being controlled by state instead of the actual input field.
-  const { register, handleSubmit, control, errors } = useForm();
-  // {resolver: yupResolver(SignupSchema)}
+  const { register, handleSubmit, control, errors } = useForm({
+    resolver: yupResolver(SignupSchema),
+  });
+  //
 
   const updateValues = () => {
     setCreateUsername((document.querySelector('#username') as any)!.value);
@@ -83,12 +93,16 @@ export const SignUp = () => {
   const changeHandler = e => {
     let selected = e.target.files[0];
 
-    if (selected && types.includes(selected.type)) {
+    if (
+      (selected && types.includes(selected.type) && selected.size <= 5,
+      242,
+      880)
+    ) {
       setFile(selected);
       setError('');
     } else {
       setFile(null);
-      setError('Please select an image file (png or jpeg)');
+      setError('Accepted file types are PNG, JPG, and PDF under 5MB in size.');
     }
   };
 
@@ -179,7 +193,6 @@ export const SignUp = () => {
               value={createFirstName}
               onChange={e => updateValues()}
               ref={register}
-              required
               name="firstname"
             />
             {errors.firstname && <p>{errors.firstname.message}</p>}
@@ -194,11 +207,10 @@ export const SignUp = () => {
               className="input is-rounded"
               type="text"
               id="lastname"
-              name="firstname"
+              name="lastname"
               ref={register}
               value={createLastName}
               onChange={e => updateValues()}
-              required
             />
             <p>{errors.lastname?.message}</p>
           </section>
@@ -216,7 +228,6 @@ export const SignUp = () => {
               value={createUsername}
               onChange={e => updateValues()}
               ref={register}
-              required
             />
             <span>{errors.username?.message}</span>
           </section>
@@ -235,7 +246,6 @@ export const SignUp = () => {
               value={createPassword}
               onChange={e => updateValues()}
               ref={register}
-              required
             />
             <p>{errors.password?.message}</p>
           </section>
@@ -254,7 +264,6 @@ export const SignUp = () => {
               onChange={e => updateValues()}
               ref={register}
               name="confirmpassword"
-              required
             />
             {createPassword !== confirmPassword ? (
               <p>Your passwords don't match.</p>
@@ -277,7 +286,6 @@ export const SignUp = () => {
               onChange={e => updateValues()}
               id="emailAddress"
               name="emailAddress"
-              required
             ></input>
             <span>{errors.emailAddress?.message}</span>
             {validationError ? <p>{validationError}</p> : <p></p>}
@@ -296,7 +304,6 @@ export const SignUp = () => {
               ref={register}
               value={createMedicalSchool}
               onChange={e => updateValues()}
-              required
             ></input>
             <span>{errors.medicalschool?.message}</span>
           </section>
@@ -334,7 +341,6 @@ export const SignUp = () => {
             type="file"
             ref={register}
             onChange={changeHandler}
-            required
             id="filesubmission"
             name="filesubmission"
           />

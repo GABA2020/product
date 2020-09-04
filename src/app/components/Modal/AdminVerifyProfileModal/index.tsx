@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import emailjs from 'emailjs-com';
 import { db } from '../../../../helpers/firebase.module';
+import { PDFViewer } from '@react-pdf/renderer';
 
 export const AdminVerifyProfileModal = ({
   selectedImg,
@@ -45,6 +46,7 @@ export const AdminVerifyProfileModal = ({
   return (
     <div className="backdrop" onClick={handleClick}>
       <img src={selectedImg} alt="enlarged pic" />
+
       <button
         className="button is-success has-text-centered"
         style={{ display: 'block', margin: 'auto' }}

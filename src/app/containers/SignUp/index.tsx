@@ -35,12 +35,13 @@ const SignupSchema = yup.object().shape({
     .required('Please provide the name of your medical school.'),
   filesubmission: yup
     .mixed()
-    .required(
-      'We require a file submission to verify you are a medical student.',
-    )
+
     .test('fileSize', 'Files must be no larger than 5MB', value => {
       return value && value[0].size < 5242880;
-    }),
+    })
+    .required(
+      'We require a file submission to verify you are a medical student.',
+    ),
 });
 
 export const SignUp = () => {
@@ -56,7 +57,7 @@ export const SignUp = () => {
   const [validationError, setValidationError] = useState(null);
 
   const types = ['image/png', 'image/jpeg', 'application/pdf'];
-  const { register, handleSubmit, control, errors } = useForm({
+  const { register, handleSubmit, errors } = useForm({
     resolver: yupResolver(SignupSchema),
   });
 
@@ -118,6 +119,18 @@ export const SignUp = () => {
 
   const createUser = async () => {
     await auth.createUserWithEmailAndPassword(createEmail, createPassword);
+  };
+
+  const showPassword = () => {
+    let password = document.querySelector('#password');
+    let confirmPassword = document.querySelector('#confirmPassword');
+    if ((password as any)!.type === 'password') {
+      (password as any)!.type = 'text';
+      (confirmPassword as any)!.type = 'text';
+    } else {
+      (password as any)!.type = 'password';
+      (confirmPassword as any)!.type = 'password';
+    }
   };
 
   const userDatabaseEntry = async () => {
@@ -193,6 +206,12 @@ export const SignUp = () => {
         { merge: true },
       );
     console.log('Document successfully written!');
+    await db.collection('program_review').doc(createEmail).set(
+      {
+        specialty: '',
+      },
+      { merge: true },
+    );
   };
 
   //This extremely messy series of trying and catching doesn't stop the function when any the other functions being referenced throw errors.
@@ -299,6 +318,7 @@ export const SignUp = () => {
               ref={register}
             />
             <p>{errors.password?.message}</p>
+            <input type="checkbox" onClick={showPassword} /> Show Password
           </section>
         </section>
         <section className="field">
@@ -389,10 +409,6 @@ export const SignUp = () => {
             name="filesubmission"
           />
           <span>{errors.filesubmission?.message}</span>
-          <section className="output">
-            {error && <section className="error">{error}</section>}
-            {file && <section className="file">{(file! as any).name}</section>}
-          </section>
         </section>{' '}
         <input type="submit" className="button is-success" />
       </form>

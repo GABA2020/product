@@ -17,12 +17,15 @@ const SignupSchema = yup.object().shape({
   username: yup.string().required('Username is a required field'),
   password: yup
     .string()
-    .min(8)
-    .required('Passwords must be a minimum of 8 characters'),
+    .required('You are required to set a password.')
+    .matches(/[A-Z]/, 'Password must contain an uppercase letter.')
+    .matches(/\d/, 'Password must contain at least one number.')
+    .matches(/\W/, 'Password must contain at least one unique character.')
+    .min(8, 'Passwords must be a minimum of 8 characters.'),
   confirmpassword: yup
     .string()
-    .min(8)
-    .required('Passwords must be a minimum of 8 characters'),
+    .oneOf([yup.ref('password'), null], 'Passwords must match')
+    .required('Please confirm your password here.'),
   emailAddress: yup
     .string()
     .email()
@@ -31,17 +34,19 @@ const SignupSchema = yup.object().shape({
     .string()
     .required('Please provide the name of your medical school.'),
   filesubmission: yup
-    .string()
+    .mixed()
     .required(
       'We require a file submission to verify you are a medical student.',
-    ),
+    )
+    .test('fileSize', 'Files must be no larger than 5MB', value => {
+      return value && value[0].size < 5242880;
+    }),
 });
 
 export const SignUp = () => {
   const [createUsername, setCreateUsername] = useState('');
   const [createPassword, setCreatePassword] = useState('');
   const [createEmail, setCreateEmail] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [createFirstName, setCreateFirstName] = useState('');
   const [createLastName, setCreateLastName] = useState('');
   const [createMedicalSchoolYear, setCreateMedicalSchoolYear] = useState('MS1');
@@ -51,19 +56,14 @@ export const SignUp = () => {
   const [validationError, setValidationError] = useState(null);
 
   const types = ['image/png', 'image/jpeg', 'application/pdf'];
-  //Yup completely invalidates my submission process for some reason. It's likely an issue with all inputs being controlled by state instead of the actual input field.
   const { register, handleSubmit, control, errors } = useForm({
     resolver: yupResolver(SignupSchema),
   });
-  //
 
   const updateValues = () => {
     setCreateUsername((document.querySelector('#username') as any)!.value);
     setCreatePassword((document.querySelector('#password') as any)!.value);
     setCreateEmail((document.querySelector('#emailAddress') as any)!.value);
-    setConfirmPassword(
-      (document.querySelector('#confirmPassword') as any)!.value,
-    );
     setCreateFirstName(document.querySelector('#firstname' as any)!.value);
     setCreateLastName(document.querySelector('#lastname' as any)!.value);
     setCreateMedicalSchool(
@@ -90,14 +90,11 @@ export const SignUp = () => {
       console.log(url);
     });
   };
+
   const changeHandler = e => {
     let selected = e.target.files[0];
 
-    if (
-      (selected && types.includes(selected.type) && selected.size <= 5,
-      242,
-      880)
-    ) {
+    if (selected && types.includes(selected.type) && selected.size <= 5242880) {
       setFile(selected);
       setError('');
     } else {
@@ -113,36 +110,94 @@ export const SignUp = () => {
     };
 
     const service_id = 'default_service';
-    const template_id = 'welcome_to_gaba_bronze_';
+    const template_id = 'template_7uh3g6p';
     const user_id = 'user_yIq3IIfTQ8ruKbjBAqYaQ';
     await emailjs.send(service_id, template_id, template_params, user_id);
     console.log('Email sent successfully to ', createEmail);
   };
 
-  //Despite the create user function being a single function from the firebase docs, I can't login with any account I've created, or even either of the default accounts we already had. I'm told my credentials are invalid when signing in to a new account, and when attempting to sign in to an old account I get a status code 400 error.
   const createUser = async () => {
     await auth.createUserWithEmailAndPassword(createEmail, createPassword);
   };
 
   const userDatabaseEntry = async () => {
-    await db.collection('member_data').doc(createEmail).set(
-      {
-        username: createUsername,
-        email: createEmail,
-        firstName: createFirstName,
-        lastName: createLastName,
-        medicalSchool: createMedicalSchool,
-        medicalSchoolYear: createMedicalSchoolYear,
-        isVerified: false,
-      },
-      { merge: true },
-    );
+    await db
+      .collection('member_data')
+      .doc(createEmail)
+      .set(
+        {
+          email: createEmail,
+          avatar: '',
+          awards: '',
+          about: '',
+          class_quartile: '',
+          clerkship_honors: [],
+          complex_1: 0,
+          complex_2: 0,
+          couples_match: false,
+          cs_pe: '',
+          degrees: '',
+          edit: false,
+          gender: '',
+          interview_offers: '',
+          interview_offers_prelim: '',
+          interview_offers_ty: '',
+          interviews_cancelled_or_declined: '',
+          learning_style: '',
+          match: false,
+          mcat: 0,
+          is_passed_mcat: false,
+          mcat_document_name: '',
+          mcat_review_requested: false,
+          name: `${createFirstName} ${createLastName}`,
+          number_of_apps_categorical: '',
+          number_of_apps_preliminary_year: '',
+          number_of_general_publications: '',
+          number_of_ir_applications: '',
+          number_of_ir_interviews: '',
+          number_of_presentations: '',
+          number_of_sub_1: '',
+          places_interviewed: '',
+          reapplicant: '',
+          red_flag: '',
+          rejections: '',
+          specialty_interest: '',
+          specialty_specific_publications: '',
+          step_1: 0,
+          is_passed_step1: false,
+          step_1_document_name: '',
+          step_1_review_requested: false,
+          step_1_resources_used: [],
+          step_2: 0,
+          is_passed_step2: false,
+          step_2_resources_used: [],
+          step_2_document_name: '',
+          step_2_review_requested: false,
+          student_location: '',
+          student_status: createMedicalSchoolYear,
+          total_interviews_attended: '',
+          total_ranked: '',
+          username: createUsername,
+          verified: false,
+          waitlists: 0,
+          year: '',
+          year_in_program: 0,
+          step_3: 0,
+          is_passed_step3: false,
+          step_3_document_name: '',
+          step_3_resources_used: [],
+          step_3_review_requested: false,
+          medicalSchool: createMedicalSchool,
+          isVerified: false,
+        },
+        { merge: true },
+      );
     console.log('Document successfully written!');
   };
 
   //This extremely messy series of trying and catching doesn't stop the function when any the other functions being referenced throw errors.
   const onSubmit = data => {
-    console.log(data);
+    console.log(data.filesubmission);
     try {
       createUser()
         .catch(error => {
@@ -190,7 +245,6 @@ export const SignUp = () => {
               className="input is-rounded"
               type="text"
               id="firstname"
-              value={createFirstName}
               onChange={e => updateValues()}
               ref={register}
               name="firstname"
@@ -209,7 +263,6 @@ export const SignUp = () => {
               id="lastname"
               name="lastname"
               ref={register}
-              value={createLastName}
               onChange={e => updateValues()}
             />
             <p>{errors.lastname?.message}</p>
@@ -225,7 +278,6 @@ export const SignUp = () => {
               type="text"
               id="username"
               name="username"
-              value={createUsername}
               onChange={e => updateValues()}
               ref={register}
             />
@@ -243,7 +295,6 @@ export const SignUp = () => {
               id="password"
               name="password"
               autoComplete="new-password"
-              value={createPassword}
               onChange={e => updateValues()}
               ref={register}
             />
@@ -260,16 +311,11 @@ export const SignUp = () => {
               type="password"
               id="confirmPassword"
               autoComplete="new-password"
-              value={confirmPassword}
               onChange={e => updateValues()}
               ref={register}
               name="confirmpassword"
             />
-            {createPassword !== confirmPassword ? (
-              <p>Your passwords don't match.</p>
-            ) : (
-              <p></p>
-            )}
+            <p>{errors.confirmpassword?.message}</p>
           </section>
         </section>
         <section className="field">
@@ -282,7 +328,6 @@ export const SignUp = () => {
               type="email"
               autoComplete="email"
               ref={register}
-              value={createEmail}
               onChange={e => updateValues()}
               id="emailAddress"
               name="emailAddress"
@@ -302,7 +347,6 @@ export const SignUp = () => {
               id="medicalschool"
               name="medicalschool"
               ref={register}
-              value={createMedicalSchool}
               onChange={e => updateValues()}
             ></input>
             <span>{errors.medicalschool?.message}</span>

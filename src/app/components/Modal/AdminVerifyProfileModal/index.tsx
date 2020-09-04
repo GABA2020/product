@@ -15,7 +15,7 @@ export const AdminVerifyProfileModal = ({
     };
 
     const service_id = 'default_service';
-    const template_id = 'welcome_to_gaba_bronze_';
+    const template_id = 'welcome_to_gaba_';
     const user_id = 'user_yIq3IIfTQ8ruKbjBAqYaQ';
     await emailjs.send(service_id, template_id, template_params, user_id);
     console.log('Email sent successfully to ', email);

@@ -36,12 +36,26 @@ interface IForm {
   year_in_program: number;
   degrees: string;
   avatar: string;
+  honors: ENTITIES.ISelect[];
 }
 
 const degreesOptions = [
   { value: 'MD', label: 'MD' },
   { value: 'Strawberry', label: 'Strawberry' },
   { value: 'Vanilla', label: 'Vanilla' },
+  { value: 'MD', label: 'MD' },
+  { value: 'DO', label: 'DO' },
+  { value: 'MBA', label: 'MBA' },
+  { value: 'PhD', label: 'PhD' },
+  { value: 'JD', label: 'JD' },
+  { value: 'MS', label: 'MS' },
+  { value: 'Masters', label: 'Masters' },
+  { value: 'MPH', label: 'MPH' },
+  { value: 'MBBS', label: 'MBBS' },
+  { value: 'Other', label: 'Other' },
+  { value: 'US IMG', label: 'US IMG' },
+  { value: 'IMG', label: 'IMG' },
+  { value: 'Canad-IMG', label: 'Canad-IMG' }
 ];
 
 const initialValues: IForm = {
@@ -50,6 +64,7 @@ const initialValues: IForm = {
   year_in_program: 0,
   degrees: '',
   avatar: '',
+  honors: [],
 };
 
 const initImage: IImage = {
@@ -82,7 +97,35 @@ const schema = yup.object().shape({
     .required('Year in Program is a required field'),
   degrees: yup.string().required('Name is a required field'),
   avatar: yup.string(),
+  honors: yup
+    .array()
+    .min(1, 'Honors is a required field')
+    .of(
+      yup.object().shape({
+        label: yup.string().required(),
+        value: yup.string().required(),
+      }),
+    ),
 });
+
+const honorsOptions = [
+  { value: 'AOA', label: 'AOA' },
+  { value: 'GHHS', label: 'GHHS' },
+];
+
+const getHonorsOptions = (
+  honors: string[],
+  honorsOptions: ENTITIES.ISelect[],
+) => {
+  const newHonorOptions: ENTITIES.ISelect[] = [];
+  honors.forEach(item1 => {
+    const findResearch = honorsOptions.find(item2 => item2.value === item1);
+    if (findResearch) {
+      newHonorOptions.push(findResearch);
+    }
+  });
+  return newHonorOptions;
+};
 
 export const EditProfileModal: FC<IEditProfile> = props => {
   const {
@@ -102,18 +145,24 @@ export const EditProfileModal: FC<IEditProfile> = props => {
     values,
     setFieldValue,
     touched,
+    resetForm,
   } = useFormik({
     initialValues: {
       ...initialValues,
     },
     validationSchema: schema,
     onSubmit: values => {
+      const newHonors: string[] = [];
+      values.honors.map(item => {
+        newHonors.push(item.value);
+      });
       const newUserProfile: ENTITIES.UserProfile = {
         ...userProfile,
         name: values.name,
         year_in_program: values.year_in_program,
         avatar: values.avatar,
         degrees: values.degrees,
+        honors: newHonors,
       };
       const newProgram: ENTITIES.Program = {
         ...program,
@@ -130,6 +179,10 @@ export const EditProfileModal: FC<IEditProfile> = props => {
       setFieldValue('year_in_program', userProfile.year_in_program);
       setFieldValue('degrees', userProfile.degrees);
       setFieldValue('avatar', userProfile.avatar);
+      setFieldValue(
+        'honors',
+        getHonorsOptions(userProfile.honors, honorsOptions),
+      );
     }
   }, [userProfile, program, isShow]);
 
@@ -171,6 +224,7 @@ export const EditProfileModal: FC<IEditProfile> = props => {
       <div className="modal-edit-profile">
         <Modal
           backdrop="static"
+          size="lg"
           show={isShow}
           onHide={() => {
             onHide();
@@ -263,6 +317,23 @@ export const EditProfileModal: FC<IEditProfile> = props => {
                 />
                 {touched.degrees && errors.degrees && (
                   <span className={'text-danger'}>{errors.degrees}</span>
+                )}
+              </div>
+              <div className="form-group">
+                <label htmlFor="exampleInputPassword1">Honors</label>
+                <Select
+                  name="honors"
+                  isMulti={true}
+                  value={values.honors}
+                  onChange={(opt, e) => {
+                    if (opt !== null) {
+                      setFieldValue('honors', opt);
+                    }
+                  }}
+                  options={honorsOptions}
+                />
+                {touched.honors && errors.honors && (
+                  <span className={'text-danger'}>{errors.honors}</span>
                 )}
               </div>
               <div className="form-group">

@@ -118,12 +118,21 @@ export const Header = () => {
                   className="account-toggle"
                 >
                   <img className="icons" src={img_account} alt="" />
-                  <span className="account-name">{userProfile.name}</span>
+                  <span className="account-name">{userProfile.username}</span>
                 </Link>
               </Fragment>
             )}
             <div className="dropdown-content">
-              <Link to={RoutesTypes.CV_PREVIEW}>Download CV</Link>
+              {/* <Link to={RoutesTypes.CV_PREVIEW}>Download CV</Link> */}
+              <a
+                onClick={e => {
+                  e.preventDefault();
+                  window.open(RoutesTypes.CV_PREVIEW);
+                }}
+                href="#"
+              >
+                Download CV
+              </a>
               <a onClick={() => signOut()} href="#">
                 Sign out
               </a>

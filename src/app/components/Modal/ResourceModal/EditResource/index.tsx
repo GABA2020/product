@@ -193,7 +193,7 @@ export const EditResource: FC<IResource> = props => {
     } else {
       setDisableButton(true);
     }
-  }, [resourceState]);
+  }, [resourceState, userResource]);
 
   const getAsyncOptions = (input: string) => {
     const resourceOptions: ENTITIES.IResourceSelected[] = [];

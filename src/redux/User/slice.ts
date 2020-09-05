@@ -30,11 +30,14 @@ export const initialState: STATES.User = {
   lastQuery: {},
   userProfile: {
     email: '',
+    phone_number: '',
+    address: '',
     avatar: '',
     awards: '',
     about: '',
     class_quartile: '',
     clerkship_honors: [],
+    honors: [],
     complex_1: 0,
     complex_2: 0,
     couples_match: false,
@@ -94,11 +97,14 @@ export const initialState: STATES.User = {
   userSearchResults: [],
   userSearchProfile: {
     email: '',
+    phone_number: '',
+    address: '',
     avatar: '',
     awards: '',
     about: '',
     class_quartile: '',
     clerkship_honors: [],
+    honors: [],
     complex_1: 0,
     complex_2: 0,
     couples_match: false,
@@ -243,6 +249,25 @@ const UserSliceState = createSlice({
     },
     //CV
     // work experiences
+    getAllWorkExperiencesAction(
+      state,
+      action: PayloadAction<
+        DTO.User.WorkExperience.GetAllWorkExperiencesRequest
+      >,
+    ) {
+      state.workExperiences = [];
+    },
+    getAllWorkExperiencesActionSuccess(
+      state,
+      action: PayloadAction<
+        DTO.User.WorkExperience.GetAllWorkExperiencesResponse
+      >,
+    ) {
+      state.workExperiences = action.payload.workExperiences;
+    },
+    getAllWorkExperiencesActionFailed(state) {
+      state.workExperiences = [];
+    },
     getWorkExperiencesAction(
       state,
       action: PayloadAction<DTO.User.WorkExperience.GetWorkExperiencesRequest>,
@@ -305,15 +330,6 @@ const UserSliceState = createSlice({
       action: PayloadAction<DTO.User.WorkExperience.EditWorkExperiencesRequest>,
     ) {
       state.loading = true;
-      // const workExperiencesTemp = state.workExperiences;
-      // const foundIndex = workExperiencesTemp.findIndex(
-      //   x => x.id === action.payload.workExperience.id,
-      // );
-      // workExperiencesTemp[foundIndex] = action.payload.workExperience;
-
-      // state.workExperiences = workExperiencesTemp.sort((a, b) =>
-      //   a.date_end < b.date_end ? 1 : a.date_end > b.date_end ? -1 : 0,
-      // );
     },
     editWorkExperienceActionSuccess(state) {
       state.loading = false;
@@ -341,6 +357,21 @@ const UserSliceState = createSlice({
     // end work experiences
 
     //education
+    getAllEducationsAction(
+      state,
+      action: PayloadAction<DTO.User.Education.GetAllEducationsRequest>,
+    ) {
+      state.educations = initialState.educations;
+    },
+    getAllEducationsActionSuccess(
+      state,
+      action: PayloadAction<DTO.User.Education.GetAllEducationsResponse>,
+    ) {
+      state.educations = action.payload.educations;
+    },
+    getAllEducationsActionFailed(state) {
+      state.educations = initialState.educations;
+    },
     getEducationsAction(
       state,
       action: PayloadAction<DTO.User.Education.GetEducationsRequest>,
@@ -419,6 +450,21 @@ const UserSliceState = createSlice({
     // end education
 
     // volunteer
+    getAllVolunteersAction(
+      state,
+      action: PayloadAction<DTO.User.Volunteer.GetAllVolunteersRequest>,
+    ) {
+      state.volunteers = [];
+    },
+    getAllVolunteersActionSuccess(
+      state,
+      action: PayloadAction<DTO.User.Volunteer.GetAllVolunteersResponse>,
+    ) {
+      state.volunteers = action.payload.volunteers;
+    },
+    getAllVolunteersActionFailed(state) {
+      state.volunteers = [];
+    },
     getVolunteersAction(
       state,
       action: PayloadAction<DTO.User.Volunteer.GetVolunteersRequest>,
@@ -497,6 +543,21 @@ const UserSliceState = createSlice({
     // end volunteer
 
     // research
+    getAllResearchesAction(
+      state,
+      action: PayloadAction<DTO.User.Research.GetAllResearchesRequest>,
+    ) {
+      state.researches = [];
+    },
+    getAllResearchesActionSuccess(
+      state,
+      action: PayloadAction<DTO.User.Research.GetAllResearchesResponse>,
+    ) {
+      state.researches = action.payload.researches;
+    },
+    getAllResearchesActionFailed(state) {
+      state.researches = [];
+    },
     getResearchesAction(
       state,
       action: PayloadAction<DTO.User.Research.GetResearchesRequest>,

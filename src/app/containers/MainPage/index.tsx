@@ -11,7 +11,6 @@ import { actions as authActions } from '../../../redux/Auth/slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { authSelector } from '../../../redux/Auth/selectors';
 import { SearchUser } from '../SearchUser';
-import { CVPage } from '../CVPage';
 
 // Auth Route
 const AuthRoute = ({ component: Component, ...rest }) => {

@@ -13,11 +13,14 @@ declare namespace ENTITIES {
 
   interface UserProfile {
     email: string;
+    phone_number: string;
+    address: string;
     avatar: string;
     awards: string;
     about: string;
     class_quartile: string;
     clerkship_honors: string[];
+    honors: string[];
     complex_1: number;
     complex_2: number;
     couples_match: boolean;

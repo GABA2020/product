@@ -160,7 +160,9 @@ export const Volunteer: FC<IVolunteer> = props => {
               <p>There is no experiences available</p>
             </div>
           ))}
-        {volunteers.length > 0 && volunteers.length < arrayLength ? (
+        {!loading &&
+        volunteers.length > 0 &&
+        volunteers.length < arrayLength ? (
           <div className="load-more-wrapper text-center">
             <a
               className="load-more-btn"

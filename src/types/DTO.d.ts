@@ -19,11 +19,14 @@ declare namespace DTO {
 
     interface GetUserProfileResponse {
       email: string;
+      phone_number: string;
+      address: string;
       avatar: string;
       awards: string;
       about: string;
       class_quartile: string;
       clerkship_honors: string[];
+      honors: string[];
       complex_1: number;
       complex_2: number;
       couples_match: boolean;
@@ -93,11 +96,14 @@ declare namespace DTO {
     }
     interface GetUserSearchProfileResponse {
       email: string;
+      phone_number: string;
+      address: string;
       avatar: string;
       awards: string;
       about: string;
       class_quartile: string;
       clerkship_honors: string[];
+      honors: string[];
       complex_1: number;
       complex_2: number;
       couples_match: boolean;
@@ -160,6 +166,13 @@ declare namespace DTO {
     }
 
     namespace WorkExperience {
+      interface GetAllWorkExperiencesRequest {
+        email: string;
+      }
+      interface GetAllWorkExperiencesResponse {
+        workExperiences: ENTITIES.WorkExperience[];
+      }
+
       interface GetWorkExperiencesRequest {
         email: string;
       }
@@ -194,6 +207,14 @@ declare namespace DTO {
       }
     }
     namespace Education {
+      interface GetAllEducationsRequest {
+        email: string;
+      }
+
+      interface GetAllEducationsResponse {
+        educations: ENTITIES.Education[];
+      }
+
       interface GetEducationsRequest {
         email: string;
       }
@@ -229,6 +250,12 @@ declare namespace DTO {
     }
 
     namespace Volunteer {
+      interface GetAllVolunteersRequest {
+        email: string;
+      }
+      interface GetAllVolunteersResponse {
+        volunteers: ENTITIES.Volunteer[];
+      }
       interface GetVolunteersRequest {
         email: string;
       }
@@ -261,6 +288,12 @@ declare namespace DTO {
       }
     }
     namespace Research {
+      interface GetAllResearchesRequest {
+        email: string;
+      }
+      interface GetAllResearchesResponse {
+        researches: ENTITIES.Research[];
+      }
       interface GetResearchesRequest {
         email: string;
       }

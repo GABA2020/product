@@ -4,8 +4,6 @@ import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import * as yup from 'yup';
 import 'styles/scss/ModalWorkExperience.scss';
-import CKEditor from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { Formik } from 'formik';
 import { convertDateToTimestamp } from 'helpers/Unity';
 
@@ -194,7 +192,13 @@ export const AddWorkModal: FC<IAddWorkModal> = props => {
                 </div>
                 <div className="form-group">
                   <label htmlFor="exampleInputPassword1">Description</label>
-                  <CKEditor
+                  <textarea
+                    rows={5}
+                    className="form-control"
+                    name="description"
+                    onChange={handleChange}
+                  ></textarea>
+                  {/* <CKEditor
                     name="description"
                     config={editorConfiguration}
                     data={values.description}
@@ -203,7 +207,7 @@ export const AddWorkModal: FC<IAddWorkModal> = props => {
                     onChange={(event, editor) => {
                       setFieldValue('description', editor.getData());
                     }}
-                  />
+                  /> */}
                   {touched.description && errors.description && (
                     <span className={'text-danger'}>{errors.description}</span>
                   )}

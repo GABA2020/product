@@ -164,7 +164,9 @@ export const Research: FC<IResearch> = props => {
               <p>There is no experiences available</p>
             </div>
           ))}
-        {researches.length > 0 && researches.length < arrayLength ? (
+        {!loading &&
+        researches.length > 0 &&
+        researches.length < arrayLength ? (
           <div className="load-more-wrapper text-center">
             <a
               className="load-more-btn"

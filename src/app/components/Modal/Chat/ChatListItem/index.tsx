@@ -8,10 +8,9 @@ import { useStorage } from 'hook/useStorage';
 interface IChatListItem {
   lastMessageItem: ENTITIES.LastMessage;
   openMessage: (userKeyMail: string) => void;
-  index: number;
 }
 export const ChatListitem: FC<IChatListItem> = props => {
-  const { lastMessageItem, index, openMessage } = props;
+  const { lastMessageItem, openMessage } = props;
   const { userProfile } = useSelector(userSelector);
 
   const guestUser = useUser(
@@ -37,7 +36,7 @@ export const ChatListitem: FC<IChatListItem> = props => {
           className="chat_ib"
         >
           <h5>
-            {guestUser?.name}{' '}
+            {guestUser?.username}{' '}
             <span className="chat_date">
               {moment.unix(lastMessageItem.created_at.seconds).format('HH:mm')}
             </span>

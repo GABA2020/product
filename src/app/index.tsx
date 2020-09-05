@@ -24,32 +24,7 @@ import { authSelector } from 'redux/Auth/selectors';
 import { useDispatch, useSelector } from 'react-redux';
 import { auth } from 'firebase';
 import { history } from 'utils/history';
-import {
-  actions as authActions,
-  reducer as authReducer,
-  sliceKey as authSlice,
-} from 'redux/Auth/slice';
-import {
-  reducer as userReducer,
-  sliceKey as userSlice,
-} from 'redux/User/slice';
-import {
-  sliceKey as programSlice,
-  reducer as programReducer,
-} from 'redux/Program/slice';
-import {
-  sliceKey as storageSlice,
-  reducer as storageReducer,
-} from 'redux/Storage/slice';
-import {
-  sliceKey as lockerSlice,
-  reducer as lockerReducer,
-} from 'redux/Locker/slice';
-import {
-  sliceKey as chatSlice,
-  reducer as chatReducer,
-} from 'redux/Chat/slice';
-import { useInjectReducer } from 'utils/redux-injectors';
+import { actions as authActions } from 'redux/Auth/slice';
 import { MainPage } from './containers/MainPage';
 import { Login } from './containers/Auth/Login';
 import { CVPage } from './containers/CVPage';
@@ -74,13 +49,6 @@ const AuthRoute = ({ component: Component, ...rest }) => {
 export function App() {
   const { isAuth } = useSelector(authSelector);
   const dispatch = useDispatch();
-
-  useInjectReducer({ key: authSlice, reducer: authReducer });
-  useInjectReducer({ key: userSlice, reducer: userReducer });
-  useInjectReducer({ key: programSlice, reducer: programReducer });
-  useInjectReducer({ key: storageSlice, reducer: storageReducer });
-  useInjectReducer({ key: lockerSlice, reducer: lockerReducer });
-  useInjectReducer({ key: chatSlice, reducer: chatReducer });
 
   React.useEffect(() => {
     auth().onAuthStateChanged(user => {

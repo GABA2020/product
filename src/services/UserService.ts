@@ -1,4 +1,4 @@
-import { db, storageAvatar, storageFB } from 'helpers/firebase.module';
+import { db } from 'helpers/firebase.module';
 import { DTO } from 'types/DTO';
 
 const getUserProfile = async (email: string) => {
@@ -21,7 +21,7 @@ const searchUsers = async (payload: DTO.User.SearchUsersRequest) => {
   const listUser: ENTITIES.UserProfile[] = [];
   const userRef = await db
     .collection('member_data')
-    .where('name', '>=', payload.text)
+    .where('username', '>=', payload.text)
     .get();
   const userCollection = userRef.forEach(doc => {
     listUser.push({ email: doc.id, ...doc.data() } as ENTITIES.UserProfile);

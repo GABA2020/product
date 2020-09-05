@@ -124,11 +124,7 @@ export const Chat: FC<IChat> = props => {
                 item.users.join(':') === currentUserKey && 'active_chat'
               }`}
             >
-              <ChatListitem
-                index={index}
-                openMessage={openMessage}
-                lastMessageItem={item}
-              />
+              <ChatListitem openMessage={openMessage} lastMessageItem={item} />
             </div>
           );
         })}

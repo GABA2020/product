@@ -43,7 +43,7 @@ export const SearchBox: FC<SearchBoxProps> = props => {
                 setSearchResultsState([]);
               }}
             >
-              {item.name}
+              {item.username}
             </span>
           </div>
         ))

@@ -10,20 +10,13 @@ import {
   sliceKey as userSliceKey,
   actions as userActions,
 } from 'redux/User/slice';
-import {
-  sliceKey as programSliceKey,
-  actions as programActions,
-} from 'redux/Program/slice';
-import {
-  sliceKey as storageSliceKey,
-  actions as storageActions,
-} from 'redux/Storage/slice';
+import { sliceKey as programSliceKey } from 'redux/Program/slice';
+import { sliceKey as storageSliceKey } from 'redux/Storage/slice';
 import { UserSaga } from 'redux/User/saga';
 import { ProgramSaga } from 'redux/Program/saga';
 import { StorageSaga } from 'redux/Storage/saga';
 import { userSelector } from 'redux/User/selectors';
 import { programSelector } from 'redux/Program/selectors';
-import { storageSelector } from 'redux/Storage/selectors';
 import { useDispatch, useSelector } from 'react-redux';
 
 const arrayWork = ['work', 'research', 'volunteer', 'school', 'letter'];

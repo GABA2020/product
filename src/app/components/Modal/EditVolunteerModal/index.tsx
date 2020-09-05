@@ -6,8 +6,6 @@ import * as yup from 'yup';
 import moment from 'moment';
 import 'styles/scss/ModalWorkExperience.scss';
 import { Formik } from 'formik';
-import CKEditor from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { showConfirmMessage } from 'helpers/Swal.module';
 import { convertDateToTimestamp } from 'helpers/Unity';
 import { Message } from 'helpers/Message';
@@ -254,7 +252,15 @@ export const EditVolunteerModal: FC<IEditVolunteerModal> = props => {
                 </div>
                 <div className="form-group">
                   <label htmlFor="exampleInputPassword1">Description</label>
-                  <CKEditor
+                  <textarea
+                    rows={5}
+                    className="form-control"
+                    name="description"
+                    onChange={handleChange}
+                  >
+                    {values.description}
+                  </textarea>
+                  {/* <CKEditor
                     name="description"
                     config={editorConfiguration}
                     data={values.description}
@@ -263,7 +269,7 @@ export const EditVolunteerModal: FC<IEditVolunteerModal> = props => {
                     onChange={(event, editor) => {
                       setFieldValue('description', editor.getData());
                     }}
-                  />
+                  /> */}
                   {errors.description && (
                     <span className={'text-danger'}>{errors.description}</span>
                   )}

@@ -36,6 +36,28 @@ const getResearches = async (
   return { researches, arrayLength, lastQuery };
 };
 
+const getAllResearches = async (
+  payload: DTO.User.Research.GetAllResearchesRequest,
+) => {
+  const researches: ENTITIES.Research[] = [];
+
+  const userRef = await db
+    .collection('member_data')
+    .doc(payload.email)
+    .collection('research');
+
+  const researchCollection = await userRef.orderBy('event_date', 'desc').get();
+
+  researchCollection.forEach(doc => {
+    researches.push({
+      id: doc.id,
+      ...doc.data(),
+    } as ENTITIES.Research);
+  });
+
+  return { researches };
+};
+
 const getMoreResearches = async (
   payload: DTO.User.Research.GetMoreResearchesRequest,
 ) => {
@@ -118,7 +140,7 @@ const editResearch = async (payload: DTO.User.Research.EditResearchRequest) => {
 const deleteResearch = async (
   payload: DTO.User.Research.DeleteResearchRequest,
 ) => {
-  const researchCollection = await db
+  await db
     .collection('member_data')
     .doc(payload.email)
     .collection('research')
@@ -128,6 +150,7 @@ const deleteResearch = async (
 
 export {
   getResearches,
+  getAllResearches,
   getMoreResearches,
   addNewResearch,
   editResearch,

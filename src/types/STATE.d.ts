@@ -52,4 +52,8 @@ declare namespace STATES {
     messages_length: number;
     currentUserKey: string;
   }
+
+  interface Setting {
+    base_url: string | undefined;
+  }
 }

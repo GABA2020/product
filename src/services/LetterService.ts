@@ -100,7 +100,7 @@ const editLetter = async (payload: DTO.User.Letter.EditLetterRequest) => {
 };
 
 const deleteLetter = async (payload: DTO.User.Letter.DeleteLetterRequest) => {
-  const letterCollection = await db
+  await db
     .collection('member_data')
     .doc(payload.email)
     .collection('letter')

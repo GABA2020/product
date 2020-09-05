@@ -1,4 +1,4 @@
-import React, { Fragment, FC, useState, useEffect } from 'react';
+import React, { Fragment, FC, useEffect } from 'react';
 import { Modal } from 'react-bootstrap';
 import * as yup from 'yup';
 import Dragger from 'antd/lib/upload/Dragger';

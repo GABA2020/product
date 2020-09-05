@@ -1,4 +1,4 @@
-import React, { Fragment, FC, useState, useEffect } from 'react';
+import React, { Fragment, FC } from 'react';
 import { Modal } from 'react-bootstrap';
 import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -128,7 +128,7 @@ export const EditResearchModal: FC<IEditResearchModal> = props => {
     <Fragment>
       <Modal backdrop="static" show={isShow} onHide={onHide}>
         <Modal.Header closeButton>
-          <Modal.Title>Add Research</Modal.Title>
+          <Modal.Title>Edit Research</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Formik

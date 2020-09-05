@@ -3,7 +3,7 @@ const stripe = require('stripe')(
   'sk_test_51HJAVwAR6Zl0WfNDSoWGXMU14oLfItr9ZOEjWDvnDc9CyeRT9QuUwS7Wz4nwPjswlHkbj1dGvPSvIxmgWu5grtar00upfKvtZJ',
 );
 const corsModule = require('cors');
-const cors = corsModule({ origin: 'http://localhost:3000/payment' });
+const cors = corsModule({ origin: 'http://localhost:3000' });
 
 exports.paymentProcessing = functions.https.onRequest(async (req, res) => {
   cors(req, res, async () => {

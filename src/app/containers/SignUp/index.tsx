@@ -9,7 +9,8 @@ import emailjs from 'emailjs-com';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers';
 import * as yup from 'yup';
-import 'bulma/css/bulma.css';
+import { Route, Redirect, Link } from 'react-router-dom';
+import RoutesTypes from '../../../types/Routes';
 
 const SignupSchema = yup.object().shape({
   firstname: yup.string().required('First Name is a required field.'),
@@ -214,6 +215,13 @@ export const SignUp = () => {
     );
   };
 
+  const onCreationSuccess = () => {
+    alert(
+      'Submitted! Please allow 24-48 hours for your documents to be verified. You will be emailed when accepted!',
+    );
+    window.location.replace(RoutesTypes.SIGN_IN);
+  };
+
   //This extremely messy series of trying and catching doesn't stop the function when any the other functions being referenced throw errors.
   const onSubmit = data => {
     console.log(data.filesubmission);
@@ -242,6 +250,9 @@ export const SignUp = () => {
         })
         .catch(error => {
           console.error('Error sending email', error);
+        })
+        .then(() => {
+          onCreationSuccess();
         });
     } catch (error) {
       console.error('Error writing document: ', error);
@@ -249,67 +260,87 @@ export const SignUp = () => {
   };
 
   return (
-    <section className="section box">
-      <p className="has-text-centered" style={{ color: 'red' }}>
-        All fields are required for submission.
-      </p>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <section className="field">
-          <label htmlFor="firstname" className="label">
-            First Name
-          </label>
-          <section className="control">
-            {' '}
+    <>
+      <section className="container">
+        <Link to={RoutesTypes.SIGN_IN}>
+          <button className="btn btn-primary btn-block">
+            <i className="fas fa-user-plus" /> Already a member?
+          </button>
+        </Link>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <section className="form-group">
+            <label
+              htmlFor="firstname"
+              className="label"
+              style={{ color: 'black' }}
+            >
+              First Name*
+            </label>
+
             <input
-              className="input is-rounded"
+              className="form-control"
               type="text"
               id="firstname"
               onChange={e => updateValues()}
               ref={register}
               name="firstname"
             />
-            {errors.firstname && <p>{errors.firstname.message}</p>}
+            <small className="form-text text-muted">
+              {errors.firstname?.message}
+            </small>
           </section>
-        </section>
-        <section className="field">
-          <label htmlFor="lastname" className="label">
-            Last Name
-          </label>
-          <section className="control">
+          <section className="form-group">
+            <label
+              htmlFor="lastname"
+              className="label"
+              style={{ color: 'black' }}
+            >
+              Last Name*
+            </label>
+
             <input
-              className="input is-rounded"
+              className="form-control"
               type="text"
               id="lastname"
               name="lastname"
               ref={register}
               onChange={e => updateValues()}
             />
-            <p>{errors.lastname?.message}</p>
+            <small className="form-text text-muted">
+              {errors.lastname?.message}
+            </small>
           </section>
-        </section>
-        <section className="field">
-          <label htmlFor="username" className="label">
-            Username
-          </label>
-          <section className="control">
+          <section className="form-group">
+            <label
+              htmlFor="username"
+              className="label"
+              style={{ color: 'black' }}
+            >
+              Username*
+            </label>
+
             <input
-              className="input is-rounded"
+              className="form-control"
               type="text"
               id="username"
               name="username"
               onChange={e => updateValues()}
               ref={register}
             />
-            <span>{errors.username?.message}</span>
+            <small className="form-text text-muted">
+              {errors.username?.message}
+            </small>
           </section>
-        </section>
-        <section className="field">
-          <label htmlFor="password" className="label">
-            Password
-          </label>
-          <section className="control">
+          <section className="form-group">
+            <label
+              htmlFor="password"
+              className="label"
+              style={{ color: 'black' }}
+            >
+              Password*
+            </label>
             <input
-              className="input is-rounded"
+              className="form-control"
               type="password"
               id="password"
               name="password"
@@ -317,17 +348,20 @@ export const SignUp = () => {
               onChange={e => updateValues()}
               ref={register}
             />
-            <p>{errors.password?.message}</p>
-            <input type="checkbox" onClick={showPassword} /> Show Password
+            <small className="form-text text-muted">
+              {errors.password?.message}
+            </small>
           </section>
-        </section>
-        <section className="field">
-          <label htmlFor="confirmpassword" className="label">
-            Confirm Password
-          </label>
-          <section className="control">
+          <section className="form-group">
+            <label
+              htmlFor="confirmpassword"
+              className="label"
+              style={{ color: 'black' }}
+            >
+              Confirm Password*
+            </label>
             <input
-              className="input is-rounded"
+              className="form-control"
               type="password"
               id="confirmPassword"
               autoComplete="new-password"
@@ -335,16 +369,33 @@ export const SignUp = () => {
               ref={register}
               name="confirmpassword"
             />
-            <p>{errors.confirmpassword?.message}</p>
+            <small className="form-text text-muted">
+              {errors.confirmpassword?.message}
+            </small>
+            <section className="form-check">
+              <input
+                type="checkbox"
+                value=""
+                onClick={showPassword}
+                className="form-check-input"
+                id="defaultCheck1"
+              />
+              <label className="form-check-label" htmlFor="defaultCheck1">
+                Show Password
+              </label>
+            </section>
           </section>
-        </section>
-        <section className="field">
-          <label htmlFor="emailAddress" className="label">
-            Email Address
-          </label>
-          <section className="control">
+          <section className="form-group">
+            <label
+              htmlFor="emailAddress"
+              className="label"
+              style={{ color: 'black' }}
+            >
+              Email Address*
+            </label>
+
             <input
-              className="input is-rounded"
+              className="form-control"
               type="email"
               autoComplete="email"
               ref={register}
@@ -352,35 +403,45 @@ export const SignUp = () => {
               id="emailAddress"
               name="emailAddress"
             ></input>
-            <span>{errors.emailAddress?.message}</span>
+            <small className="form-text text-muted">
+              {errors.emailAddress?.message}
+            </small>
             {validationError ? <p>{validationError}</p> : <p></p>}
           </section>
-        </section>
-        <section className="field">
-          <label htmlFor="medicalschool" className="label">
-            Medical School
-          </label>
-          <section className="control">
+          <section className="form-group">
+            <label
+              htmlFor="medicalschool"
+              className="label"
+              style={{ color: 'black' }}
+            >
+              Medical School*
+            </label>
+
             <input
-              className="input is-rounded"
+              className="form-control"
               type="text"
               id="medicalschool"
               name="medicalschool"
               ref={register}
               onChange={e => updateValues()}
             ></input>
-            <span>{errors.medicalschool?.message}</span>
+            <small className="form-text text-muted">
+              {errors.medicalschool?.message}
+            </small>
           </section>
-        </section>
-        <section className="field">
-          <label htmlFor="medicalschoolyear" className="label">
-            Medical School Year
-          </label>
-          <section className="control">
+          <section className="form-group">
+            <label
+              htmlFor="medicalschoolyear"
+              className="label"
+              style={{ color: 'black' }}
+            >
+              Medical School Year*
+            </label>
+
             <select
               id="medicalschoolyear"
               name="medicalschoolyear"
-              className="input is-rounded"
+              className="form-control"
               onChange={e => updateValues()}
             >
               <option value="MS1">MS1</option>
@@ -390,28 +451,37 @@ export const SignUp = () => {
               <option value="Resident">Resident</option>
               <option value="Fellow">Fellow</option>
             </select>
-            <span>{errors.medicalschoolyear?.message}</span>
+            <small className="form-text text-muted">
+              {errors.medicalschoolyear?.message}
+            </small>
           </section>
-        </section>
-        <section className="field">
-          <label htmlFor="filesubmission" className="label">
-            Medical School Verification
-          </label>
-          <p style={{ fontSize: '12px' }}>
-            Please submit one of the following: school ID, acceptance letter,
-            unofficial transcript, or certificate of enrollment.
-          </p>
-          <input
-            type="file"
-            ref={register}
-            onChange={changeHandler}
-            id="filesubmission"
-            name="filesubmission"
-          />
-          <span>{errors.filesubmission?.message}</span>
-        </section>{' '}
-        <input type="submit" className="button is-success" />
-      </form>
-    </section>
+          <section className="form-group">
+            <label
+              htmlFor="filesubmission"
+              className="label"
+              style={{ color: 'black' }}
+            >
+              Medical School Verification*
+            </label>
+            <small className="form-text text-muted">
+              Please submit one of the following: school ID, acceptance letter,
+              unofficial transcript, or certificate of enrollment.
+            </small>
+            <input
+              type="file"
+              ref={register}
+              onChange={changeHandler}
+              id="filesubmission"
+              name="filesubmission"
+              className="form-control-file"
+            />
+            <small className="form-text text-muted">
+              {errors.filesubmission?.message}
+            </small>
+          </section>{' '}
+          <input type="submit" className="btn btn-success btn-block" />
+        </form>
+      </section>
+    </>
   );
 };

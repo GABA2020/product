@@ -116,14 +116,13 @@ export const CheckoutForm = () => {
   };
   return (
     <>
-      <form onSubmit={handleFormSubmit}>
-        <section className="field">
-          <label htmlFor="customerName" className="label">
-            Cardholder Name
-          </label>
-          <section className="control">
+      <section className="container">
+        <form onSubmit={handleFormSubmit}>
+          <section className="form-group">
+            <label htmlFor="customerName">Cardholder Name</label>
+
             <input
-              className="input is-rounded"
+              className="form-control"
               type="text"
               id="customerName"
               value={customerName}
@@ -131,14 +130,11 @@ export const CheckoutForm = () => {
               required
             ></input>
           </section>
-        </section>
-        <section className="field">
-          <label htmlFor="customerEmail" className="label">
-            Email Address
-          </label>
-          <section className="control">
+          <section className="form-group">
+            <label htmlFor="customerEmail">Email Address</label>
+
             <input
-              className="input is-rounded"
+              className="form-control"
               type="text"
               id="customerEmail"
               value={customerEmail}
@@ -146,14 +142,11 @@ export const CheckoutForm = () => {
               required
             ></input>
           </section>
-        </section>
-        <section className="field">
-          <label htmlFor="customerCity" className="label">
-            City
-          </label>
-          <section className="control">
+          <section className="form-group">
+            <label htmlFor="customerCity">City</label>
+
             <input
-              className="input is-rounded"
+              className="form-control"
               type="text"
               id="customerCity"
               value={customerCity}
@@ -161,14 +154,11 @@ export const CheckoutForm = () => {
               required
             ></input>
           </section>
-        </section>
-        <section className="field">
-          <label htmlFor="customerAddress" className="label">
-            Billing Address
-          </label>
-          <section className="control">
+          <section className="form-group">
+            <label htmlFor="customerAddress">Billing Address</label>
+
             <input
-              className="input is-rounded"
+              className="form-control"
               type="text"
               id="customerAddress"
               value={customerAddress}
@@ -176,14 +166,11 @@ export const CheckoutForm = () => {
               required
             ></input>
           </section>
-        </section>
-        <section className="field">
-          <label htmlFor="customerState" className="label">
-            State
-          </label>
-          <section className="control">
+          <section className="form-group">
+            <label htmlFor="customerState">State</label>
+
             <input
-              className="input is-rounded"
+              className="form-control"
               type="text"
               id="customerState"
               value={customerState}
@@ -191,14 +178,11 @@ export const CheckoutForm = () => {
               required
             ></input>
           </section>
-        </section>
-        <section className="field">
-          <label htmlFor="customerZipcode" className="label">
-            Zipcode
-          </label>
-          <section className="control">
+          <section className="form-group">
+            <label htmlFor="customerZipcode">Zipcode</label>
+
             <input
-              className="input is-rounded"
+              className="form-control"
               type="text"
               id="customerZipcode"
               value={customerZipcode}
@@ -206,16 +190,13 @@ export const CheckoutForm = () => {
               required
             ></input>
           </section>
-        </section>
-        <section className="field">
-          <label htmlFor="selectedMembership" className="label">
-            GABA Membership Plan
-          </label>
-          <section className="control">
+          <section className="form-group">
+            <label htmlFor="selectedMembership">GABA Membership Plan</label>
+
             <select
               id="selectedMembership"
               name="selectedMembership"
-              className="input is-rounded"
+              className="form-control"
               onChange={e => updateValues()}
             >
               <option value="GABABronze">GABA Bronze</option>
@@ -223,17 +204,21 @@ export const CheckoutForm = () => {
               <option value="PreMed">Pre-Med</option>
             </select>
           </section>
-        </section>
-        <CardElement options={cardElementOptions} />
-        {checkoutError && <span>{checkoutError}</span>}
-        <p>
-          Your total for the {selectedMembership} membership comes out to $
-          {membershipPrice()}.
-        </p>
-        <button type="submit" disabled={!stripe || isProcessing}>
-          {isProcessing ? 'Processing...' : `Pay $${membershipPrice()}.00`}
-        </button>
-      </form>
+          <CardElement options={cardElementOptions} />
+          {checkoutError && <span>{checkoutError}</span>}
+          <p>
+            Your total for the {selectedMembership} membership comes out to $
+            {membershipPrice()}.
+          </p>
+          <button
+            type="submit"
+            disabled={!stripe || isProcessing}
+            className="btn btn-success btn-block"
+          >
+            {isProcessing ? 'Processing...' : `Pay $${membershipPrice()}.00`}
+          </button>
+        </form>
+      </section>
     </>
   );
 };

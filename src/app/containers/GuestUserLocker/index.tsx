@@ -1,6 +1,5 @@
-import React, { Fragment, useState, useEffect } from 'react';
-import { verified_check, bag } from 'assets/images';
-import { Rate } from 'antd';
+import React, { Fragment, useEffect, useState } from 'react';
+import { bag } from 'assets/images';
 import { useInjectSaga } from 'utils/redux-injectors';
 import { actions, sliceKey } from 'redux/Locker/slice';
 import { LockerSaga } from 'redux/Locker/saga';
@@ -23,7 +22,7 @@ export const GuestUserLocker = () => {
     loading,
   } = useSelector(lockerSelector);
   const { userSearchProfile } = useSelector(userSelector);
-  const image = useStorage(`avatars/${userSearchProfile.avatar}`);
+  const [tabState, setTabState] = useState(0); // 0 => resource, 1 => review
 
   useEffect(() => {
     if (userSearchProfile.email !== '') {
@@ -90,9 +89,11 @@ export const GuestUserLocker = () => {
             <div className="locker-col">
               <div className="locker-tabs">
                 <ul className="nav nav-tabs">
-                  <li className="active">
+                  <li className={tabState === 0 ? 'active' : undefined}>
                     <a
-                      onClick={() => {
+                      onClick={e => {
+                        e.preventDefault();
+                        setTabState(0);
                         dispatch(
                           actions.getUserResourcesAction({
                             email: userSearchProfile.email,
@@ -106,9 +107,11 @@ export const GuestUserLocker = () => {
                       Resources
                     </a>
                   </li>
-                  <li>
+                  <li className={tabState === 1 ? 'active' : undefined}>
                     <a
-                      onClick={() => {
+                      onClick={e => {
+                        e.preventDefault();
+                        setTabState(1);
                         dispatch(
                           actions.getReviewsAction({
                             email: userSearchProfile.email,
@@ -135,18 +138,52 @@ export const GuestUserLocker = () => {
           </div>
           <div className="locker-panel">
             <div className="tab-content">
-              <div role="tabpanel" className="tab-pane active" id="frame-1">
-                {!loading &&
-                  (userResources.length > 0 ? (
-                    <div className="locker-category">
-                      {renderResource(userResources)}
-                      {userResources.length > 0 &&
-                        userResources.length < userResourceLength && (
+              {tabState === 0 && (
+                <div role="tabpanel" className="tab-pane active" id="frame-1">
+                  {!loading &&
+                    (userResources.length > 0 ? (
+                      <div className="locker-category">
+                        {renderResource(userResources)}
+                        {userResources.length > 0 &&
+                          userResources.length < userResourceLength && (
+                            <div className="review-btn-wrap">
+                              <button
+                                onClick={() => {
+                                  dispatch(
+                                    actions.getMoreUserResourcesAction({
+                                      email: userSearchProfile.email,
+                                      lastQuery,
+                                    }),
+                                  );
+                                }}
+                                className="load-more"
+                              >
+                                Load More Resources
+                              </button>
+                            </div>
+                          )}
+                      </div>
+                    ) : (
+                      <div className="locker-category">
+                        <div className="locker-empty text-center">
+                          <p>There is no resource available</p>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              )}
+              {tabState === 1 && (
+                <div role="tabpanel" className="tab-pane active" id="frame-2">
+                  {!loading &&
+                    (reviews.length > 0 ? (
+                      <div className="locker-review">
+                        {renderReviews(reviews)}
+                        {reviews.length > 0 && reviews.length < reviewLength ? (
                           <div className="review-btn-wrap">
                             <button
                               onClick={() => {
                                 dispatch(
-                                  actions.getMoreUserResourcesAction({
+                                  actions.getMoreReviewsAction({
                                     email: userSearchProfile.email,
                                     lastQuery,
                                   }),
@@ -154,50 +191,20 @@ export const GuestUserLocker = () => {
                               }}
                               className="load-more"
                             >
-                              Load More Resources
+                              Load More Reviews
                             </button>
                           </div>
-                        )}
-                    </div>
-                  ) : (
-                    <div className="locker-category">
-                      <div className="locker-empty text-center">
-                        <p>There is no resource available</p>
+                        ) : null}
                       </div>
-                    </div>
-                  ))}
-              </div>
-              <div role="tabpanel" className="tab-pane" id="frame-2">
-                {!loading &&
-                  (reviews.length > 0 ? (
-                    <div className="locker-review">
-                      {renderReviews(reviews)}
-                      {reviews.length > 0 && reviews.length < reviewLength ? (
-                        <div className="review-btn-wrap">
-                          <button
-                            onClick={() => {
-                              dispatch(
-                                actions.getMoreReviewsAction({
-                                  email: userSearchProfile.email,
-                                  lastQuery,
-                                }),
-                              );
-                            }}
-                            className="load-more"
-                          >
-                            Load More Reviews
-                          </button>
+                    ) : (
+                      <div className="locker-review">
+                        <div className="locker-empty text-center">
+                          <p>There is no review available</p>
                         </div>
-                      ) : null}
-                    </div>
-                  ) : (
-                    <div className="locker-review">
-                      <div className="locker-empty text-center">
-                        <p>There is no review available</p>
                       </div>
-                    </div>
-                  ))}
-              </div>
+                    ))}
+                </div>
+              )}
             </div>
           </div>
         </div>

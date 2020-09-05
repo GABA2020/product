@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { lockerSelector } from 'redux/Locker/selectors';
 import { userSelector } from 'redux/User/selectors';
 import { AddResource } from 'app/components/Modal/ResourceModal/AddResource';
-import { useStorage } from 'hook/useStorage';
 import { Resource } from 'app/components/Resource';
 import Review from 'app/components/Review';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -48,12 +47,12 @@ export const Locker = () => {
   } = useSelector(lockerSelector);
 
   const { userProfile } = useSelector(userSelector);
-  const image = useStorage(`avatars/${userProfile.avatar}`);
   const [addResourceModal, setAddResourceModal] = useState<boolean>(false);
   const [editResourceModal, setEditResourceModal] = useState<boolean>(false);
   const [resourceState, setResourceState] = useState<ENTITIES.UserResource>(
     iniUserResource,
   );
+  const [tabState, setTabState] = useState(0); // 0 => resource, 1 => review
 
   useEffect(() => {
     if (userProfile.email !== '') {
@@ -176,9 +175,11 @@ export const Locker = () => {
             <div className="locker-col">
               <div className="locker-tabs">
                 <ul className="nav nav-tabs">
-                  <li className="active">
+                  <li className={tabState === 0 ? 'active' : undefined}>
                     <a
-                      onClick={() => {
+                      onClick={e => {
+                        e.preventDefault();
+                        setTabState(0);
                         dispatch(
                           actions.getUserResourcesAction({
                             email: userProfile.email,
@@ -192,9 +193,11 @@ export const Locker = () => {
                       Resources
                     </a>
                   </li>
-                  <li>
+                  <li className={tabState === 1 ? 'active' : undefined}>
                     <a
-                      onClick={() => {
+                      onClick={e => {
+                        e.preventDefault();
+                        setTabState(1);
                         dispatch(
                           actions.getReviewsAction({
                             email: userProfile.email,
@@ -221,18 +224,64 @@ export const Locker = () => {
           </div>
           <div className="locker-panel">
             <div className="tab-content">
-              <div role="tabpanel" className="tab-pane active" id="frame-1">
-                {!loading &&
-                  (userResources.length > 0 ? (
-                    <div className="locker-category">
-                      {renderResource(userResources)}
-                      {userResources.length > 0 &&
-                        userResources.length < userResourceLength && (
+              {tabState === 0 && (
+                <div role="tabpanel" className={`tab-pane active`} id="frame-1">
+                  {!loading &&
+                    (userResources.length > 0 ? (
+                      <div className="locker-category">
+                        {renderResource(userResources)}
+                        {userResources.length > 0 &&
+                          userResources.length < userResourceLength && (
+                            <div className="review-btn-wrap">
+                              <button
+                                onClick={() => {
+                                  dispatch(
+                                    actions.getMoreUserResourcesAction({
+                                      email: userProfile.email,
+                                      lastQuery,
+                                    }),
+                                  );
+                                }}
+                                className="load-more"
+                              >
+                                Load More Resources
+                              </button>
+                            </div>
+                          )}
+                      </div>
+                    ) : (
+                      <div className="locker-category">
+                        <div className="locker-empty text-center">
+                          <div className="media-marketplace">
+                            <div className="image">
+                              <img src={bag} alt="bag" />
+                            </div>
+                            <div className="caption">
+                              <p>Browse all resources</p>
+                            </div>
+                          </div>
+                          <div className="locker-button">
+                            <a href="#" className="btn btn-marketplace">
+                              Go to Marketplace
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              )}
+              {tabState === 1 && (
+                <div role="tabpanel" className={`tab-pane active`} id="frame-2">
+                  {!loading &&
+                    (reviews.length > 0 ? (
+                      <div className="locker-review">
+                        {renderReviews(reviews)}
+                        {reviews.length > 0 && reviews.length < reviewLength ? (
                           <div className="review-btn-wrap">
                             <button
                               onClick={() => {
                                 dispatch(
-                                  actions.getMoreUserResourcesAction({
+                                  actions.getMoreReviewsAction({
                                     email: userProfile.email,
                                     lastQuery,
                                   }),
@@ -240,65 +289,23 @@ export const Locker = () => {
                               }}
                               className="load-more"
                             >
-                              Load More Resources
+                              Load More Reviews
                             </button>
                           </div>
-                        )}
-                    </div>
-                  ) : (
-                    <div className="locker-category">
-                      <div className="locker-empty text-center">
-                        <div className="media-marketplace">
-                          <div className="image">
-                            <img src={bag} alt="bag" />
-                          </div>
-                          <div className="caption">
-                            <p>Browse all resources</p>
-                          </div>
-                        </div>
-                        <div className="locker-button">
-                          <a href="#" className="btn btn-marketplace">
-                            Go to Marketplace
-                          </a>
-                        </div>
+                        ) : null}
                       </div>
-                    </div>
-                  ))}
-              </div>
-              <div role="tabpanel" className="tab-pane" id="frame-2">
-                {!loading &&
-                  (reviews.length > 0 ? (
-                    <div className="locker-review">
-                      {renderReviews(reviews)}
-                      {reviews.length > 0 && reviews.length < reviewLength ? (
-                        <div className="review-btn-wrap">
-                          <button
-                            onClick={() => {
-                              dispatch(
-                                actions.getMoreReviewsAction({
-                                  email: userProfile.email,
-                                  lastQuery,
-                                }),
-                              );
-                            }}
-                            className="load-more"
-                          >
-                            Load More Reviews
+                    ) : (
+                      <div className="locker-review">
+                        <div className="locker-empty text-center">
+                          <p>There is no review available</p>
+                          <button className="btn-start-review">
+                            Start a review
                           </button>
                         </div>
-                      ) : null}
-                    </div>
-                  ) : (
-                    <div className="locker-review">
-                      <div className="locker-empty text-center">
-                        <p>There is no review available</p>
-                        <button className="btn-start-review">
-                          Start a review
-                        </button>
                       </div>
-                    </div>
-                  ))}
-              </div>
+                    ))}
+                </div>
+              )}
             </div>
           </div>
         </div>

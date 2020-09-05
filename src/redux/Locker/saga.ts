@@ -1,4 +1,4 @@
-import { call, put, takeLatest, delay, cps } from 'redux-saga/effects';
+import { call, put, takeLatest, delay } from 'redux-saga/effects';
 import { actions } from './slice';
 import { DTO } from 'types/DTO';
 import {

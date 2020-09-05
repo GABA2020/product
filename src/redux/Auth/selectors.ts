@@ -8,8 +8,9 @@ const selectDomain = (state: RootState) => state.auth || initialState;
 
 export const authSelector = createSelector(
   [selectDomain],
-  ({ isAuth, email }) => ({
+  ({ isAuth, email, username }) => ({
     isAuth,
     email,
+    username,
   }),
 );

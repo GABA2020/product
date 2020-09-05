@@ -8,7 +8,7 @@ const limitContent = 6;
 const addNewUserResource = async (
   payload: DTO.Locker.UserResource.AddUserResourceRequest,
 ) => {
-  const lockerRef = await db
+  await db
     .collection('member_data')
     .doc(payload.email)
     .collection('resources')
@@ -39,7 +39,7 @@ const editUserResource = async (
   payload: DTO.Locker.UserResource.EditUserResourceRequest,
 ) => {
   console.log(payload);
-  const lockerRef = await db
+  await db
     .collection('member_data')
     .doc(payload.email)
     .collection('resources')

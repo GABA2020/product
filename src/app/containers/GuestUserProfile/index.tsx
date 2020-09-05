@@ -89,7 +89,7 @@ export const GuestUserProfile = props => {
     <Fragment>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>{userSearchProfile.name}</title>
+        <title>{userSearchProfile.username}</title>
       </Helmet>
       <Chat
         isShow={chatModal}
@@ -123,7 +123,7 @@ export const GuestUserProfile = props => {
               <div className="profile-body">
                 <div className="profile-user">
                   <p className="user-name">
-                    {userSearchProfile.name}
+                    {userSearchProfile.username}
                     <sup>
                       {userSearchProfile.degrees}{' '}
                       {userSearchProfile.verified ?? (
@@ -150,11 +150,16 @@ export const GuestUserProfile = props => {
                       Visual Learner
                     </a>
                   </li>
-                  <li>
-                    <a href="#" className="btn-profile-tag">
-                      AOA
-                    </a>
-                  </li>
+                  {userSearchProfile.honors.length > 0 &&
+                    userSearchProfile.honors.map((item, index) => {
+                      return (
+                        <li key={index}>
+                          <a href="#" className="btn-profile-tag">
+                            {item}
+                          </a>
+                        </li>
+                      );
+                    })}
                 </ul>
               </div>
               <div className="profile-connect">

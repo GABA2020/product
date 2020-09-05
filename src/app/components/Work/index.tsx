@@ -19,8 +19,9 @@ interface IWork {
   getWorkExperiences: () => void;
   getMoreWorkExperiences: () => void;
 }
-
-const text = `<p>- Developed new operational procedures and implemented new technology to optimize patient experience while reducing physician workload by approx. 35%.</p> <p>- Assisted physicians with all clinic procedures including minor surgeries, physical exams, exam documentation and patient triage</p>`;
+const renderTextArea = (text: string) => {
+  return text.replace(/\n/g, '<br>');
+};
 export const Work: FC<IWork> = props => {
   const {
     workExperiences,
@@ -62,21 +63,6 @@ export const Work: FC<IWork> = props => {
     getWorkExperiences();
   }, []);
 
-  useEffect(() => {
-    var accordion = new (jQuery as any).DEVFUNC.accordion();
-    accordion.handleAccordion();
-    /*****Smartphone menu settings*****/
-    (jQuery as any).DEVFUNC.spMenu({
-      menuBtn: [
-        {
-          oBtn: '#btn-nav-sp a',
-          target: '#sub-menu-sp',
-        },
-      ],
-      closeBtn: '.close_btn',
-      addClass: 'spmenu_open',
-    });
-  }, []);
   const onAddNewWorkExperience = (workExperience: ENTITIES.WorkExperience) => {
     addNewWorkExperience(workExperience);
     setIsShowModalAddWorkState(false);
@@ -168,7 +154,7 @@ export const Work: FC<IWork> = props => {
                       <div className="content">
                         <div
                           dangerouslySetInnerHTML={{
-                            __html: item.description,
+                            __html: renderTextArea(item.description),
                           }}
                         ></div>
                       </div>
@@ -182,7 +168,9 @@ export const Work: FC<IWork> = props => {
               <p>There is no experiences available</p>
             </div>
           ))}
-        {workExperiences.length > 0 && workExperiences.length < arrayLength ? (
+        {!loading &&
+        workExperiences.length > 0 &&
+        workExperiences.length < arrayLength ? (
           <div className="load-more-wrapper text-center">
             <a
               className="load-more-btn"

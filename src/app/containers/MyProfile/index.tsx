@@ -88,7 +88,7 @@ export const MyProfile = props => {
     <Fragment>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>{userProfile.name}</title>
+        <title>{userProfile.username}</title>
       </Helmet>
       <EditProfileModal
         saveProfile={saveProfile}
@@ -139,7 +139,7 @@ export const MyProfile = props => {
               <div className="profile-body">
                 <div className="profile-user">
                   <p className="user-name">
-                    {userProfile.name}
+                    {userProfile.username}
                     <sup>
                       {userProfile.degrees}{' '}
                       {userProfile.verified ?? (
@@ -171,11 +171,16 @@ export const MyProfile = props => {
                       Visual Learner
                     </a>
                   </li>
-                  <li>
-                    <a href="#" className="btn-profile-tag">
-                      AOA
-                    </a>
-                  </li>
+                  {userProfile.honors.length > 0 &&
+                    userProfile.honors.map((item, index) => {
+                      return (
+                        <li key={index}>
+                          <a href="#" className="btn-profile-tag">
+                            {item}
+                          </a>
+                        </li>
+                      );
+                    })}
                 </ul>
               </div>
               {/* owner profile will use userProfile */}

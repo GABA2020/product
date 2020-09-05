@@ -22,6 +22,8 @@ import {
   getMoreLetters,
   getMoreEducations,
   getGuestUserProfile,
+  getAllEducations,
+  getAllWorkExperiences,
 } from '../../services';
 import {
   getVolunteers,
@@ -29,6 +31,7 @@ import {
   editVolunteer,
   deleteVolunteer,
   getMoreVolunteers,
+  getAllVolunteers,
 } from 'services/VolunteerService';
 import {
   getResearches,
@@ -36,6 +39,7 @@ import {
   editResearch,
   deleteResearch,
   getMoreResearches,
+  getAllResearches,
 } from 'services/ResearchService';
 
 export function* GetUserProfile({ payload }) {
@@ -104,6 +108,19 @@ export function* getWorkExperiencesSaga({ payload }) {
   }
 }
 
+export function* getAllWorkExperiencesSaga({ payload }) {
+  yield delay(500);
+  try {
+    const response: DTO.User.WorkExperience.GetAllWorkExperiencesResponse = yield call(
+      getAllWorkExperiences,
+      payload,
+    );
+    yield put(actions.getAllWorkExperiencesActionSuccess(response));
+  } catch (e) {
+    yield put(actions.getAllWorkExperiencesActionFailed());
+  }
+}
+
 export function* getMoreWorkExperiencesSaga({ payload }) {
   yield delay(500);
   try {
@@ -145,6 +162,18 @@ export function* deleteWorkExperienceSaga({ payload }) {
     yield put(actions.deleteWorkExperienceActionSuccess());
   } catch (e) {
     yield put(actions.deleteWorkExperienceActionFailed());
+  }
+}
+
+export function* getAllEducationsSaga({ payload }) {
+  try {
+    const response: DTO.User.Education.GetAllEducationsResponse = yield call(
+      getAllEducations,
+      payload,
+    );
+    yield put(actions.getAllEducationsActionSuccess(response));
+  } catch (e) {
+    yield put(actions.getAllEducationsActionFailed());
   }
 }
 
@@ -219,6 +248,19 @@ export function* getVolunteersSaga({ payload }) {
   }
 }
 
+export function* getAllVolunteersSaga({ payload }) {
+  yield delay(500);
+  try {
+    const response: DTO.User.Volunteer.GetAllVolunteersResponse = yield call(
+      getAllVolunteers,
+      payload,
+    );
+    yield put(actions.getAllVolunteersActionSuccess(response));
+  } catch (e) {
+    yield put(actions.getAllVolunteersActionFailed());
+  }
+}
+
 export function* getMoreVolunteersSaga({ payload }) {
   yield delay(500);
   try {
@@ -274,6 +316,19 @@ export function* getResearchesSaga({ payload }) {
     yield put(actions.getResearchesActionSuccess(response));
   } catch (e) {
     yield put(actions.getResearchesActionFailed());
+  }
+}
+
+export function* getAllResearchesSaga({ payload }) {
+  yield delay(500);
+  try {
+    const response: DTO.User.Research.GetAllResearchesResponse = yield call(
+      getAllResearches,
+      payload,
+    );
+    yield put(actions.getAllResearchesActionSuccess(response));
+  } catch (e) {
+    yield put(actions.getAllResearchesActionFailed());
   }
 }
 
@@ -406,6 +461,10 @@ export function* UserSaga() {
   yield takeLatest(actions.updateUserProfileAction, updateUserProfileSaga);
 
   // work
+  yield takeLatest(
+    actions.getAllWorkExperiencesAction,
+    getAllWorkExperiencesSaga,
+  );
   yield takeLatest(actions.getWorkExperiencesAction, getWorkExperiencesSaga);
   yield takeLatest(
     actions.getMoreWorkExperiencesAction,
@@ -422,6 +481,7 @@ export function* UserSaga() {
   );
 
   //education
+  yield takeLatest(actions.getAllEducationsAction, getAllEducationsSaga);
   yield takeLatest(actions.getEducationsAction, getEducationsSaga);
   yield takeLatest(actions.getMoreEducationsAction, getMoreEducationsSaga);
   yield takeLatest(actions.addNewEducationAction, addNewEducationsSaga);
@@ -430,6 +490,7 @@ export function* UserSaga() {
 
   //volunteer
   yield takeLatest(actions.getVolunteersAction, getVolunteersSaga);
+  yield takeLatest(actions.getAllVolunteersAction, getAllVolunteersSaga);
   yield takeLatest(actions.getMoreVolunteersAction, getMoreVolunteersSaga);
   yield takeLatest(actions.getVolunteersAction, getVolunteersSaga);
   yield takeLatest(actions.addNewVolunteerAction, addVolunteerSaga);
@@ -438,6 +499,7 @@ export function* UserSaga() {
 
   //research
   yield takeLatest(actions.getResearchesAction, getResearchesSaga);
+  yield takeLatest(actions.getAllResearchesAction, getAllResearchesSaga);
   yield takeLatest(actions.getMoreResearchesAction, getMoreResearchesSaga);
   yield takeLatest(actions.addNewResearchAction, addResearchSaga);
   yield takeLatest(actions.editResearchAction, editResearchSaga);

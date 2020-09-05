@@ -154,7 +154,9 @@ export const Education: FC<IEducation> = props => {
               <p>There is no experiences available</p>
             </div>
           ))}
-        {educations.length > 0 && educations.length < arrayLength ? (
+        {!loading &&
+        educations.length > 0 &&
+        educations.length < arrayLength ? (
           <div className="load-more-wrapper text-center">
             <a
               className="load-more-btn"

@@ -35,6 +35,27 @@ const getWorkExperiences = async (
   return { workExperiences, arrayLength, lastQuery };
 };
 
+const getAllWorkExperiences = async (
+  payload: DTO.User.WorkExperience.GetAllWorkExperiencesRequest,
+) => {
+  const workExperiences: ENTITIES.WorkExperience[] = [];
+
+  const userRef = await db
+    .collection('member_data')
+    .doc(payload.email)
+    .collection('work');
+
+  const workCollection = await userRef.orderBy('date_end', 'desc').get();
+
+  workCollection.forEach(doc => {
+    workExperiences.push({
+      id: doc.id,
+      ...doc.data(),
+    } as ENTITIES.WorkExperience);
+  });
+  return { workExperiences };
+};
+
 const getMoreWorkExperiences = async (
   payload: DTO.User.WorkExperience.GetMoreWorkExperiencesRequest,
 ) => {
@@ -119,6 +140,7 @@ const deleteWorkExperience = async (
 
 export {
   getWorkExperiences,
+  getAllWorkExperiences,
   getMoreWorkExperiences,
   addNewWorkExperience,
   editWorkExperience,

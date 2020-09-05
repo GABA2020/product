@@ -35,6 +35,27 @@ const getEducations = async (
   return { educations, lastQuery, arrayLength };
 };
 
+const getAllEducations = async (
+  payload: DTO.User.Education.GetAllEducationsRequest,
+) => {
+  const educations: ENTITIES.Education[] = [];
+
+  const userRef = await db
+    .collection('member_data')
+    .doc(payload.email)
+    .collection('education');
+
+  const educationCollection = await userRef.orderBy('date_end', 'desc').get();
+
+  educationCollection.forEach(doc => {
+    educations.push({
+      id: doc.id,
+      ...doc.data(),
+    } as ENTITIES.Education);
+  });
+  return { educations } as DTO.User.Education.GetAllEducationsResponse;
+};
+
 const getMoreEducations = async (
   payload: DTO.User.Education.GetMoreEducationsRequest,
 ) => {
@@ -116,7 +137,7 @@ const editEducation = async (
 const deleteEducation = async (
   payload: DTO.User.WorkExperience.DeleteWorkExperiencesRequest,
 ) => {
-  const workCollection = await db
+  await db
     .collection('member_data')
     .doc(payload.email)
     .collection('education')
@@ -126,6 +147,7 @@ const deleteEducation = async (
 
 export {
   getEducations,
+  getAllEducations,
   getMoreEducations,
   addNewEducation,
   editEducation,

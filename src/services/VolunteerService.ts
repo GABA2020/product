@@ -35,6 +35,27 @@ const getVolunteers = async (
   return { volunteers, arrayLength, lastQuery };
 };
 
+const getAllVolunteers = async (
+  payload: DTO.User.Volunteer.GetAllVolunteersRequest,
+) => {
+  const volunteers: ENTITIES.Volunteer[] = [];
+
+  const userRef = await db
+    .collection('member_data')
+    .doc(payload.email)
+    .collection('volunteer');
+
+  const volunteerCollection = await userRef.orderBy('date_end', 'desc').get();
+
+  volunteerCollection.forEach(doc => {
+    volunteers.push({
+      id: doc.id,
+      ...doc.data(),
+    } as ENTITIES.Volunteer);
+  });
+  return { volunteers };
+};
+
 const getMoreVolunteers = async (
   payload: DTO.User.Volunteer.GetMoreVolunteersRequest,
 ) => {
@@ -117,7 +138,7 @@ const editVolunteer = async (
 const deleteVolunteer = async (
   payload: DTO.User.Volunteer.DeleteVolunteerRequest,
 ) => {
-  const volunteerCollection = await db
+  await db
     .collection('member_data')
     .doc(payload.email)
     .collection('volunteer')
@@ -127,6 +148,7 @@ const deleteVolunteer = async (
 
 export {
   getVolunteers,
+  getAllVolunteers,
   getMoreVolunteers,
   addNewVolunteer,
   editVolunteer,

@@ -5,10 +5,7 @@ import {
   sliceKey as userSliceKey,
   actions as userActions,
 } from 'redux/User/slice';
-import {
-  sliceKey as chatSliceKey,
-  actions as chatActions,
-} from 'redux/Chat/slice';
+import { sliceKey as chatSliceKey } from 'redux/Chat/slice';
 import { UserSaga } from 'redux/User/saga';
 import { ChatSaga } from 'redux/Chat/saga';
 import { userSelector } from 'redux/User/selectors';
@@ -68,7 +65,7 @@ export const SearchUser: FC<IProfile> = props => {
                       <li>
                         <a href="#">Home</a>
                       </li>
-                      <li className="active">{userSearchProfile.name}</li>
+                      <li className="active">{userSearchProfile.username}</li>
                     </ul>
                   </div>
                 </section>

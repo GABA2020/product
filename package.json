@@ -33,7 +33,7 @@
   "scripts": {
     "// ---DEFAULT CRA---": "",
     "start": "cross-env react-scripts start env-cmd -f .env",
-    "build": "react-scripts build",
+    "build": "react-scripts build env-cmd -f .env",
     "test": "react-scripts test",
     "// ---TEMPLATE---": "Scripts will be also in the template",
     "start:prod": "npm run build && serve -s build",
@@ -110,7 +110,9 @@
     "env-cmd": "10.1.0",
     "firebase": "7.15.5",
     "firebase-admin": "8.13.0",
+    "firebase-tools": "8.10.0",
     "fontfaceobserver": "2.1.0",
+    "fontkit": "1.8.1",
     "formik": "2.1.5",
     "history": "4.10.1",
     "i18next": "19.3.4",

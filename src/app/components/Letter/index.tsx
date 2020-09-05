@@ -168,7 +168,7 @@ export const Letter: FC<ILetter> = props => {
               <p>There is no experiences available</p>
             </div>
           ))}
-        {letters.length > 0 && letters.length < arrayLength ? (
+        {!loading && letters.length > 0 && letters.length < arrayLength ? (
           <div className="load-more-wrapper text-center">
             <a
               className="load-more-btn"

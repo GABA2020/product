@@ -41,9 +41,6 @@ interface IForm {
 
 const degreesOptions = [
   { value: 'MD', label: 'MD' },
-  { value: 'Strawberry', label: 'Strawberry' },
-  { value: 'Vanilla', label: 'Vanilla' },
-  { value: 'MD', label: 'MD' },
   { value: 'DO', label: 'DO' },
   { value: 'MBA', label: 'MBA' },
   { value: 'PhD', label: 'PhD' },
@@ -55,7 +52,7 @@ const degreesOptions = [
   { value: 'Other', label: 'Other' },
   { value: 'US IMG', label: 'US IMG' },
   { value: 'IMG', label: 'IMG' },
-  { value: 'Canad-IMG', label: 'Canad-IMG' }
+  { value: 'Canad-IMG', label: 'Canad-IMG' },
 ];
 
 const initialValues: IForm = {

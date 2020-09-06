@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import emailjs from 'emailjs-com';
 import { db } from '../../../../helpers/firebase.module';
-import { PDFViewer } from '@react-pdf/renderer';
 
 export const AdminVerifyProfileModal = ({
   selectedImg,
@@ -19,7 +18,6 @@ export const AdminVerifyProfileModal = ({
     const template_id = 'welcome_to_gaba_';
     const user_id = 'user_yIq3IIfTQ8ruKbjBAqYaQ';
     await emailjs.send(service_id, template_id, template_params, user_id);
-    console.log('Email sent successfully to ', email);
   };
 
   const verifyUser = async () => {
@@ -29,7 +27,6 @@ export const AdminVerifyProfileModal = ({
       },
       { merge: true },
     );
-    console.log('User successfully verified!');
   };
 
   const handleClick = e => {
@@ -45,7 +42,19 @@ export const AdminVerifyProfileModal = ({
   };
   return (
     <div className="backdrop" onClick={handleClick}>
-      <img src={selectedImg} alt="enlarged pic" />
+      <a href={selectedImg} target="_blank" rel="noopener noreferrer">
+        <img
+          className="img-fluid img-thumbnail"
+          style={{
+            maxWidth: '60%',
+            maxHeight: '80%',
+            display: 'block',
+            margin: 'auto',
+          }}
+          src={selectedImg}
+          alt="Click here to open PDF in another tab."
+        />
+      </a>
 
       <button
         className="button is-success has-text-centered"

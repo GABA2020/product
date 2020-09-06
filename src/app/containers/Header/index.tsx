@@ -70,6 +70,8 @@ export const Header = () => {
   const signOut = () => {
     dispatch(authActions.logoutAction());
   };
+
+  const adminList = ['candice.blacknall@gogaba.co'];
   return (
     <Fragment>
       <Chat
@@ -93,6 +95,13 @@ export const Header = () => {
           searchResults={userSearchResults}
           onchangeSearchText={onchangeSearchText}
         ></SearchBox>
+        {adminList.includes(email as any) && (
+          <>
+            <Link to={RoutesTypes.ADMIN_CONSOLE}>
+              <span className="account-name">Admin Console</span>
+            </Link>
+          </>
+        )}
         <div className="account">
           <div className="notification">
             <a

@@ -313,6 +313,7 @@ export const CV: FC<ICV> = props => {
                 <View style={styles.section_profile_name}>
                   <Text>{userProfile.name}</Text>
                 </View>
+                {/*This is formatted incorrectly and there's nowhere to input phone numbers or addresses on the profile*/}
                 <View style={styles.section_profile_ad}>
                   <Text>{userProfile.address}</Text>
                   <Text style={styles.text_bold}>&middot;</Text>

@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { useSelector } from 'react-redux';
+import { authSelector } from 'redux/Auth/selectors';
+import { db } from '../../../helpers/firebase.module';
+import RoutesTypes from '../../../types/Routes';
 
 export const CheckoutForm = () => {
   const [customerName, setCustomerName] = useState('');
@@ -16,6 +20,18 @@ export const CheckoutForm = () => {
 
   const stripe = useStripe() as any;
   const elements = useElements() as any;
+
+  const { email } = useSelector(authSelector);
+
+  const upgradeUser = async () => {
+    await db.collection('member_data').doc(email).set(
+      {
+        membership_tier: selectedMembership,
+      },
+      { merge: true },
+    );
+    console.log(`${email} has been upgraded to ${selectedMembership}!`);
+  };
 
   const updateValues = () => {
     setCustomerName((document.querySelector('#customerName') as any)!.value);
@@ -89,8 +105,10 @@ export const CheckoutForm = () => {
       setCheckoutError(confirmedCardPayment.error.message);
     } else {
       if (confirmedCardPayment.paymentIntent.status === 'succeeded') {
+        await upgradeUser();
         alert('Payment Received. Thank you for your patronage!');
         setIsProcessing(false);
+        window.location.replace(RoutesTypes.HOME);
       }
     }
   };

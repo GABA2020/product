@@ -30,7 +30,6 @@ export const CheckoutForm = () => {
       },
       { merge: true },
     );
-    console.log(`${email} has been upgraded to ${selectedMembership}!`);
   };
 
   const updateValues = () => {

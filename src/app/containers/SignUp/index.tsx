@@ -91,7 +91,6 @@ export const SignUp = () => {
         },
         { merge: true },
       );
-      console.log(url);
     });
   };
 
@@ -100,7 +99,6 @@ export const SignUp = () => {
 
     if (selected && types.includes(selected.type)) {
       setFile(selected);
-      console.log(selected.name);
       setError('');
     } else {
       setFile(null);
@@ -118,7 +116,6 @@ export const SignUp = () => {
       const template_id = 'template_7uh3g6p';
       const user_id = 'user_yIq3IIfTQ8ruKbjBAqYaQ';
       await emailjs.send(service_id, template_id, template_params, user_id);
-      console.log('Email sent successfully to ', createEmail);
     } else throw error;
   };
 
@@ -219,8 +216,6 @@ export const SignUp = () => {
           },
           { merge: true },
         );
-
-      console.log('Document successfully written!');
       await db.collection('program_review').doc(createEmail).set(
         {
           specialty: '',

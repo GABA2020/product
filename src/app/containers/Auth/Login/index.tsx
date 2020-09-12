@@ -25,7 +25,7 @@ export const Login: React.FC = props => {
   useInjectSaga({ key: sliceKey, saga: AuthSaga });
 
   const dispatch = useDispatch();
-  const { isAuth } = useSelector(authSelector);
+  const { loading } = useSelector(authSelector);
   const onSubmit = data => {
     dispatch(
       actions.loginAction({
@@ -77,11 +77,25 @@ export const Login: React.FC = props => {
               <span className={'text-danger'}>{errors.password.message}</span>
             )}
           </div>
-          <button className="btn btn-success btn-block" type="submit">
+          <button
+            disabled={loading ? true : false}
+            className="btn btn-success btn-block"
+            type="submit"
+          >
             <i className="fas fa-sign-in-alt" /> Sign in
           </button>
           <div className="text-center form-group">
-            <a className="mb-3" href="#" id="forgot_pswd">
+            <a
+              onClick={e => {
+                e.preventDefault();
+                if (!loading) {
+                  //Redirect
+                }
+              }}
+              className="mb-3"
+              href="#"
+              id="forgot_pswd"
+            >
               Forgot password?
             </a>
           </div>
@@ -90,6 +104,7 @@ export const Login: React.FC = props => {
               className="btn btn-primary btn-block"
               type="button"
               id="btn-signup"
+              disabled={loading ? true : false}
             >
               <i className="fas fa-user-plus" /> Sign up
             </button>

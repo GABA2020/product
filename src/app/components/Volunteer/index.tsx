@@ -89,94 +89,84 @@ export const Volunteer: FC<IVolunteer> = props => {
         editVolunteer={onEditVolunteer}
         deleteVolunteer={onDeleteVolunteer}
       ></EditVolunteerModal>
-      <div className="experiences-content">
-        <div className="experiences-caption">
-          <h3>About</h3>
-          <p>{userProfile.about}</p>
-        </div>
-        <div className="main-title">
-          <div className="main-title-work">
-            <h2>Volunteering</h2>
-            {editMode === true ? (
-              <a
-                href="#"
-                onClick={e => {
-                  e.preventDefault();
-                  setAddVolunteerModalState(true);
-                }}
-              >
-                <FontAwesomeIcon icon={faPlusCircle} />
-              </a>
-            ) : null}
-          </div>
-        </div>
-        {!loading &&
-          (volunteers.length > 0 ? (
-            volunteers.map((item, index) => {
-              return (
-                <Fragment key={index}>
-                  <div className="accordion">
-                    <div className="accordion-item">
-                      <div className="title-wrapper">
-                        <p className="title">{item.organization_name}</p>
-                        {editMode === true ? (
-                          <a
-                            onClick={e => {
-                              e.preventDefault();
-                              setVolunteerState(item);
-                              setEditVolunteerModalState(true);
-                            }}
-                            href="#"
-                          >
-                            <FontAwesomeIcon icon={faEdit}></FontAwesomeIcon>
-                          </a>
-                        ) : null}
-                      </div>
-                      <div className="sub-title">
-                        <p>
-                          {item.job_title} - {item.organization_address}
-                        </p>
-                        <p>
-                          {moment
-                            .unix(item.date_start.seconds)
-                            .format(YearFormat)}{' '}
-                          -{' '}
-                          {moment
-                            .unix(item.date_end.seconds)
-                            .format(YearFormat)}{' '}
-                          {getDifferenceYear(
-                            item.date_start.seconds,
-                            item.date_end.seconds,
-                          )}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </Fragment>
-              );
-            })
-          ) : (
-            <div className="text-empty text-center">
-              <p>There is no experiences available</p>
-            </div>
-          ))}
-        {!loading &&
-        volunteers.length > 0 &&
-        volunteers.length < arrayLength ? (
-          <div className="load-more-wrapper text-center">
+      <div className="main-title">
+        <div className="main-title-work">
+          <h2>Volunteering</h2>
+          {editMode === true ? (
             <a
-              className="load-more-btn"
               href="#"
               onClick={e => {
                 e.preventDefault();
-                getMoreVolunteers();
+                setAddVolunteerModalState(true);
               }}
             >
-              Load More Experiences <img src={down_arrow} alt="img" />
+              <FontAwesomeIcon icon={faPlusCircle} />
             </a>
-          </div>
-        ) : null}
+          ) : null}
+        </div>
       </div>
+      {!loading &&
+        (volunteers.length > 0 ? (
+          volunteers.map((item, index) => {
+            return (
+              <Fragment key={index}>
+                <div className="accordion">
+                  <div className="accordion-item">
+                    <div className="title-wrapper">
+                      <p className="title">{item.organization_name}</p>
+                      {editMode === true ? (
+                        <a
+                          onClick={e => {
+                            e.preventDefault();
+                            setVolunteerState(item);
+                            setEditVolunteerModalState(true);
+                          }}
+                          href="#"
+                        >
+                          <FontAwesomeIcon icon={faEdit}></FontAwesomeIcon>
+                        </a>
+                      ) : null}
+                    </div>
+                    <div className="sub-title">
+                      <p>
+                        {item.job_title} - {item.organization_address}
+                      </p>
+                      <p>
+                        {moment
+                          .unix(item.date_start.seconds)
+                          .format(YearFormat)}{' '}
+                        -{' '}
+                        {moment.unix(item.date_end.seconds).format(YearFormat)}{' '}
+                        {getDifferenceYear(
+                          item.date_start.seconds,
+                          item.date_end.seconds,
+                        )}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </Fragment>
+            );
+          })
+        ) : (
+          <div className="text-empty text-center">
+            <p>There is no experiences available</p>
+          </div>
+        ))}
+      {!loading && volunteers.length > 0 && volunteers.length < arrayLength ? (
+        <div className="load-more-wrapper text-center">
+          <a
+            className="load-more-btn"
+            href="#"
+            onClick={e => {
+              e.preventDefault();
+              getMoreVolunteers();
+            }}
+          >
+            Load More Experiences <img src={down_arrow} alt="img" />
+          </a>
+        </div>
+      ) : null}
     </Fragment>
   );
 };

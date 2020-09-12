@@ -258,13 +258,12 @@ export const EditVolunteerModal: FC<IEditVolunteerModal> = props => {
                     Description <span className="text-danger">*</span>
                   </label>
                   <textarea
+                    value={values.description}
                     rows={5}
                     className="form-control"
                     name="description"
                     onChange={handleChange}
-                  >
-                    {values.description}
-                  </textarea>
+                  ></textarea>
                   {/* <CKEditor
                     name="description"
                     config={editorConfiguration}

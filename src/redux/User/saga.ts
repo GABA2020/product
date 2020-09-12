@@ -24,6 +24,7 @@ import {
   getGuestUserProfile,
   getAllEducations,
   getAllWorkExperiences,
+  updateAbout,
 } from '../../services';
 import {
   getVolunteers,
@@ -41,6 +42,7 @@ import {
   getMoreResearches,
   getAllResearches,
 } from 'services/ResearchService';
+import { PayloadAction } from '@reduxjs/toolkit';
 
 export function* GetUserProfile({ payload }) {
   yield delay(500);
@@ -447,11 +449,23 @@ export function* getGuestUserProfileCacheSaga({ payload }) {
   }
 }
 
+function* updateAboutSaga({
+  payload,
+}: PayloadAction<DTO.User.UpdateAboutRequest>) {
+  try {
+    yield call(updateAbout, payload);
+    yield put(actions.updateAboutProfileRequestSuccess());
+  } catch (e) {
+    yield put(actions.updateAboutProfileRequestFailed());
+  }
+}
+
 /**
  * Root saga manages watcher lifecycle
  */
 export function* UserSaga() {
   // profile
+  yield takeLatest(actions.updateAboutProfileRequest, updateAboutSaga);
   yield takeLatest(actions.getUserProfileAction, GetUserProfile);
   yield takeLatest(actions.searchUsersAction, searchUsersSaga);
   yield takeLatest(

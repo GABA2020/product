@@ -26,6 +26,17 @@
             background-color: rgba(238, 170, 53, 0.11);
             padding: 0.5rem 1rem;
 
+            .caption {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 5px;
+
+                .caption-title-btn {
+                    margin-top: 20px;
+                    margin-bottom: 10px;
+                }
+            }
+
             p {
                 font-size: 14px;
                 font-weight: normal;

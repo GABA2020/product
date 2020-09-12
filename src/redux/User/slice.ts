@@ -173,6 +173,14 @@ const UserSliceState = createSlice({
   name: 'user',
   initialState,
   reducers: {
+    updateAboutProfileRequest(
+      state,
+      action: PayloadAction<DTO.User.UpdateAboutRequest>,
+    ) {
+      state.userProfile.about = action.payload.about;
+    },
+    updateAboutProfileRequestSuccess(state) {},
+    updateAboutProfileRequestFailed(state) {},
     // code user cache
     getGuestUserProfileCacheAction(
       state,

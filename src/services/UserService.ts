@@ -60,10 +60,18 @@ const updateUserProfile = async (
   return userRef;
 };
 
+const updateAbout = async (payload: DTO.User.UpdateAboutRequest) => {
+  const userRef = await db.collection('member_data').doc(payload.email).update({
+    about: payload.about,
+  });
+  return userRef;
+};
+
 export {
   getUserProfile,
   searchUsers,
   getUserSearchProfile,
-  updateUserProfile,
   getGuestUserProfile,
+  updateUserProfile,
+  updateAbout,
 };

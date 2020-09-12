@@ -6,6 +6,11 @@ import { firestore } from 'firebase';
 
 declare namespace DTO {
   export namespace User {
+    interface UpdateAboutRequest {
+      email: string;
+      about: string;
+    }
+
     interface GetGuestUserProfileCacheRequest {
       email: string;
     }

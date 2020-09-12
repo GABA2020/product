@@ -1,4 +1,4 @@
-import react, { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { actions, sliceKey } from 'redux/User/slice';
 import { useInjectSaga } from 'redux-injectors';

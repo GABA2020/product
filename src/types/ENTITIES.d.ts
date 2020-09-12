@@ -16,6 +16,9 @@ declare namespace ENTITIES {
     phone_number: string;
     address: string;
     avatar: string;
+    membership_type: string;
+    payment_complete: boolean;
+    last_login: string;
     awards: string;
     about: string;
     class_quartile: string;

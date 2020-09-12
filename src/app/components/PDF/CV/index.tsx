@@ -16,17 +16,17 @@ const fontSizeContent = 10;
 const fontSizeSubTitle = 12;
 
 Font.register({
-  family: 'Roboto',
+  family: 'Time',
   fonts: [
     {
-      src: `/roboto/Roboto-Regular.ttf`,
+      src: `/times_new_roman/Times-New-Roman-400.ttf`,
     },
     {
-      src: `/roboto/Roboto-Bold.ttf`,
+      src: `/times_new_roman/Time-New-Roman-bold.ttf`,
       fontWeight: 'bold',
     },
     {
-      src: `/roboto/Roboto-Italic.ttf`,
+      src: `/times_new_roman/Times-New-Roman-Italic.ttf`,
       fontWeight: 'normal',
       fontStyle: 'italic',
     },
@@ -41,11 +41,11 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
   text_bold: {
-    fontFamily: 'Roboto',
+    fontFamily: 'Time',
     fontWeight: 'bold',
   },
   text_italic: {
-    fontFamily: 'Roboto',
+    fontFamily: 'Time',
     fontStyle: 'italic',
   },
   section_wrapper: {
@@ -57,21 +57,13 @@ const styles = StyleSheet.create({
   },
   section_profile_name: {
     textAlign: 'center',
-    fontFamily: 'Roboto',
+    fontFamily: 'Time',
     fontWeight: 'bold',
   },
   section_profile_ad: {
     marginTop: 5,
     fontSize: fontSizeContent,
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingLeft: 160,
-    paddingRight: 160,
-    dot: {
-      marginRight: 10,
-      fontSize: fontSizeTitle,
-    },
+    textAlign: 'center',
   },
   section_profile_url: {
     marginTop: 5,
@@ -83,7 +75,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   section_education_title: {
-    fontFamily: 'Roboto',
+    fontFamily: 'Time',
     fontWeight: 'bold',
     fontSize: fontSizeTitle,
     borderBottom: 3,
@@ -146,7 +138,6 @@ interface ICV {
   volunteers: ENTITIES.Volunteer[];
   researches: ENTITIES.Research[];
   userProfile: ENTITIES.UserProfile;
-  base_url: string | undefined;
 }
 
 export const CV: FC<ICV> = props => {
@@ -156,7 +147,6 @@ export const CV: FC<ICV> = props => {
     volunteers,
     researches,
     userProfile,
-    base_url,
   } = props;
 
   const renderEducations = (educations: ENTITIES.Education[]) => {
@@ -315,14 +305,7 @@ export const CV: FC<ICV> = props => {
                 </View>
                 {/*This is formatted incorrectly and there's nowhere to input phone numbers or addresses on the profile*/}
                 <View style={styles.section_profile_ad}>
-                  <Text>{userProfile.address}</Text>
-                  <Text style={styles.text_bold}>&middot;</Text>
-                  <Text>{userProfile.phone_number}</Text>
-                  <Text>&middot;</Text>
                   <Text>{userProfile.email}</Text>
-                </View>
-                <View style={styles.section_profile_url}>
-                  <Text>{`${base_url}/${userProfile.username}`}</Text>
                 </View>
               </View>
               {educations.length > 0 && (

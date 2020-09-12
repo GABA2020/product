@@ -7,11 +7,11 @@ const login = async (payload: DTO.Auth.LoginRequest) => {
     payload.password,
   );
   if (response.user) {
-    const memberCollection = await db
+    const memberRef = await db
       .collection('member_data')
       .doc(payload.email)
       .get();
-    const user: DTO.Auth.LoginResponse = memberCollection.data() as DTO.Auth.LoginResponse;
+    const user: DTO.Auth.LoginResponse = memberRef.data() as DTO.Auth.LoginResponse;
     return user;
   }
   return null;

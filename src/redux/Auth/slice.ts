@@ -18,7 +18,7 @@ import { STATES } from 'types/STATE';
 
 // The initial state of the GithubRepoForm container
 export const initialState: STATES.Auth = {
-  loading: true,
+  loading: false,
   isAuth: false,
   email: '',
   username: '',
@@ -34,20 +34,24 @@ const AuthSliceState = createSlice({
     logoutActionSuccess(state) {
       state.loading = false;
       state.isAuth = false;
+      state.username = initialState.username;
+      state.email = initialState.email;
     },
     loginAction(state, action: PayloadAction<DTO.Auth.LoginRequest>) {
       state.loading = true;
       state.isAuth = false;
       state.email = action.payload.email;
+      state.username = initialState.username;
     },
-    loginActionSuccess(state, action: PayloadAction<DTO.Auth.LoginResponse>) {
+    loginActionSuccess(state, action: PayloadAction<string>) {
       state.loading = false;
       state.isAuth = true;
-      state.username = action.payload.username;
+      state.username = action.payload;
     },
     loginActionFailed(state) {
       state.loading = false;
       state.isAuth = false;
+      state.username = initialState.username;
     },
   },
 });

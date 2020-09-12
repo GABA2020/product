@@ -53,7 +53,6 @@ export const CVPage = () => {
     <Fragment>
       <section id="page_content">
         <CV
-          base_url={process.env.REACT_APP_BASE_URL}
           userProfile={userProfile}
           volunteers={volunteers}
           educations={educations}

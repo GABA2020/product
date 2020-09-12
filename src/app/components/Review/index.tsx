@@ -41,7 +41,7 @@ const Review: FC<IReview> = props => {
             <img src={avatarUser ? avatarUser : img_user} alt="img" />
           </div>
           <div className="profile-infor">
-            {profile.name}
+            {profile.username}
             {profile.verified === true && (
               <sup className="verify-check">
                 <img src={verified_check} alt="image" />

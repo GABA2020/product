@@ -65,7 +65,11 @@ export const SearchUser: FC<IProfile> = props => {
                       <li>
                         <a href="#">Home</a>
                       </li>
-                      <li className="active">{userSearchProfile.username}</li>
+                      <li className="active">
+                        {userProfile.username === userSearchProfile.username
+                          ? userSearchProfile.name
+                          : userSearchProfile.username}
+                      </li>
                     </ul>
                   </div>
                 </section>

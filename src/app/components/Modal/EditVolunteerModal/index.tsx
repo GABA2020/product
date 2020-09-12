@@ -40,10 +40,6 @@ const schema = yup.object().shape({
   date_end: yup.string().required('Date End is a required field'),
 });
 
-const editorConfiguration = {
-  toolbar: ['bulletedList', 'numberedList', 'blockQuote', 'undo', 'redo'],
-};
-
 interface IEditVolunteerModal {
   isShow: boolean;
   onHide: () => void;
@@ -137,7 +133,9 @@ export const EditVolunteerModal: FC<IEditVolunteerModal> = props => {
                 <div className="form-group">
                   <div className="row">
                     <div className="col-md-6">
-                      <label htmlFor="exampleInputPassword1">Start Date:</label>
+                      <label htmlFor="exampleInputPassword1">
+                        Start Date <span className="text-danger">*</span>
+                      </label>
                       <div>
                         <ReactDatePicker
                           name="date_start"
@@ -159,7 +157,9 @@ export const EditVolunteerModal: FC<IEditVolunteerModal> = props => {
                       )}
                     </div>
                     <div className="col-md-6">
-                      <label htmlFor="exampleInputPassword1">End Date:</label>
+                      <label htmlFor="exampleInputPassword1">
+                        End Date <span className="text-danger">*</span>
+                      </label>
                       <div>
                         <ReactDatePicker
                           name="date_end"
@@ -182,7 +182,7 @@ export const EditVolunteerModal: FC<IEditVolunteerModal> = props => {
                 </div>
                 <div className="form-group">
                   <label htmlFor="exampleInputPassword1">
-                    Organization Name
+                    Organization Name <span className="text-danger">*</span>
                   </label>
                   <input
                     name="organization_name"
@@ -200,7 +200,7 @@ export const EditVolunteerModal: FC<IEditVolunteerModal> = props => {
                 </div>
                 <div className="form-group">
                   <label htmlFor="exampleInputPassword1">
-                    Organization address
+                    Organization address <span className="text-danger">*</span>
                   </label>
                   <input
                     name="organization_address"
@@ -217,7 +217,9 @@ export const EditVolunteerModal: FC<IEditVolunteerModal> = props => {
                   )}
                 </div>
                 <div className="form-group">
-                  <label htmlFor="exampleInputEmail1">Job title</label>
+                  <label htmlFor="exampleInputEmail1">
+                    Job title <span className="text-danger">*</span>
+                  </label>
                   <input
                     name="job_title"
                     type="text"
@@ -233,7 +235,8 @@ export const EditVolunteerModal: FC<IEditVolunteerModal> = props => {
 
                 <div className="form-group">
                   <label htmlFor="exampleInputPassword1">
-                    Number of hours served
+                    Number of hours served{' '}
+                    <span className="text-danger">*</span>
                   </label>
                   <input
                     name="number_of_hours_served"
@@ -251,7 +254,9 @@ export const EditVolunteerModal: FC<IEditVolunteerModal> = props => {
                   )}
                 </div>
                 <div className="form-group">
-                  <label htmlFor="exampleInputPassword1">Description</label>
+                  <label htmlFor="exampleInputPassword1">
+                    Description <span className="text-danger">*</span>
+                  </label>
                   <textarea
                     rows={5}
                     className="form-control"

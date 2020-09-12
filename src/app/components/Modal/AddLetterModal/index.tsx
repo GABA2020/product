@@ -89,7 +89,9 @@ export const AddLetterModal: FC<IAddLetterModal> = props => {
             }) => (
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                  <label htmlFor="exampleInputPassword1">Receive date:</label>
+                  <label htmlFor="exampleInputPassword1">
+                    Receive date <span className="text-danger">*</span>
+                  </label>
                   <div>
                     <ReactDatePicker
                       name="receive_date"
@@ -108,7 +110,9 @@ export const AddLetterModal: FC<IAddLetterModal> = props => {
                   )}
                 </div>
                 <div className="form-group">
-                  <label htmlFor="exampleInputEmail1">Document name</label>
+                  <label htmlFor="exampleInputEmail1">
+                    Document name <span className="text-danger">*</span>
+                  </label>
                   <input
                     name="document_name"
                     type="text"
@@ -123,7 +127,9 @@ export const AddLetterModal: FC<IAddLetterModal> = props => {
                   )}
                 </div>
                 <div className="form-group">
-                  <label htmlFor="exampleInputPassword1">Document type</label>
+                  <label htmlFor="exampleInputPassword1">
+                    Document type <span className="text-danger">*</span>
+                  </label>
                   <input
                     name="document_type"
                     type="text"
@@ -138,7 +144,9 @@ export const AddLetterModal: FC<IAddLetterModal> = props => {
                   )}
                 </div>
                 <div className="form-group">
-                  <label htmlFor="exampleInputPassword1">Link</label>
+                  <label htmlFor="exampleInputPassword1">
+                    Link <span className="text-danger">*</span>
+                  </label>
                   <input
                     name="link"
                     type="text"

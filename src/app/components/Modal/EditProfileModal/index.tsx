@@ -94,15 +94,7 @@ const schema = yup.object().shape({
     .required('Year in Program is a required field'),
   degrees: yup.string().required('Name is a required field'),
   avatar: yup.string(),
-  honors: yup
-    .array()
-    .min(1, 'Honors is a required field')
-    .of(
-      yup.object().shape({
-        label: yup.string().required(),
-        value: yup.string().required(),
-      }),
-    ),
+  honors: yup.array(),
 });
 
 const honorsOptions = [
@@ -150,7 +142,7 @@ export const EditProfileModal: FC<IEditProfile> = props => {
     validationSchema: schema,
     onSubmit: values => {
       const newHonors: string[] = [];
-      values.honors.map(item => {
+      values.honors.forEach(item => {
         newHonors.push(item.value);
       });
       const newUserProfile: ENTITIES.UserProfile = {
@@ -272,7 +264,9 @@ export const EditProfileModal: FC<IEditProfile> = props => {
                 </div>
               </div>
               <div className="form-group">
-                <label htmlFor="exampleInputEmail1">Name</label>
+                <label htmlFor="exampleInputEmail1">
+                  Name <span className="text-danger">*</span>
+                </label>
                 <input
                   name="name"
                   value={values.name}
@@ -286,7 +280,9 @@ export const EditProfileModal: FC<IEditProfile> = props => {
                 )}
               </div>
               <div className="form-group">
-                <label htmlFor="exampleInputPassword1">Specialty</label>
+                <label htmlFor="exampleInputPassword1">
+                  Specialty <span className="text-danger">*</span>
+                </label>
                 <input
                   name="specialty"
                   value={values.specialty}
@@ -300,7 +296,9 @@ export const EditProfileModal: FC<IEditProfile> = props => {
                 )}
               </div>
               <div className="form-group">
-                <label htmlFor="exampleInputPassword1">Degrees</label>
+                <label htmlFor="exampleInputPassword1">
+                  Degrees <span className="text-danger">*</span>
+                </label>
                 <Select
                   name="degrees"
                   isMulti={false}
@@ -334,7 +332,9 @@ export const EditProfileModal: FC<IEditProfile> = props => {
                 )}
               </div>
               <div className="form-group">
-                <label htmlFor="exampleInputPassword1">Year of School</label>
+                <label htmlFor="exampleInputPassword1">
+                  Year of School <span className="text-danger">*</span>
+                </label>
                 <input
                   name="year_in_program"
                   value={values.year_in_program}

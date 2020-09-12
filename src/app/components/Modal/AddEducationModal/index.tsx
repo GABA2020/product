@@ -105,7 +105,9 @@ export const AddEducationModal: FC<IAddEducationModal> = props => {
             }) => (
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                  <label htmlFor="exampleInputEmail1">School</label>
+                  <label htmlFor="exampleInputEmail1">
+                    School <span className="text-danger">*</span>
+                  </label>
                   <input
                     name="school"
                     type="text"
@@ -119,7 +121,9 @@ export const AddEducationModal: FC<IAddEducationModal> = props => {
                   )}
                 </div>
                 <div className="form-group">
-                  <label htmlFor="exampleInputPassword1">School address</label>
+                  <label htmlFor="exampleInputPassword1">
+                    School address <span className="text-danger">*</span>
+                  </label>
                   <input
                     name="school_address"
                     type="text"
@@ -137,7 +141,9 @@ export const AddEducationModal: FC<IAddEducationModal> = props => {
                 <div className="form-group">
                   <div className="row">
                     <div className="col-md-6">
-                      <label htmlFor="exampleInputPassword1">Start Date:</label>
+                      <label htmlFor="exampleInputPassword1">
+                        Start Date <span className="text-danger">*</span>
+                      </label>
                       <div>
                         <ReactDatePicker
                           name="date_start"
@@ -159,7 +165,9 @@ export const AddEducationModal: FC<IAddEducationModal> = props => {
                       )}
                     </div>
                     <div className="col-md-6">
-                      <label htmlFor="exampleInputPassword1">End Date:</label>
+                      <label htmlFor="exampleInputPassword1">
+                        End Date <span className="text-danger">*</span>
+                      </label>
                       <div>
                         <ReactDatePicker
                           name="date_end"
@@ -181,7 +189,9 @@ export const AddEducationModal: FC<IAddEducationModal> = props => {
                   </div>
                 </div>
                 <div className="form-group">
-                  <label htmlFor="exampleInputPassword1">Majors</label>
+                  <label htmlFor="exampleInputPassword1">
+                    Majors <span className="text-danger">*</span>
+                  </label>
                   <input
                     name="major"
                     type="text"
@@ -195,7 +205,9 @@ export const AddEducationModal: FC<IAddEducationModal> = props => {
                   )}
                 </div>
                 <div className="form-group">
-                  <label htmlFor="exampleInputPassword1">Honors</label>
+                  <label htmlFor="exampleInputPassword1">
+                    Honors <span className="text-danger">*</span>
+                  </label>
                   <input
                     name="honors"
                     type="text"
@@ -209,7 +221,9 @@ export const AddEducationModal: FC<IAddEducationModal> = props => {
                   )}
                 </div>
                 <div className="form-group">
-                  <label htmlFor="exampleInputPassword1">Degree type</label>
+                  <label htmlFor="exampleInputPassword1">
+                    Degree type <span className="text-danger">*</span>
+                  </label>
                   <input
                     name="degree_type"
                     type="text"

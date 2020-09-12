@@ -127,7 +127,7 @@ export const Header = () => {
                   className="account-toggle"
                 >
                   <img className="icons" src={img_account} alt="" />
-                  <span className="account-name">{userProfile.username}</span>
+                  <span className="account-name">{userProfile.name}</span>
                 </Link>
               </Fragment>
             )}

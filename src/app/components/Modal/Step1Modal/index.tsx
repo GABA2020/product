@@ -26,7 +26,7 @@ const schema = yup.object().shape({
     .min(0)
     .max(1000, 'Score  must be less than or equal to 1000')
     .required('Score  is a required field'),
-  step_1_document_name: yup.string().required('Please upload your document'),
+  step_1_document_name: yup.string(),
   is_passed_step1: yup.boolean().required('Please choose passed or failed'),
 });
 interface MCATForm {
@@ -108,12 +108,14 @@ export const Step1Modal: FC<IStep1> = props => {
     <Fragment>
       <Modal backdrop="static" show={isShow} onHide={onHide}>
         <Modal.Header closeButton>
-          <Modal.Title>Step 1</Modal.Title>
+          <Modal.Title>Step One</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label htmlFor="exampleInputEmail1">Score</label>
+              <label htmlFor="exampleInputEmail1">
+                Score <span className="text-danger">*</span>
+              </label>
               <input
                 name="step_1"
                 type="number"
@@ -163,7 +165,11 @@ export const Step1Modal: FC<IStep1> = props => {
                 </Dragger>
                 {values.step_1_document_name && (
                   <div className="file-name-link">
-                    <a target="_blank" href={url_file}>
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={url_file}
+                    >
                       {values.step_1_document_name}
                     </a>
                     <a
@@ -185,12 +191,6 @@ export const Step1Modal: FC<IStep1> = props => {
                   onChange={handleChange}
                   hidden
                 />
-                {touched.step_1_document_name &&
-                  errors.step_1_document_name && (
-                    <span className={'text-danger'}>
-                      {errors.step_1_document_name}
-                    </span>
-                  )}
               </div>
             </div>
             <div className="text-right mt-2">

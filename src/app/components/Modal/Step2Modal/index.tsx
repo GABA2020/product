@@ -26,7 +26,7 @@ const schema = yup.object().shape({
     .min(0)
     .max(1000, 'Score  must be less than or equal to 1000')
     .required('Score  is a required field'),
-  step_2_document_name: yup.string().required('Please upload your document'),
+  step_2_document_name: yup.string(),
   is_passed_step2: yup.boolean().required('Please choose passed or failed'),
 });
 interface IStep2Form {
@@ -108,12 +108,14 @@ export const Step2Modal: FC<IStep2> = props => {
     <Fragment>
       <Modal backdrop="static" show={isShow} onHide={onHide}>
         <Modal.Header closeButton>
-          <Modal.Title>Step 2</Modal.Title>
+          <Modal.Title>Step Two CK / CS</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label htmlFor="exampleInputEmail1">Score</label>
+              <label htmlFor="exampleInputEmail1">
+                Score <span className="text-danger">*</span>
+              </label>
               <input
                 name="step_2"
                 type="number"
@@ -163,7 +165,11 @@ export const Step2Modal: FC<IStep2> = props => {
                 </Dragger>
                 {values.step_2_document_name && (
                   <div className="file-name-link">
-                    <a target="_blank" href={url_file}>
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={url_file}
+                    >
                       {values.step_2_document_name}
                     </a>
                     <a
@@ -185,12 +191,6 @@ export const Step2Modal: FC<IStep2> = props => {
                   onChange={handleChange}
                   hidden
                 />
-                {touched.step_2_document_name &&
-                  errors.step_2_document_name && (
-                    <span className={'text-danger'}>
-                      {errors.step_2_document_name}
-                    </span>
-                  )}
               </div>
             </div>
             <div className="text-right mt-2">

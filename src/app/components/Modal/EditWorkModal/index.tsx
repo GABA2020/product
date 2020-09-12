@@ -37,9 +37,6 @@ interface IEditWorkModal {
   deleteWorkExperience: (workExperience: ENTITIES.WorkExperience) => void;
   workExperience: ENTITIES.WorkExperience;
 }
-const editorConfiguration = {
-  toolbar: ['bulletedList', 'numberedList', 'blockQuote', 'undo', 'redo'],
-};
 
 interface IForm {
   company: string;
@@ -128,7 +125,9 @@ export const EditWorkModal: FC<IEditWorkModal> = props => {
             }) => (
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                  <label htmlFor="exampleInputEmail1">Title</label>
+                  <label htmlFor="exampleInputEmail1">
+                    Title <span className="text-danger">*</span>
+                  </label>
                   <input
                     name="job_title"
                     type="text"
@@ -142,7 +141,9 @@ export const EditWorkModal: FC<IEditWorkModal> = props => {
                   )}
                 </div>
                 <div className="form-group">
-                  <label htmlFor="exampleInputPassword1">Company</label>
+                  <label htmlFor="exampleInputPassword1">
+                    Company <span className="text-danger">*</span>
+                  </label>
                   <input
                     name="company"
                     type="text"
@@ -158,7 +159,9 @@ export const EditWorkModal: FC<IEditWorkModal> = props => {
                 <div className="form-group">
                   <div className="row">
                     <div className="col-md-6">
-                      <label htmlFor="exampleInputPassword1">Start Date:</label>
+                      <label htmlFor="exampleInputPassword1">
+                        Start Date <span className="text-danger">*</span>
+                      </label>
                       <div>
                         <ReactDatePicker
                           name="date_start"
@@ -180,7 +183,9 @@ export const EditWorkModal: FC<IEditWorkModal> = props => {
                       )}
                     </div>
                     <div className="col-md-6">
-                      <label htmlFor="exampleInputPassword1">End Date:</label>
+                      <label htmlFor="exampleInputPassword1">
+                        End Date <span className="text-danger">*</span>
+                      </label>
                       <div>
                         <ReactDatePicker
                           name="date_end"
@@ -202,7 +207,9 @@ export const EditWorkModal: FC<IEditWorkModal> = props => {
                   </div>
                 </div>
                 <div className="form-group">
-                  <label htmlFor="exampleInputPassword1">Company Address</label>
+                  <label htmlFor="exampleInputPassword1">
+                    Company Address <span className="text-danger">*</span>
+                  </label>
                   <input
                     name="company_address"
                     type="text"
@@ -218,7 +225,9 @@ export const EditWorkModal: FC<IEditWorkModal> = props => {
                   )}
                 </div>
                 <div className="form-group">
-                  <label htmlFor="exampleInputPassword1">Description</label>
+                  <label htmlFor="exampleInputPassword1">
+                    Description <span className="text-danger">*</span>
+                  </label>
                   <textarea
                     rows={5}
                     className="form-control"

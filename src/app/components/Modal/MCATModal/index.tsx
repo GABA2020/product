@@ -26,7 +26,7 @@ const schema = yup.object().shape({
     .min(0)
     .max(1000, 'Score  must be less than or equal to 1000')
     .required('Score  is a required field'),
-  mcat_document_name: yup.string().required('Please upload your document'),
+  mcat_document_name: yup.string(),
   is_passed_mcat: yup.boolean().required('Please choose passed or failed'),
 });
 interface MCATForm {
@@ -113,7 +113,9 @@ export const MCATModal: FC<IMCat> = props => {
         <Modal.Body>
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label htmlFor="exampleInputEmail1">Score</label>
+              <label htmlFor="exampleInputEmail1">
+                Score <span className="text-danger">*</span>
+              </label>
               <input
                 name="mcat"
                 type="number"
@@ -163,7 +165,11 @@ export const MCATModal: FC<IMCat> = props => {
                 </Dragger>
                 {values.mcat_document_name && (
                   <div className="file-name-link">
-                    <a target="_blank" href={url_file}>
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={url_file}
+                    >
                       {values.mcat_document_name}
                     </a>
                     <a
@@ -185,11 +191,6 @@ export const MCATModal: FC<IMCat> = props => {
                   onChange={handleChange}
                   hidden
                 />
-                {touched.mcat_document_name && errors.mcat_document_name && (
-                  <span className={'text-danger'}>
-                    {errors.mcat_document_name}
-                  </span>
-                )}
               </div>
             </div>
             <div className="text-right mt-2">

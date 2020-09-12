@@ -184,7 +184,9 @@ export const EditResearchModal: FC<IEditResearchModal> = props => {
             }) => (
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                  <label htmlFor="exampleInputPassword1">Research type</label>
+                  <label htmlFor="exampleInputPassword1">
+                    Research type <span className="text-danger">*</span>
+                  </label>
                   <Select
                     name="research_type"
                     isMulti={true}
@@ -203,7 +205,9 @@ export const EditResearchModal: FC<IEditResearchModal> = props => {
                   )}
                 </div>
                 <div className="form-group">
-                  <label htmlFor="exampleInputPassword1">Event Date:</label>
+                  <label htmlFor="exampleInputPassword1">
+                    Event Date <span className="text-danger">*</span>
+                  </label>
                   <div>
                     <ReactDatePicker
                       name="event_date"
@@ -222,7 +226,9 @@ export const EditResearchModal: FC<IEditResearchModal> = props => {
                   )}
                 </div>
                 <div className="form-group">
-                  <label htmlFor="exampleInputPassword1">Event name</label>
+                  <label htmlFor="exampleInputPassword1">
+                    Event name <span className="text-danger">*</span>
+                  </label>
                   <input
                     name="event_name"
                     type="text"
@@ -236,7 +242,9 @@ export const EditResearchModal: FC<IEditResearchModal> = props => {
                   )}
                 </div>
                 <div className="form-group">
-                  <label htmlFor="exampleInputEmail1">Title of work</label>
+                  <label htmlFor="exampleInputEmail1">
+                    Title of work <span className="text-danger">*</span>
+                  </label>
                   <input
                     name="title_of_work"
                     type="text"
@@ -253,7 +261,9 @@ export const EditResearchModal: FC<IEditResearchModal> = props => {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="exampleInputPassword1">Event address</label>
+                  <label htmlFor="exampleInputPassword1">
+                    Event address <span className="text-danger">*</span>
+                  </label>
                   <input
                     name="event_address"
                     className="form-control"
@@ -270,7 +280,7 @@ export const EditResearchModal: FC<IEditResearchModal> = props => {
 
                 <div className="form-group">
                   <label htmlFor="exampleInputPassword1">
-                    Primary investigator
+                    Primary investigator <span className="text-danger">*</span>
                   </label>
                   <input
                     name="primary_investigator"
@@ -288,7 +298,9 @@ export const EditResearchModal: FC<IEditResearchModal> = props => {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="exampleInputPassword1">Author</label>
+                  <label htmlFor="exampleInputPassword1">
+                    Author <span className="text-danger">*</span>
+                  </label>
                   <input
                     name="author"
                     className="form-control"
@@ -301,7 +313,9 @@ export const EditResearchModal: FC<IEditResearchModal> = props => {
                   )}
                 </div>
                 <div className="form-group">
-                  <label htmlFor="exampleInputPassword1">Journal</label>
+                  <label htmlFor="exampleInputPassword1">
+                    Journal <span className="text-danger">*</span>
+                  </label>
                   <input
                     name="journal"
                     className="form-control"
@@ -314,7 +328,9 @@ export const EditResearchModal: FC<IEditResearchModal> = props => {
                   )}
                 </div>
                 <div className="form-group">
-                  <label htmlFor="exampleInputPassword1">Link</label>
+                  <label htmlFor="exampleInputPassword1">
+                    Link <span className="text-danger">*</span>
+                  </label>
                   <input
                     name="link"
                     className="form-control"

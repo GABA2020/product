@@ -36,7 +36,8 @@ const schema = yup.object().shape({
   rating: yup
     .number()
     .typeError('Rating must be a number')
-    .required('Rating is a required field'),
+    .required('Rating is a required field')
+    .min(1, 'Please vote this resource'),
   review_body: yup
     .string()
     .max(500, 'Review must be at most 200 characters')
@@ -263,7 +264,9 @@ export const EditResource: FC<IResource> = props => {
         <Modal.Body>
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label htmlFor="exampleInputEmail1">Resource name</label>
+              <label htmlFor="exampleInputEmail1">
+                Resource name <span className="text-danger">*</span>
+              </label>
               <div className="search-resource">
                 <div className="row">
                   <div className="col-lg-8 col-md-8">
@@ -304,7 +307,9 @@ export const EditResource: FC<IResource> = props => {
               )}
             </div>
             <div className="form-group">
-              <label htmlFor="exampleInputEmail1">Subject</label>
+              <label htmlFor="exampleInputEmail1">
+                Subject <span className="text-danger">*</span>
+              </label>
               <input
                 name="subject"
                 type="text"
@@ -325,7 +330,9 @@ export const EditResource: FC<IResource> = props => {
               )}
             </div>
             <div className="form-group">
-              <label htmlFor="exampleInputEmail1">Exam</label>
+              <label htmlFor="exampleInputEmail1">
+                Exam <span className="text-danger">*</span>
+              </label>
               <input
                 name="actual_exam"
                 type="text"
@@ -346,7 +353,9 @@ export const EditResource: FC<IResource> = props => {
               )}
             </div>
             <div className="form-group">
-              <label htmlFor="exampleInputEmail1">Date start using</label>
+              <label htmlFor="exampleInputEmail1">
+                Date start using <span className="text-danger">*</span>
+              </label>
               <div>
                 <ReactDatePicker
                   name="date"
@@ -372,7 +381,9 @@ export const EditResource: FC<IResource> = props => {
               )}
             </div>
             <div className="form-group">
-              <label htmlFor="exampleInputEmail1">Actual exam score</label>
+              <label htmlFor="exampleInputEmail1">
+                Actual exam score <span className="text-danger">*</span>
+              </label>
               <input
                 name="actual_exam_score"
                 type="number"
@@ -396,7 +407,9 @@ export const EditResource: FC<IResource> = props => {
               )}
             </div>
             <div className="form-group rating-group">
-              <label htmlFor="exampleInputEmail1">Rating</label>
+              <label htmlFor="exampleInputEmail1">
+                Rating <span className="text-danger">*</span>
+              </label>
               <Rate
                 value={values.rating}
                 onChange={value => {
@@ -408,11 +421,15 @@ export const EditResource: FC<IResource> = props => {
                 }}
               />
               {touched.rating && errors.rating && (
-                <span className={'text-danger'}>{errors.rating}</span>
+                <span style={{ marginTop: '5px' }} className={'text-danger'}>
+                  {errors.rating}
+                </span>
               )}
             </div>
             <div className="form-group">
-              <label htmlFor="exampleFormControlTextarea1">Review</label>
+              <label htmlFor="exampleFormControlTextarea1">
+                Review <span className="text-danger">*</span>
+              </label>
               <textarea
                 name="review_body"
                 onChange={e => {

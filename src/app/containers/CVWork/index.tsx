@@ -16,8 +16,10 @@ import { UserSaga } from 'redux/User/saga';
 import { ProgramSaga } from 'redux/Program/saga';
 import { StorageSaga } from 'redux/Storage/saga';
 import { userSelector } from 'redux/User/selectors';
-import { programSelector } from 'redux/Program/selectors';
 import { useDispatch, useSelector } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import { AboutModal } from 'app/components/Modal/AboutModal';
 
 const arrayWork = ['work', 'research', 'volunteer', 'school', 'letter'];
 
@@ -41,9 +43,9 @@ export const CVWork: FC<ICVWork> = props => {
     arrayLength,
     loading,
   } = useSelector(userSelector);
-  const { program } = useSelector(programSelector);
 
   const [stateWork, setStateWork] = useState<string>(arrayWork[0]);
+  const [aboutModal, setAboutModal] = useState<boolean>(false);
 
   const renderCVWithCondition = () => {
     switch (stateWork) {
@@ -291,6 +293,23 @@ export const CVWork: FC<ICVWork> = props => {
 
   return (
     <Fragment>
+      <AboutModal
+        about={userProfile.about}
+        isShow={aboutModal}
+        onHide={() => {
+          setAboutModal(false);
+        }}
+        editAbout={about => {
+          if (about !== userProfile.about) {
+            dispatch(
+              userActions.updateAboutProfileRequest({
+                about,
+                email: userProfile.email,
+              }),
+            );
+          }
+        }}
+      />
       <section className="section-experiences">
         <div className="container">
           <div className="wrap-layout">
@@ -374,7 +393,31 @@ export const CVWork: FC<ICVWork> = props => {
                   </li>
                 </ul>
               </div>
-              <div className="experiences-main">{renderCVWithCondition()}</div>
+              <div className="experiences-main">
+                <div className="experiences-content">
+                  <div className="experiences-caption">
+                    <div className="caption">
+                      <h3 className="caption-title">About</h3>
+                      <a
+                        className="caption-title-btn"
+                        href="#"
+                        onClick={e => {
+                          e.preventDefault();
+                          setAboutModal(true);
+                        }}
+                      >
+                        <FontAwesomeIcon icon={faEdit} />
+                      </a>
+                    </div>
+                    {userProfile.about.trim() === '' ? (
+                      <p>{userProfile.about}</p>
+                    ) : (
+                      <p className="text-center">Describe about yourself</p>
+                    )}
+                  </div>
+                  {renderCVWithCondition()}
+                </div>
+              </div>
             </div>
           </div>
         </div>

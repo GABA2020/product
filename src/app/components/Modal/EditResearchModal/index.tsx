@@ -14,8 +14,7 @@ import { Message } from 'helpers/Message';
 const schema = yup.object().shape({
   title_of_work: yup
     .string()
-    .max(200, 'Title of work must be at most 200 characters')
-    .required('Title of work is a required field'),
+    .max(200, 'Title of work must be at most 200 characters'),
   research_type: yup
     .array()
     .min(1, 'Pick at least 1 tags')
@@ -27,32 +26,26 @@ const schema = yup.object().shape({
     ),
   primary_investigator: yup
     .string()
-    .max(200, 'Primary investigator must be at most 200 characters')
-    .required('Primary investigator is a required field'),
+    .max(200, 'Primary investigator must be at most 200 characters'),
   link: yup
     .string()
     .matches(
       /^((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
       'Enter correct url!',
-    )
-    .required('Link is a required field'),
+    ),
   journal: yup
     .string()
-    .max(200, 'Journal must be at most 200 characters')
-    .required('Journal is a required field'),
+    .max(200, 'Journal must be at most 200 characters'),
   event_date: yup.string().required('Event date is a required field'),
   event_address: yup
     .string()
-    .max(200, 'Event address must be at most 200 characters')
-    .required('Event address is a required field'),
+    .max(200, 'Event address must be at most 200 characters'),
   author: yup
     .string()
-    .max(200, 'Author must be at most 200 characters')
-    .required('Author is a required field'),
+    .max(200, 'Author must be at most 200 characters'),
   event_name: yup
     .string()
-    .max(200, 'Event name must be at most 200 characters')
-    .required('Event name is a required field'),
+    .max(200, 'Event name must be at most 200 characters'),
 });
 
 interface IEditResearchModal {
@@ -185,7 +178,7 @@ export const EditResearchModal: FC<IEditResearchModal> = props => {
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
                   <label htmlFor="exampleInputPassword1">
-                    Research type <span className="text-danger">*</span>
+                    Research type
                   </label>
                   <Select
                     name="research_type"
@@ -206,7 +199,7 @@ export const EditResearchModal: FC<IEditResearchModal> = props => {
                 </div>
                 <div className="form-group">
                   <label htmlFor="exampleInputPassword1">
-                    Event Date <span className="text-danger">*</span>
+                    Event Date
                   </label>
                   <div>
                     <ReactDatePicker
@@ -227,7 +220,7 @@ export const EditResearchModal: FC<IEditResearchModal> = props => {
                 </div>
                 <div className="form-group">
                   <label htmlFor="exampleInputPassword1">
-                    Event name <span className="text-danger">*</span>
+                    Event name
                   </label>
                   <input
                     name="event_name"
@@ -243,7 +236,7 @@ export const EditResearchModal: FC<IEditResearchModal> = props => {
                 </div>
                 <div className="form-group">
                   <label htmlFor="exampleInputEmail1">
-                    Title of work <span className="text-danger">*</span>
+                    Title of work
                   </label>
                   <input
                     name="title_of_work"
@@ -262,12 +255,12 @@ export const EditResearchModal: FC<IEditResearchModal> = props => {
 
                 <div className="form-group">
                   <label htmlFor="exampleInputPassword1">
-                    Event address <span className="text-danger">*</span>
+                    City, State
                   </label>
                   <input
                     name="event_address"
                     className="form-control"
-                    placeholder="Event address"
+                    placeholder="City, State"
                     value={values.event_address}
                     onChange={handleChange}
                   />
@@ -280,7 +273,7 @@ export const EditResearchModal: FC<IEditResearchModal> = props => {
 
                 <div className="form-group">
                   <label htmlFor="exampleInputPassword1">
-                    Primary investigator <span className="text-danger">*</span>
+                    Primary investigator
                   </label>
                   <input
                     name="primary_investigator"
@@ -299,7 +292,7 @@ export const EditResearchModal: FC<IEditResearchModal> = props => {
 
                 <div className="form-group">
                   <label htmlFor="exampleInputPassword1">
-                    Author <span className="text-danger">*</span>
+                    Author
                   </label>
                   <input
                     name="author"
@@ -314,7 +307,7 @@ export const EditResearchModal: FC<IEditResearchModal> = props => {
                 </div>
                 <div className="form-group">
                   <label htmlFor="exampleInputPassword1">
-                    Journal <span className="text-danger">*</span>
+                    Journal
                   </label>
                   <input
                     name="journal"
@@ -329,7 +322,7 @@ export const EditResearchModal: FC<IEditResearchModal> = props => {
                 </div>
                 <div className="form-group">
                   <label htmlFor="exampleInputPassword1">
-                    Link <span className="text-danger">*</span>
+                    Link
                   </label>
                   <input
                     name="link"

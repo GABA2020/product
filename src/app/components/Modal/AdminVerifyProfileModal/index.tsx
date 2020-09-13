@@ -23,7 +23,7 @@ export const AdminVerifyProfileModal = ({
   const verifyUser = async () => {
     await db.collection('member_data').doc(email).set(
       {
-        isVerified: true,
+        verified: true,
       },
       { merge: true },
     );

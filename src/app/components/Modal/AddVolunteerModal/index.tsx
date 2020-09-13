@@ -10,8 +10,7 @@ import { convertDateToTimestamp } from 'helpers/Unity';
 const schema = yup.object().shape({
   job_title: yup
     .string()
-    .max(200, 'Job title must be at most 200 characters')
-    .required('Job title is a required field'),
+    .max(200, 'Job title must be at most 200 characters'),
   number_of_hours_served: yup
     .number()
     .typeError('Number of hours served must be a number')
@@ -19,22 +18,18 @@ const schema = yup.object().shape({
     .max(
       2000000,
       'Number of hours served  must be less than or equal to 2000000',
-    )
-    .required('Number of hours served  is a required field'),
+    ),
   organization_address: yup
     .string()
-    .max(200, 'Organization address must be at most 200 characters')
-    .required('Organization address is a required field'),
+    .max(200, 'Organization address must be at most 200 characters'),
   organization_name: yup
     .string()
-    .max(200, 'Organization name must be at most 200 characters')
-    .required('Organization name is a required field'),
+    .max(200, 'Organization name must be at most 200 characters'),
   description: yup
     .string()
-    .max(500, 'Description must be at most 500 characters')
-    .required('Description is a required field'),
-  date_start: yup.string().required('Date Start is a required field'),
-  date_end: yup.string().required('Date End is a required field'),
+    .max(500, 'Description must be at most 500 characters'),
+  date_start: yup.string(),
+  date_end: yup.string(),
 });
 
 interface IAddVolunteerModal {
@@ -113,7 +108,7 @@ export const AddVolunteerModal: FC<IAddVolunteerModal> = props => {
                   <div className="row">
                     <div className="col-md-6">
                       <label htmlFor="exampleInputPassword1">
-                        Start Date <span className="text-danger">*</span>
+                        Start Date
                       </label>
                       <div>
                         <ReactDatePicker
@@ -137,7 +132,7 @@ export const AddVolunteerModal: FC<IAddVolunteerModal> = props => {
                     </div>
                     <div className="col-md-6">
                       <label htmlFor="exampleInputPassword1">
-                        End Date <span className="text-danger">*</span>
+                        End Date
                       </label>
                       <div>
                         <ReactDatePicker
@@ -161,7 +156,7 @@ export const AddVolunteerModal: FC<IAddVolunteerModal> = props => {
                 </div>
                 <div className="form-group">
                   <label htmlFor="exampleInputPassword1">
-                    Organization Name <span className="text-danger">*</span>
+                    Organization Name
                   </label>
                   <input
                     name="organization_name"
@@ -179,13 +174,13 @@ export const AddVolunteerModal: FC<IAddVolunteerModal> = props => {
                 </div>
                 <div className="form-group">
                   <label htmlFor="exampleInputPassword1">
-                    Organization address <span className="text-danger">*</span>
+                    City, State
                   </label>
                   <input
                     name="organization_address"
                     type="text"
                     className="form-control"
-                    placeholder="Organization address"
+                    placeholder="City, State"
                     value={values.organization_address}
                     onChange={handleChange}
                   />
@@ -198,7 +193,7 @@ export const AddVolunteerModal: FC<IAddVolunteerModal> = props => {
                 </div>
                 <div className="form-group">
                   <label htmlFor="exampleInputEmail1">
-                    Job title <span className="text-danger">*</span>
+                    Job title
                   </label>
                   <input
                     name="job_title"
@@ -216,7 +211,7 @@ export const AddVolunteerModal: FC<IAddVolunteerModal> = props => {
                 <div className="form-group">
                   <label htmlFor="exampleInputPassword1">
                     Number of hours served{' '}
-                    <span className="text-danger">*</span>
+                   
                   </label>
                   <input
                     name="number_of_hours_served"
@@ -236,7 +231,7 @@ export const AddVolunteerModal: FC<IAddVolunteerModal> = props => {
                 </div>
                 <div className="form-group">
                   <label htmlFor="exampleInputPassword1">
-                    Description <span className="text-danger">*</span>
+                    Description
                   </label>
                   <textarea
                     rows={5}

@@ -75,7 +75,7 @@ export function App() {
         <Switch>
           <Route exact path={RoutesTypes.SIGN_IN} component={Login} />
           <Route exact path={RoutesTypes.SIGN_UP} component={SignUp} />
-          <AuthRoute
+          <Route
             isAuth={isAuth}
             exact
             path={RoutesTypes.PAYMENT}

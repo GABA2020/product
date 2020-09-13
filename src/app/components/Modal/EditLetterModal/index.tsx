@@ -13,20 +13,17 @@ import { Message } from 'helpers/Message';
 const schema = yup.object().shape({
   document_name: yup
     .string()
-    .max(200, 'Document name must be at most 200 characters')
-    .required('Document name is a required field'),
+    .max(200, 'Document name must be at most 200 characters'),
   document_type: yup
     .string()
-    .max(200, 'Document type must be at most 200 characters')
-    .required('Document type is a required field'),
+    .max(200, 'Document type must be at most 200 characters'),
   link: yup
     .string()
     .matches(
       /^((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
       'Enter correct url!',
-    )
-    .required('Link is a required field'),
-  receive_date: yup.string().required('Receive date is a required field'),
+    ),
+  receive_date: yup.string(),
 });
 interface IEditLetterModal {
   isShow: boolean;
@@ -110,7 +107,7 @@ export const EditLetterModal: FC<IEditLetterModal> = props => {
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
                   <label htmlFor="exampleInputPassword1">
-                    Receive date <span className="text-danger">*</span>
+                    Receive date
                   </label>
                   <div>
                     <ReactDatePicker
@@ -131,7 +128,7 @@ export const EditLetterModal: FC<IEditLetterModal> = props => {
                 </div>
                 <div className="form-group">
                   <label htmlFor="exampleInputEmail1">
-                    Document name <span className="text-danger">*</span>
+                    Document name
                   </label>
                   <input
                     name="document_name"
@@ -149,7 +146,7 @@ export const EditLetterModal: FC<IEditLetterModal> = props => {
                 </div>
                 <div className="form-group">
                   <label htmlFor="exampleInputPassword1">
-                    Document type <span className="text-danger">*</span>
+                    Document type
                   </label>
                   <input
                     name="document_type"
@@ -167,7 +164,7 @@ export const EditLetterModal: FC<IEditLetterModal> = props => {
                 </div>
                 <div className="form-group">
                   <label htmlFor="exampleInputPassword1">
-                    Link <span className="text-danger">*</span>
+                    Link
                   </label>
                   <input
                     name="link"

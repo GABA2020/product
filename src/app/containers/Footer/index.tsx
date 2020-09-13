@@ -9,7 +9,7 @@ export const Footer = () => {
           <div className="footer-logo">
             <img src={gabaMidnight} alt="" width="42px" height="20px" />
           </div>
-          <div className="footer-nav">
+          {/* <div className="footer-nav">
             <div className="nav-item">
               <h4 className="nav-title">Footer Column 1</h4>
               <ul className="nav-list">
@@ -37,7 +37,7 @@ export const Footer = () => {
                 <li>Forth page</li>
               </ul>
             </div>
-          </div>
+          </div> */}
           <div className="form-send-email">
             <form>
               <h4 className="nav-title">Join GABA</h4>
@@ -73,10 +73,10 @@ export const Footer = () => {
             </a>
           </div>
           <div className="footer-bottom-right">
-            <a className="link-twitter" href="#">
+            <a className="link-twitter" href="https://twitter.com/goGABAco">
               <img className="img-twitter" src={twitter} alt="img" />
             </a>
-            <a className="link-In" href="#">
+            <a className="link-In" href="https://www.linkedin.com/company/gogabaco/">
               <img className="img-In" src={In} alt="img" />
             </a>
           </div>

@@ -149,6 +149,9 @@ export const SignUp = () => {
           {
             email: createEmail,
             avatar: '',
+            membership_type: 'GABASilver',
+            payment_complete: false,
+            last_login: '',
             awards: '',
             about: '',
             phone_number: '',
@@ -211,8 +214,7 @@ export const SignUp = () => {
             step_3_document_name: '',
             step_3_resources_used: [],
             step_3_review_requested: false,
-            medicalSchool: createMedicalSchool,
-            isVerified: false,
+            medicalSchool: createMedicalSchool
           },
           { merge: true },
         );

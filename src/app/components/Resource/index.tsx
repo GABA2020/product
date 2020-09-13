@@ -32,13 +32,15 @@ export const Resource: FC<IResource> = props => {
             height={100}
           />
           <div className="image-caption">
-            <Link to={RoutesTypes.PRODUCT}>Path</Link>
+            {/* <Link to={RoutesTypes.PRODUCT}>Path</Link> */}
+            <Link to={RoutesTypes.PRODUCT}></Link>
           </div>
         </div>
         <div className="locker-information">
           <div className="title">{resource && resource.name}</div>
           <div className="match">
-            <p>{userResources.match_score} % match</p>
+            {/* <p>{userResources.match_score} % match</p> */}
+            <p>% match</p>
           </div>
           <div className="review">
             {resource && resource.rating > 0 ? (

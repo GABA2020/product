@@ -13,26 +13,21 @@ import { Message } from 'helpers/Message';
 const schema = yup.object().shape({
   school: yup
     .string()
-    .max(200, 'School must be at most 200 characters')
-    .required('School is a required field'),
+    .max(200, 'School must be at most 200 characters'),
   school_address: yup
     .string()
-    .max(200, 'School address must be at most 200 characters')
-    .required('School address is a required field'),
+    .max(200, 'School address must be at most 200 characters'),
   major: yup
     .string()
-    .max(200, 'Major must be at most 200 characters')
-    .required('Major is a required field'),
+    .max(200, 'Major must be at most 200 characters'),
   honors: yup
     .string()
-    .max(200, 'Honors must be at most 200 characters')
-    .required('Honors is a required field'),
+    .max(200, 'Honors must be at most 200 characters'),
   degree_type: yup
     .string()
-    .max(200, 'Degree type must be at most 200 characters')
-    .required('Degree type is a required field'),
-  date_start: yup.string().required('Date Start is a required field'),
-  date_end: yup.string().required('Date End is a required field'),
+    .max(200, 'Degree type must be at most 200 characters'),
+  date_start: yup.string(),
+  date_end: yup.string(),
 });
 interface IEditEducationModal {
   isShow: boolean;
@@ -127,7 +122,7 @@ export const EditEducationModal: FC<IEditEducationModal> = props => {
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
                   <label htmlFor="exampleInputEmail1">
-                    School <span className="text-danger">*</span>
+                    School
                   </label>
                   <input
                     name="school"
@@ -143,7 +138,7 @@ export const EditEducationModal: FC<IEditEducationModal> = props => {
                 </div>
                 <div className="form-group">
                   <label htmlFor="exampleInputPassword1">
-                    School address <span className="text-danger">*</span>
+                    City, State
                   </label>
                   <input
                     name="school_address"
@@ -163,7 +158,7 @@ export const EditEducationModal: FC<IEditEducationModal> = props => {
                   <div className="row">
                     <div className="col-md-6">
                       <label htmlFor="exampleInputPassword1">
-                        Start Date <span className="text-danger">*</span>
+                        Start Date
                       </label>
                       <div>
                         <ReactDatePicker
@@ -187,7 +182,7 @@ export const EditEducationModal: FC<IEditEducationModal> = props => {
                     </div>
                     <div className="col-md-6">
                       <label htmlFor="exampleInputPassword1">
-                        End Date <span className="text-danger">*</span>
+                        End Date
                       </label>
                       <div>
                         <ReactDatePicker
@@ -211,7 +206,7 @@ export const EditEducationModal: FC<IEditEducationModal> = props => {
                 </div>
                 <div className="form-group">
                   <label htmlFor="exampleInputPassword1">
-                    Majors <span className="text-danger">*</span>
+                    Majors
                   </label>
                   <input
                     name="major"
@@ -227,7 +222,7 @@ export const EditEducationModal: FC<IEditEducationModal> = props => {
                 </div>
                 <div className="form-group">
                   <label htmlFor="exampleInputPassword1">
-                    Honors <span className="text-danger">*</span>
+                    Honors
                   </label>
                   <input
                     name="honors"
@@ -243,7 +238,7 @@ export const EditEducationModal: FC<IEditEducationModal> = props => {
                 </div>
                 <div className="form-group">
                   <label htmlFor="exampleInputPassword1">
-                    Degree type <span className="text-danger">*</span>
+                    Degree type
                   </label>
                   <input
                     name="degree_type"

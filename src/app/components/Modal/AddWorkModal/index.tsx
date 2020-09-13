@@ -10,22 +10,18 @@ import { convertDateToTimestamp } from 'helpers/Unity';
 const schema = yup.object().shape({
   job_title: yup
     .string()
-    .max(200, 'Title must be at most 200 characters')
-    .required('Title is a required field'),
+    .max(200, 'Title must be at most 200 characters'),
   company: yup
     .string()
-    .max(200, 'Company must be at most 200 characters')
-    .required('Company is a required field'),
+    .max(200, 'Company must be at most 200 characters'),
   company_address: yup
     .string()
-    .max(200, 'Company Address must be at most 200 characters')
-    .required('Company Address is a required field'),
+    .max(200, 'Company Address must be at most 200 characters'),
   description: yup
     .string()
-    .max(300, 'Description must be at most 300 characters')
-    .required('Description is a required field'),
-  date_start: yup.string().required('Date Start is a required field'),
-  date_end: yup.string().required('Date End is a required field'),
+    .max(300, 'Description must be at most 300 characters'),
+  date_start: yup.string(),
+  date_end: yup.string(),
 });
 interface IAddWorkModal {
   isShow: boolean;
@@ -98,7 +94,7 @@ export const AddWorkModal: FC<IAddWorkModal> = props => {
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
                   <label htmlFor="exampleInputEmail1">
-                    Title <span className="text-danger">*</span>
+                    Title
                   </label>
                   <input
                     name="job_title"
@@ -114,7 +110,7 @@ export const AddWorkModal: FC<IAddWorkModal> = props => {
                 </div>
                 <div className="form-group">
                   <label htmlFor="exampleInputPassword1">
-                    Company <span className="text-danger">*</span>
+                    Company
                   </label>
                   <input
                     name="company"
@@ -132,7 +128,7 @@ export const AddWorkModal: FC<IAddWorkModal> = props => {
                   <div className="row">
                     <div className="col-md-6">
                       <label htmlFor="exampleInputPassword1">
-                        Start Date <span className="text-danger">*</span>
+                        Start Date
                       </label>
                       <div>
                         <ReactDatePicker
@@ -156,7 +152,7 @@ export const AddWorkModal: FC<IAddWorkModal> = props => {
                     </div>
                     <div className="col-md-6">
                       <label htmlFor="exampleInputPassword1">
-                        End Date <span className="text-danger">*</span>
+                        End Date
                       </label>
                       <div>
                         <ReactDatePicker
@@ -180,13 +176,13 @@ export const AddWorkModal: FC<IAddWorkModal> = props => {
                 </div>
                 <div className="form-group">
                   <label htmlFor="exampleInputPassword1">
-                    Company Address <span className="text-danger">*</span>
+                    City, State
                   </label>
                   <input
                     name="company_address"
                     type="text"
                     className="form-control"
-                    placeholder="Company Address"
+                    placeholder="City, State"
                     value={values.company_address}
                     onChange={handleChange}
                   />
@@ -198,7 +194,7 @@ export const AddWorkModal: FC<IAddWorkModal> = props => {
                 </div>
                 <div className="form-group">
                   <label htmlFor="exampleInputPassword1">
-                    Description <span className="text-danger">*</span>
+                    Description
                   </label>
                   <textarea
                     rows={5}

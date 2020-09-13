@@ -53,6 +53,7 @@ const degreesOptions = [
   { value: 'US IMG', label: 'US IMG' },
   { value: 'IMG', label: 'IMG' },
   { value: 'Canad-IMG', label: 'Canad-IMG' },
+  { value: 'Pre-Med', label: 'Pre-Med' }
 ];
 
 const initialValues: IForm = {

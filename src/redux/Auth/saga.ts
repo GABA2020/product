@@ -1,7 +1,7 @@
 import { call, put, takeLatest, delay } from 'redux-saga/effects';
 import { actions } from './slice';
 import { actions as userActions } from 'redux/User/slice';
-import { login, logout } from '../../services';
+import { login, logout, updateLastLogin } from '../../services';
 import { toast } from 'react-toastify';
 import { history } from 'utils/history';
 import { DTO } from 'types/DTO';
@@ -12,6 +12,7 @@ const isUserPayment = (
   membership_type: string,
   payment_complete: boolean,
 ) => {
+  console.log("moment", moment().diff(last_login, 'days'));
   if (
     membership_type === 'GABASilver' &&
     payment_complete === false &&
@@ -44,15 +45,20 @@ export function* loginSaga({ payload }) {
           ) === false
         ) {
           yield put(actions.loginActionFailed());
-          alert('Redirect to payment page');
+          // alert('Redirect to payment page');
+          history.push(`/payment`);
         } else {
           yield put(actions.loginActionSuccess(response.username));
           toast.info('Welcome to GABA !');
           history.push(`/${response.username}`);
-        }
+        }          
       } else {
-        yield put(actions.loginActionFailed());
-        alert('Redirect to payment page');
+        // yield put(actions.loginActionFailed());
+        // alert('Redirect to payment page');
+        yield put(actions.loginActionSuccess(response.username));
+        yield call(updateLastLogin, payload);
+        toast.info('Welcome to GABA !');
+        history.push(`/${response.username}`);        
       }
     }
   } catch (e) {

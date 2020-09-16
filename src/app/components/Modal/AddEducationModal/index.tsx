@@ -24,8 +24,11 @@ const schema = yup.object().shape({
   degree_type: yup
     .string()
     .max(200, 'Degree type must be at most 200 characters'),
-  date_start: yup.string(),
-  date_end: yup.string(),
+  date_start: yup.date(),
+  date_end: yup
+    .date()
+    .min(yup.ref('date_start'), "End Date can't be before Start Date"),
+  is_present_date: yup.boolean(),
 });
 interface IAddEducationModal {
   isShow: boolean;
@@ -41,6 +44,7 @@ interface IForm {
   degree_type: string;
   date_start: Date;
   date_end: Date;
+  is_present_date: boolean;
 }
 
 const initialValues: IForm = {
@@ -51,6 +55,7 @@ const initialValues: IForm = {
   honors: '',
   date_end: new Date(),
   date_start: new Date(),
+  is_present_date: false,
 };
 
 export const AddEducationModal: FC<IAddEducationModal> = props => {
@@ -86,6 +91,7 @@ export const AddEducationModal: FC<IAddEducationModal> = props => {
                     values.date_start.toDateString(),
                   ),
                 },
+                is_present_date: values.is_present_date,
               };
               addNewEducation(newEducation);
             }}
@@ -134,6 +140,17 @@ export const AddEducationModal: FC<IAddEducationModal> = props => {
                   )}
                 </div>
                 <div className="form-group">
+                  <div className="checkbox">
+                    <label>
+                      <input
+                        onChange={handleChange}
+                        type="checkbox"
+                        name="is_present_date"
+                        checked={values.is_present_date === true ? true : false}
+                      />{' '}
+                      I am currently working in this role ?
+                    </label>
+                  </div>
                   <div className="row">
                     <div className="col-md-6">
                       <label htmlFor="exampleInputPassword1">
@@ -159,28 +176,47 @@ export const AddEducationModal: FC<IAddEducationModal> = props => {
                         </span>
                       )}
                     </div>
-                    <div className="col-md-6">
-                      <label htmlFor="exampleInputPassword1">
-                        End Date
-                      </label>
-                      <div>
-                        <ReactDatePicker
-                          name="date_end"
-                          className="form-control"
-                          showMonthYearPicker
-                          maxDate={new Date()}
-                          dateFormat="MM/yyyy"
-                          placeholderText="MM/yyyy"
-                          onChange={e => {
-                            setFieldValue('date_end', e);
-                          }}
-                          selected={values.date_end}
-                        />
+                    {values.is_present_date === false ? (
+                      <div className="col-md-6">
+                        <label htmlFor="exampleInputPassword1">
+                          End Date
+                        </label>
+                        <div>
+                          <ReactDatePicker
+                            name="date_end"
+                            className="form-control"
+                            showMonthYearPicker
+                            maxDate={new Date()}
+                            dateFormat="MM/yyyy"
+                            placeholderText="MM/yyyy"
+                            onChange={e => {
+                              if (
+                                moment(e).isSame(moment(), 'year') &&
+                                moment(e).isSame(moment(), 'month')
+                              ) {
+                                setFieldValue('date_end', moment().toDate());
+                                return;
+                              }
+                              setFieldValue('date_end', e);
+                              return;
+                            }}
+                            selected={values.date_end}
+                          />
+                        </div>
+                        {touched.date_end && errors.date_end && (
+                          <span className={'text-danger'}>
+                            {errors.date_end}
+                          </span>
+                        )}
                       </div>
-                      {touched.date_end && errors.date_end && (
-                        <span className={'text-danger'}>{errors.date_end}</span>
-                      )}
-                    </div>
+                    ) : (
+                      <div className="col-md-6">
+                        <label htmlFor="exampleInputPassword1">
+                          End Date
+                        </label>
+                        <h5 className="present-date-text">Present</h5>
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div className="form-group">

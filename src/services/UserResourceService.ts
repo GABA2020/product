@@ -38,7 +38,6 @@ const addNewUserResource = async (
 const editUserResource = async (
   payload: DTO.Locker.UserResource.EditUserResourceRequest,
 ) => {
-  console.log(payload);
   await db
     .collection('member_data')
     .doc(payload.email)

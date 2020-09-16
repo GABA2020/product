@@ -28,6 +28,7 @@ const initEducation: ENTITIES.Education = {
   honors: '',
   date_end: { seconds: 0 },
   date_start: { seconds: 0 },
+  is_present_date: false,
 };
 
 export const Education: FC<IEducation> = props => {
@@ -129,13 +130,25 @@ export const Education: FC<IEducation> = props => {
                     <div className="sub-title">
                       <p>{item.school}</p>
                       <p>{item.school_address}</p>
-                      <p>
-                        {moment
-                          .unix(item.date_start.seconds)
-                          .format(YearFormat)}
-                        {' - '}
-                        {moment.unix(item.date_end.seconds).format(YearFormat)}
-                      </p>
+                      {item.is_present_date === true ? (
+                        <p>
+                          {moment
+                            .unix(item.date_start.seconds)
+                            .format(YearFormat)}
+                          {' - '}
+                          Present
+                        </p>
+                      ) : (
+                        <p>
+                          {moment
+                            .unix(item.date_start.seconds)
+                            .format(YearFormat)}
+                          {' - '}
+                          {moment
+                            .unix(item.date_end.seconds)
+                            .format(YearFormat)}
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>

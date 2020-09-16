@@ -26,8 +26,11 @@ const schema = yup.object().shape({
   degree_type: yup
     .string()
     .max(200, 'Degree type must be at most 200 characters'),
-  date_start: yup.string(),
-  date_end: yup.string(),
+  date_start: yup.date(),
+  date_end: yup
+    .date()
+    .min(yup.ref('date_start'), "End Date can't be before Start Date"),
+  is_present_date: yup.boolean(),
 });
 interface IEditEducationModal {
   isShow: boolean;
@@ -45,6 +48,7 @@ interface IForm {
   degree_type: string;
   date_start: Date;
   date_end: Date;
+  is_present_date: boolean;
 }
 
 const initialValues: IForm = {
@@ -55,6 +59,7 @@ const initialValues: IForm = {
   honors: '',
   date_end: new Date(),
   date_start: new Date(),
+  is_present_date: false,
 };
 
 export const EditEducationModal: FC<IEditEducationModal> = props => {
@@ -87,7 +92,11 @@ export const EditEducationModal: FC<IEditEducationModal> = props => {
               major: education.major,
               honors: education.honors,
               date_start: moment.unix(education.date_start.seconds).toDate(),
-              date_end: moment.unix(education.date_end.seconds).toDate(),
+              date_end:
+                education.is_present_date === false
+                  ? moment.unix(education.date_end.seconds).toDate()
+                  : new Date(),
+              is_present_date: education.is_present_date,
             }}
             validationSchema={schema}
             onSubmit={values => {
@@ -108,6 +117,7 @@ export const EditEducationModal: FC<IEditEducationModal> = props => {
                     values.date_start.toDateString(),
                   ),
                 },
+                is_present_date: values.is_present_date,
               };
               editEducation(newEducation);
             }}
@@ -118,6 +128,7 @@ export const EditEducationModal: FC<IEditEducationModal> = props => {
               handleSubmit,
               values,
               setFieldValue,
+              touched,
             }) => (
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
@@ -132,7 +143,7 @@ export const EditEducationModal: FC<IEditEducationModal> = props => {
                     value={values.school}
                     onChange={handleChange}
                   />
-                  {errors.school && (
+                  {touched.school && errors.school && (
                     <span className={'text-danger'}>{errors.school}</span>
                   )}
                 </div>
@@ -144,17 +155,28 @@ export const EditEducationModal: FC<IEditEducationModal> = props => {
                     name="school_address"
                     type="text"
                     className="form-control"
-                    placeholder="School address"
+                    placeholder="City, State"
                     value={values.school_address}
                     onChange={handleChange}
                   />
-                  {errors.school_address && (
+                  {touched.school_address && errors.school_address && (
                     <span className={'text-danger'}>
                       {errors.school_address}
                     </span>
                   )}
                 </div>
                 <div className="form-group">
+                  <div className="checkbox">
+                    <label>
+                      <input
+                        onChange={handleChange}
+                        type="checkbox"
+                        name="is_present_date"
+                        checked={values.is_present_date === true ? true : false}
+                      />{' '}
+                      I am currently working in this role ?
+                    </label>
+                  </div>
                   <div className="row">
                     <div className="col-md-6">
                       <label htmlFor="exampleInputPassword1">
@@ -174,34 +196,53 @@ export const EditEducationModal: FC<IEditEducationModal> = props => {
                           selected={values.date_start}
                         />
                       </div>
-                      {errors.date_start && (
+                      {touched.date_start && errors.date_start && (
                         <span className={'text-danger'}>
                           {errors.date_start}
                         </span>
                       )}
                     </div>
-                    <div className="col-md-6">
-                      <label htmlFor="exampleInputPassword1">
-                        End Date
-                      </label>
-                      <div>
-                        <ReactDatePicker
-                          name="date_end"
-                          className="form-control"
-                          showMonthYearPicker
-                          maxDate={new Date()}
-                          dateFormat="MM/yyyy"
-                          placeholderText="MM/yyyy"
-                          onChange={e => {
-                            setFieldValue('date_end', e);
-                          }}
-                          selected={values.date_end}
-                        />
+                    {values.is_present_date === false ? (
+                      <div className="col-md-6">
+                        <label htmlFor="exampleInputPassword1">
+                          End Date
+                        </label>
+                        <div>
+                          <ReactDatePicker
+                            name="date_end"
+                            className="form-control"
+                            showMonthYearPicker
+                            maxDate={new Date()}
+                            dateFormat="MM/yyyy"
+                            placeholderText="MM/yyyy"
+                            onChange={e => {
+                              if (
+                                moment(e).isSame(moment(), 'year') &&
+                                moment(e).isSame(moment(), 'month')
+                              ) {
+                                setFieldValue('date_end', moment().toDate());
+                                return;
+                              }
+                              setFieldValue('date_end', e);
+                              return;
+                            }}
+                            selected={values.date_end}
+                          />
+                        </div>
+                        {touched.date_end && errors.date_end && (
+                          <span className={'text-danger'}>
+                            {errors.date_end}
+                          </span>
+                        )}
                       </div>
-                      {errors.date_end && (
-                        <span className={'text-danger'}>{errors.date_end}</span>
-                      )}
-                    </div>
+                    ) : (
+                      <div className="col-md-6">
+                        <label htmlFor="exampleInputPassword1">
+                          End Date
+                        </label>
+                        <h5 className="present-date-text">Present</h5>
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div className="form-group">
@@ -216,7 +257,7 @@ export const EditEducationModal: FC<IEditEducationModal> = props => {
                     value={values.major}
                     onChange={handleChange}
                   />
-                  {errors.major && (
+                  {touched.major && errors.major && (
                     <span className={'text-danger'}>{errors.major}</span>
                   )}
                 </div>
@@ -232,7 +273,7 @@ export const EditEducationModal: FC<IEditEducationModal> = props => {
                     value={values.honors}
                     onChange={handleChange}
                   />
-                  {errors.honors && (
+                  {touched.honors && errors.honors && (
                     <span className={'text-danger'}>{errors.honors}</span>
                   )}
                 </div>
@@ -248,7 +289,7 @@ export const EditEducationModal: FC<IEditEducationModal> = props => {
                     value={values.degree_type}
                     onChange={handleChange}
                   />
-                  {errors.degree_type && (
+                  {touched.degree_type && errors.degree_type && (
                     <span className={'text-danger'}>{errors.degree_type}</span>
                   )}
                 </div>

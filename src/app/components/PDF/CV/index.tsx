@@ -159,10 +159,17 @@ export const CV: FC<ICV> = props => {
           </View>
           <View style={styles.section_school_name}>
             <Text style={styles.text_bold}>{item.degree_type}</Text>
-            <Text style={styles.text_italic}>
-              {moment.unix(item.date_start.seconds).format(MonthYearFormat)} -
-              {moment.unix(item.date_end.seconds).format(MonthYearFormat)}
-            </Text>
+            {item.is_present_date === true ? (
+              <Text style={styles.text_italic}>
+                {moment.unix(item.date_start.seconds).format(MonthYearFormat)} -
+                Present
+              </Text>
+            ) : (
+              <Text style={styles.text_italic}>
+                {moment.unix(item.date_start.seconds).format(MonthYearFormat)} -
+                {moment.unix(item.date_end.seconds).format(MonthYearFormat)}
+              </Text>
+            )}
           </View>
           {item.honors !== '' && (
             <View style={styles.section_school_content}>

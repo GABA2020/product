@@ -6,6 +6,7 @@ import * as yup from 'yup';
 import 'styles/scss/ModalWorkExperience.scss';
 import { Formik } from 'formik';
 import { convertDateToTimestamp } from 'helpers/Unity';
+import moment from 'moment';
 
 const schema = yup.object().shape({
   job_title: yup
@@ -20,8 +21,10 @@ const schema = yup.object().shape({
   description: yup
     .string()
     .max(300, 'Description must be at most 300 characters'),
-  date_start: yup.string(),
-  date_end: yup.string(),
+  date_start: yup.date(),
+  date_end: yup
+    .date()
+    .min(yup.ref('date_start'), "End Date can't be before Start Date"),
 });
 interface IAddWorkModal {
   isShow: boolean;
@@ -163,7 +166,15 @@ export const AddWorkModal: FC<IAddWorkModal> = props => {
                           dateFormat="MM/yyyy"
                           placeholderText="MM/yyyy"
                           onChange={e => {
+                            if (
+                              moment(e).isSame(moment(), 'year') &&
+                              moment(e).isSame(moment(), 'month')
+                            ) {
+                              setFieldValue('date_end', moment().toDate());
+                              return;
+                            }
                             setFieldValue('date_end', e);
+                            return;
                           }}
                           selected={values.date_end}
                         />

@@ -409,7 +409,7 @@ export const CVWork: FC<ICVWork> = props => {
                         <FontAwesomeIcon icon={faEdit} />
                       </a>
                     </div>
-                    {userProfile.about.trim() === '' ? (
+                    {userProfile.about.trim() !== '' ? (
                       <p>{userProfile.about}</p>
                     ) : (
                       <p className="text-center">Describe about yourself</p>

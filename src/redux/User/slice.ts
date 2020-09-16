@@ -381,7 +381,25 @@ const UserSliceState = createSlice({
       state,
       action: PayloadAction<DTO.User.Education.GetAllEducationsResponse>,
     ) {
-      state.educations = action.payload.educations;
+      let PresentEducations = action.payload.educations.filter(
+        item => item.is_present_date === true,
+      );
+      PresentEducations = PresentEducations.sort((a, b) => {
+        return a.date_start < b.date_start
+          ? 1
+          : a.date_start > b.date_start
+          ? -1
+          : 0;
+      });
+
+      let educations = action.payload.educations.filter(
+        item => item.is_present_date === false,
+      );
+      educations = educations.sort((a, b) => {
+        return a.date_end < b.date_end ? 1 : a.date_end > b.date_end ? -1 : 0;
+      });
+
+      state.educations = [...PresentEducations, ...educations];
     },
     getAllEducationsActionFailed(state) {
       state.educations = initialState.educations;
@@ -400,7 +418,25 @@ const UserSliceState = createSlice({
       action: PayloadAction<DTO.User.Education.GetEducationsResponse>,
     ) {
       state.loading = false;
-      state.educations = action.payload.educations;
+      let PresentEducations = action.payload.educations.filter(
+        item => item.is_present_date === true,
+      );
+      PresentEducations = PresentEducations.sort((a, b) => {
+        return a.date_start < b.date_start
+          ? 1
+          : a.date_start > b.date_start
+          ? -1
+          : 0;
+      });
+
+      let educations = action.payload.educations.filter(
+        item => item.is_present_date === false,
+      );
+      educations = educations.sort((a, b) => {
+        return a.date_end < b.date_end ? 1 : a.date_end > b.date_end ? -1 : 0;
+      });
+
+      state.educations = [...PresentEducations, ...educations];
       state.lastQuery = action.payload.lastQuery;
       state.arrayLength = action.payload.arrayLength;
     },
@@ -415,8 +451,29 @@ const UserSliceState = createSlice({
       state,
       action: PayloadAction<DTO.User.Education.GetMoreEducationsResponse>,
     ) {
-      state.loading = false;
-      state.educations = [...state.educations, ...action.payload.educations];
+      let PresentEducations = action.payload.educations.filter(
+        item => item.is_present_date === true,
+      );
+      PresentEducations = PresentEducations.sort((a, b) => {
+        return a.date_start < b.date_start
+          ? 1
+          : a.date_start > b.date_start
+          ? -1
+          : 0;
+      });
+
+      let educations = action.payload.educations.filter(
+        item => item.is_present_date === false,
+      );
+      educations = educations.sort((a, b) => {
+        return a.date_end < b.date_end ? 1 : a.date_end > b.date_end ? -1 : 0;
+      });
+
+      state.educations = [
+        ...state.educations,
+        ...PresentEducations,
+        ...educations,
+      ];
       state.lastQuery = action.payload.lastQuery;
     },
     getMoreEducationsActionFailed(state) {

@@ -142,6 +142,7 @@ declare namespace ENTITIES {
     major: string;
     school: string;
     school_address: string;
+    is_present_date: boolean;
   }
 
   interface Research {

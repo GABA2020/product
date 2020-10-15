@@ -28,7 +28,7 @@ import { actions as authActions } from 'redux/Auth/slice';
 import { MainPage } from './containers/MainPage';
 import { Login } from './containers/Auth/Login';
 import { CVPage } from './containers/CVPage';
-import { SignUp } from './containers/SignUp';
+import { AuthScreen } from './auth/screens/AuthScreen';
 import { AdminConsole } from './containers/AdminConsole';
 import { PaymentPage } from './containers/PaymentPage';
 
@@ -74,7 +74,7 @@ export function App() {
       <Router history={history}>
         <Switch>
           <Route exact path={RoutesTypes.SIGN_IN} component={Login} />
-          <Route exact path={RoutesTypes.SIGN_UP} component={SignUp} />
+          <Route exact path={RoutesTypes.SIGN_UP} component={AuthScreen} />
           <Route
             isAuth={isAuth}
             exact

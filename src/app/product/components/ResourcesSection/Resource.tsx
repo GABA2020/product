@@ -1,5 +1,6 @@
 import React from 'react';
-import Stars from '../../../sharedComponents/Stars'
+
+import Stars from '../../../genericComponents/Stars';
 
 interface ResourceProps {
   title: string,

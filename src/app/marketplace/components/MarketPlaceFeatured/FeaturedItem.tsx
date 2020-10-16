@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import Stars from '../../../sharedComponents/Stars'
+import Stars from '../../../genericComponents/Stars';
 
 const ItemContainer = styled.div`
   background: rgb(242, 248, 255);

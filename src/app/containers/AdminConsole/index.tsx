@@ -10,13 +10,14 @@ import { AdminVerifyProfileModal } from '../../components/Modal/AdminVerifyProfi
 import { useSelector } from 'react-redux';
 import { authSelector } from 'redux/Auth/selectors';
 import { db } from '../../../helpers/firebase.module';
-import { Menu } from 'semantic-ui-react';
+import { Card, Menu } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import { Link, Redirect, Route, Router, Switch } from 'react-router-dom';
 import { history } from 'utils/history';
 import RoutesTypes from '../../../types/Routes';
 import { Resources } from './Resources';
 import { Programs } from './Programs';
+import { AdminHeader, AdminHeaderTabs } from './AdminHeader';
 
 // Auth Route
 const AuthRoute = ({ component: Component, ...rest }) => {
@@ -39,7 +40,7 @@ export const AdminConsole = () => {
   const [selectedImg, setSelectedImg] = useState(null);
   const [name, setName] = useState(null);
   const [emails, setEmail] = useState(null);
-  const [activeItem, setActiveItem] = useState('resources');
+  const [activeTab, setActiveTab] = useState(AdminHeaderTabs.RESOURCES);
 
   const adminList = ['candice.blacknall@gogaba.co'];
 
@@ -52,51 +53,27 @@ export const AdminConsole = () => {
   const { step2 } = useFirestoreStep2('member_data') as any;
   const { step3 } = useFirestoreStep3('member_data') as any;
 
-  const handleItemClick = (e, data) => {
-    const { name } = data;
-    setActiveItem(name);
+  const onTabClicked = (tab: AdminHeaderTabs) => {
+    setActiveTab(tab);
   };
 
   return (
     <>
-      <section>
-        <Menu>
-          <Link to={RoutesTypes.RESOURCES}>
-            <Menu.Item
-              name="resources"
-              active={activeItem === 'resources'}
-              onClick={handleItemClick}
-            >
-              Resources
-            </Menu.Item>
-          </Link>
-          <Link to={RoutesTypes.PROGRAMS}>
-            <Menu.Item
-              name="programs"
-              active={activeItem === 'programs'}
-              onClick={handleItemClick}
-            >
-              Programs
-            </Menu.Item>
-          </Link>
-        </Menu>
-        <Router history={history}>
-          <Switch>
-            <AuthRoute
-              isAuth={isAuth}
-              exact
-              path={RoutesTypes.PRODUCT}
-              component={Resources}
-            />
-            <AuthRoute
-              isAuth={isAuth}
-              exact
-              path={RoutesTypes.USER}
-              component={Programs}
-            />
-          </Switch>
-        </Router>
-      </section>
+      <AdminHeader tab={activeTab} onTabClicked={onTabClicked} />
+      {activeTab === AdminHeaderTabs.RESOURCES && (
+        <Card>
+          <Card.Content>
+            <Card.Header>Matthew</Card.Header>
+            <Card.Meta>
+              <span className="date">Joined in 2015</span>
+            </Card.Meta>
+            <Card.Description>
+              Matthew is a musician living in Nashville.
+            </Card.Description>
+          </Card.Content>
+        </Card>
+      )}
+      {activeTab === AdminHeaderTabs.PROGRAMS && <div>Fast</div>}
       <section className="container">
         <section className="row">
           <section className="col">

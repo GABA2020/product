@@ -8,8 +8,6 @@ enum RoutesTypes {
   SIGN_UP = '/sign-up',
   PAYMENT = '/payment',
   ADMIN_CONSOLE = '/admin-console',
-  RESOURCES = 'admin-console/resources',
-  PROGRAMS = 'admin-console/programs',
 }
 
 export default RoutesTypes;

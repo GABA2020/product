@@ -17,30 +17,15 @@ import { history } from 'utils/history';
 import RoutesTypes from '../../../types/Routes';
 import { Resources } from './Resources';
 import { Programs } from './Programs';
-import { AdminHeader, AdminHeaderTabs } from './AdminHeader';
-
-// Auth Route
-const AuthRoute = ({ component: Component, ...rest }) => {
-  const { isAuth } = rest;
-  return (
-    <Route
-      {...rest}
-      render={props =>
-        isAuth ? (
-          <Component {...props} />
-        ) : (
-          <Redirect to={RoutesTypes.SIGN_IN} />
-        )
-      }
-    />
-  );
-};
+import { AdminMenu, AdminMenuItems } from './AdminMenu';
 
 export const AdminConsole = () => {
   const [selectedImg, setSelectedImg] = useState(null);
   const [name, setName] = useState(null);
   const [emails, setEmail] = useState(null);
-  const [activeTab, setActiveTab] = useState(AdminHeaderTabs.RESOURCES);
+  const [activeMenuItem, setActiveMenuItem] = useState(
+    AdminMenuItems.RESOURCES,
+  );
 
   const adminList = ['candice.blacknall@gogaba.co'];
 
@@ -53,14 +38,17 @@ export const AdminConsole = () => {
   const { step2 } = useFirestoreStep2('member_data') as any;
   const { step3 } = useFirestoreStep3('member_data') as any;
 
-  const onTabClicked = (tab: AdminHeaderTabs) => {
-    setActiveTab(tab);
+  const onMenuItemClicked = (tab: AdminMenuItems) => {
+    setActiveMenuItem(tab);
   };
 
   return (
     <>
-      <AdminHeader tab={activeTab} onTabClicked={onTabClicked} />
-      {activeTab === AdminHeaderTabs.RESOURCES && (
+      <AdminMenu
+        activeItem={activeMenuItem}
+        onItemClicked={onMenuItemClicked}
+      />
+      {activeMenuItem === AdminMenuItems.RESOURCES && (
         <Card>
           <Card.Content>
             <Card.Header>Matthew</Card.Header>
@@ -73,7 +61,7 @@ export const AdminConsole = () => {
           </Card.Content>
         </Card>
       )}
-      {activeTab === AdminHeaderTabs.PROGRAMS && <div>Fast</div>}
+      {activeMenuItem === AdminMenuItems.PROGRAMS && <div>Fast</div>}
       <section className="container">
         <section className="row">
           <section className="col">

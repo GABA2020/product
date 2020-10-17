@@ -1,37 +1,37 @@
 import React from 'react';
 import { Menu, MenuItem, MenuItemProps } from 'semantic-ui-react';
 
-export enum AdminHeaderTabs {
+export enum AdminMenuItems {
   RESOURCES,
   PROGRAMS,
 }
 
-export interface AdminHeaderProps {
-  tab: AdminHeaderTabs;
-  onTabClicked: (tab: AdminHeaderTabs) => void;
+export interface AdminMenuProps {
+  activeItem: AdminMenuItems;
+  onItemClicked: (tab: AdminMenuItems) => void;
 }
-export const AdminHeader = (props: AdminHeaderProps) => {
+export const AdminMenu = (props: AdminMenuProps) => {
   const onItemClicked = (
     event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
     data: MenuItemProps,
   ) => {
     if (data.index != null) {
-      props.onTabClicked(data.index as AdminHeaderTabs);
+      props.onItemClicked(data.index as AdminMenuItems);
     }
   };
 
   return (
     <Menu>
       <MenuItem
-        index={AdminHeaderTabs.RESOURCES.valueOf()}
-        active={props.tab === AdminHeaderTabs.RESOURCES}
+        index={AdminMenuItems.RESOURCES.valueOf()}
+        active={props.activeItem === AdminMenuItems.RESOURCES}
         onClick={onItemClicked}
       >
         Resources
       </MenuItem>
       <MenuItem
-        index={AdminHeaderTabs.PROGRAMS.valueOf()}
-        active={props.tab === AdminHeaderTabs.PROGRAMS}
+        index={AdminMenuItems.PROGRAMS.valueOf()}
+        active={props.activeItem === AdminMenuItems.PROGRAMS}
         onClick={onItemClicked}
       >
         Programs

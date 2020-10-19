@@ -10,12 +10,13 @@ import { AdminVerifyProfileModal } from '../../components/Modal/AdminVerifyProfi
 import { useSelector } from 'react-redux';
 import { authSelector } from 'redux/Auth/selectors';
 import { db } from '../../../helpers/firebase.module';
-import { Menu, Table, Icon, Label, Search } from 'semantic-ui-react';
+import { Menu, Table, Icon, Label, Search, Button } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import { AdminMenu, AdminMenuItems } from './AdminMenu';
 import gql from 'graphql-tag';
 import { useQuery } from 'react-apollo';
 import { ResourceRow } from './ResourceRow';
+import { CreateResourceModal } from './Resources';
 
 const GET_RESOURCES = gql`
   query {
@@ -35,6 +36,7 @@ export const AdminConsole = () => {
   const [selectedImg, setSelectedImg] = useState(null);
   const [name, setName] = useState(null);
   const [emails, setEmail] = useState(null);
+  const [createModalOpen, setCreateModalOpen] = useState(false);
   const [activeMenuItem, setActiveMenuItem] = useState(
     AdminMenuItems.RESOURCES,
   );
@@ -65,15 +67,30 @@ export const AdminConsole = () => {
       />
       {activeMenuItem === AdminMenuItems.RESOURCES && (
         <>
-          <Search
-          // loading={loading}
-          // onResultSelect={(e, data) =>
-          //   dispatch({ type: 'UPDATE_SELECTION', selection: data.result.title })
-          // }
-          // onSearchChange={handleSearchChange}
-          // results={results}
-          // value={value}
-          />
+          <div style={{ display: 'flex' }}>
+            <Search
+            // loading={loading}
+            // onResultSelect={(e, data) =>
+            //   dispatch({ type: 'UPDATE_SELECTION', selection: data.result.title })
+            // }
+            // onSearchChange={handleSearchChange}
+            // results={results}
+            // value={value}
+            />
+            <CreateResourceModal
+              onClose={() => setCreateModalOpen(false)}
+              onOpen={() => setCreateModalOpen(true)}
+              open={createModalOpen}
+              trigger={
+                <Button
+                  style={{ 'margin-left': 20 }}
+                  content="Add a new resource"
+                  icon="add"
+                  labelPosition="left"
+                />
+              }
+            />
+          </div>
           <Table>
             <Table.Header>
               <Table.Row>

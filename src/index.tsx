@@ -7,7 +7,7 @@
 
 import 'react-app-polyfill/ie11';
 import 'react-app-polyfill/stable';
-import 'semantic-ui-css/semantic.min.css'
+import 'semantic-ui-css/semantic.min.css';
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
@@ -26,6 +26,8 @@ import { App } from 'app';
 import { HelmetProvider } from 'react-helmet-async';
 
 import { configureAppStore } from 'store/configureStore';
+import { ApolloProvider } from 'react-apollo';
+import { graphQLClient } from 'helpers/graphqlClient';
 
 // Observe loading of Inter (to remove 'Inter', remove the <link> tag in
 // the index.html file and this observer)
@@ -46,7 +48,9 @@ const ConnectedApp = ({ Component }: Props) => (
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <HelmetProvider>
-        <Component />
+        <ApolloProvider client={graphQLClient}>
+          <Component />
+        </ApolloProvider>
       </HelmetProvider>
     </PersistGate>
   </Provider>

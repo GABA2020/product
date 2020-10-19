@@ -10,14 +10,26 @@ import { AdminVerifyProfileModal } from '../../components/Modal/AdminVerifyProfi
 import { useSelector } from 'react-redux';
 import { authSelector } from 'redux/Auth/selectors';
 import { db } from '../../../helpers/firebase.module';
-import { Card, Menu } from 'semantic-ui-react';
+import { Menu, Table, Icon, Label, Search } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
-import { Link, Redirect, Route, Router, Switch } from 'react-router-dom';
-import { history } from 'utils/history';
-import RoutesTypes from '../../../types/Routes';
-import { Resources } from './Resources';
-import { Programs } from './Programs';
 import { AdminMenu, AdminMenuItems } from './AdminMenu';
+import gql from 'graphql-tag';
+import { useQuery } from 'react-apollo';
+import { ResourceRow } from './ResourceRow';
+
+const GET_RESOURCES = gql`
+  query {
+    resources {
+      id
+      name
+      description
+      link
+      categories
+      picture_name
+      rating
+    }
+  }
+`;
 
 export const AdminConsole = () => {
   const [selectedImg, setSelectedImg] = useState(null);
@@ -27,8 +39,7 @@ export const AdminConsole = () => {
     AdminMenuItems.RESOURCES,
   );
 
-  const adminList = ['candice.blacknall@gogaba.co'];
-
+  const { loading, error, data } = useQuery(GET_RESOURCES);
   const { isAuth, email } = useSelector(authSelector);
 
   const { docs } = useFirestoreVerification('member_data') as any;
@@ -38,8 +49,12 @@ export const AdminConsole = () => {
   const { step2 } = useFirestoreStep2('member_data') as any;
   const { step3 } = useFirestoreStep3('member_data') as any;
 
-  const onMenuItemClicked = (tab: AdminMenuItems) => {
-    setActiveMenuItem(tab);
+  if (error) return <p>An error occured!</p>;
+
+  const adminList = ['candice.blacknall@gogaba.co'];
+
+  const onMenuItemClicked = (menuItem: AdminMenuItems) => {
+    setActiveMenuItem(menuItem);
   };
 
   return (
@@ -49,17 +64,53 @@ export const AdminConsole = () => {
         onItemClicked={onMenuItemClicked}
       />
       {activeMenuItem === AdminMenuItems.RESOURCES && (
-        <Card>
-          <Card.Content>
-            <Card.Header>Matthew</Card.Header>
-            <Card.Meta>
-              <span className="date">Joined in 2015</span>
-            </Card.Meta>
-            <Card.Description>
-              Matthew is a musician living in Nashville.
-            </Card.Description>
-          </Card.Content>
-        </Card>
+        <>
+          <Search
+          // loading={loading}
+          // onResultSelect={(e, data) =>
+          //   dispatch({ type: 'UPDATE_SELECTION', selection: data.result.title })
+          // }
+          // onSearchChange={handleSearchChange}
+          // results={results}
+          // value={value}
+          />
+          <Table>
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell>Name</Table.HeaderCell>
+                <Table.HeaderCell>Description</Table.HeaderCell>
+                <Table.HeaderCell>Raiting</Table.HeaderCell>
+                <Table.HeaderCell></Table.HeaderCell>
+                <Table.HeaderCell></Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
+            <Table.Body>
+              {data &&
+                data.resources &&
+                data.resources.map(resource => (
+                  <ResourceRow resource={resource} />
+                ))}
+            </Table.Body>
+            <Table.Footer>
+              <Table.Row>
+                <Table.HeaderCell colSpan="5">
+                  <Menu floated="right" pagination>
+                    <Menu.Item as="a" icon>
+                      <Icon name="chevron left" />
+                    </Menu.Item>
+                    <Menu.Item as="a">1</Menu.Item>
+                    <Menu.Item as="a">2</Menu.Item>
+                    <Menu.Item as="a">3</Menu.Item>
+                    <Menu.Item as="a">4</Menu.Item>
+                    <Menu.Item as="a" icon>
+                      <Icon name="chevron right" />
+                    </Menu.Item>
+                  </Menu>
+                </Table.HeaderCell>
+              </Table.Row>
+            </Table.Footer>
+          </Table>
+        </>
       )}
       {activeMenuItem === AdminMenuItems.PROGRAMS && <div>Fast</div>}
       <section className="container">

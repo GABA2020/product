@@ -10,6 +10,7 @@ export interface AdminMenuProps {
   activeItem: AdminMenuItems;
   onItemClicked: (tab: AdminMenuItems) => void;
 }
+
 export const AdminMenu = (props: AdminMenuProps) => {
   const onItemClicked = (
     event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,

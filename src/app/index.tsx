@@ -31,7 +31,7 @@ import { CVPage } from './containers/CVPage';
 import { AuthScreen } from './auth/screens/AuthScreen';
 import { AdminConsole } from './containers/AdminConsole';
 import { PaymentPage } from './containers/PaymentPage';
-
+import MarketPlacePage from './marketplace/screens/MarketPlaceScreen';
 // Auth Route
 const AuthRoute = ({ component: Component, ...rest }) => {
   const { isAuth } = rest;
@@ -73,7 +73,7 @@ export function App() {
       />
       <Router history={history}>
         <Switch>
-          <Route exact path={RoutesTypes.SIGN_IN} component={Login} />
+          <Route exact path={RoutesTypes.SIGN_IN} component={MarketPlacePage} />
           <Route exact path={RoutesTypes.SIGN_UP} component={AuthScreen} />
           <Route
             isAuth={isAuth}

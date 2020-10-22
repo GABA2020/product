@@ -15,6 +15,7 @@ import { Provider } from 'react-redux';
 import FontFaceObserver from 'fontfaceobserver';
 import * as serviceWorker from 'serviceWorker';
 import { PersistGate } from 'redux-persist/lib/integration/react';
+import { ThemeProvider } from 'styled-components';
 
 import 'sanitize.css/sanitize.css';
 
@@ -26,6 +27,7 @@ import { App } from 'app';
 import { HelmetProvider } from 'react-helmet-async';
 
 import { configureAppStore } from 'store/configureStore';
+import theme from './theme'
 
 // Observe loading of Inter (to remove 'Inter', remove the <link> tag in
 // the index.html file and this observer)
@@ -43,13 +45,15 @@ interface Props {
   Component: typeof App;
 }
 const ConnectedApp = ({ Component }: Props) => (
-  <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
-      <HelmetProvider>
-        <Component />
-      </HelmetProvider>
-    </PersistGate>
-  </Provider>
+  <ThemeProvider theme={theme}>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <HelmetProvider>
+          <Component />
+        </HelmetProvider>
+      </PersistGate>
+    </Provider>
+  </ThemeProvider>
 );
 
 const render = (Component: typeof App) => {

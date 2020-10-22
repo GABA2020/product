@@ -1,12 +1,11 @@
 import React from 'react';
-import { Grid, Input, Button } from 'semantic-ui-react'
+import { Grid } from 'semantic-ui-react';
 import styled from 'styled-components';
 
-const SearchContainer = styled.div`
-  padding: 50px 165px !important;
+const SearchContainer = styled(Grid)`
   background: rgb(242, 248, 255);
-  display: flex;
-  justify-content: space-between;
+  padding-top: 50px !important;
+  padding-bottom: 50px !important;
 `;
 
 const SearchTitle = styled.h3`
@@ -20,17 +19,6 @@ const SearchTitle = styled.h3`
   margin-bottom: 42px;
 `
 
-const Column = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin: ${(props: { margin?: string }) => props.margin || 'auto'};
-`
-
-const Row = styled.div`
-  display: flex;
-  justify-content:${(props: { justify?: string}) => props.justify || 'flex-start'};
-`
-
 const SearchInput = styled.input`
   height: 48px;
   width: 350px;
@@ -42,7 +30,7 @@ const SearchButton = styled.button`
   background: rgb(0, 101, 242);
   border-radius: 0px 6px 6px 0px;
   height: 48px;
-  width: 125px;
+  width: 110px;
   color: white;
   font-size: 16px;
   font-weight: 500;
@@ -57,6 +45,8 @@ const VerticalDivider = styled.div`
   border: 1.5px solid rgba(0, 101, 242, 0.44);
   height: 50px;
   width: 1px;
+  background-color: rgba(0, 101, 242, 0.44);
+  margin-left: 50%;
 `
 
 const DividerLabel = styled.h3`
@@ -67,15 +57,7 @@ const DividerLabel = styled.h3`
   letter-spacing: -0.07px;
   line-height: 32px;
   width: 40px;
-  margin-left: -10px;
-`
-
-const Category = styled.div`
-  align-items: center;
-  align-content: center;
-  justify-content: center;
-  display: flex;
-  flex-direction: column;
+  margin-left: 44%;
 `
 
 const Square = styled.div`
@@ -91,50 +73,62 @@ const CategoryLabel = styled.p`
   height: 24px;
   letter-spacing: 0.1px;
   line-height: 24px;
-  text-align: center;
   width: 55px;
   margin-top: 10px;
+  margin-left: -10px;
+  text-align: center;
+`
+
+const CategoriesTitle = styled(SearchTitle)`
+  margin-bottom: 23px !important;
+  margin-left: 75px !important;
 `
 
 const MarketPlaceSearch = () => (
-  <SearchContainer>
-    <Column>
-      <SearchTitle>Search for Resources</SearchTitle>
-      <Row>
-        <SearchInput type="text"/>
-        <SearchButton> Search </SearchButton>
-      </Row>
-    </Column>
-    <Column margin="46px 75px 0 46px">
-      <VerticalDivider />
-       <DividerLabel>OR</DividerLabel>
-      <VerticalDivider />
-    </Column>
-    <Column>
-      <SearchTitle>Browse Categories</SearchTitle>
-      <Row justify="space-between">
-        <Category>
-          <Square/>
-          <CategoryLabel>Label</CategoryLabel>
-        </Category>
-        <Category>
-          <Square/>
-          <CategoryLabel>Label</CategoryLabel>
-        </Category>
-        <Category>
-          <Square/>
-          <CategoryLabel>Label</CategoryLabel>
-        </Category>
-        <Category>
-          <Square/>
-          <CategoryLabel>Label</CategoryLabel>
-        </Category>
-        <Category>
-          <Square/>
-          <CategoryLabel>Label</CategoryLabel>
-        </Category>
-      </Row>
-    </Column>
+  <SearchContainer centered>
+    <Grid.Row centered columns={3}>
+      <Grid.Column width={6}>
+        <Grid.Row>
+          <SearchTitle>Search for Resources</SearchTitle>
+          <SearchInput type="text"/>
+          <SearchButton> Search </SearchButton>
+        </Grid.Row>
+      </Grid.Column>
+      <Grid.Column centered width={2}>
+        <VerticalDivider />
+          <DividerLabel>OR</DividerLabel>
+        <VerticalDivider />
+      </Grid.Column>
+      <Grid.Column>
+        <Grid>
+          <Grid.Row>
+            <CategoriesTitle>Browse Categories</CategoriesTitle>
+          </Grid.Row>
+          <Grid.Row columns={16}>
+            <Grid.Column floated="right">
+              <Square/>
+              <CategoryLabel>Label</CategoryLabel>
+            </Grid.Column>
+            <Grid.Column floated="right">
+              <Square/>
+              <CategoryLabel>Label</CategoryLabel>
+            </Grid.Column>
+            <Grid.Column floated="right">
+              <Square/>
+              <CategoryLabel>Label</CategoryLabel>
+            </Grid.Column>
+            <Grid.Column floated="right">
+              <Square/>
+              <CategoryLabel>Label</CategoryLabel>
+            </Grid.Column>
+            <Grid.Column floated="right">
+              <Square/>
+              <CategoryLabel>Label</CategoryLabel>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </Grid.Column>
+    </Grid.Row>
   </SearchContainer>
 )
 

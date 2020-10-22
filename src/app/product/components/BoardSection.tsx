@@ -53,7 +53,6 @@ const BoardSection = () => (
               </a>
             </div>
           </div>
-          {/*end boards-prize*/}
           <div className="boards-caption">
             <p className="board-paragraph">
               Video based service that offers classroom, clinical, and
@@ -117,7 +116,6 @@ const BoardSection = () => (
               </li>
             </ul>
           </div>
-          {/*end boards-caption*/}
           <div className="boards-action">
             <ul className="action-button">
               <li>
@@ -135,7 +133,6 @@ const BoardSection = () => (
           </div>
         </div>
       </div>
-      {/*end media-boards*/}
     </div>
   </section>
 )

@@ -12,7 +12,6 @@ export function Header () {
             <Image src={require('../../assets/images/logo.png')} style={{width:50}} centered/>
           </Grid.Column>
           <Grid.Column width={10}  textAlign={'center'}>
-              Home
           </Grid.Column>
           <Grid.Column width={3}/>
         </Grid.Row>

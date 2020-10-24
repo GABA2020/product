@@ -22,7 +22,7 @@ const AuthRoute = ({ component: Component, ...rest }) => {
         isAuth ? (
           <Component {...props} />
         ) : (
-          <Redirect to={RoutesTypes.SIGN_IN} />
+          <Redirect to={RoutesTypes.AUTH} />
         )
       }
     />

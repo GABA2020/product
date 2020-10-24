@@ -72,6 +72,12 @@ export const Header = () => {
   };
 
   const adminList = ['candice.blacknall@gogaba.co'];
+
+  function handleShowMenu() {
+    dispatch(userActions.showMenu())
+  }
+
+
   return (
     <Fragment>
       <Chat
@@ -83,7 +89,7 @@ export const Header = () => {
       <header id="header">
         <div className="brand">
           <div className="nav-action">
-            <a href="#" className="nav-open">
+            <a className="nav-open" onClick={handleShowMenu} >
               <img src={nav_icon} alt="logo" />
             </a>
           </div>

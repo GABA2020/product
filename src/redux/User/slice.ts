@@ -17,6 +17,7 @@ import { DTO } from 'types/DTO';
 import { STATES } from 'types/STATE';
 
 export const initialState: STATES.User = {
+  showMenu: false,
   loading: true,
   loadingSearchBox: true,
   loadingUserSearchProfile: true,
@@ -782,6 +783,9 @@ const UserSliceState = createSlice({
     deleteLetterActionFailed(state) {
       state.loading = false;
     },
+    showMenu(state) {
+      state.showMenu = !state.showMenu;
+    }
     // end letter
   },
 });

@@ -15,6 +15,7 @@ import { Provider } from 'react-redux';
 import FontFaceObserver from 'fontfaceobserver';
 import * as serviceWorker from 'serviceWorker';
 import { PersistGate } from 'redux-persist/lib/integration/react';
+import {Provider as ContextProvider} from './app/globalContext/GlobalContext';
 
 import 'sanitize.css/sanitize.css';
 
@@ -42,13 +43,17 @@ const MOUNT_NODE = document.getElementById('root') as HTMLElement;
 interface Props {
   Component: typeof App;
 }
+
+
 const ConnectedApp = ({ Component }: Props) => (
   <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
-      <HelmetProvider>
-        <Component />
-      </HelmetProvider>
-    </PersistGate>
+    <ContextProvider value={{}}>
+      <PersistGate loading={null} persistor={persistor}>
+        <HelmetProvider>
+          <Component />
+        </HelmetProvider>
+      </PersistGate>
+    </ContextProvider>
   </Provider>
 );
 

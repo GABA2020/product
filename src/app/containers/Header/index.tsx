@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { authSelector } from 'redux/Auth/selectors';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -27,11 +27,14 @@ import { MessageOutlined } from '@ant-design/icons';
 import Badge from 'antd/lib/badge';
 import 'styles/scss/header.scss';
 import { ChatSelector } from 'redux/Chat/selectors';
+import { Context } from 'app/globalContext/GlobalContext';
 
 export const Header = () => {
   useInjectSaga({ key: userSlice, saga: UserSaga });
   useInjectSaga({ key: authSlice, saga: AuthSaga });
   useInjectSaga({ key: chatSlice, saga: ChatSaga });
+
+  const {dispatch:{ changeShowMenu } } = useContext(Context);
 
   const { isAuth, email } = useSelector(authSelector);
   const { userProfile, userSearchResults } = useSelector(userSelector);
@@ -74,7 +77,7 @@ export const Header = () => {
   const adminList = ['candice.blacknall@gogaba.co'];
 
   function handleShowMenu() {
-    dispatch(userActions.showMenu())
+    changeShowMenu()
   }
 
 

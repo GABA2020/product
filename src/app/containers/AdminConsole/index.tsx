@@ -14,9 +14,10 @@ import { Menu, Table, Icon, Label, Search, Button } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import { AdminMenu, AdminMenuItems } from './AdminMenu';
 import gql from 'graphql-tag';
-import { useQuery } from 'react-apollo';
+import { useLazyQuery, useQuery } from 'react-apollo';
 import { ResourceRow } from './ResourceRow';
 import { CreateResourceModal } from './Resources';
+import { constants } from 'crypto';
 
 const GET_RESOURCES = gql`
   query {
@@ -78,13 +79,15 @@ export const AdminConsole = () => {
             // value={value}
             />
             <CreateResourceModal
-              onClose={() => setCreateModalOpen(false)}
+              onClose={() => {
+                setCreateModalOpen(false);
+              }}
               onOpen={() => setCreateModalOpen(true)}
               open={createModalOpen}
               trigger={
                 <Button
                   style={{ 'margin-left': 20 }}
-                  content="Add a new resource"
+                  content="Create A New Resource"
                   icon="add"
                   labelPosition="left"
                 />

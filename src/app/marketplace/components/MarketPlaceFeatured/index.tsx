@@ -1,8 +1,8 @@
 import React from 'react';
-import { Grid, Input, Button } from 'semantic-ui-react'
 import styled from 'styled-components';
 
 import FeaturedItem from './FeaturedItem';
+import {Resource} from '../../../../types/Resource';
 
 const FeaturedContainer = styled.div`
   padding: 85px 165px;
@@ -56,44 +56,22 @@ const ITEMS = [{
   tags: ['Cardiology', 'Biochemistry', 'Pulmonary', 'Renail', 'Videos'],
   reviews: 1234,
   numberOfStars: 4
-},
-{
-  title: 'Item title',
-  comment: 'Content in over a dozen subjects including cardiology, renal, pulmonary, biostatistics, biochemistry, and more.',
-  tags: ['Cardiology', 'Biochemistry', 'Pulmonary', 'Renail', 'Videos'],
-  reviews: 1234,
-  numberOfStars: 4
-},
-{
-  title: 'Item title',
-  comment: 'Content in over a dozen subjects including cardiology, renal, pulmonary, biostatistics, biochemistry, and more.',
-  tags: ['Cardiology', 'Biochemistry', 'Pulmonary', 'Renail', 'Videos'],
-  reviews: 1234,
-  numberOfStars: 4
-},
-{
-  title: 'Item title',
-  comment: 'Content in over a dozen subjects including cardiology, renal, pulmonary, biostatistics, biochemistry, and more.',
-  tags: ['Cardiology', 'Biochemistry', 'Pulmonary', 'Renail', 'Videos'],
-  reviews: 1234,
-  numberOfStars: 4
-},
-{
-  title: 'Item title',
-  comment: 'Content in over a dozen subjects including cardiology, renal, pulmonary, biostatistics, biochemistry, and more.',
-  tags: ['Cardiology', 'Biochemistry', 'Pulmonary', 'Renail', 'Videos'],
-  reviews: 1234,
-  numberOfStars: 4
 }]
 
-const MarketPlaceSearch = () => (
+interface MarketPlaceSearchProps {
+  resources: Array<Resource>
+}
+
+const MarketPlaceSearch = (props: MarketPlaceSearchProps) => {
+  const { resources } = props;
+  return (
   <FeaturedContainer>
     <FeaturedHeader>
       <Title>Featured</Title>
       <Tabs>
         <Tab>Resouces</Tab>
-        <Tab>Resouces</Tab>
-        <Tab>Resouces</Tab>
+        <Tab>Schools</Tab>
+        <Tab>Equipment</Tab>
       </Tabs>
       <FiltersContainer>
         <Square />
@@ -101,9 +79,9 @@ const MarketPlaceSearch = () => (
       </FiltersContainer>
     </FeaturedHeader>
     <>
-      {ITEMS.map((item, index) => <FeaturedItem key={index}/>)}
+      {resources.slice(0, 5).map((item, index) => <FeaturedItem item={item} key={index}/>)}
     </>
   </FeaturedContainer>
-)
+)}
 
 export default MarketPlaceSearch;

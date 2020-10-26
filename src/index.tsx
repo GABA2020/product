@@ -15,20 +15,27 @@ import { Provider } from 'react-redux';
 import FontFaceObserver from 'fontfaceobserver';
 import * as serviceWorker from 'serviceWorker';
 import { PersistGate } from 'redux-persist/lib/integration/react';
-import {Provider as ContextProvider} from './app/globalContext/GlobalContext';
 import { ThemeProvider } from 'styled-components';
-
-import 'sanitize.css/sanitize.css';
-
-// Initialize languages
-import './locales/i18n';
-
-import { App } from 'app';
-
 import { HelmetProvider } from 'react-helmet-async';
 
+import { App } from 'app';
 import { configureAppStore } from 'store/configureStore';
+import {Provider as ContextProvider} from './app/globalContext/GlobalContext';
 import theme from './theme'
+import 'sanitize.css/sanitize.css';
+// Initialize languages
+import './locales/i18n';
+import { ApolloClient, InMemoryCache, ApolloProvider, gql, HttpLink  } from '@apollo/client';
+
+const client = new ApolloClient({
+  link: new HttpLink({
+    uri: 'https://content-mackerel-67.hasura.app/v1/graphql',
+    headers: {
+      'content-type': 'application/json'
+    }
+  }),
+  cache: new InMemoryCache()
+});
 
 // Observe loading of Inter (to remove 'Inter', remove the <link> tag in
 // the index.html file and this observer)
@@ -46,18 +53,19 @@ interface Props {
   Component: typeof App;
 }
 
-
 const ConnectedApp = ({ Component }: Props) => (
   <Provider store={store}>
-    <ContextProvider value={{}}>
-      <ThemeProvider theme={theme}>
-        <PersistGate loading={null} persistor={persistor}>
-          <HelmetProvider>
-            <Component />
-          </HelmetProvider>
-        </PersistGate>
-      </ThemeProvider>
-    </ContextProvider>
+    <ApolloProvider client={client}>
+      <ContextProvider value={{}}>
+        <ThemeProvider theme={theme}>
+          <PersistGate loading={null} persistor={persistor}>
+            <HelmetProvider>
+              <Component />
+            </HelmetProvider>
+          </PersistGate>
+        </ThemeProvider>
+      </ContextProvider>
+    </ApolloProvider>
   </Provider>
 );
 

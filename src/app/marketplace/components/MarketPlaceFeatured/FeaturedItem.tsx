@@ -86,7 +86,7 @@ const FeaturedItem = (props: FeaturedItemProps) => {
         <DetailsTitle>{item.name}</DetailsTitle>
         <DetailsContent>{item.description || 'No description'}</DetailsContent>
         <ReviewsFooter>
-          <Stars numberOfStars={Math.floor(Math.random() * (1 * 5) + 1)}/>
+          <Stars numberOfStars={item.rating || 0}/>
           <Reviews>2,423 Reviews</Reviews>
         </ReviewsFooter>
       </DetailsSection>

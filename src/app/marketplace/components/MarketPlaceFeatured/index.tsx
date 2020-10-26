@@ -70,8 +70,8 @@ const MarketPlaceSearch = (props: MarketPlaceSearchProps) => {
       <Title>Featured</Title>
       <Tabs>
         <Tab>Resouces</Tab>
-        <Tab>Resouces</Tab>
-        <Tab>Resouces</Tab>
+        <Tab>Schools</Tab>
+        <Tab>Equipment</Tab>
       </Tabs>
       <FiltersContainer>
         <Square />

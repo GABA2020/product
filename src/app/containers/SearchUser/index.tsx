@@ -16,6 +16,7 @@ import 'styles/scss/ModalEditProfile.scss';
 import 'styles/scss/SectionProfile.scss';
 import { MyProfile } from '../MyProfile';
 import { GuestUserProfile } from '../GuestUserProfile';
+import { NavLink } from 'react-router-dom';
 
 interface IProfile {
   match: {
@@ -63,7 +64,7 @@ export const SearchUser: FC<IProfile> = props => {
                   <div className="container">
                     <ul className="breadcrumb">
                       <li>
-                        <a href="#">Home</a>
+                        <NavLink to="/">Home</NavLink>
                       </li>
                       <li className="active">
                         {userProfile.username === userSearchProfile.username

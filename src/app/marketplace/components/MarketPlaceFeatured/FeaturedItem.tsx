@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import Stars from '../../../genericComponents/Stars';
 import {Resource} from '../../../../types/Resource';
+import { NavLink } from 'react-router-dom';
 
 const ItemContainer = styled.div`
   background: rgb(242, 248, 255);
@@ -83,7 +84,7 @@ const FeaturedItem = (props: FeaturedItemProps) => {
     <ItemContainer>
       <Rectangle />
       <DetailsSection>
-        <DetailsTitle>{item.name}</DetailsTitle>
+        <DetailsTitle><NavLink to="/product-page">{item.name}</NavLink></DetailsTitle>
         <DetailsContent>{item.description || 'No description'}</DetailsContent>
         <ReviewsFooter>
           <Stars numberOfStars={item.rating || 0}/>

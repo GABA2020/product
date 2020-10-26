@@ -22,6 +22,7 @@ export const userSelector = createSelector(
     loading,
     loadingUserSearchProfile,
     listGuestUserCache,
+    showMenu
   }) => ({
     userProfile,
     userSearchResults,
@@ -36,5 +37,6 @@ export const userSelector = createSelector(
     arrayLength,
     loadingUserSearchProfile,
     listGuestUserCache,
+    showMenu
   }),
 );

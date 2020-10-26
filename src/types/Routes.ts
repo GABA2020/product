@@ -1,5 +1,6 @@
 enum RoutesTypes {
   HOME = '/',
+  AUTH = '/auth',
   PROFILE = '/profile',
   USER = '/:username',
   PRODUCT = '/product-page',

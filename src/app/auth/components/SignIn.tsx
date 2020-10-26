@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react';
-import { Helmet } from 'react-helmet';
 import { useSelector, useDispatch } from 'react-redux';
 import { useInjectSaga } from 'utils/redux-injectors';
 import { sliceKey, actions } from 'redux/Auth/slice';
@@ -7,7 +6,6 @@ import { authSelector } from 'redux/Auth/selectors';
 import { AuthSaga } from 'redux/Auth/saga';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-import RoutesTypes from '../../../types/Routes';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers';
 import 'styles/scss/login.scss';
@@ -37,6 +35,7 @@ export const SignIn: React.FC = props => {
       }),
     );
   };
+
 
   return (
     <FormWrapper onSubmit={handleSubmit(onSubmit)}>
@@ -74,43 +73,9 @@ export const SignIn: React.FC = props => {
         primary
         fluid
         size="huge"
-        disabled={loading}
+        // disabled={loading}
       />
 
-      {/* <div className="form-group">
-        <input
-          ref={register}
-          name="email"
-          type="text"
-          id="inputEmail"
-          className="form-control"
-          placeholder="Email address"
-          autoFocus
-        />
-        {errors.email && (
-          <span className={'text-danger'}>{errors.email.message}</span>
-        )}
-      </div> */}
-      {/* <div className="form-group">
-        <input
-          ref={register}
-          name="password"
-          type="password"
-          id="inputPassword"
-          className="form-control"
-          placeholder="Password"
-        />
-        {errors.password && (
-          <span className={'text-danger'}>{errors.password.message}</span>
-        )}
-      </div> */}
-      {/* <button
-        disabled={loading ? true : false}
-        className="btn btn-success btn-block"
-        type="submit"
-      >
-        <i className="fas fa-sign-in-alt" /> Sign in
-      </button> */}
       <div className="text-center form-group">
         <a
           onClick={e => {
@@ -126,16 +91,6 @@ export const SignIn: React.FC = props => {
           Forgot password?
         </a>
       </div>
-      {/* <Link to={RoutesTypes.SIGN_UP}>
-            <button
-              className="btn btn-primary btn-block"
-              type="button"
-              id="btn-signup"
-              disabled={loading ? true : false}
-            >
-              <i className="fas fa-user-plus" /> Sign up
-            </button>
-          </Link> */}
     </FormWrapper>
   );
 };

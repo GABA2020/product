@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Segment } from 'semantic-ui-react';
 import styled from 'styled-components';
 
@@ -14,17 +14,43 @@ const MarketPlaceContainer = styled(Segment.Group)`
 `;
 
 const MarketPlaceScreen = () => {
+  const [searchField, setSearchField] = useState('');
   const {data, loading} = useQuery(RESOURCES, {
     variables: { limit: 5 }
-  });
+  })
+  const [filteredData, setFilteredData] = useState([]);
 
   if (loading) return null;
+
+  const handleSearch = () => {    
+    setFilteredData(
+      data.resources.filter(
+        resource =>  (
+          resource.name.toLowerCase().search(searchField.toLowerCase()) !== -1 ||
+          resource.description && resource.description.toLowerCase().search(searchField.toLowerCase()) !== -1
+        )
+      )
+    )
+  };
+
+  const handleFilterByCategory = categoryId => {
+    setFilteredData(
+      data.resources.filter(
+        resource => resource.categories && resource.categories.includes(categoryId)
+      )
+    )
+  }
   
   return (
   <MarketPlaceContainer>
     <MarketPlaceHeader />
-    <MarketPlaceSearch />
-    <MarketPlaceFeatured resources={data.resources}/>
+    <MarketPlaceSearch
+      searchField={searchField}
+      setSearchField={setSearchField}
+      handleSearch={handleSearch}
+      handleFilterByCategory={handleFilterByCategory}
+    />
+    <MarketPlaceFeatured resources={filteredData.length ? filteredData : data.resources}/>
   </MarketPlaceContainer>
 )};
 

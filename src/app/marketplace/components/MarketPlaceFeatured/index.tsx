@@ -3,6 +3,8 @@ import styled from 'styled-components';
 
 import FeaturedItem from './FeaturedItem';
 import {Resource} from '../../../../types/Resource';
+const FilterByNameIcon = require('../../../../assets/images/sprites/FilterByName.png');
+const FilterByPriceIcon = require('../../../../assets/images/sprites/FilterByPrice.png');
 
 const FeaturedContainer = styled.div`
   padding: 85px 165px;
@@ -43,12 +45,9 @@ const FiltersContainer = styled.div`
   display: flex;
 `
 
-const Square = styled.div`
-  background: rgba(0, 101, 242, 0.11);
-  border-radius: 6px;
-  height: 40px;
-  width: 40px;
+const FilterImage = styled.img`
   margin-left: 10px;
+  height: 40px;
 `
 const ITEMS = [{
   title: 'Item title',
@@ -74,8 +73,8 @@ const MarketPlaceSearch = (props: MarketPlaceSearchProps) => {
         <Tab>Equipment</Tab>
       </Tabs>
       <FiltersContainer>
-        <Square />
-        <Square />
+        <FilterImage src={FilterByNameIcon}/>
+        <FilterImage src={FilterByPriceIcon}/>
       </FiltersContainer>
     </FeaturedHeader>
     <>

@@ -4,13 +4,14 @@ import { Footer } from '../Footer';
 import { Redirect, Route, Router, Switch } from 'react-router';
 import { history } from '../../../utils/history';
 import RoutesTypes from '../../../types/Routes';
-import { Product } from '../Product';
+import ProductPage from '../../product/screens/ProductScreen';
 import { HomePage } from '../HomePage/Loadable';
 import { auth } from 'firebase';
 import { actions as authActions } from '../../../redux/Auth/slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { authSelector } from '../../../redux/Auth/selectors';
 import { SearchUser } from '../SearchUser';
+import MarketPlacePage from '../../marketplace/screens/MarketPlaceScreen';
 
 // Auth Route
 const AuthRoute = ({ component: Component, ...rest }) => {
@@ -50,7 +51,7 @@ export const MainPage = () => {
               isAuth={isAuth}
               exact
               path={RoutesTypes.PRODUCT}
-              component={Product}
+              component={ProductPage}
             />
             <AuthRoute
               isAuth={isAuth}
@@ -63,6 +64,12 @@ export const MainPage = () => {
               exact
               path={RoutesTypes.HOME}
               component={HomePage}
+            />
+            <AuthRoute
+              isAuth={isAuth}
+              exact
+              path={RoutesTypes.MARKET_PLACE}
+              component={MarketPlacePage}
             />
           </Switch>
         </Router>

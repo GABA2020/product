@@ -78,7 +78,6 @@ export function App() {
       <Router history={history}>
         <Switch>
           <Route exact path={RoutesTypes.AUTH} component={AuthScreen} />
-          <Route exact path={RoutesTypes.SIGN_IN} component={MarketPlacePage} />
           <Route
             isAuth={isAuth}
             exact
@@ -114,6 +113,12 @@ export function App() {
             exact
             path={RoutesTypes.HOME}
             component={MainPage}
+          />
+          <AuthRoute
+            isAuth={isAuth}
+            exact
+            path={RoutesTypes.MARKET_PLACE}
+            component={MarketPlacePage}
           />
         </Switch>
       </Router>

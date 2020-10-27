@@ -3,6 +3,8 @@ import styled from 'styled-components';
 
 import Stars from '../../../genericComponents/Stars';
 import {Resource} from '../../../../types/Resource';
+import { NavLink } from 'react-router-dom';
+
 const Bitmap = require('../../../../assets/images/sprites/Bitmap.png')
 
 const ItemContainer = styled.div`
@@ -83,8 +85,8 @@ const FeaturedItem = (props: FeaturedItemProps) => {
   return (
     <ItemContainer>
       <DetailsSection>
-        <DetailsTitle>{item.name}</DetailsTitle>
-        <DetailsContent>{item.description || ' Testing updating list on create Testing updating list on create Testing updating list on create Testing updating list on create'}</DetailsContent>
+        <DetailsTitle><NavLink to="/product-page">{item.name}</NavLink></DetailsTitle>
+        <DetailsContent>{item.description || 'No description'}</DetailsContent>
         <ReviewsFooter>
           <Stars color="yellow" numberOfStars={item.rating || 0}/>
           <Reviews>2,423 Reviews</Reviews>

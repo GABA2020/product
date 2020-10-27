@@ -32,7 +32,6 @@ import { AuthScreen } from './auth/screens/AuthScreen';
 import { AdminConsole } from './containers/AdminConsole';
 import { PaymentPage } from './containers/PaymentPage';
 import { LateralMenu } from './genericComponents/LateralMenu';
-import MarketPlacePage from './marketplace/screens/MarketPlaceScreen';
 // Auth Route
 const AuthRoute = ({ component: Component, ...rest }) => {
   const { isAuth } = rest;
@@ -118,7 +117,7 @@ export function App() {
             isAuth={isAuth}
             exact
             path={RoutesTypes.MARKET_PLACE}
-            component={MarketPlacePage}
+            component={MainPage}
           />
         </Switch>
       </Router>

@@ -20,11 +20,7 @@ const AuthRoute = ({ component: Component, ...rest }) => {
     <Route
       {...rest}
       render={props =>
-        isAuth ? (
-          <Component {...props} />
-        ) : (
-          <Redirect to={RoutesTypes.AUTH} />
-        )
+        isAuth ? <Component {...props} /> : <Redirect to={RoutesTypes.AUTH} />
       }
     />
   );
@@ -50,6 +46,12 @@ export const MainPage = () => {
             <AuthRoute
               isAuth={isAuth}
               exact
+              path={RoutesTypes.MARKET_PLACE}
+              component={MarketPlacePage}
+            />
+            <AuthRoute
+              isAuth={isAuth}
+              exact
               path={RoutesTypes.PRODUCT}
               component={ProductPage}
             />
@@ -64,12 +66,6 @@ export const MainPage = () => {
               exact
               path={RoutesTypes.HOME}
               component={HomePage}
-            />
-            <AuthRoute
-              isAuth={isAuth}
-              exact
-              path={RoutesTypes.MARKET_PLACE}
-              component={MarketPlacePage}
             />
           </Switch>
         </Router>

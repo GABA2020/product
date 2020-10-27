@@ -65,14 +65,14 @@ export function SignUp() {
   //       setValidationError(errorMessage);
   //     });
   // }
-  const userDatabaseEntry = async () => {
+  const userDatabaseEntry = async (data) => {
     if (validationError === null) {
       await db
         .collection('member_data')
-        .doc("createEmail")
+        .doc(data.email)
         .set(
           {
-            email: "createEmail",
+            email: data.email,
             avatar: '',
             membership_type: 'GABASilver',
             payment_complete: false,
@@ -101,7 +101,7 @@ export function SignUp() {
             is_passed_mcat: false,
             mcat_document_name: '',
             mcat_review_requested: false,
-            name: `${"createFirstName"} ${"createLastName"}`,
+            name: `${data.firstname} ${data.lastname}`,
             number_of_apps_categorical: '',
             number_of_apps_preliminary_year: '',
             number_of_general_publications: '',
@@ -126,10 +126,10 @@ export function SignUp() {
             step_2_document_name: '',
             step_2_review_requested: false,
             student_location: '',
-            student_status: "createMedicalSchoolYear",
+            student_status: data.schoolyear,
             total_interviews_attended: '',
             total_ranked: '',
-            username: "createUsername",
+            username: data.username,
             verified: false,
             waitlists: 0,
             year: '',
@@ -139,11 +139,11 @@ export function SignUp() {
             step_3_document_name: '',
             step_3_resources_used: [],
             step_3_review_requested: false,
-            medicalSchool: "createMedicalSchool"
+            medicalSchool: data.medicalschool
           },
           { merge: true },
         );
-      await db.collection('program_review').doc("createEmail").set(
+      await db.collection('program_review').doc(data.email).set(
         {
           specialty: '',
         },
@@ -152,12 +152,12 @@ export function SignUp() {
     } else throw error;
   };
 
-  const fileStorage = async file => {
+  const fileStorage = async (file,data) => {
     let storageRef = storageFB.ref();
     let fileRef = storageRef.child(
-      `files/${"createEmail"}/verification/${file.name}`,
+      `files/${data.email}/verification/${file.name}`,
     );
-    const collectionRef = db.collection('member_data').doc("createEmail");
+    const collectionRef = db.collection('member_data').doc(data.email);
     await fileRef.put(file).then(async () => {
       const url = await fileRef.getDownloadURL();
       collectionRef.set(
@@ -179,11 +179,11 @@ export function SignUp() {
     } else throw error;
   };
 
-  const sendVerificationEmail = async () => {
+  const sendVerificationEmail = async (data) => {
     if (validationError === null) {
       const template_params = {
-        contactEmail: "createEmail",
-        contactFirstName: "createFirstName",
+        contactEmail: data.email,
+        contactFirstName: data.firstname,
       };
 
       const service_id = 'default_service';
@@ -193,21 +193,22 @@ export function SignUp() {
     } else throw error;
   };
 
-  const onSubmit = async () => {
+  const onSubmit = async (data) => {
+    data.schoolyear=schoolYear;
     try {
       await auth
-        .createUserWithEmailAndPassword("createEmail", "createPassword")
+        .createUserWithEmailAndPassword(data.email, data.password)
         .catch(error => {
           let errorMessage = error.message;
           setValidationError(errorMessage);
         });
       if (!validationError) {
-        await fileStorage(file)
+        await fileStorage(file,data)
           .then(async () => {
-            await userDatabaseEntry();
+            await userDatabaseEntry(data);
           })
           .then(() => {
-            sendVerificationEmail();
+            sendVerificationEmail(data);
           })
           .then(() => {
             onCreationSuccess();
@@ -281,27 +282,21 @@ export function SignUp() {
 
       <Form.Field required>
         <Label>Medical School Verification</Label>
-
         <input
-          // icon="mail"
-          // iconPosition="left"
           type="file"
           ref={register}
           name="filesubmission"
           onChange={changeHandler}
         />
-        {errors.email && (
-          <span className={'text-danger'}>{errors.email.message}</span>
+        {errors.filesubmission && (
+          <span className={'text-danger'}>{errors.filesubmission.message}</span>
         )}
       </Form.Field>
       <Divider />
 
       <Form.Field required>
         <Label>Email Address </Label>
-
         <input
-          // icon="mail"
-          // iconPosition="left"
           type="text"
           ref={register}
           name="email"

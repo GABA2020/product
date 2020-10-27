@@ -3,23 +3,18 @@ import styled from 'styled-components';
 
 import Stars from '../../../genericComponents/Stars';
 import {Resource} from '../../../../types/Resource';
+const Bitmap = require('../../../../assets/images/sprites/Bitmap.png')
 
 const ItemContainer = styled.div`
-  background: rgb(242, 248, 255);
+  background: ${props => props.theme.color.softYellow};
   border-radius: 6px;
-  border: 1px solid rgb(0, 101, 242);
-  width: 100%;
+  max-width: 70%;
   margin-bottom: 30px;
   display: flex;
   padding: 30px;
+  position: relative;
+  max-height: 220px;
 `;
-
-const Rectangle = styled.div`
-  border: 1px solid rgb(0, 101, 242);;
-  height: 180px;
-  width: 300px;
-  margin-right: 61px;
-`
 
 const DetailsSection = styled.div`
   display: flex;
@@ -27,7 +22,7 @@ const DetailsSection = styled.div`
 `
 
 const DetailsTitle = styled.h3`
-  color: rgb(0, 101, 242);
+  color: ${props => props.theme.color.darkBlue};
   font-size: 24px;
   font-weight: bold;
   height: 32px;
@@ -37,7 +32,7 @@ const DetailsTitle = styled.h3`
 `
 
 const DetailsContent = styled.p`
-  color: rgb(0, 101, 242);
+  color: ${props => props.theme.color.darkBlue};
   font-size: 16px;
   height: 72px;
   letter-spacing: 0.1px;
@@ -62,15 +57,21 @@ const TagsSection = styled.div`
   margin-top: 50px;
   margin-left: 50px;
   flex-wrap: wrap;
-  max-width: 200px;
+  max-width: 400px;
 `
 
 const Tag = styled.div`
-  background: rgb(255, 255, 255);
+  background: ${props => props.theme.color.softPurple};
   border-radius: 6px;
   padding: 6px 10px;
   height: 30px;
   margin-right: 10px;
+`
+
+const Image = styled.img`
+  position: absolute;
+  right: -350px;
+  top: 10px;
 `
 
 interface FeaturedItemProps {
@@ -81,19 +82,24 @@ const FeaturedItem = (props: FeaturedItemProps) => {
   const { item } = props;
   return (
     <ItemContainer>
-      <Rectangle />
       <DetailsSection>
         <DetailsTitle>{item.name}</DetailsTitle>
-        <DetailsContent>{item.description || 'No description'}</DetailsContent>
+        <DetailsContent>{item.description || ' Testing updating list on create Testing updating list on create Testing updating list on create Testing updating list on create'}</DetailsContent>
         <ReviewsFooter>
-          <Stars numberOfStars={item.rating || 0}/>
+          <Stars color="yellow" numberOfStars={item.rating || 0}/>
           <Reviews>2,423 Reviews</Reviews>
         </ReviewsFooter>
       </DetailsSection>
       <TagsSection>
         <Tag>Pulmonology</Tag>
         <Tag>Video</Tag>
+        <Tag>Video</Tag>
+        <Tag>Video</Tag>
+        <Tag>Video</Tag>
+        <Tag>Video</Tag>
+
       </TagsSection>
+      <Image src={Bitmap}/>
     </ItemContainer>
 )}
 

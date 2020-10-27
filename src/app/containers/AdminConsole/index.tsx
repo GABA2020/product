@@ -16,18 +16,19 @@ import {
   Button,
   Pagination,
   PaginationProps,
+  SearchProps,
 } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import { AdminMenu, AdminMenuItems } from './AdminMenu';
 import gql from 'graphql-tag';
-import { useLazyQuery, useQuery } from 'react-apollo';
+import { useLazyQuery, useQuery } from '@apollo/react-hooks';
 import { ResourceRow } from './ResourceRow';
 import { CreateResourceModal } from './Resources';
 import { constants } from 'crypto';
 
 const GET_RESOURCES = gql`
-  query {
-    resources {
+  query Resources($limit: Int, $offset: Int, $categories: [String]) {
+    resources(limit: $limit, offset: $offset, categories: $categories) {
       id
       name
       description
@@ -48,8 +49,16 @@ export const AdminConsole = () => {
     AdminMenuItems.RESOURCES,
   );
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [resources, setResources] = useState<any[]>([]);
+  const [searchValue, setSearchValue] = useState<string>('');
+  const [searchResults, setSearchResults] = useState<any[]>([]);
 
-  const { loading, error, data, fetchMore } = useQuery(GET_RESOURCES);
+  var { loading, error, data, fetchMore } = useQuery(GET_RESOURCES, {
+    fetchPolicy: 'network-only',
+    onCompleted: data => {
+      setResources([...data.resources]);
+    },
+  });
 
   const itemsPerPage = 10;
 
@@ -70,24 +79,67 @@ export const AdminConsole = () => {
     setActiveMenuItem(menuItem);
   };
 
-  const onPageChange = (event, data: PaginationProps) => {
+  const fetch = (offset: number) =>
+    fetchMore({
+      variables: {
+        limit: itemsPerPage,
+        offset: offset,
+      },
+      updateQuery: (previousResult, { fetchMoreResult }) => {
+        setResources([...fetchMoreResult.resources]);
+        return {
+          data: fetchMoreResult.resources,
+        };
+      },
+    });
+
+  const onPageChange = async (event, data: PaginationProps) => {
     if (data.activePage) {
-      const offset = (data.activePage as number) * itemsPerPage;
+      const offset = ((data.activePage as number) - 1) * itemsPerPage;
+      fetchMore({
+        variables: {
+          limit: itemsPerPage,
+          offset: offset,
+        },
+        updateQuery: (previousResult, { fetchMoreResult }) => {
+          setCurrentPage(data.activePage as number);
+          setResources([...fetchMoreResult.resources]);
+          return {
+            data: fetchMoreResult.resources,
+          };
+        },
+      });
     }
-    // fetchMore({
-    //   variables: {
-    //     cursor: cursor,
-    //   },
-    //   updateQuery: (previousResult, { fetchMoreResult }) => {
-    //     const previousEntry = previousResult.entry;
-    //     const newProducts = fetchMoreResult.allProducts;
-    //     return {
-    //       cursor: fetchMoreResult.cursor,
-    //       entry: {
-    //         allProducts: [...previousEntry.entry.allProducts, ...newProducts],
-    //       },
-    //     };
   };
+
+  const onSearchChange = (e, data: SearchProps) => {
+    if (data.value) {
+      const searchResults = [
+        ...resources.filter(resource =>
+          (resource.name as string).includes(data.value as string),
+        ),
+      ];
+      console.log(searchResults);
+      setSearchValue(data.value as string);
+      setSearchResults([...searchResults]);
+    } else {
+      setSearchValue('');
+      setSearchResults([...resources]);
+    }
+  };
+  // fetchMore({
+  //   variables: {
+  //     cursor: cursor,
+  //   },
+  //   updateQuery: (previousResult, { fetchMoreResult }) => {
+  //     const previousEntry = previousResult.entry;
+  //     const newProducts = fetchMoreResult.allProducts;
+  //     return {
+  //       cursor: fetchMoreResult.cursor,
+  //       entry: {
+  //         allProducts: [...previousEntry.entry.allProducts, ...newProducts],
+  //       },
+  //     };
 
   return (
     <>
@@ -98,17 +150,11 @@ export const AdminConsole = () => {
       {activeMenuItem === AdminMenuItems.RESOURCES && (
         <>
           <div style={{ display: 'flex' }}>
-            <Search
-            // loading={loading}
-            // onResultSelect={(e, data) =>
-            //   dispatch({ type: 'UPDATE_SELECTION', selection: data.result.title })
-            // }
-            // onSearchChange={handleSearchChange}
-            // results={results}
-            // value={value}
-            />
+            <Search open={false} onSearchChange={onSearchChange} />
             <CreateResourceModal
-              onClose={() => {
+              onClose={async () => {
+                const offset = ((currentPage as number) - 1) * itemsPerPage;
+                await fetch(offset);
                 setCreateModalOpen(false);
               }}
               onOpen={() => setCreateModalOpen(true)}
@@ -134,20 +180,24 @@ export const AdminConsole = () => {
               </Table.Row>
             </Table.Header>
             <Table.Body>
-              {data &&
-                data.resources &&
-                data.resources.map(resource => (
-                  <ResourceRow resource={resource} />
-                ))}
+              {searchValue && searchResults
+                ? searchResults.map(resource => (
+                    <ResourceRow resource={resource} />
+                  ))
+                : resources &&
+                  resources.map(resource => (
+                    <ResourceRow resource={resource} />
+                  ))}
             </Table.Body>
             <Table.Footer>
-              <Table.Row>
+              <Table.HeaderCell colSpan="5">
                 <Pagination
+                  floated="right"
                   defaultActivePage={currentPage}
                   totalPages={10}
                   onPageChange={onPageChange}
                 />
-              </Table.Row>
+              </Table.HeaderCell>
             </Table.Footer>
           </Table>
         </>

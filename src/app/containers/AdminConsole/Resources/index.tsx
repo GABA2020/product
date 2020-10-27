@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 import React, { useState } from 'react';
-import { useMutation } from 'react-apollo';
+import { useMutation } from '@apollo/react-hooks';
 import { Button, Form, Label, Modal } from 'semantic-ui-react';
 import { FormTagInput } from '../Tags';
 

@@ -26,7 +26,7 @@ export function AuthScreen() {
         />
       </Grid>
       <ContainerWrapper>
-        {authFlow === 0 ? <SignUp onSubmit={() => {}} /> : <SignIn />}
+        {authFlow === 0 ? <SignUp /> : <SignIn />}
       </ContainerWrapper>
       <Footer />
     </>

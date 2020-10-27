@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 import Stars from '../../../genericComponents/Stars';
+import {Resource} from '../../../../types/Resource';
+import { NavLink } from 'react-router-dom';
 
 const ItemContainer = styled.div`
   background: rgb(242, 248, 255);
@@ -72,22 +74,28 @@ const Tag = styled.div`
   margin-right: 10px;
 `
 
-const FeaturedItem = () => (
-  <ItemContainer>
-    <Rectangle />
-    <DetailsSection>
-      <DetailsTitle>Title</DetailsTitle>
-      <DetailsContent>Content in over a dozen subjects including cardiology, renal, pulmonary, biostatistics, biochemistry, and more.</DetailsContent>
-      <ReviewsFooter>
-        <Stars numberOfStars={3}/>
-        <Reviews>2,423 Reviews</Reviews>
-      </ReviewsFooter>
-    </DetailsSection>
-    <TagsSection>
-      <Tag>Pulmonology</Tag>
-      <Tag>Video</Tag>
-    </TagsSection>
-  </ItemContainer>
-)
+interface FeaturedItemProps {
+  item: Resource
+}
+
+const FeaturedItem = (props: FeaturedItemProps) => {
+  const { item } = props;
+  return (
+    <ItemContainer>
+      <Rectangle />
+      <DetailsSection>
+        <DetailsTitle><NavLink to="/product-page">{item.name}</NavLink></DetailsTitle>
+        <DetailsContent>{item.description || 'No description'}</DetailsContent>
+        <ReviewsFooter>
+          <Stars numberOfStars={item.rating || 0}/>
+          <Reviews>2,423 Reviews</Reviews>
+        </ReviewsFooter>
+      </DetailsSection>
+      <TagsSection>
+        <Tag>Pulmonology</Tag>
+        <Tag>Video</Tag>
+      </TagsSection>
+    </ItemContainer>
+)}
 
 export default FeaturedItem;

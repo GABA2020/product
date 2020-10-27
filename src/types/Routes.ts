@@ -1,5 +1,6 @@
 enum RoutesTypes {
   HOME = '/',
+  AUTH = '/auth',
   PROFILE = '/profile',
   USER = '/:username',
   PRODUCT = '/product-page',
@@ -8,6 +9,7 @@ enum RoutesTypes {
   SIGN_UP = '/sign-up',
   PAYMENT = '/payment',
   ADMIN_CONSOLE = '/admin-console',
+  MARKET_PLACE = '/marketplace',
 }
 
 export default RoutesTypes;

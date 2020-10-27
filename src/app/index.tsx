@@ -31,7 +31,7 @@ import { CVPage } from './containers/CVPage';
 import { AuthScreen } from './auth/screens/AuthScreen';
 import { AdminConsole } from './containers/AdminConsole';
 import { PaymentPage } from './containers/PaymentPage';
-import MarketPlacePage from './marketplace/screens/MarketPlaceScreen';
+import { LateralMenu } from './genericComponents/LateralMenu';
 // Auth Route
 const AuthRoute = ({ component: Component, ...rest }) => {
   const { isAuth } = rest;
@@ -40,9 +40,11 @@ const AuthRoute = ({ component: Component, ...rest }) => {
       {...rest}
       render={props =>
         isAuth ? (
-          <Component {...props} />
+          <LateralMenu>
+            <Component {...props} />
+          </LateralMenu>
         ) : (
-          <Redirect to={RoutesTypes.SIGN_IN} />
+          <Redirect to={RoutesTypes.AUTH} />
         )
       }
     />
@@ -52,6 +54,7 @@ const AuthRoute = ({ component: Component, ...rest }) => {
 export function App() {
   const { isAuth } = useSelector(authSelector);
   const dispatch = useDispatch();
+
 
   React.useEffect(() => {
     auth().onAuthStateChanged(user => {
@@ -73,8 +76,7 @@ export function App() {
       />
       <Router history={history}>
         <Switch>
-          <Route exact path={RoutesTypes.SIGN_IN} component={MarketPlacePage} />
-          <Route exact path={RoutesTypes.SIGN_UP} component={AuthScreen} />
+          <Route exact path={RoutesTypes.AUTH} component={AuthScreen} />
           <Route
             isAuth={isAuth}
             exact
@@ -109,6 +111,12 @@ export function App() {
             isAuth={isAuth}
             exact
             path={RoutesTypes.HOME}
+            component={MainPage}
+          />
+          <AuthRoute
+            isAuth={isAuth}
+            exact
+            path={RoutesTypes.MARKET_PLACE}
             component={MainPage}
           />
         </Switch>

@@ -16,20 +16,17 @@ import FontFaceObserver from 'fontfaceobserver';
 import * as serviceWorker from 'serviceWorker';
 import { PersistGate } from 'redux-persist/lib/integration/react';
 import { ThemeProvider } from 'styled-components';
-
-import 'sanitize.css/sanitize.css';
-
-// Initialize languages
-import './locales/i18n';
-
-import { App } from 'app';
-
 import { HelmetProvider } from 'react-helmet-async';
 
+import { App } from 'app';
 import { configureAppStore } from 'store/configureStore';
-import { ApolloProvider } from 'react-apollo';
-import { graphQLClient } from 'helpers/graphqlClient';
+import { Provider as ContextProvider } from './app/globalContext/GlobalContext';
 import theme from './theme';
+import 'sanitize.css/sanitize.css';
+// Initialize languages
+import './locales/i18n';
+import { ApolloProvider } from '@apollo/client';
+import { graphQLClient } from 'helpers/graphqlClient';
 
 // Observe loading of Inter (to remove 'Inter', remove the <link> tag in
 // the index.html file and this observer)
@@ -46,18 +43,21 @@ const MOUNT_NODE = document.getElementById('root') as HTMLElement;
 interface Props {
   Component: typeof App;
 }
+
 const ConnectedApp = ({ Component }: Props) => (
-  <ThemeProvider theme={theme}>
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <HelmetProvider>
-          <ApolloProvider client={graphQLClient}>
-            <Component />
-          </ApolloProvider>
-        </HelmetProvider>
-      </PersistGate>
-    </Provider>
-  </ThemeProvider>
+  <Provider store={store}>
+    <ApolloProvider client={graphQLClient}>
+      <ContextProvider value={{}}>
+        <ThemeProvider theme={theme}>
+          <PersistGate loading={null} persistor={persistor}>
+            <HelmetProvider>
+              <Component />
+            </HelmetProvider>
+          </PersistGate>
+        </ThemeProvider>
+      </ContextProvider>
+    </ApolloProvider>
+  </Provider>
 );
 
 const render = (Component: typeof App) => {

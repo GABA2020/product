@@ -16,6 +16,7 @@ declare namespace STATES {
     letters: ENTITIES.Letter[];
     arrayLength: number;
     lastQuery: any;
+    showMenu: boolean
   }
   interface Program {
     loading: boolean;

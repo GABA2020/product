@@ -1,8 +1,10 @@
 import React from 'react';
-import { Grid, Input, Button } from 'semantic-ui-react'
 import styled from 'styled-components';
 
 import FeaturedItem from './FeaturedItem';
+import {Resource} from '../../../../types/Resource';
+const FilterByNameIcon = require('../../../../assets/images/sprites/FilterByName.png');
+const FilterByPriceIcon = require('../../../../assets/images/sprites/FilterByPrice.png');
 
 const FeaturedContainer = styled.div`
   padding: 85px 165px;
@@ -43,12 +45,9 @@ const FiltersContainer = styled.div`
   display: flex;
 `
 
-const Square = styled.div`
-  background: rgba(0, 101, 242, 0.11);
-  border-radius: 6px;
-  height: 40px;
-  width: 40px;
+const FilterImage = styled.img`
   margin-left: 10px;
+  height: 40px;
 `
 const ITEMS = [{
   title: 'Item title',
@@ -56,54 +55,32 @@ const ITEMS = [{
   tags: ['Cardiology', 'Biochemistry', 'Pulmonary', 'Renail', 'Videos'],
   reviews: 1234,
   numberOfStars: 4
-},
-{
-  title: 'Item title',
-  comment: 'Content in over a dozen subjects including cardiology, renal, pulmonary, biostatistics, biochemistry, and more.',
-  tags: ['Cardiology', 'Biochemistry', 'Pulmonary', 'Renail', 'Videos'],
-  reviews: 1234,
-  numberOfStars: 4
-},
-{
-  title: 'Item title',
-  comment: 'Content in over a dozen subjects including cardiology, renal, pulmonary, biostatistics, biochemistry, and more.',
-  tags: ['Cardiology', 'Biochemistry', 'Pulmonary', 'Renail', 'Videos'],
-  reviews: 1234,
-  numberOfStars: 4
-},
-{
-  title: 'Item title',
-  comment: 'Content in over a dozen subjects including cardiology, renal, pulmonary, biostatistics, biochemistry, and more.',
-  tags: ['Cardiology', 'Biochemistry', 'Pulmonary', 'Renail', 'Videos'],
-  reviews: 1234,
-  numberOfStars: 4
-},
-{
-  title: 'Item title',
-  comment: 'Content in over a dozen subjects including cardiology, renal, pulmonary, biostatistics, biochemistry, and more.',
-  tags: ['Cardiology', 'Biochemistry', 'Pulmonary', 'Renail', 'Videos'],
-  reviews: 1234,
-  numberOfStars: 4
 }]
 
-const MarketPlaceSearch = () => (
+interface MarketPlaceSearchProps {
+  resources: Array<Resource>
+}
+
+const MarketPlaceSearch = (props: MarketPlaceSearchProps) => {
+  const { resources } = props;
+  return (
   <FeaturedContainer>
     <FeaturedHeader>
       <Title>Featured</Title>
       <Tabs>
         <Tab>Resouces</Tab>
-        <Tab>Resouces</Tab>
-        <Tab>Resouces</Tab>
+        <Tab>Schools</Tab>
+        <Tab>Equipment</Tab>
       </Tabs>
       <FiltersContainer>
-        <Square />
-        <Square />
+        <FilterImage src={FilterByNameIcon}/>
+        <FilterImage src={FilterByPriceIcon}/>
       </FiltersContainer>
     </FeaturedHeader>
     <>
-      {ITEMS.map((item, index) => <FeaturedItem key={index}/>)}
+      {resources.slice(0, 5).map((item, index) => <FeaturedItem item={item} key={index}/>)}
     </>
   </FeaturedContainer>
-)
+)}
 
 export default MarketPlaceSearch;

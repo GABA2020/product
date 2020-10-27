@@ -10,7 +10,13 @@ import { AdminVerifyProfileModal } from '../../components/Modal/AdminVerifyProfi
 import { useSelector } from 'react-redux';
 import { authSelector } from 'redux/Auth/selectors';
 import { db } from '../../../helpers/firebase.module';
-import { Menu, Table, Icon, Label, Search, Button } from 'semantic-ui-react';
+import {
+  Table,
+  Search,
+  Button,
+  Pagination,
+  PaginationProps,
+} from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import { AdminMenu, AdminMenuItems } from './AdminMenu';
 import gql from 'graphql-tag';
@@ -41,8 +47,12 @@ export const AdminConsole = () => {
   const [activeMenuItem, setActiveMenuItem] = useState(
     AdminMenuItems.RESOURCES,
   );
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
-  const { loading, error, data } = useQuery(GET_RESOURCES);
+  const { loading, error, data, fetchMore } = useQuery(GET_RESOURCES);
+
+  const itemsPerPage = 10;
+
   const { isAuth, email } = useSelector(authSelector);
 
   const { docs } = useFirestoreVerification('member_data') as any;
@@ -58,6 +68,25 @@ export const AdminConsole = () => {
 
   const onMenuItemClicked = (menuItem: AdminMenuItems) => {
     setActiveMenuItem(menuItem);
+  };
+
+  const onPageChange = (event, data: PaginationProps) => {
+    if (data.activePage) {
+      const offset = (data.activePage as number) * itemsPerPage;
+    }
+    // fetchMore({
+    //   variables: {
+    //     cursor: cursor,
+    //   },
+    //   updateQuery: (previousResult, { fetchMoreResult }) => {
+    //     const previousEntry = previousResult.entry;
+    //     const newProducts = fetchMoreResult.allProducts;
+    //     return {
+    //       cursor: fetchMoreResult.cursor,
+    //       entry: {
+    //         allProducts: [...previousEntry.entry.allProducts, ...newProducts],
+    //       },
+    //     };
   };
 
   return (
@@ -113,20 +142,11 @@ export const AdminConsole = () => {
             </Table.Body>
             <Table.Footer>
               <Table.Row>
-                <Table.HeaderCell colSpan="5">
-                  <Menu floated="right" pagination>
-                    <Menu.Item as="a" icon>
-                      <Icon name="chevron left" />
-                    </Menu.Item>
-                    <Menu.Item as="a">1</Menu.Item>
-                    <Menu.Item as="a">2</Menu.Item>
-                    <Menu.Item as="a">3</Menu.Item>
-                    <Menu.Item as="a">4</Menu.Item>
-                    <Menu.Item as="a" icon>
-                      <Icon name="chevron right" />
-                    </Menu.Item>
-                  </Menu>
-                </Table.HeaderCell>
+                <Pagination
+                  defaultActivePage={currentPage}
+                  totalPages={10}
+                  onPageChange={onPageChange}
+                />
               </Table.Row>
             </Table.Footer>
           </Table>

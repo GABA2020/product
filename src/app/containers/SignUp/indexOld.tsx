@@ -232,7 +232,7 @@ export const SignUp = () => {
       alert(
         'Submitted! Please allow 24-48 hours for your documents to be verified. You will be emailed when accepted!',
       );
-      window.location.replace(RoutesTypes.SIGN_IN);
+      window.location.replace(RoutesTypes.AUTH);
     } else throw error;
   };
 
@@ -265,7 +265,7 @@ export const SignUp = () => {
   return (
     <>
       <section className="container">
-        <Link to={RoutesTypes.SIGN_IN}>
+        <Link to={RoutesTypes.AUTH}>
           <button className="btn btn-primary btn-block">
             <i className="fas fa-user-plus" /> Already a member?
           </button>

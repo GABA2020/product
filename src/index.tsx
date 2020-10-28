@@ -7,7 +7,7 @@
 
 import 'react-app-polyfill/ie11';
 import 'react-app-polyfill/stable';
-import 'semantic-ui-css/semantic.min.css'
+import 'semantic-ui-css/semantic.min.css';
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
@@ -20,22 +20,13 @@ import { HelmetProvider } from 'react-helmet-async';
 
 import { App } from 'app';
 import { configureAppStore } from 'store/configureStore';
-import {Provider as ContextProvider} from './app/globalContext/GlobalContext';
-import theme from './theme'
+import { Provider as ContextProvider } from './app/globalContext/GlobalContext';
+import theme from './theme';
 import 'sanitize.css/sanitize.css';
 // Initialize languages
 import './locales/i18n';
-import { ApolloClient, InMemoryCache, ApolloProvider, gql, HttpLink  } from '@apollo/client';
-
-const client = new ApolloClient({
-  link: new HttpLink({
-    uri: 'https://content-mackerel-67.hasura.app/v1/graphql',
-    headers: {
-      'content-type': 'application/json'
-    }
-  }),
-  cache: new InMemoryCache()
-});
+import { ApolloProvider } from '@apollo/client';
+import { graphQLClient } from 'helpers/graphqlClient';
 
 // Observe loading of Inter (to remove 'Inter', remove the <link> tag in
 // the index.html file and this observer)
@@ -55,7 +46,7 @@ interface Props {
 
 const ConnectedApp = ({ Component }: Props) => (
   <Provider store={store}>
-    <ApolloProvider client={client}>
+    <ApolloProvider client={graphQLClient}>
       <ContextProvider value={{}}>
         <ThemeProvider theme={theme}>
           <PersistGate loading={null} persistor={persistor}>

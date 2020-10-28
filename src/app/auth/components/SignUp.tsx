@@ -1,17 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Form, Input, Divider } from 'semantic-ui-react';
+import { Form, Input, Divider, Select } from 'semantic-ui-react';
 import styled from 'styled-components';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers';
 import { useForm } from 'react-hook-form';
-import { auth, db } from '../../../helpers/firebase.module';
+import { auth, db , storageFB,timestamp} from '../../../helpers/firebase.module';
 import RoutesTypes from 'types/Routes';
+import emailjs from 'emailjs-com';
+
 
 const SignupSchema = yup.object().shape({
   firstname: yup.string().required('First Name is a required field.'),
   lastname: yup.string().required('Last Name is a required field'),
   username: yup.string().required('Username is a required field'),
+  medicalschool: yup.string().required('Medical School is a required field'),
   email: yup
     .string()
     .email('Email format incorrect')
@@ -28,28 +31,195 @@ const SignupSchema = yup.object().shape({
 
 export function SignUp() {
   const [validationError, setValidationError] = useState(null);
-
+  const [file, setFile] = useState(null);
+  const [error, setError] = useState('');
+  const [schoolYear, setSchoolYear] = useState('');
+  
   const { register, handleSubmit, errors } = useForm({
     resolver: yupResolver(SignupSchema),
   });
 
-  function onSubmit(data) {
-    console.log(data);
-    auth
-      .createUserWithEmailAndPassword(data.email, data.password)
-      .then(async r => {
-        // await userDatabaseEntry();
-        window.location.replace(RoutesTypes.AUTH);
-      })
-      .catch(error => {
-        let errorMessage = error.message;
-        setValidationError(errorMessage);
-      });
-  }
+  
+  const changeHandler = e => {
+    let selected = e.target.files[0];
+    const types = ['image/png', 'image/jpeg', 'application/pdf'];
 
-  function userDatabaseEntry(firstname,lastname,email,username,) {
-    
+    if (selected && types.includes(selected.type)) {
+      setFile(selected);
+      setError('');
+    } else {
+      setFile(null);
+    }
   };
+
+  // function onSubmit(data) {
+  //   console.log(data);
+  //   auth
+  //     .createUserWithEmailAndPassword(data.email, data.password)
+  //     .then(async r => {
+  //       // await userDatabaseEntry();
+  //       window.location.replace(RoutesTypes.AUTH);
+  //     })
+  //     .catch(error => {
+  //       let errorMessage = error.message;
+  //       setValidationError(errorMessage);
+  //     });
+  // }
+  const userDatabaseEntry = async (data) => {
+    if (validationError === null) {
+      await db
+        .collection('member_data')
+        .doc(data.email)
+        .set(
+          {
+            email: data.email,
+            avatar: '',
+            membership_type: 'GABASilver',
+            payment_complete: false,
+            last_login: '',
+            awards: '',
+            about: '',
+            phone_number: '',
+            address: '',
+            honors: [],
+            class_quartile: '',
+            clerkship_honors: [],
+            complex_1: 0,
+            complex_2: 0,
+            couples_match: false,
+            cs_pe: '',
+            degrees: '',
+            edit: false,
+            gender: '',
+            interview_offers: '',
+            interview_offers_prelim: '',
+            interview_offers_ty: '',
+            interviews_cancelled_or_declined: '',
+            learning_style: '',
+            match: false,
+            mcat: 0,
+            is_passed_mcat: false,
+            mcat_document_name: '',
+            mcat_review_requested: false,
+            name: `${data.firstname} ${data.lastname}`,
+            number_of_apps_categorical: '',
+            number_of_apps_preliminary_year: '',
+            number_of_general_publications: '',
+            number_of_ir_applications: '',
+            number_of_ir_interviews: '',
+            number_of_presentations: '',
+            number_of_sub_1: '',
+            places_interviewed: '',
+            reapplicant: '',
+            red_flag: '',
+            rejections: '',
+            specialty_interest: '',
+            specialty_specific_publications: '',
+            step_1: 0,
+            is_passed_step1: false,
+            step_1_document_name: '',
+            step_1_review_requested: false,
+            step_1_resources_used: [],
+            step_2: 0,
+            is_passed_step2: false,
+            step_2_resources_used: [],
+            step_2_document_name: '',
+            step_2_review_requested: false,
+            student_location: '',
+            student_status: data.schoolyear,
+            total_interviews_attended: '',
+            total_ranked: '',
+            username: data.username,
+            verified: false,
+            waitlists: 0,
+            year: '',
+            year_in_program: 0,
+            step_3: 0,
+            is_passed_step3: false,
+            step_3_document_name: '',
+            step_3_resources_used: [],
+            step_3_review_requested: false,
+            medicalSchool: data.medicalschool
+          },
+          { merge: true },
+        );
+      await db.collection('program_review').doc(data.email).set(
+        {
+          specialty: '',
+        },
+        { merge: true },
+      );
+    } else throw error;
+  };
+
+  const fileStorage = async (file,data) => {
+    let storageRef = storageFB.ref();
+    let fileRef = storageRef.child(
+      `files/${data.email}/verification/${file.name}`,
+    );
+    const collectionRef = db.collection('member_data').doc(data.email);
+    await fileRef.put(file).then(async () => {
+      const url = await fileRef.getDownloadURL();
+      collectionRef.set(
+        {
+          schoolVerification: url,
+          creationDate: timestamp(),
+        },
+        { merge: true },
+      );
+    });
+  };
+
+  const onCreationSuccess = () => {
+    if (validationError === null) {
+      alert(
+        'Submitted! Please allow 24-48 hours for your documents to be verified. You will be emailed when accepted!',
+      );
+      window.location.replace(RoutesTypes.AUTH);
+    } else throw error;
+  };
+
+  const sendVerificationEmail = async (data) => {
+    if (validationError === null) {
+      const template_params = {
+        contactEmail: data.email,
+        contactFirstName: data.firstname,
+      };
+
+      const service_id = 'default_service';
+      const template_id = 'template_7uh3g6p';
+      const user_id = 'user_yIq3IIfTQ8ruKbjBAqYaQ';
+      await emailjs.send(service_id, template_id, template_params, user_id);
+    } else throw error;
+  };
+
+  const onSubmit = async (data) => {
+    data.schoolyear=schoolYear;
+    try {
+      await auth
+        .createUserWithEmailAndPassword(data.email, data.password)
+        .catch(error => {
+          let errorMessage = error.message;
+          setValidationError(errorMessage);
+        });
+      if (!validationError) {
+        await fileStorage(file,data)
+          .then(async () => {
+            await userDatabaseEntry(data);
+          })
+          .then(() => {
+            sendVerificationEmail(data);
+          })
+          .then(() => {
+            onCreationSuccess();
+          });
+      } else throw error;
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  //function userDatabaseEntry(firstname, lastname, email, username) {}
 
   return (
     <FormWrapper onSubmit={handleSubmit(onSubmit)}>
@@ -84,13 +254,49 @@ export function SignUp() {
           <span className={'text-danger'}>{errors.username.message}</span>
         )}
       </Form.Field>
+
       <Divider />
+
+      <Form.Field required>
+        <Label>Medical School </Label>
+        <input type="text" ref={register} name="medicalschool" />
+        {errors.medicalschool && (
+          <span className={'text-danger'}>{errors.medicalschool.message}</span>
+        )}
+      </Form.Field>
+      <Form.Field required>
+        <Label>School Year </Label>
+        <Select
+          clearable
+          options={[
+            { key: 'MS1', text: 'MS1', value: 'MS1' },
+            { key: 'MS2', text: 'MS2', value: 'MS2' },
+            { key: 'MS3', text: 'MS3', value: 'MS3' },
+            { key: 'MS4', text: 'MS4', value: 'MS4' },
+            { key: 'Resident', text: 'Resident', value: 'Resident' },
+            { key: 'Fellow', text: 'Fellow', value: 'Fellow' },
+          ]}
+          onChange={(e, { value }:any) => setSchoolYear(value)}
+        />
+      </Form.Field>
+
+      <Form.Field required>
+        <Label>Medical School Verification</Label>
+        <input
+          type="file"
+          ref={register}
+          name="filesubmission"
+          onChange={changeHandler}
+        />
+        {errors.filesubmission && (
+          <span className={'text-danger'}>{errors.filesubmission.message}</span>
+        )}
+      </Form.Field>
+      <Divider />
+
       <Form.Field required>
         <Label>Email Address </Label>
-
         <input
-          // icon="mail"
-          // iconPosition="left"
           type="text"
           ref={register}
           name="email"
@@ -119,6 +325,7 @@ export function SignUp() {
         </Form.Field>
       </Form.Group>
       <Divider />
+
       <Form.Button content="Join GABA" fluid size="huge" />
     </FormWrapper>
   );

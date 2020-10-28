@@ -16,7 +16,7 @@ export const AdminConsole = () => {
   const [name, setName] = useState(null);
   const [emails, setEmail] = useState(null);
 
-  const adminList = ['candice.blacknall@gogaba.co'];
+  const adminList = ['candice.blacknall@gogaba.co', 'snmunoz@gmail.com'];
 
   const { email } = useSelector(authSelector);
 

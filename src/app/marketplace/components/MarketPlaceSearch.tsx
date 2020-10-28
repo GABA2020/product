@@ -2,20 +2,20 @@ import React from 'react';
 import { Grid } from 'semantic-ui-react';
 import styled from 'styled-components';
 
-const GlyphIcon = require('../../../assets/images/sprites/Glyph.png');
-const SquareIcon = require('../../../assets/images/sprites/Square.png');
-const DotCircleIcon = require('../../../assets/images/sprites/DotCircle.png');
-const ShapesIcon = require('../../../assets/images/sprites/Shapes.png');
-const HalfCircleIcon = require('../../../assets/images/sprites/HalfColouredCircle.png');
+const GlyphIcon = require('../../../assets/images/sprites/Glyph@2x.png');
+const SquareIcon = require('../../../assets/images/sprites/Square@2x.png');
+const DotCircleIcon = require('../../../assets/images/sprites/DotCircle@2x.png');
+const ShapesIcon = require('../../../assets/images/sprites/Shapes@2x.png');
+const HalfCircleIcon = require('../../../assets/images/sprites/HalfColouredCircle@2x.png');
 
 const SearchContainer = styled(Grid)`
-  background: rgb(242, 248, 255);
+  background: ${props => props.theme.color.darkBlue};
   padding-top: 50px !important;
   padding-bottom: 50px !important;
 `;
 
 const SearchTitle = styled.h3`
-  color: rgb(0, 101, 242);
+  color: ${props => props.theme.color.white};
   font-size: 24px;
   font-weight: bold;
   height: 32px;
@@ -31,14 +31,15 @@ const SearchInput = styled.input`
   border: none;
   outline: none;
   padding-left: 15px;
+  border-radius: 5px 0 0 5px;
 `
 
 const SearchButton = styled.button`
-  background: rgb(0, 101, 242);
+  background: ${props => props.theme.color.gabaYellow};
   border-radius: 0px 6px 6px 0px;
   height: 48px;
   width: 110px;
-  color: white;
+  color: ${props => props.theme.color.darkBlue};
   font-size: 16px;
   font-weight: 500;
   letter-spacing: 0.1px;
@@ -49,15 +50,15 @@ const SearchButton = styled.button`
 `
 
 const VerticalDivider = styled.div`
-  border: 1.5px solid rgba(0, 101, 242, 0.44);
+  border: 1.5px solid ${props => props.theme.color.white};
   height: 50px;
   width: 1px;
-  background-color: rgba(0, 101, 242, 0.44);
+  background-color: ${props => props.theme.color.white};
   margin-left: 50%;
 `
 
 const DividerLabel = styled.h3`
-  color: rgb(0, 101, 242);
+  color: ${props => props.theme.color.white};
   font-size: 16px;
   font-weight: bold;
   height: 32px;
@@ -68,7 +69,7 @@ const DividerLabel = styled.h3`
 `
 
 const CategoryLabel = styled.p`
-  color: rgb(0, 101, 242);
+  color: ${props => props.theme.color.white};
   font-size: 16px;
   font-weight: 500;
   height: 24px;
@@ -88,6 +89,10 @@ const CategoriesTitle = styled(SearchTitle)`
 const Category = styled(Grid.Column)`
   padding: 0 !important;
   cursor: pointer;
+`
+const InputContainer = styled.div`
+  display: flex;
+  flex-direction: row;
 `
 
 const categories = [{
@@ -131,11 +136,11 @@ const MarketPlaceSearch = (props: MarketPlaceSearchProps) => {
     <SearchContainer centered>
       <Grid.Row centered columns={3}>
         <Grid.Column width={6}>
-          <Grid.Row>
             <SearchTitle>Search for Resources</SearchTitle>
+          <InputContainer>
             <SearchInput onChange={({ target: { value }}) => setSearchField(value)} value={searchField} type="text"/>
             <SearchButton onClick={() => handleSearch()}> Search </SearchButton>
-          </Grid.Row>
+          </InputContainer>
         </Grid.Column>
         <Grid.Column centered width={2}>
           <VerticalDivider />

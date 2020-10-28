@@ -62,6 +62,7 @@ export const AdminConsole = () => {
 
   const itemsPerPage = 10;
 
+
   const { isAuth, email } = useSelector(authSelector);
 
   const { docs } = useFirestoreVerification('member_data') as any;
@@ -73,7 +74,7 @@ export const AdminConsole = () => {
 
   if (error) return <p>An error occured!</p>;
 
-  const adminList = ['candice.blacknall@gogaba.co'];
+  const adminList = ['candice.blacknall@gogaba.co', 'snmunoz@gmail.com'];
 
   const onMenuItemClicked = (menuItem: AdminMenuItems) => {
     setActiveMenuItem(menuItem);

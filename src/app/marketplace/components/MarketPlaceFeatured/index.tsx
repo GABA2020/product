@@ -3,11 +3,11 @@ import styled from 'styled-components';
 
 import FeaturedItem from './FeaturedItem';
 import {Resource} from '../../../../types/Resource';
-const FilterByNameIcon = require('../../../../assets/images/sprites/FilterByName.png');
-const FilterByPriceIcon = require('../../../../assets/images/sprites/FilterByPrice.png');
+const FilterByNameIcon = require('../../../../assets/images/sprites/FilterByName@2x.png');
+const FilterByPriceIcon = require('../../../../assets/images/sprites/FilterByPrice@2x.png');
 
 const FeaturedContainer = styled.div`
-  padding: 85px 165px;
+  padding: 85px 130px;
   display: flex;
   flex-direction: column;
 `;
@@ -19,7 +19,7 @@ const FeaturedHeader = styled.div`
 `;
 
 const Title = styled.h1`
-  color: rgb(0, 101, 242);
+  color: ${props => props.theme.color.darkBlue};
   font-size: 40px;
   font-weight: bold;
   height: 50px;
@@ -31,14 +31,18 @@ const Tabs = styled.div`
   display: flex;
   flex-direction: row;
   margin-top: 10px;
+  border-bottom: 1px solid ${props => props.theme.color.gabaYellow};
+  padding-right: 5px;
+  align-items: flex-end;
+  height: 30px;
+  justify-content: space-between;
 `;
 
-const Tab = styled.div`
-  border-bottom: 2px solid rgb(0, 101, 242);
-  margin-right: 20px;
+const Tab = styled("div")<{ active?: Boolean }>`
   height: 30px;
   width: 80px;
   text-align: center;
+  border-bottom: ${props => props.active ? `2px solid ${props.theme.color.gabaYellow}` : '0'};
 `;
 
 const FiltersContainer = styled.div`
@@ -49,13 +53,6 @@ const FilterImage = styled.img`
   margin-left: 10px;
   height: 40px;
 `
-const ITEMS = [{
-  title: 'Item title',
-  comment: 'Content in over a dozen subjects including cardiology, renal, pulmonary, biostatistics, biochemistry, and more.',
-  tags: ['Cardiology', 'Biochemistry', 'Pulmonary', 'Renail', 'Videos'],
-  reviews: 1234,
-  numberOfStars: 4
-}]
 
 interface MarketPlaceSearchProps {
   resources: Array<Resource>
@@ -68,7 +65,7 @@ const MarketPlaceSearch = (props: MarketPlaceSearchProps) => {
     <FeaturedHeader>
       <Title>Featured</Title>
       <Tabs>
-        <Tab>Resouces</Tab>
+        <Tab active={true}>Resouces</Tab>
         <Tab>Schools</Tab>
         <Tab>Equipment</Tab>
       </Tabs>

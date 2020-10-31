@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import Review from './Review'
 
+import Review from './Review'
+import styled from 'styled-components';
+const YellowStar = require('../../../../assets/images/front/YellowStar@2x.png');
 
 const REVIEWS = [{
 	numberOfStars: 3,
@@ -68,12 +70,43 @@ const judgeReviews = [{
   stars: 1
 }]
 
+const Button = styled.button`
+    color:  ${props => props.theme.color.darkBlue};
+    font-size: 1.6rem;
+    font-weight: 500;
+    padding: 9px 14px;
+    line-height: 1.1;
+    color: ${props => props.theme.color.darkBlue};
+    background-color: ${props => props.theme.color.softPurple};
+    border-radius: 2px;
+    margin-top: -20px;
+    outline: none;
+    border: none;
+    margin-bottom: 5px;
+`
+
+const ProgressBarContainer = styled.div`
+  .progress {
+    background-color ${props => props.theme.color.softPurple} !important;
+    .progress-bar {
+      background-color ${props => props.theme.color.darkBlue} !important;
+    }
+  }
+`
+
+const StarContainer = styled.div`
+  margin-top: -2px;
+  margin-right: -2px;
+`
+
 
 const ReviewSection = () => {
   let [reviews, setReviews] = useState(REVIEWS);
   const handleFilterReviews =  (property, value) => setReviews(
     REVIEWS.filter(rev => rev[property] === value)
   )
+
+  const handleClearFilters = () => setReviews(REVIEWS)
 
   return (
     <section className="section-review">
@@ -92,11 +125,12 @@ const ReviewSection = () => {
                 {
                   judgeReviews.map(rev => (
                     <div className="judge-item">
-                      <div className="judge-num-star">
+                      <StarContainer className="judge-num-star">
                         <span className="judge-num">{rev.stars}</span>
-                        <span className="judge-star active" onClick={() => handleFilterReviews('numberOfStars', rev.stars)}>&nbsp;</span>
-                      </div>
-                      <div className="judge-progress">
+                        <img onClick={() => handleFilterReviews('numberOfStars', rev.stars)} width={20} src={YellowStar} />
+                          &nbsp;
+                      </StarContainer>
+                      <ProgressBarContainer className="judge-progress">
                         <div className="progress">
                           <div
                             className="progress-bar"
@@ -107,7 +141,7 @@ const ReviewSection = () => {
                             style={{ width: `${rev.value}%` }}
                           />
                         </div>
-                      </div>
+                      </ProgressBarContainer>
                       <div className="judge-percent">
                         <span>{rev.value}%</span>
                       </div>
@@ -118,53 +152,53 @@ const ReviewSection = () => {
             </div>
             <div className="portlet-mention">
               <h3 className="mention-title">See reviews that mention</h3>
-              <ul className="mention-list">
+              <div className="mention-list">
                 <li>
-                  <a href="#" className="btn-mention">
+                  <Button >
                     scores improved
-                  </a>
+                  </Button>
                 </li>
                 <li>
-                  <a href="#" className="btn-mention">
+                  <Button >
                     boost
-                  </a>
+                  </Button>
                 </li>
                 <li>
-                  <a href="#" className="btn-mention">
+                  <Button >
                     cost
-                  </a>
+                  </Button>
                 </li>
                 <li>
-                  <a href="#" className="btn-mention">
+                  <Button >
                     schedule
-                  </a>
+                  </Button>
                 </li>
                 <li>
-                  <a href="#" className="btn-mention">
+                  <Button >
                     lectures
-                  </a>
+                  </Button>
                 </li>
                 <li>
-                  <a href="#" className="btn-mention">
+                  <Button>
                     update
-                  </a>
+                  </Button>
                 </li>
                 <li>
-                  <a href="#" className="btn-mention">
+                  <Button>
                     unique style
-                  </a>
+                  </Button>
                 </li>
                 <li>
-                  <a href="#" className="btn-mention">
+                  <Button>
                     really like
-                  </a>
+                  </Button>
                 </li>
                 <li>
-                  <a href="#" className="btn-mention">
+                  <Button>
                     price
-                  </a>
+                  </Button>
                 </li>
-              </ul>
+              </div>
             </div>
             <div className="portlet-filter">
               <h3 className="mention-title">Filter by exam</h3>
@@ -187,14 +221,17 @@ const ReviewSection = () => {
               </div>
             </div>
             <div className="portlet-filter">
+              <Button onClick={handleClearFilters} style={{marginBottom: 20}}>
+                Clear Filters
+              </Button>
               <h3 className="mention-title">Review this resource</h3>
               <div className="mention-insight">
                 <p>Help other students with your insight.</p>
               </div>
               <div className="write-button">
-                <a href="#" className="btn btn-write-review">
+                <Button>
                   Write a Review
-                </a>
+                </Button>
               </div>
             </div>
           </div>
@@ -208,9 +245,9 @@ const ReviewSection = () => {
                 }
               </div>
               <div className="load-more">
-                <a href="#" className="btn btn-loadmore">
+                <Button>
                   Load More Reviews
-                </a>
+                </Button>
               </div>
             </div>
           </div>

@@ -89,7 +89,7 @@ const FeaturedItem = (props: FeaturedItemProps) => {
   return (
     <ItemContainer>
       <DetailsSection>
-        <DetailsTitle><CustomLink to="/product-page">{item.name}</CustomLink></DetailsTitle>
+        <DetailsTitle><CustomLink to={`/product-page/${item.id}`}>{item.name}</CustomLink></DetailsTitle>
         <DetailsContent>{item.description || 'No description'}</DetailsContent>
         <ReviewsFooter>
           <Stars color="yellow" numberOfStars={item.rating || 0}/>

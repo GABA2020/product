@@ -1,5 +1,4 @@
 import React from 'react';
-import { Grid } from 'semantic-ui-react';
 import styled from 'styled-components';
 
 const GlyphIcon = require('../../../assets/images/sprites/Glyph@2x.png');
@@ -8,10 +7,34 @@ const DotCircleIcon = require('../../../assets/images/sprites/DotCircle@2x.png')
 const ShapesIcon = require('../../../assets/images/sprites/Shapes@2x.png');
 const HalfCircleIcon = require('../../../assets/images/sprites/HalfColouredCircle@2x.png');
 
-const SearchContainer = styled(Grid)`
+const categories = [{
+  name: 'Free',
+  id: 'free',
+  icon: GlyphIcon
+},{
+  name: 'Pre-Med',
+  id: 'pre-med',
+  icon: SquareIcon
+},{
+  name: 'Step One',
+  id: 'step-one',
+  icon: DotCircleIcon
+},{
+  name: 'Step Two',
+  id: 'step-two',
+  icon: ShapesIcon
+},{
+  name: 'Step Three',
+  id: 'step-three',
+  icon: HalfCircleIcon
+}]
+
+const Container = styled.div`
   background: ${props => props.theme.color.darkBlue};
   padding-top: 50px !important;
   padding-bottom: 50px !important;
+  display: flex;
+  flex-direction: column;
 `;
 
 const SearchTitle = styled.h3`
@@ -27,11 +50,11 @@ const SearchTitle = styled.h3`
 
 const SearchInput = styled.input`
   height: 48px;
-  width: 350px;
   border: none;
   outline: none;
   padding-left: 15px;
   border-radius: 5px 0 0 5px;
+  width: 100%;
 `
 
 const SearchButton = styled.button`
@@ -65,57 +88,71 @@ const DividerLabel = styled.h3`
   letter-spacing: -0.07px;
   line-height: 32px;
   width: 40px;
-  margin-left: 44%;
+  margin-left: 22%;
 `
 
 const CategoryLabel = styled.p`
   color: ${props => props.theme.color.white};
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 500;
   height: 24px;
   letter-spacing: 0.1px;
   line-height: 24px;
-  width: 100px;
   margin-top: 10px;
-  margin-left: -33px;
   text-align: center;
 `
 
 const CategoriesTitle = styled(SearchTitle)`
-  margin-bottom: 23px !important;
-  margin-left: 75px !important;
+  padding-left: 70px;
 `
 
-const Category = styled(Grid.Column)`
-  padding: 0 !important;
+const Category = styled.div`
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 30px;
+
+  &:first-child {
+    margin-left: 70px;
+  }
 `
 const InputContainer = styled.div`
   display: flex;
   flex-direction: row;
+  width: 80%;
 `
 
-const categories = [{
-  name: 'Free',
-  id: 'free',
-  icon: GlyphIcon
-},{
-  name: 'Pre-Med',
-  id: 'pre-med',
-  icon: SquareIcon
-},{
-  name: 'Step One',
-  id: 'step-one',
-  icon: DotCircleIcon
-},{
-  name: 'Step Two',
-  id: 'step-two',
-  icon: ShapesIcon
-},{
-  name: 'Step Three',
-  id: 'step-three',
-  icon: HalfCircleIcon
-}]
+const ContentContainer = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-self: center;
+  ${({ theme }) => theme.rules.narrowWidth}
+  margin: auto;
+  padding-left: 70px;
+`
+
+const Search = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
+const DividerContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
+const CategoriesContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-right: -50px;
+`
+
+const CategoriesRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+`
 
 interface MarketPlaceSearchProps {
   searchField: string;
@@ -133,39 +170,35 @@ const MarketPlaceSearch = (props: MarketPlaceSearchProps) => {
   } = props;
 
   return (
-    <SearchContainer centered>
-      <Grid.Row centered columns={3}>
-        <Grid.Column width={6}>
-            <SearchTitle>Search for Resources</SearchTitle>
+    <Container>
+      <ContentContainer>
+        <Search>
+          <SearchTitle>Search for Resources</SearchTitle>
           <InputContainer>
             <SearchInput onChange={({ target: { value }}) => setSearchField(value)} value={searchField} type="text"/>
             <SearchButton onClick={() => handleSearch()}> Search </SearchButton>
           </InputContainer>
-        </Grid.Column>
-        <Grid.Column centered width={2}>
+        </Search>
+        <DividerContainer>
           <VerticalDivider />
             <DividerLabel>OR</DividerLabel>
           <VerticalDivider />
-        </Grid.Column>
-        <Grid.Column>
-          <Grid>
-            <Grid.Row>
-              <CategoriesTitle>Browse Categories</CategoriesTitle>
-            </Grid.Row>
-            <Grid.Row columns={16}>
-              {
-                categories.map(category => (
-                  <Category floated="right" onClick={() => handleFilterByCategory(category.id)}>
-                    <img src={category.icon}/>
-                    <CategoryLabel>{category.name}</CategoryLabel>
-                  </Category>
-                ))
-              }
-            </Grid.Row>
-          </Grid>
-        </Grid.Column>
-      </Grid.Row>
-    </SearchContainer>
+        </DividerContainer>
+        <CategoriesContainer>
+          <CategoriesTitle>Browse Categories</CategoriesTitle>
+          <CategoriesRow>
+            {
+              categories.map(category => (
+                <Category onClick={() => handleFilterByCategory(category.id)}>
+                  <img width="25" src={category.icon}/>
+                  <CategoryLabel>{category.name}</CategoryLabel>
+                </Category>
+              ))
+            }
+          </CategoriesRow>
+        </CategoriesContainer>
+      </ContentContainer>
+    </Container>
 )}
 
 export default MarketPlaceSearch;

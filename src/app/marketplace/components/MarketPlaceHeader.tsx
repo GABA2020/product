@@ -1,5 +1,5 @@
 import React from 'react';
-import { Segment, Grid } from 'semantic-ui-react'
+import { Grid } from 'semantic-ui-react'
 import styled from 'styled-components';
 const Background = require('../../../assets/images/sprites/MarketplaceShapes.png');
 const Osmosis = require('../../../assets/images/sprites/Osmosis.png');
@@ -28,7 +28,6 @@ const Rectangle = styled.div`
   width: 495px;
   background: url(${Background});
   background-size: cover;
-  margin-right: 50px;
   margin-top: -20px;
   display: flex;
   flex-direction: column;
@@ -36,13 +35,23 @@ const Rectangle = styled.div`
   justify-content: center;
 `
 
-const HeaderContainer = styled(Grid.Row)`
-  padding: 120px 0 120px 165px !important;
+const HeaderContainer = styled.div`
+  padding: 120px 0 120px 0;
+  display: flex;
+  flex-direction: column;
+  padding-left: 175px;
+`
+
+const ContentContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-self: center;
+  ${props => props.theme.rules.narrowWidth}
 `
 
 const MarketPlaceHeader = () => (
-  <Grid>
-    <HeaderContainer columns={2}>
+  <HeaderContainer>
+    <ContentContainer>
       <Grid.Column>
         <HeaderTitle>Welcome to GABA's Marketplace</HeaderTitle>
         <HeaderParagraph>Probably put something here about the vast library of educational resources by corps and students. Also something else about the learning portal and recommendations.</HeaderParagraph>
@@ -52,8 +61,8 @@ const MarketPlaceHeader = () => (
           <img src={Osmosis}/>
         </Rectangle>
       </Grid.Column>
-    </HeaderContainer>
-  </Grid>
+    </ContentContainer>
+  </HeaderContainer>
 )
 
 export default MarketPlaceHeader;

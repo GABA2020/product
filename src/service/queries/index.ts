@@ -14,3 +14,18 @@ export const RESOURCES = gql`
     }
   }
 `;
+
+export const RESOURCE_DETAIL = gql`
+  query Resource($id: String!) {
+    resource(id: $id) {
+      categories
+      description
+      id
+      link
+      name
+      picture_name
+      rating
+      tags
+    }
+  }
+`

@@ -10,6 +10,7 @@ enum RoutesTypes {
   PAYMENT = '/payment',
   ADMIN_CONSOLE = '/admin-console',
   MARKET_PLACE = '/marketplace',
+  PEOPLE='/people'
 }
 
 export default RoutesTypes;

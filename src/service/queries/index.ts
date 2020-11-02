@@ -29,3 +29,20 @@ export const RESOURCE_DETAIL = gql`
     }
   }
 `
+
+export const USERS_QUERY = gql`
+  query Users {
+    users {
+      creationDate
+      degrees
+      email
+      gender
+      last_login
+      medicalSchool
+      name
+      student_status
+      username
+      year_in_program
+    }
+  }
+`

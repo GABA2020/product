@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { authSelector } from '../../../redux/Auth/selectors';
 import { SearchUser } from '../SearchUser';
 import MarketPlacePage from '../../marketplace/screens/MarketPlaceScreen';
+import PeoplePage from '../../people/screens/PeoplePage';
 
 // Auth Route
 const AuthRoute = ({ component: Component, ...rest }) => {
@@ -66,6 +67,12 @@ export const MainPage = () => {
               exact
               path={RoutesTypes.HOME}
               component={HomePage}
+            />
+            <AuthRoute
+              isAuth={isAuth}
+              exact
+              path={RoutesTypes.PEOPLE}
+              component={PeoplePage}
             />
           </Switch>
         </Router>

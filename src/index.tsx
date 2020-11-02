@@ -27,6 +27,7 @@ import 'sanitize.css/sanitize.css';
 import './locales/i18n';
 import { ApolloProvider } from '@apollo/client';
 import { graphQLClient } from 'helpers/graphqlClient';
+import '@graphistry/rc-slider/assets/index.css';
 
 // Observe loading of Inter (to remove 'Inter', remove the <link> tag in
 // the index.html file and this observer)

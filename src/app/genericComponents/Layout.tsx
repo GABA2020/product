@@ -10,22 +10,24 @@ export const Row = styled.div`
   display: flex;
 `;
 
-export const ContentContainer = styled.div`
+export const ContentContainer: any = styled.div`
   display: flex;
   align-self: center;
+  margin-top: 50px;
+  ${props => props.theme.rules.narrowWidth}
+  ${(props: any) => props.justify ? `justify-content: ${props.justify};` : ''}
 `;
 
 const _Container = styled.div`
   display: flex;
   flex-direction: column;
-
-  ${props => props.theme.rules.narrowWidth}
+  width: 100%;
 `;
-/* Use this for creating the narrow width effect on your pages layours */
 
-export const Container = (props: { children: any }) => (
+/* Use this for creating the narrow width effect on your pages layouts */
+export const Container = (props: { children: any, justify?: string }) => (
   <_Container>
-    <ContentContainer>
+    <ContentContainer justify={props.justify}>
       {props.children}
     </ContentContainer>
   </_Container>

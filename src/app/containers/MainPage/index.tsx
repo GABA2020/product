@@ -53,6 +53,12 @@ export const MainPage = () => {
             <AuthRoute
               isAuth={isAuth}
               exact
+              path={RoutesTypes.PEOPLE}
+              component={PeoplePage}
+            />
+            <AuthRoute
+              isAuth={isAuth}
+              exact
               path={RoutesTypes.PRODUCT}
               component={ProductPage}
             />
@@ -68,12 +74,7 @@ export const MainPage = () => {
               path={RoutesTypes.HOME}
               component={HomePage}
             />
-            <AuthRoute
-              isAuth={isAuth}
-              exact
-              path={RoutesTypes.PEOPLE}
-              component={PeoplePage}
-            />
+            
           </Switch>
         </Router>
       </div>

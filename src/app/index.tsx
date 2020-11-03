@@ -124,7 +124,7 @@ export function App() {
             isAuth={isAuth}
             exact
             path={RoutesTypes.PEOPLE}
-            component={PeoplePage}
+            component={MainPage}
           />
         </Switch>
       </Router>

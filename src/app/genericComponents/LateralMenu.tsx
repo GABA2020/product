@@ -23,6 +23,7 @@ export function LateralMenu({ children }) {
       >
         <Menu.Item as={NavLink} to='/' >Home</Menu.Item>
         <Menu.Item as={NavLink} to='/marketplace'>Marketplace</Menu.Item>
+        <Menu.Item as={NavLink} to='/people'>People</Menu.Item>
       </Sidebar>
       <Sidebar.Pusher dimmed={showMenu}>{children}</Sidebar.Pusher>
     </Sidebar.Pushable>

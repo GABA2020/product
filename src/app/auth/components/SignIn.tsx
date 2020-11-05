@@ -1,10 +1,11 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useInjectSaga } from 'utils/redux-injectors';
 import { sliceKey, actions } from 'redux/Auth/slice';
 import { authSelector } from 'redux/Auth/selectors';
 import { AuthSaga } from 'redux/Auth/saga';
 import { useForm } from 'react-hook-form';
+import { auth } from '../../../helpers/firebase.module';
 import { Link } from 'react-router-dom';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers';
@@ -19,6 +20,7 @@ const loginSchema = yup.object().shape({
 });
 
 export const SignIn: React.FC = props => {
+  const [email, setEmail] = useState('')
   const { register, handleSubmit, errors } = useForm({
     resolver: yupResolver(loginSchema),
   });
@@ -36,7 +38,6 @@ export const SignIn: React.FC = props => {
     );
   };
 
-
   return (
     <FormWrapper onSubmit={handleSubmit(onSubmit)}>
       <h3>Sign in</h3>
@@ -48,6 +49,7 @@ export const SignIn: React.FC = props => {
           name="email"
           type="text"
           id="inputEmail"
+          onChange={({target})=>setEmail(target.value)}
           autoFocus
         />
         {errors.email && (
@@ -80,9 +82,11 @@ export const SignIn: React.FC = props => {
         <a
           onClick={e => {
             e.preventDefault();
-            if (!loading) {
-              //Redirect
-            }
+            auth.sendPasswordResetEmail(email).then(()=> {
+              console.log('reset password send')
+            }).catch((error)=> {
+              // An error happened.
+            });
           }}
           className="mb-3"
           href="#"

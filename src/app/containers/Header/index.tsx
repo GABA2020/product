@@ -77,7 +77,7 @@ export const Header = () => {
   const adminList = ['candice.blacknall@gogaba.co'];
 
   function handleShowMenu() {
-    changeShowMenu()
+    changeShowMenu(true)
   }
 
 

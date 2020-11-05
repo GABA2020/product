@@ -24,6 +24,7 @@ import { MCATModal } from 'app/components/Modal/MCATModal';
 import { Step1Modal } from 'app/components/Modal/Step1Modal';
 import { Step2Modal } from 'app/components/Modal/Step2Modal';
 import { Step3Modal } from 'app/components/Modal/Step3Modal';
+import ScoreModal from 'app/profile/components/ScoreModal';
 
 export const Score = () => {
   useInjectSaga({ key: userSliceKey, saga: UserSaga });
@@ -72,9 +73,37 @@ export const Score = () => {
   };
   return (
     <Fragment>
-      <MCATModal
+      <ScoreModal
         userProfile={userProfile}
         isShow={mcatModal}
+        onHide={() => setMCATModal(false)}
+        uploadFile={uploadFileMCAT}
+        type={"MCAT"}
+      />
+      <ScoreModal
+        userProfile={userProfile}
+        isShow={step1Modal}
+        onHide={() => setStep1Modal(false)}
+        uploadFile={uploadFileStep1}
+        type={"Step One"}
+      />
+      <ScoreModal
+        userProfile={userProfile}
+        isShow={step2Modal}
+        onHide={() => setStep2Modal(false)}
+        uploadFile={uploadFileStep2}
+        type={"Step Two"}
+      />
+      <ScoreModal
+        userProfile={userProfile}
+        isShow={step3Modal}
+        onHide={() => setStep3Modal(false)}
+        uploadFile={uploadFileStep3}
+        type={"Step Three"}
+      />
+      {/* <MCATModal
+        userProfile={userProfile}
+        isShow={false}
         onHide={() => {
           setMCATModal(false);
         }}
@@ -91,7 +120,7 @@ export const Score = () => {
       />
       <Step1Modal
         userProfile={userProfile}
-        isShow={step1Modal}
+        isShow={false}
         onHide={() => {
           setStep1Modal(false);
         }}
@@ -148,7 +177,7 @@ export const Score = () => {
             );
           }
         }}
-      />
+      /> */}
       <section className="section-step-scope">
         <div className="container">
           <div className="list-score">

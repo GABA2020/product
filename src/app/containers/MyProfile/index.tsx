@@ -214,10 +214,10 @@ export const MyProfile = props => {
       </section>
       {/* owner profile will use userProfile */}
       <Score />
-      {/* CV work */}
-      <CVWork editMode={editModeState} />
       {/* locker */}
       <Locker />
+      {/* CV work */}
+      <CVWork editMode={editModeState} />
       <section className="section-milestones"></section>
     </Fragment>
   );

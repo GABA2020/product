@@ -31,6 +31,12 @@ export function LateralMenu({ children }) {
         >
           Marketplace
         </Menu.Item>
+        <Menu.Item
+          onClick={() => changeShowMenu(false)}
+          as={NavLink} 
+          to='/people'>
+          People
+        </Menu.Item>
       </Sidebar>
       <Sidebar.Pusher dimmed={showMenu}>{children}</Sidebar.Pusher>
     </Sidebar.Pushable>

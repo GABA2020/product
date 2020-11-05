@@ -19,5 +19,8 @@ export default {
     landscapeTablet: '@include for-size(tablet-landscape-up)',
     desktop: '@include for-size(desktop-up)',
     bigDesktop: '@include for-size(big-desktop-up)'
-  }
+  },
+  rules: {
+    narrowWidth: 'max-width: 1170px;',
+  },
 };

@@ -14,3 +14,35 @@ export const RESOURCES = gql`
     }
   }
 `;
+
+export const RESOURCE_DETAIL = gql`
+  query Resource($id: String!) {
+    resource(id: $id) {
+      categories
+      description
+      id
+      link
+      name
+      picture_name
+      rating
+      tags
+    }
+  }
+`
+
+export const USERS_QUERY = gql`
+  query Users {
+    users {
+      creationDate
+      degrees
+      email
+      gender
+      last_login
+      medicalSchool
+      name
+      student_status
+      username
+      year_in_program
+    }
+  }
+`

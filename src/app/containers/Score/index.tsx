@@ -77,28 +77,28 @@ export const Score = () => {
         userProfile={userProfile}
         isShow={mcatModal}
         onHide={() => setMCATModal(false)}
-        uploadFileMCAT={uploadFileMCAT}
+        uploadFile={uploadFileMCAT}
         type={"MCAT"}
       />
       <ScoreModal
         userProfile={userProfile}
         isShow={step1Modal}
         onHide={() => setStep1Modal(false)}
-        uploadFileMCAT={uploadFileStep1}
+        uploadFile={uploadFileStep1}
         type={"Step One"}
       />
       <ScoreModal
         userProfile={userProfile}
         isShow={step2Modal}
         onHide={() => setStep2Modal(false)}
-        uploadFileMCAT={uploadFileStep2}
+        uploadFile={uploadFileStep2}
         type={"Step Two"}
       />
       <ScoreModal
         userProfile={userProfile}
         isShow={step3Modal}
         onHide={() => setStep3Modal(false)}
-        uploadFileMCAT={uploadFileStep3}
+        uploadFile={uploadFileStep3}
         type={"Step Three"}
       />
       {/* <MCATModal

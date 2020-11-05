@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 export default function ScoreModal({
   isShow = false,
   onHide,
-  uploadFileMCAT,
+  uploadFile,
   userProfile,
   type,
 }) {
@@ -52,7 +52,7 @@ export default function ScoreModal({
       showWarningMessage('You are uploading an file larger than 5Mb!');
     } else {
       setScoreReportFile(file.name);
-      uploadFileMCAT(file);
+      uploadFile(file);
     }
     return false;
   }

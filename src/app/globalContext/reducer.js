@@ -2,7 +2,7 @@ export const reducer = state => {
   return {
     //Only curry functions:::::
     setUser: data => ({user: data}),
-    changeShowMenu: () => ({showMenu:!state.showMenu}),
+    changeShowMenu: (data) => ({showMenu:data}),
     set: (key, value) => ({[key]: value}),
   };
 };

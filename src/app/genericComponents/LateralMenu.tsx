@@ -18,11 +18,19 @@ export function LateralMenu({ children }) {
         inverted
         vertical
         visible={showMenu}
-        onHide={changeShowMenu}
+        onHide={() => changeShowMenu(false)}
         width="thin"
       >
-        <Menu.Item as={NavLink} to='/' >Home</Menu.Item>
-        <Menu.Item as={NavLink} to='/marketplace'>Marketplace</Menu.Item>
+        <Menu.Item onClick={() => changeShowMenu(false)} as={NavLink} to="/">
+          Home
+        </Menu.Item>
+        <Menu.Item
+          onClick={() => changeShowMenu(false)}
+          as={NavLink}
+          to="/marketplace"
+        >
+          Marketplace
+        </Menu.Item>
       </Sidebar>
       <Sidebar.Pusher dimmed={showMenu}>{children}</Sidebar.Pusher>
     </Sidebar.Pushable>

@@ -3,12 +3,11 @@ import styled from 'styled-components';
 import { Image } from 'semantic-ui-react';
 
 import { Column, Row } from '../../genericComponents/Layout';
+import Button from '../../genericComponents/Button';
 
 const GlyphIcon = require('../../../assets/images/sprites/Glyph@2x.png');
-const SquareIcon = require('../../../assets/images/sprites/Square@2x.png');
 const DotCircleIcon = require('../../../assets/images/sprites/DotCircle@2x.png');
 const ShapesIcon = require('../../../assets/images/sprites/Shapes@2x.png');
-const HalfCircleIcon = require('../../../assets/images/sprites/HalfColouredCircle@2x.png');
 
 const categories = [{
   name: 'MCAT',
@@ -106,6 +105,14 @@ const Avatar = styled(Image)`
   height: 120px !important;
 `
 
+const ConnectButton = styled(Button)`
+  position: absolute;
+  right: 20px;
+  top: 60px;
+  background: ${ props => props.theme.color.darkBlue};
+  color: ${props => props.theme.color.white};
+`
+
 interface UserCardProps {
   name: string;
   school?: string;
@@ -150,6 +157,7 @@ const UserCard = (props: UserCardProps) => {
       <Location>
         San Francisco
       </Location>
+      <ConnectButton >Connect</ConnectButton>
     </CardContainer>
 )}
 

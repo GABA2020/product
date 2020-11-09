@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Slider, { createSliderWithTooltip } from '@graphistry/rc-slider';
+import { Range } from '@graphistry/rc-slider';
 import { Dropdown } from 'semantic-ui-react'
 
 import { Column } from '../../genericComponents/Layout';
@@ -109,15 +109,16 @@ const FiltersContainer = styled(Column)`
 `
 
 const ReviewSection = () => {
-  const [filters, setFilters]: any = useState({
+  const defaultFiltersState = {
     years: 0,
     location: '',
-    MCAScore: 0,
-    stepOneScore: 0,
-    stepTwoScore: 0,
+    MCAScore: [0, 100],
+    stepOneScore: [0, 100],
+    stepTwoScore: [0, 100],
     school: '',
     discipline: ''
-  })
+  }
+  const [filters, setFilters]: any = useState(defaultFiltersState)
   
   function handleSetFilter(filterName, value) {
     setFilters({
@@ -136,9 +137,9 @@ const ReviewSection = () => {
         <div className="portlet-mention">
           <h3 className="mention-title">Filter by exam score</h3>
           <div className="mention-list">
-            <p>MCA: {filters.MCAScore}</p>
-            <Slider
-              onChange={val => handleSetFilter('MCAScore', val * 10)}
+            <p>MCA: {filters.MCAScore[0]} - {filters.MCAScore[1]}</p>
+            <Range
+              onChange={([min, max]) => handleSetFilter('MCAScore', [min * 10, max * 10])}
               trackStyle={{ backgroundColor: theme.color.darkBlue }}
               handleStyle={{
                 borderColor: theme.color.gabaYellow,
@@ -147,9 +148,9 @@ const ReviewSection = () => {
             />
           </div>
           <div className="mention-list">
-            <p>Step One: {filters.stepOneScore}</p>
-            <Slider
-              onChange={val => handleSetFilter('stepOneScore', val * 10)}
+            <p>Step One: {filters.stepOneScore[0]} - {filters.stepOneScore[1]}</p>
+            <Range
+              onChange={([min, max]) => handleSetFilter('stepOneScore', [min * 10, max * 10])}
               trackStyle={{ backgroundColor: theme.color.darkBlue }}
               handleStyle={{
                 borderColor: theme.color.gabaYellow,
@@ -158,9 +159,9 @@ const ReviewSection = () => {
             />
           </div>
           <div className="mention-list">
-            <p>Step Two: {filters.stepTwoScore}</p>
-            <Slider
-              onChange={val => handleSetFilter('stepTwoScore', val * 10)}
+            <p>Step Two: {filters.stepTwoScore[0]} - {filters.stepTwoScore[1]}</p>
+            <Range
+              onChange={([min, max]) => handleSetFilter('stepTwoScore', [min * 10, max * 10])}
               trackStyle={{ backgroundColor: theme.color.darkBlue }}
               handleStyle={{
                 borderColor: theme.color.gabaYellow,
@@ -262,7 +263,47 @@ const ReviewSection = () => {
           </div>
         </div>
         <div className="portlet-filter">
-          <Button onClick={() => {}} style={{marginBottom: 20}}>
+          <h3 className="mention-title">Filter by speciality</h3>
+          <div>
+            <Dropdown
+              placeholder='Select Speciality'
+              fluid
+              selection
+              options={[{
+                key: '1',
+                value: '1',
+                text: '1'
+              },
+              {
+                key: '2',
+                value: '2',
+                text: '2'
+              },
+              {
+                key: '3',
+                value: '3',
+                text: '3'
+              },
+              {
+                key: '4',
+                value: '4',
+                text: '4'
+              },
+              {
+                key: '5',
+                value: '5',
+                text: '5'
+              },
+              {
+                key: '6',
+                value: '6',
+                text: '6'
+              }]}
+            />
+          </div>
+        </div>
+        <div className="portlet-filter">
+          <Button onClick={() => setFilters(defaultFiltersState)} style={{marginBottom: 20}}>
             Clear Filters
           </Button>
         </div>

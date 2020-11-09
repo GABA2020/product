@@ -11,7 +11,8 @@ export default {
     white: '#FFFFFF',
     softGray: '#F9F9F9',
     darkBlue: '#111741',
-    softPurple: 'rgba(114, 128, 219, 0.22)'
+    softPurple: 'rgba(114, 128, 219, 0.22)',
+    gabaGreen: '#5ab88d'
   },
   breakpoint: {
     phone: '@include for-size(phone-only)',

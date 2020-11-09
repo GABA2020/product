@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import Review from './Review'
 import styled from 'styled-components';
 const YellowStar = require('../../../../assets/images/front/YellowStar@2x.png');
+const YellowActiveStar = require('../../../../assets/images/front/YellowActiveStar@2x.png');
 
 const REVIEWS = [{
 	numberOfStars: 3,
@@ -99,14 +100,18 @@ const StarContainer = styled.div`
   margin-right: -2px;
 `
 
-
 const ReviewSection = () => {
   let [reviews, setReviews] = useState(REVIEWS);
   const handleFilterReviews =  (property, value) => setReviews(
     REVIEWS.filter(rev => rev[property] === value)
   )
 
-  const handleClearFilters = () => setReviews(REVIEWS)
+  const [activeStar, setActiveStar]: any = useState(null);
+
+  const handleClearFilters = () => {
+    setActiveStar(null)
+    setReviews(REVIEWS)
+  }
 
   return (
     <section className="section-review">
@@ -127,7 +132,14 @@ const ReviewSection = () => {
                     <div className="judge-item">
                       <StarContainer className="judge-num-star">
                         <span className="judge-num">{rev.stars}</span>
-                        <img onClick={() => handleFilterReviews('numberOfStars', rev.stars)} width={20} src={YellowStar} />
+                        <img
+                          onClick={() => {
+                            setActiveStar(rev.stars)
+                            handleFilterReviews('numberOfStars', rev.stars)
+                          }}
+                          width={20}
+                          src={activeStar === rev.stars ? YellowActiveStar: YellowStar}
+                        />
                           &nbsp;
                       </StarContainer>
                       <ProgressBarContainer className="judge-progress">
@@ -148,56 +160,6 @@ const ReviewSection = () => {
                     </div>
                   ))
                 }
-              </div>
-            </div>
-            <div className="portlet-mention">
-              <h3 className="mention-title">See reviews that mention</h3>
-              <div className="mention-list">
-                <li>
-                  <Button >
-                    scores improved
-                  </Button>
-                </li>
-                <li>
-                  <Button >
-                    boost
-                  </Button>
-                </li>
-                <li>
-                  <Button >
-                    cost
-                  </Button>
-                </li>
-                <li>
-                  <Button >
-                    schedule
-                  </Button>
-                </li>
-                <li>
-                  <Button >
-                    lectures
-                  </Button>
-                </li>
-                <li>
-                  <Button>
-                    update
-                  </Button>
-                </li>
-                <li>
-                  <Button>
-                    unique style
-                  </Button>
-                </li>
-                <li>
-                  <Button>
-                    really like
-                  </Button>
-                </li>
-                <li>
-                  <Button>
-                    price
-                  </Button>
-                </li>
               </div>
             </div>
             <div className="portlet-filter">

@@ -4,8 +4,11 @@ import styled from 'styled-components';
 import Stars from '../../../genericComponents/Stars';
 import {Resource} from '../../../../types/Resource';
 import { NavLink } from 'react-router-dom';
+import {Column} from '../../../genericComponents/Layout';
+import Button from '../../../genericComponents/Button';
+import theme from '../../../../theme';
 
-const Bitmap = require('../../../../assets/images/sprites/Bitmap.png')
+const Bitmap = require('../../../../assets/images/sprites/Bitmap.png');
 
 const ItemContainer = styled.div`
   background: ${props => props.theme.color.softYellow};
@@ -21,7 +24,7 @@ const ItemContainer = styled.div`
 const DetailsSection = styled.div`
   display: flex;
   flex-direction: column;
-`
+`;
 
 const DetailsTitle = styled.h3`
   color: ${props => props.theme.color.darkBlue};
@@ -44,10 +47,10 @@ const DetailsContent = styled.p`
 
 const ReviewsFooter = styled.div`
   display: flex;
-  margin-left: -5px;
-  margin-top: 20px;
-  margin-right: 20px;
+  margin: 20px 20px 10px -5px;
 `
+
+const Footer = styled(Column)``
 
 const Reviews = styled.div`
   margin-left: 20px;
@@ -56,10 +59,11 @@ const Reviews = styled.div`
 
 const TagsSection = styled.div`
   display: flex;
+  flex-direction: row;
   margin-top: 50px;
-  margin-left: 50px;
   flex-wrap: wrap;
   max-width: 400px;
+  min-width: 400px;
 `
 
 const Tag = styled.div`
@@ -68,6 +72,7 @@ const Tag = styled.div`
   padding: 6px 10px;
   height: 30px;
   margin-right: 10px;
+  margin-bottom: 5px;
 `
 
 const Image = styled.img`
@@ -80,28 +85,50 @@ const CustomLink = styled(NavLink)`
   color: ${props => props.theme.color.darkBlue};
 `
 
+const Range = styled.p`
+  color: ${props => props.theme.color.darkBlue};
+  font-size: 16px;
+  height: 72px;
+  letter-spacing: 0.1px;
+`
+
+const AddToLocker: any = styled(Button)`
+  position: absolute;
+  right: 15px;
+  top: 15px;
+`
+
 interface FeaturedItemProps {
-  item: Resource
+  item: Resource,
+  onLockerButtonPress: Function
 }
 
 const FeaturedItem = (props: FeaturedItemProps) => {
-  const { item } = props;
+  const { item, onLockerButtonPress } = props;
   return (
     <ItemContainer>
+      <AddToLocker 
+        onClick={() => {
+          onLockerButtonPress(item.id, !!item.onLocker)
+        }} 
+        backgroundColor={theme.color.darkBlue} 
+        color={theme.color.white}
+      >
+        {item.onLocker ? 'Remove from locker' : 'Add to Locker'}
+      </AddToLocker>
       <DetailsSection>
         <DetailsTitle><CustomLink to={`/product-page/${item.id}`}>{item.name}</CustomLink></DetailsTitle>
         <DetailsContent>{item.description || 'No description'}</DetailsContent>
-        <ReviewsFooter>
-          <Stars color="yellow" numberOfStars={item.rating || 0}/>
-          <Reviews>2,423 Reviews</Reviews>
-        </ReviewsFooter>
+        <Footer>
+          <ReviewsFooter>
+            <Stars color="yellow" numberOfStars={item.rating || 0}/>
+            <Reviews>2,423 Reviews</Reviews>
+          </ReviewsFooter>
+          <Range>200$ - 1000$</Range>
+        </Footer>
       </DetailsSection>
       <TagsSection>
-        <Tag>Pulmonology</Tag>
-        <Tag>Video</Tag>
-        <Tag>Video</Tag>
-        <Tag>Video</Tag>
-        <Tag>Video</Tag>
+        <Tag>Slides</Tag>
         <Tag>Video</Tag>
       </TagsSection>
       <Image src={Bitmap}/>

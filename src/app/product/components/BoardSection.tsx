@@ -29,6 +29,8 @@ interface BoardSectionProps {
   title: string;
   description: string;
   rating: number | string;
+  onLocker: boolean;
+  onLockerButtonPress: Function;
 }
 
 const BoardSection = (props: BoardSectionProps) => (
@@ -41,11 +43,6 @@ const BoardSection = (props: BoardSectionProps) => (
         <div className="media-body">
           <h3 className="boards-title">{props.title}</h3>
           <div className="boards-prize">
-            <div className="boards-button">
-              <Button>
-                95% match
-              </Button>
-            </div>
             <div className="boards-rating">
               <div className="vote-rating">
                 <ul className="vote-rating-list">
@@ -127,14 +124,13 @@ const BoardSection = (props: BoardSectionProps) => (
           <div className="boards-action">
             <ul className="action-button">
               <li>
-                <Button>
-                  Add to Locker
+                <Button onClick={() => props.onLockerButtonPress(props.onLocker)}>
+                  {props.onLocker ? 'Remove from locker' : 'Add to locker'}
                 </Button>
               </li>
               <li>
                 <Button>
-                  <span className="icons-target" style={{color: 'yellow'}}>&nbsp;</span> Buy from
-                  Boards &amp; Beyond
+                  <span className="icons-target" style={{color: 'yellow'}}>&nbsp;</span> Buy from 
                 </Button>
               </li>
             </ul>

@@ -46,3 +46,13 @@ export const USERS_QUERY = gql`
     }
   }
 `
+
+export const GET_LOCKER = gql`
+  query getResources($email: String!) {
+    resources_locker(where: {
+      user_id:{_eq: $email }
+    }) {
+      resource_id
+    }
+  }
+`

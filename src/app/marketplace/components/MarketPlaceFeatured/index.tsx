@@ -64,11 +64,12 @@ const FilterImage = styled.img`
 `
 
 interface MarketPlaceSearchProps {
-  resources: Array<Resource>
+  resources: Array<Resource>,
+  onLockerButtonPress: Function
 }
 
 const MarketPlaceSearch = (props: MarketPlaceSearchProps) => {
-  const { resources } = props;
+  const { resources, onLockerButtonPress } = props;
   return (
   <FeaturedContainer>
     <ContentContainer>
@@ -77,7 +78,6 @@ const MarketPlaceSearch = (props: MarketPlaceSearchProps) => {
         <Tabs>
           <Tab active={true}>Resouces</Tab>
           <Tab>Schools</Tab>
-          <Tab>Equipment</Tab>
         </Tabs>
         <FiltersContainer>
           <FilterImage src={FilterByNameIcon}/>
@@ -85,7 +85,13 @@ const MarketPlaceSearch = (props: MarketPlaceSearchProps) => {
         </FiltersContainer>
       </FeaturedHeader>
       <>
-        {resources.slice(0, 5).map((item, index) => <FeaturedItem item={item} key={index}/>)}
+        {resources.slice(0, 5).map((item, index) => (
+          <FeaturedItem
+            item={item}
+            key={index}
+            onLockerButtonPress={onLockerButtonPress}
+          />
+        ))}
       </>
     </ContentContainer>
   </FeaturedContainer>

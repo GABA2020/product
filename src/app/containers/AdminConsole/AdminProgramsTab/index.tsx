@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Table,
   Search,
@@ -34,6 +34,7 @@ export const AdminProgramsTab = () => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [createModalOpen, setCreateModalOpen] = useState(false);
+  const [selectedProgram, setSelectedProgram]: any = useState({});
 
   const itemsPerPage = 10;
 
@@ -65,7 +66,6 @@ export const AdminProgramsTab = () => {
           (program.name as string).includes(data.value as string),
         ),
       ];
-      console.log(searchResults);
       setSearchValue(data.value as string);
       setSearchResults([...searchResults]);
     } else {
@@ -93,6 +93,11 @@ export const AdminProgramsTab = () => {
     }
   };
 
+  const handleClickEdit = program => {
+    setSelectedProgram(program)
+    setCreateModalOpen(true)
+  }
+
   return (
     <>
       <div style={{ display: 'flex' }}>
@@ -102,6 +107,15 @@ export const AdminProgramsTab = () => {
             const offset = ((currentPage as number) - 1) * itemsPerPage;
             await fetch(offset);
             setCreateModalOpen(false);
+          }}
+          defaultValues={{
+            name: selectedProgram.name || '',
+            description: selectedProgram.description || '',
+            link: selectedProgram.link || '',
+            state: selectedProgram.state || '',
+            specialities: selectedProgram.specialities || '',
+            id: selectedProgram.id || '',
+            tags: selectedProgram.tags || ''
           }}
           onOpen={() => setCreateModalOpen(true)}
           open={createModalOpen}
@@ -127,9 +141,18 @@ export const AdminProgramsTab = () => {
         </Table.Header>
         <Table.Body>
           {searchValue && searchResults
-            ? searchResults.map(program => <ResourceRow resource={program} />)
+            ? searchResults.map(program =>
+              <ResourceRow 
+                onClickEdit={() => handleClickEdit(program)}
+                resource={program}
+              />)
             : programs &&
-              programs.map(program => <ResourceRow resource={program} />)}
+              programs.map(program => 
+                <ResourceRow 
+                  onClickEdit={() => handleClickEdit(program)}
+                  resource={program} 
+                />
+              )}
         </Table.Body>
         <Table.Footer>
           <Table.HeaderCell colSpan="5">

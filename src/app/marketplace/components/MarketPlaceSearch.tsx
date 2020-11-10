@@ -1,3 +1,4 @@
+import Button from 'app/genericComponents/Button';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -32,7 +33,7 @@ const categories = [{
 const Container = styled.div`
   background: ${props => props.theme.color.darkBlue};
   padding-top: 50px !important;
-  padding-bottom: 50px !important;
+  padding-bottom: 100px !important;
   display: flex;
   flex-direction: column;
 `;
@@ -130,6 +131,7 @@ const ContentContainer = styled.div`
   ${({ theme }) => theme.rules.narrowWidth}
   margin: auto;
   padding-left: 70px;
+  position: relative;
 `
 
 const Search = styled.div`
@@ -154,11 +156,27 @@ const CategoriesRow = styled.div`
   justify-content: flex-start;
 `
 
+const ClearFiltersButton = styled(Button)`
+  background-color: ${props => props.theme.color.gabaYellow};
+  color: ${props => props.theme.color.darkBlue};
+  position: absolute;
+  bottom: -60px;
+  right: 370px;
+`
+
+const CategoryThumbnail: any = styled.img`
+  ${(props: any) => props.active ? `
+    box-shadow: 0 0 20px 0px #FFFFFF;
+  `: ''}
+`
+
 interface MarketPlaceSearchProps {
   searchField: string;
   setSearchField: Function;
   handleSearch: Function;
   handleFilterByCategory: Function;
+  handleClearFilters: Function;
+  activeCategory: string;
 }
 
 const MarketPlaceSearch = (props: MarketPlaceSearchProps) => {
@@ -166,7 +184,9 @@ const MarketPlaceSearch = (props: MarketPlaceSearchProps) => {
     searchField,
     setSearchField,
     handleSearch,
-    handleFilterByCategory
+    handleFilterByCategory,
+    handleClearFilters,
+    activeCategory
   } = props;
 
   return (
@@ -190,13 +210,16 @@ const MarketPlaceSearch = (props: MarketPlaceSearchProps) => {
             {
               categories.map(category => (
                 <Category onClick={() => handleFilterByCategory(category.id)}>
-                  <img width="25" src={category.icon}/>
+                  <CategoryThumbnail active={activeCategory === category.id} width="25" src={category.icon}/>
                   <CategoryLabel>{category.name}</CategoryLabel>
                 </Category>
               ))
             }
           </CategoriesRow>
         </CategoriesContainer>
+        <ClearFiltersButton onClick={() => handleClearFilters()}>
+          Clear Filters
+        </ClearFiltersButton>
       </ContentContainer>
     </Container>
 )}

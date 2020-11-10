@@ -19,13 +19,14 @@ const MarketPlaceScreen = () => {
   const [searchField, setSearchField] = useState('');
   const [resources, setResources] = useState([]);
   const [filteredResources, setFilteredResources] = useState([]);
+  const [activeCategory, setActiveCategory] = useState('');
   const email = useSelector((state: any) => state.auth.email);
+
   const { 
     loading: loadingLocker,
     data: lockerResponse,
     refetch: fetchLocker
-  }= useQuery(GET_LOCKER, { variables: { email }}); 
-  
+  }= useQuery(GET_LOCKER, { variables: { email }});   
   const { data: resourcesResponse, loading: loadingResources } = useQuery(RESOURCES, {
     variables: { limit: 5 }
   })
@@ -52,10 +53,16 @@ const MarketPlaceScreen = () => {
   };
 
   const handleSearch = () => {    
+    console.log(resourcesResponse.resources.filter(
+      resource =>  (
+        resource.name && resource.name.toLowerCase().search(searchField.toLowerCase()) !== -1 ||
+        resource.description && resource.description.toLowerCase().search(searchField.toLowerCase()) !== -1
+      )
+    ))
     setFilteredResources(
       resourcesResponse.resources.filter(
         resource =>  (
-          resource.name.toLowerCase().search(searchField.toLowerCase()) !== -1 ||
+          resource.name && resource.name.toLowerCase().search(searchField.toLowerCase()) !== -1 ||
           resource.description && resource.description.toLowerCase().search(searchField.toLowerCase()) !== -1
         )
       )
@@ -63,11 +70,20 @@ const MarketPlaceScreen = () => {
   };
 
   const handleFilterByCategory = categoryId => {
+    setActiveCategory(categoryId)
     setFilteredResources(
       resourcesResponse.resources.filter(
         resource => resource.categories && resource.categories.includes(categoryId)
       )
     )
+  }
+
+  const handleClearFilters = () => {
+    setFilteredResources(
+      resourcesResponse.resources
+    )
+    setSearchField('')
+    setActiveCategory('')
   }
 
   useEffect(() => {
@@ -92,6 +108,8 @@ const MarketPlaceScreen = () => {
       setSearchField={setSearchField}
       handleSearch={handleSearch}
       handleFilterByCategory={handleFilterByCategory}
+      handleClearFilters={handleClearFilters}
+      activeCategory={activeCategory}
     />
     <MarketPlaceFeatured
       onLockerButtonPress={handleLockerButtonPress}

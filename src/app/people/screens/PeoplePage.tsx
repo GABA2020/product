@@ -4,6 +4,7 @@ import { useQuery } from '@apollo/client';
 
 import { Container as GenericContainer, Column } from '../../genericComponents/Layout';
 import UserCard from '../components/UserCard';
+import UserCardSkeleton from '../components/UserCardSkeleton';
 import SideFilters from '../components/SideFilters';
 import { USERS_QUERY } from '../../../service/queries'
 
@@ -17,23 +18,26 @@ const MarketPlaceScreen = () => {
   const {data, loading} = useQuery(USERS_QUERY);
   const [filteredData, setFilteredData] = useState([]);
   const [users, setUsers] = useState([]);
-
-  if (loading) return null;
   
   return (
   <GenericContainer justify="center">
     <SideFilters />
     <CardsContainer>
       {
-        data && data.users.filter(user => user.name)
-          .slice(0, 10)
-          .map((user: any) => (
-            <UserCard
-              name={user.name}
-              school={user.medicalSchool || 'None'}
-              year={user.year_in_program || 0}
-            />
-        ))
+        loading 
+          ? Array.from({length :4}).map(() => <UserCardSkeleton />)
+          : (
+            data && data.users.filter(user => user.name)
+              .slice(0, 10)
+              .map((user: any) => (
+                <UserCard
+                  name={user.name}
+                  school={user.medicalSchool || 'None'}
+                  year={user.year_in_program || 0}
+                />
+            ))
+          )
+        
       }
     </CardsContainer>
   </GenericContainer>

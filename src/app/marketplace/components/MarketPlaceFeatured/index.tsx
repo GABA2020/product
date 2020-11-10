@@ -63,12 +63,12 @@ const FilterImage = styled.img`
   height: 40px;
 `
 
-interface MarketPlaceSearchProps {
+interface MarketPlaceFeaturedProps {
   resources: Array<Resource>,
   onLockerButtonPress: Function
 }
 
-const MarketPlaceSearch = (props: MarketPlaceSearchProps) => {
+const MarketPlaceFeatured = (props: MarketPlaceFeaturedProps) => {
   const { resources, onLockerButtonPress } = props;
   return (
   <FeaturedContainer>
@@ -97,4 +97,4 @@ const MarketPlaceSearch = (props: MarketPlaceSearchProps) => {
   </FeaturedContainer>
 )}
 
-export default MarketPlaceSearch;
+export default MarketPlaceFeatured;

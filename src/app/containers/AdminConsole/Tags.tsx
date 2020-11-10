@@ -1,31 +1,31 @@
-import React, { useState } from 'react';
-import { Form, Icon, Input, Label } from 'semantic-ui-react';
+import React, { useState, useEffect } from 'react';
+import { Form, Icon, Label } from 'semantic-ui-react';
 
 export interface TagInputProps {
   label?: string;
   placeholder?: string;
   onChange?: (tags: string[]) => void;
+  initialTags?: Array<any>;
 }
 
 export const FormTagInput = (props: TagInputProps) => {
-  const initialTags: string[] = [];
+  const initialTags: string[] = props.initialTags || [];
   const [tags, setTags] = useState(initialTags);
   const addTag = event => {
     if (event.key === 'Enter' && event.target.value !== '') {
       setTags([...tags, event.target.value]);
       event.target.value = '';
-      if (props.onChange) {
-        props.onChange([...tags]);
-      }
     }
   };
 
   const removeTag = index => {
     setTags([...tags.filter(tag => tags.indexOf(tag) !== index)]);
-    if (props.onChange) {
-      props.onChange([...tags]);
-    }
   };
+
+  useEffect(() => {
+    if (props.onChange)
+      props.onChange(tags)
+  }, [tags])
 
   return (
     <>

@@ -1,43 +1,59 @@
 import gql from 'graphql-tag';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import { Button, Form, Label, Modal } from 'semantic-ui-react';
 import { FormTagInput } from '../Tags';
+import { storageFB} from '../../../../helpers/firebase.module';
+import {  CREATE_PROGRAM, UPDATE_PROGRAM } from '../../../../service/mutations'
 
 export interface CreateProgramModalProps {
   onClose: () => void;
   onOpen: () => void;
   open: boolean;
   trigger: React.ReactNode;
+  defaultValues?: {
+    name: string;
+    description: string;
+    link: string;
+    state: string;
+    specialities: string[];
+    tags: string[];
+    id: string;
+  }
 }
 
-const CREATE_PROGRAM = gql`
-  mutation($programData: ProgramInput) {
-    createProgram(programData: $programData)
-  }
-`;
-
 export const CreateProgramModal = (props: CreateProgramModalProps) => {
-  const [name, setName] = useState<string | null>(null);
-  const [description, setDescriptionName] = useState<string | null>(null);
-  const [link, setLink] = useState<string | null>(null);
-  const [state, setState] = useState<string | null>(null);
-  const [specialities, setSpecialities] = useState<string[] | null>(null);
-  const [tags, setTags] = useState<string[] | null>(null);
-  const [pictureName, setPictureName] = useState<string | null>(null);
-  const [rating, setRating] = useState<number | null>(null);
+  let defaultValues: any = props.defaultValues || {};
+
+  const [name, setName] = useState<string>('');
+  const [description, setDescriptionName] = useState<string>('');
+  const [link, setLink] = useState<string>('');
+  const [state, setState] = useState<string>('');
+  const [specialities, setSpecialities] = useState<string[]>([]);
+  const [tags, setTags] = useState<string[]>([]);
+  const [pictureName, setPictureName] = useState<string>('');
+  const [file, setFile] = useState<any>('')
 
   const [createProgram] = useMutation(CREATE_PROGRAM);
+  const [updateProgram] = useMutation(UPDATE_PROGRAM);
 
-  const onRatingChange = e => {
-    const val = e.target.value;
-    // If the current value passes the validity test then apply that to state
-    if (e.target.validity.valid) setRating(e.target.value);
-    // If the current val is just the negation sign, or it's been provided an empty string,
-    // then apply that value to state - we still have to validate this input before processing
-    // it to some other component or data structure, but it frees up our input the way a user
-    // would expect to interact with this component
-    else if (val === '') setRating(val);
+  const onChangeFileHandler = e => {
+    let selected = e.target.files[0];
+    const types = ['image/png', 'image/jpeg', 'application/pdf'];
+
+    if (selected && types.includes(selected.type)) {
+      setFile(selected);
+    } else {
+      setFile(null);
+    }
+  };
+
+  const fileStorage = async (img) => {
+    let storageRef = storageFB.ref();
+    let fileRef = storageRef.child(
+      `resources/${img.name}`,
+    );
+    await fileRef.put(file);
   };
 
   const onCreateResource = async () => {
@@ -49,6 +65,7 @@ export const CreateProgramModal = (props: CreateProgramModalProps) => {
       return;
     }
 
+    await fileStorage(file)
     await createProgram({
       variables: {
         programData: {
@@ -58,14 +75,51 @@ export const CreateProgramModal = (props: CreateProgramModalProps) => {
           state: state,
           specialities: specialities,
           tags: tags,
-          picture_name: pictureName,
-          rating: rating,
+          picture_name: file.name || '',
         },
       },
     });
 
     props.onClose();
   };
+
+  const onUpdateResource = async() => {
+    if (!name || name.length === 0 || !name.trim()) {
+      return;
+    }
+
+    if (!description || description.length === 0 || !description.trim()) {
+      return;
+    }
+    
+    await updateProgram({
+      variables: {
+        idDoc: defaultValues.id,
+        updateData: {
+          name: name,
+          description: description,
+          link: link,
+          state: state,
+          specialities: specialities,
+          tags: tags,
+          picture_name: file.name || '',
+        }
+      },
+    });
+
+    props.onClose();
+  }
+
+  useEffect(() => {
+    if (Object.keys(defaultValues).length) {
+      setName(defaultValues.name || '')
+      setDescriptionName(defaultValues.description || '')
+      setLink(defaultValues.link || '')
+      setState(defaultValues.state || '')
+      setSpecialities(defaultValues.specialities || [])
+      setTags(defaultValues.tags || [])
+    }
+  }, [defaultValues])
 
   return (
     <Modal
@@ -81,6 +135,7 @@ export const CreateProgramModal = (props: CreateProgramModalProps) => {
             required
             label="Program Name"
             onChange={e => setName(e.target.value)}
+            value={name}
           />
           <Form.TextArea
             required
@@ -88,33 +143,32 @@ export const CreateProgramModal = (props: CreateProgramModalProps) => {
             label="Description"
             placeholder="Add the information about the program here..."
             onChange={e => setDescriptionName(e.target.value)}
+            value={description}
           />
-          <Form.Input label="Link" onChange={e => setLink(e.target.value)} />
-          <Form.Input label="State" onChange={e => setState(e.target.value)} />
+          <Form.Input label="Link" value={link} onChange={e => setLink(e.target.value)} />
+          <Form.Input label="State" value={state} onChange={e => setState(e.target.value)} />
           <FormTagInput
-            label="Specialities"
+            label="Specialitiesss"
             placeholder="Press enter to add specialities"
             onChange={tags => setSpecialities(tags)}
+            initialTags={specialities}
           />
           <FormTagInput
             label="Tags"
             placeholder="Press enter to add tags"
             onChange={tags => setTags(tags)}
+            initialTags={tags}
           />
-          <Form.Input
-            label="Picture Name"
-            onChange={e => setPictureName(e.target.value)}
-          />
-          <Form.Input
-            type="tel"
-            pattern="^-?[0-5]\d*\.?\d*$"
-            label="Rating"
-            onChange={onRatingChange}
+          <label>Picture name</label>
+          <input
+            type="file"
+            name="pictureName"
+            onChange={onChangeFileHandler}
           />
         </Form>
       </Modal.Content>
       <Modal.Actions>
-        <Form.Button content="Create Program" onClick={onCreateResource} />
+        <Form.Button content="Create Program" onClick={defaultValues.id ? onUpdateResource : onCreateResource} />
       </Modal.Actions>
     </Modal>
   );

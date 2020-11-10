@@ -1,42 +1,44 @@
-import gql from 'graphql-tag';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useMutation } from '@apollo/react-hooks';
-import { Button, Form, Label, Modal } from 'semantic-ui-react';
+import { Form, Modal } from 'semantic-ui-react';
 import { FormTagInput } from '../Tags';
+import { CREATE_RESOURCE, UPDATE_RESOURCE } from '../../../../service/mutations'
+import { storageFB} from '../../../../helpers/firebase.module';
 
 export interface CreateResourceModalProps {
   onClose: () => void;
   onOpen: () => void;
   open: boolean;
   trigger: React.ReactNode;
+  defaultValues?: {
+    name: string;
+    description: string;
+    link: string;
+    categories: string[];
+    tags: string[];
+    id: string;
+  };
 }
 
-const CREATE_RESOURCES = gql`
-  mutation($resourceData: ResourceInput!) {
-    createResource(resourceData: $resourceData)
-  }
-`;
-
 export const CreateResourceModal = (props: CreateResourceModalProps) => {
-  const [resourceName, setResourceName] = useState<string | null>(null);
-  const [description, setDescriptionName] = useState<string | null>(null);
-  const [link, setLink] = useState<string | null>(null);
-  const [categories, setCategories] = useState<string[] | null>(null);
-  const [tags, setTags] = useState<string[] | null>(null);
-  const [pictureName, setPictureName] = useState<string | null>(null);
-  const [rating, setRating] = useState<number | null>(null);
+  let defaultValues: any = props.defaultValues || {};
+  const [resourceName, setResourceName] = useState<string>('');
+  const [description, setDescriptionName] = useState<string>('');
+  const [link, setLink] = useState<string>('');
+  const [categories, setCategories] = useState<string[]>([]);
+  const [tags, setTags] = useState<string[]>([]);
+  const [pictureName, setPictureName] = useState<string>('');
+  const [file, setFile] = useState<any>('')
 
-  const [createResource] = useMutation(CREATE_RESOURCES);
+  const [createResource] = useMutation(CREATE_RESOURCE);
+  const [updateResource] = useMutation(UPDATE_RESOURCE);
 
-  const onRatingChange = e => {
-    const val = e.target.value;
-    // If the current value passes the validity test then apply that to state
-    if (e.target.validity.valid) setRating(e.target.value);
-    // If the current val is just the negation sign, or it's been provided an empty string,
-    // then apply that value to state - we still have to validate this input before processing
-    // it to some other component or data structure, but it frees up our input the way a user
-    // would expect to interact with this component
-    else if (val === '') setRating(val);
+  const fileStorage = async (img) => {
+    let storageRef = storageFB.ref();
+    let fileRef = storageRef.child(
+      `resources/${img.name}`,
+    );
+    await fileRef.put(file);
   };
 
   const onCreateResource = async () => {
@@ -48,6 +50,7 @@ export const CreateResourceModal = (props: CreateResourceModalProps) => {
       return;
     }
 
+    await fileStorage(file)
     await createResource({
       variables: {
         resourceData: {
@@ -57,13 +60,59 @@ export const CreateResourceModal = (props: CreateResourceModalProps) => {
           categories: categories,
           tags: tags,
           picture_name: pictureName,
-          rating: rating,
         },
       },
     });
 
     props.onClose();
   };
+
+  const onUpdateResource = async () => {
+    if (!resourceName || resourceName.length === 0 || !resourceName.trim()) {
+      return;
+    }
+
+    if (!description || description.length === 0 || !description.trim()) {
+      return;
+    }
+
+    await updateResource({
+      variables: {
+        idDoc: defaultValues.id,
+        updateData: {
+          name: resourceName,
+          description: description,
+          link: link,
+          categories: categories,
+          tags: tags,
+          picture_name: pictureName,
+        },
+      },
+    });
+
+    props.onClose();
+  };
+
+  const onChangeFileHandler = e => {
+    let selected = e.target.files[0];
+    const types = ['image/png', 'image/jpeg', 'application/pdf'];
+
+    if (selected && types.includes(selected.type)) {
+      setFile(selected);
+    } else {
+      setFile(null);
+    }
+  };
+
+  useEffect(() => {
+    if (Object.keys(defaultValues).length) {
+      setResourceName(defaultValues.name || '')
+      setDescriptionName(defaultValues.description || '')
+      setLink(defaultValues.link || '')
+      setCategories(defaultValues.categories || [])
+      setTags(defaultValues.tags || [])
+    }
+  }, [defaultValues])
 
   return (
     <Modal
@@ -79,6 +128,7 @@ export const CreateResourceModal = (props: CreateResourceModalProps) => {
             required
             label="Resource Name"
             onChange={e => setResourceName(e.target.value)}
+            value={resourceName}
           />
           <Form.TextArea
             required
@@ -86,32 +136,31 @@ export const CreateResourceModal = (props: CreateResourceModalProps) => {
             label="Description"
             placeholder="Add the information about the resource here..."
             onChange={e => setDescriptionName(e.target.value)}
+            value={description}
           />
-          <Form.Input label="Link" onChange={e => setLink(e.target.value)} />
+          <Form.Input label="Link" onChange={e => setLink(e.target.value)} value={link}/>
           <FormTagInput
             label="Categories"
             placeholder="Press enter to add categories"
             onChange={tags => setCategories(tags)}
+            initialTags={categories}
           />
           <FormTagInput
             label="Tags"
             placeholder="Press enter to add tags"
             onChange={tags => setTags(tags)}
+            initialTags={tags}
           />
-          <Form.Input
-            label="Picture Name"
-            onChange={e => setPictureName(e.target.value)}
-          />
-          <Form.Input
-            type="tel"
-            pattern="^-?[0-5]\d*\.?\d*$"
-            label="Rating"
-            onChange={onRatingChange}
+          <label>Picture name</label>
+          <input
+            type="file"
+            name="pictureName"
+            onChange={onChangeFileHandler}
           />
         </Form>
       </Modal.Content>
       <Modal.Actions>
-        <Form.Button content="Create Resource" onClick={onCreateResource} />
+        <Form.Button content="Create Resource" onClick={defaultValues.id ? onUpdateResource : onCreateResource} />
       </Modal.Actions>
     </Modal>
   );

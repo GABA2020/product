@@ -33,6 +33,7 @@ export const AdminResourcesTab = () => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [createModalOpen, setCreateModalOpen] = useState(false);
+  const [selectedResource, setSelectedResource]: any = useState({});
 
   const itemsPerPage = 10;
 
@@ -64,7 +65,6 @@ export const AdminResourcesTab = () => {
           (resource.name as string).includes(data.value as string),
         ),
       ];
-      console.log(searchResults);
       setSearchValue(data.value as string);
       setSearchResults([...searchResults]);
     } else {
@@ -92,6 +92,11 @@ export const AdminResourcesTab = () => {
     }
   };
 
+  const handleClickEdit = resource => {
+    setSelectedResource(resource)
+    setCreateModalOpen(true)
+  }
+
   return (
     <>
       <div style={{ display: 'flex' }}>
@@ -112,6 +117,14 @@ export const AdminResourcesTab = () => {
               labelPosition="left"
             />
           }
+          defaultValues={{
+            name: selectedResource.name || '',
+            description: selectedResource.description || '',
+            link: selectedResource.link || '',
+            categories: selectedResource.categories || '',
+            id: selectedResource.id || '',
+            tags: selectedResource.tags || ''
+          }}
         />
       </div>
       <Table>
@@ -126,9 +139,9 @@ export const AdminResourcesTab = () => {
         </Table.Header>
         <Table.Body>
           {searchValue && searchResults
-            ? searchResults.map(resource => <ResourceRow resource={resource} />)
+            ? searchResults.map(resource => <ResourceRow onClickEdit={() => handleClickEdit(resource)} resource={resource} />)
             : resources &&
-              resources.map(resource => <ResourceRow resource={resource} />)}
+              resources.map(resource => <ResourceRow  onClickEdit={() => handleClickEdit(resource)} resource={resource} />)}
         </Table.Body>
         <Table.Footer>
           <Table.HeaderCell colSpan="5">

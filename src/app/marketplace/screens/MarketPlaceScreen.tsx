@@ -98,8 +98,6 @@ const MarketPlaceScreen = () => {
     }
   }, [resourcesResponse, lockerResponse])
 
-  if (loadingResources || loadingLocker) return null;
-
   return (
   <MarketPlaceContainer>
     <MarketPlaceHeader />
@@ -114,6 +112,7 @@ const MarketPlaceScreen = () => {
     <MarketPlaceFeatured
       onLockerButtonPress={handleLockerButtonPress}
       resources={filteredResources.length ? filteredResources : resources}
+      loading={loadingResources || loadingLocker}
     />
   </MarketPlaceContainer>
 )};

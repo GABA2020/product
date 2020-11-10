@@ -3,6 +3,8 @@ import styled from 'styled-components';
 
 import FeaturedItem from './FeaturedItem';
 import {Resource} from '../../../../types/Resource';
+import FeaturedItemSkeleton from './FeaturedItemSkeleton';
+
 const FilterByNameIcon = require('../../../../assets/images/sprites/FilterByName@2x.png');
 const FilterByPriceIcon = require('../../../../assets/images/sprites/FilterByPrice@2x.png');
 
@@ -64,12 +66,16 @@ const FilterImage = styled.img`
 `
 
 interface MarketPlaceFeaturedProps {
-  resources: Array<Resource>,
-  onLockerButtonPress: Function
+  resources?: Array<Resource>;
+  onLockerButtonPress: Function;
+  loading: boolean;
 }
 
-const MarketPlaceFeatured = (props: MarketPlaceFeaturedProps) => {
-  const { resources, onLockerButtonPress } = props;
+const MarketPlaceFeatured = ({
+  resources = [],
+  onLockerButtonPress,
+  loading
+}: MarketPlaceFeaturedProps) => {
   return (
   <FeaturedContainer>
     <ContentContainer>
@@ -85,13 +91,17 @@ const MarketPlaceFeatured = (props: MarketPlaceFeaturedProps) => {
         </FiltersContainer>
       </FeaturedHeader>
       <>
-        {resources.slice(0, 5).map((item, index) => (
-          <FeaturedItem
-            item={item}
-            key={index}
-            onLockerButtonPress={onLockerButtonPress}
-          />
-        ))}
+        {
+        loading 
+          ? Array.from({ length: 4}).map(() => <FeaturedItemSkeleton />)
+          : resources.slice(0, 5).map((item, index) => (
+            <FeaturedItem
+              item={item}
+              key={index}
+              onLockerButtonPress={onLockerButtonPress}
+            />
+          ))
+        }
       </>
     </ContentContainer>
   </FeaturedContainer>

@@ -15,3 +15,33 @@ export const DELETE_FROM_LOCKER = gql`
     }
   }
 `
+
+export const CREATE_PROGRAM = gql`
+  mutation($programData: ProgramInput) {
+    createProgram(programData: $programData)
+  }
+`;
+
+export const UPDATE_PROGRAM = gql`
+  mutation MyMutation(
+    $idDoc: String!,
+    $updateData: ProgramInput
+  ) {
+      updateProgram(idDoc: $idDoc, updateData: $updateData)
+  }
+`
+
+export const CREATE_RESOURCE = gql`
+  mutation CreateResource($resourceData: ResourceInput!) {
+    createResource(resourceData: $resourceData)
+  }
+`;
+
+export const UPDATE_RESOURCE = gql`
+  mutation UpdateResource(
+    $idDoc: String!,
+    $updateData: ResourceInput
+  ) {
+    updateResource(idDoc: $idDoc, updateData: $updateData)
+  }
+`

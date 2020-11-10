@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import ContentLoader from 'react-content-loader';
 
 import Stars from '../../../genericComponents/Stars';
 import {Resource} from '../../../../types/Resource';
@@ -25,7 +24,6 @@ const ItemContainer = styled.div`
 const DetailsSection = styled.div`
   display: flex;
   flex-direction: column;
-  position: relative;
 `;
 
 const DetailsTitle = styled.h3`
@@ -94,7 +92,7 @@ const Range = styled.p`
   letter-spacing: 0.1px;
 `
 
-const AddToLocker: any = styled.div`
+const AddToLocker: any = styled(Button)`
   position: absolute;
   right: 15px;
   top: 15px;
@@ -110,40 +108,30 @@ const FeaturedItem = (props: FeaturedItemProps) => {
   return (
     <ItemContainer>
       <AddToLocker 
-        onClick={() => {}} 
+        onClick={() => {
+          onLockerButtonPress(item.id, !!item.onLocker)
+        }} 
         backgroundColor={theme.color.darkBlue} 
         color={theme.color.white}
       >
-        <ContentLoader style={{position: 'absolute', left: -150}}>
-          <rect rx="3" ry="3" width="150" height="25" /> 
-        </ContentLoader>
+        {item.onLocker ? 'Remove from locker' : 'Add to Locker'}
       </AddToLocker>
       <DetailsSection>
-        <ContentLoader style={{position: 'absolute', left: 20}}>
-          <rect rx="3" ry="3" width="150" height="25" /> 
-        </ContentLoader>
-        <ContentLoader>
-          <rect rx="3" ry="3" width="150" height="25" /> 
-        </ContentLoader>
+        <DetailsTitle><CustomLink to={`/product-page/${item.id}`}>{item.name}</CustomLink></DetailsTitle>
+        <DetailsContent>{item.description || 'No description'}</DetailsContent>
         <Footer>
           <ReviewsFooter>
-            <ContentLoader style={{position: 'absolute', left: 0, top: 50}}>
-              <rect rx="3" ry="3" width="150" height="25" /> 
-            </ContentLoader>
+            <Stars color="yellow" numberOfStars={item.rating || 0}/>
+            <Reviews>2,423 Reviews</Reviews>
           </ReviewsFooter>
-          <ContentLoader style={{position: 'absolute', left: 0}}>
-            <rect rx="3" ry="3" width="150" height="25" /> 
-          </ContentLoader>
+          <Range>200$ - 1000$</Range>
         </Footer>
       </DetailsSection>
       <TagsSection>
-        <ContentLoader style={{position: 'absolute', right: -200}}>
-          <rect rx="3" ry="3" width="60" height="25" /> 
-        </ContentLoader>
+        <Tag>Slides</Tag>
+        <Tag>Video</Tag>
       </TagsSection>
-      <ContentLoader style={{position: 'absolute', right: -350}}>
-        <rect rx="3" ry="3" width="200" height="300" /> 
-      </ContentLoader>
+      <Image src={Bitmap}/>
     </ItemContainer>
 )}
 

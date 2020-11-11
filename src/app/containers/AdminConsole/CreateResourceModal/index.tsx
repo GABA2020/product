@@ -51,6 +51,7 @@ export const CreateResourceModal = (props: CreateResourceModalProps) => {
   const [categories, setCategories] = useState<any>([]);
   const [tags, setTags] = useState<string[]>([]);
   const [pictureName, setPictureName] = useState<string>('');
+  const [pictureURL, setPictureURL] = useState<string>('');
   const [file, setFile] = useState<any>('')
 
   const [createResource] = useMutation(CREATE_RESOURCE);
@@ -128,6 +129,16 @@ export const CreateResourceModal = (props: CreateResourceModalProps) => {
     }
   };
 
+  async function getFSImage(imageName:String) {
+    const storage = storageFB.ref();
+    storage.child(`resources/${imageName}`).getDownloadURL().then((url) => {
+      setPictureURL(url)
+    }).catch((error) => {
+      // Handle any errors
+    })
+  }
+  
+
   useEffect(() => {
     if (Object.keys(defaultValues).length) {
       setResourceName(defaultValues.name || '')
@@ -136,6 +147,7 @@ export const CreateResourceModal = (props: CreateResourceModalProps) => {
       setCategories(defaultValues.categories || [])
       setTags(defaultValues.tags || [])
       setPictureName(defaultValues.pictureName)
+      getFSImage(defaultValues.pictureName)
     }
   }, [defaultValues])
 
@@ -185,6 +197,8 @@ export const CreateResourceModal = (props: CreateResourceModalProps) => {
             initialTags={tags}
           />
           <label>Picture name {pictureName && `- current file: ${pictureName}`}</label>
+          {pictureName && <p><img src={`${pictureURL}`}/></p>}
+          <label>Change Picture:</label>
           <input
             type="file"
             name="pictureName"

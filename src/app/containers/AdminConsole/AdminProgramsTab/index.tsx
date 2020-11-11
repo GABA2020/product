@@ -109,13 +109,14 @@ export const AdminProgramsTab = () => {
             setCreateModalOpen(false);
           }}
           defaultValues={{
-            name: selectedProgram.name || '',
-            description: selectedProgram.description || '',
-            link: selectedProgram.link || '',
-            state: selectedProgram.state || '',
-            specialities: selectedProgram.specialities || '',
-            id: selectedProgram.id || '',
-            tags: selectedProgram.tags || ''
+            name: selectedProgram.name,
+            description: selectedProgram.description,
+            link: selectedProgram.link,
+            state: selectedProgram.state,
+            specialities: selectedProgram.specialities,
+            id: selectedProgram.id,
+            tags: selectedProgram.tags,
+            pictureName: selectedProgram.picture_name
           }}
           onOpen={() => setCreateModalOpen(true)}
           open={createModalOpen}

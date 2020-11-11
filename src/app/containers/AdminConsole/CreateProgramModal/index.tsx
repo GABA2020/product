@@ -19,6 +19,7 @@ export interface CreateProgramModalProps {
     specialities: string[];
     tags: string[];
     id: string;
+    pictureName: string;
   }
 }
 
@@ -42,6 +43,7 @@ export const CreateProgramModal = (props: CreateProgramModalProps) => {
     const types = ['image/png', 'image/jpeg', 'application/pdf'];
 
     if (selected && types.includes(selected.type)) {
+      setPictureName(selected.name)
       setFile(selected);
     } else {
       setFile(null);
@@ -112,12 +114,13 @@ export const CreateProgramModal = (props: CreateProgramModalProps) => {
 
   useEffect(() => {
     if (Object.keys(defaultValues).length) {
-      setName(defaultValues.name || '')
-      setDescriptionName(defaultValues.description || '')
-      setLink(defaultValues.link || '')
-      setState(defaultValues.state || '')
-      setSpecialities(defaultValues.specialities || [])
-      setTags(defaultValues.tags || [])
+      setName(defaultValues.name)
+      setDescriptionName(defaultValues.description)
+      setLink(defaultValues.link)
+      setState(defaultValues.state)
+      setSpecialities(defaultValues.specialities)
+      setTags(defaultValues.tags)
+      setPictureName(defaultValues.pictureName)
     }
   }, [defaultValues])
 
@@ -161,7 +164,7 @@ export const CreateProgramModal = (props: CreateProgramModalProps) => {
             onChange={tags => setTags(tags)}
             initialTags={tags}
           />
-          <label>Picture name</label>
+          <label>Picture name {pictureName && `- current file: ${pictureName}`}</label>
           <input
             type="file"
             name="pictureName"

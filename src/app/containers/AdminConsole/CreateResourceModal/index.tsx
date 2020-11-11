@@ -39,6 +39,7 @@ export interface CreateResourceModalProps {
     categories: string[];
     tags: string[];
     id: string;
+    pictureName: string;
   };
 }
 
@@ -81,7 +82,7 @@ export const CreateResourceModal = (props: CreateResourceModalProps) => {
           link: link,
           categories: categories,
           tags: tags,
-          picture_name: pictureName,
+          picture_name: file.name || '',
         },
       },
     });
@@ -120,6 +121,7 @@ export const CreateResourceModal = (props: CreateResourceModalProps) => {
     const types = ['image/png', 'image/jpeg', 'application/pdf'];
 
     if (selected && types.includes(selected.type)) {
+      setPictureName(selected.name)
       setFile(selected);
     } else {
       setFile(null);
@@ -133,6 +135,7 @@ export const CreateResourceModal = (props: CreateResourceModalProps) => {
       setLink(defaultValues.link || '')
       setCategories(defaultValues.categories || [])
       setTags(defaultValues.tags || [])
+      setPictureName(defaultValues.pictureName)
     }
   }, [defaultValues])
 
@@ -181,7 +184,7 @@ export const CreateResourceModal = (props: CreateResourceModalProps) => {
             onChange={tags => setTags(tags)}
             initialTags={tags}
           />
-          <label>Picture name</label>
+          <label>Picture name {pictureName && `- current file: ${pictureName}`}</label>
           <input
             type="file"
             name="pictureName"

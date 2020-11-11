@@ -115,6 +115,7 @@ export const AdminResourcesTab = () => {
               content="Create A New Resource"
               icon="add"
               labelPosition="left"
+              onClick={() => {setSelectedResource({})}}
             />
           }
           defaultValues={{
@@ -123,7 +124,8 @@ export const AdminResourcesTab = () => {
             link: selectedResource.link || '',
             categories: selectedResource.categories || '',
             id: selectedResource.id || '',
-            tags: selectedResource.tags || ''
+            tags: selectedResource.tags || '',
+            pictureName: selectedResource.picture_name
           }}
         />
       </div>

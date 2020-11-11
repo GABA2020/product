@@ -1,9 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { useMutation } from '@apollo/react-hooks';
-import { Form, Modal } from 'semantic-ui-react';
+import { Form, Modal, Dropdown } from 'semantic-ui-react';
 import { FormTagInput } from '../Tags';
 import { CREATE_RESOURCE, UPDATE_RESOURCE } from '../../../../service/mutations'
 import { storageFB} from '../../../../helpers/firebase.module';
+
+const options: any = [{
+  text: 'Free',
+  value: 'free',
+  key: 'fr'
+},{
+  text: 'Pre-Med',
+  value: 'pre-med',
+  key: 'pm'
+},{
+  text: 'Step One',
+  value: 'step-one',
+  key: 'so'
+},{
+  text: 'Step Two',
+  value: 'step-two',
+  key: 'tw'
+},{
+  text: 'Step Three',
+  value: 'step-three',
+  key: 'st'
+}]
 
 export interface CreateResourceModalProps {
   onClose: () => void;
@@ -17,6 +39,7 @@ export interface CreateResourceModalProps {
     categories: string[];
     tags: string[];
     id: string;
+    pictureName: string;
   };
 }
 
@@ -25,7 +48,7 @@ export const CreateResourceModal = (props: CreateResourceModalProps) => {
   const [resourceName, setResourceName] = useState<string>('');
   const [description, setDescriptionName] = useState<string>('');
   const [link, setLink] = useState<string>('');
-  const [categories, setCategories] = useState<string[]>([]);
+  const [categories, setCategories] = useState<any>([]);
   const [tags, setTags] = useState<string[]>([]);
   const [pictureName, setPictureName] = useState<string>('');
   const [file, setFile] = useState<any>('')
@@ -59,7 +82,7 @@ export const CreateResourceModal = (props: CreateResourceModalProps) => {
           link: link,
           categories: categories,
           tags: tags,
-          picture_name: pictureName,
+          picture_name: file.name || '',
         },
       },
     });
@@ -98,6 +121,7 @@ export const CreateResourceModal = (props: CreateResourceModalProps) => {
     const types = ['image/png', 'image/jpeg', 'application/pdf'];
 
     if (selected && types.includes(selected.type)) {
+      setPictureName(selected.name)
       setFile(selected);
     } else {
       setFile(null);
@@ -111,6 +135,7 @@ export const CreateResourceModal = (props: CreateResourceModalProps) => {
       setLink(defaultValues.link || '')
       setCategories(defaultValues.categories || [])
       setTags(defaultValues.tags || [])
+      setPictureName(defaultValues.pictureName)
     }
   }, [defaultValues])
 
@@ -121,7 +146,11 @@ export const CreateResourceModal = (props: CreateResourceModalProps) => {
       open={props.open}
       trigger={props.trigger}
     >
-      <Modal.Header>Create A New Resource</Modal.Header>
+      <Modal.Header>
+        {
+          defaultValues.id ? "Edit Resource" : "Create A New Resource"
+        }
+      </Modal.Header>
       <Modal.Content>
         <Form>
           <Form.Input
@@ -139,11 +168,15 @@ export const CreateResourceModal = (props: CreateResourceModalProps) => {
             value={description}
           />
           <Form.Input label="Link" onChange={e => setLink(e.target.value)} value={link}/>
-          <FormTagInput
-            label="Categories"
-            placeholder="Press enter to add categories"
-            onChange={tags => setCategories(tags)}
-            initialTags={categories}
+          <label>Categories</label>
+          <Dropdown
+            placeholder='Select categories'
+            value={categories}
+            onChange={(_, data) => setCategories(data.value)}
+            fluid
+            multiple
+            selection
+            options={options}
           />
           <FormTagInput
             label="Tags"
@@ -151,7 +184,7 @@ export const CreateResourceModal = (props: CreateResourceModalProps) => {
             onChange={tags => setTags(tags)}
             initialTags={tags}
           />
-          <label>Picture name</label>
+          <label>Picture name {pictureName && `- current file: ${pictureName}`}</label>
           <input
             type="file"
             name="pictureName"
@@ -160,7 +193,7 @@ export const CreateResourceModal = (props: CreateResourceModalProps) => {
         </Form>
       </Modal.Content>
       <Modal.Actions>
-        <Form.Button content="Create Resource" onClick={defaultValues.id ? onUpdateResource : onCreateResource} />
+        <Form.Button content={defaultValues.id ? "Edit Resource" : "Create Resource"} onClick={defaultValues.id ? onUpdateResource : onCreateResource} />
       </Modal.Actions>
     </Modal>
   );

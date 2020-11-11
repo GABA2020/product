@@ -18,7 +18,6 @@ const MarketPlaceContainer = styled(Segment.Group)`
 const MarketPlaceScreen = () => {
   const [searchField, setSearchField] = useState('');
   const [resources, setResources] = useState([]);
-  const [filteredResources, setFilteredResources] = useState([]);
   const [activeCategory, setActiveCategory] = useState('');
   const email = useSelector((state: any) => state.auth.email);
 
@@ -32,6 +31,13 @@ const MarketPlaceScreen = () => {
   })
   const [addToLocker] = useMutation(ADD_RESOURCE_TO_LOCKER);
   const [removeFromLocker] = useMutation(DELETE_FROM_LOCKER);
+
+  const getResourcesOnLocker = (resources, resourcesFromLocker) => {
+    return resources.map(resource => {
+    const index = resourcesFromLocker.findIndex(lockerResource => lockerResource.resource_id === resource.id);
+    if (index > -1) return { ...resource, onLocker: true };
+    return resource;
+  })}
 
   const handleLockerButtonPress = async (resourceId: string, onLocker: boolean)=> {
     try {
@@ -53,35 +59,42 @@ const MarketPlaceScreen = () => {
   };
 
   const handleSearch = () => {    
-    console.log(resourcesResponse.resources.filter(
+    const filterResult = resourcesResponse.resources.filter(
       resource =>  (
         resource.name && resource.name.toLowerCase().search(searchField.toLowerCase()) !== -1 ||
         resource.description && resource.description.toLowerCase().search(searchField.toLowerCase()) !== -1
       )
-    ))
-    setFilteredResources(
-      resourcesResponse.resources.filter(
-        resource =>  (
-          resource.name && resource.name.toLowerCase().search(searchField.toLowerCase()) !== -1 ||
-          resource.description && resource.description.toLowerCase().search(searchField.toLowerCase()) !== -1
-        )
+    )
+    setResources(
+      getResourcesOnLocker(
+        filterResult,
+        lockerResponse.resources_locker
       )
     )
   };
 
   const handleFilterByCategory = categoryId => {
     setActiveCategory(categoryId)
-    setFilteredResources(
-      resourcesResponse.resources.filter(
-        resource => resource.categories && resource.categories.includes(categoryId)
+    const filterResult = resourcesResponse.resources.filter(
+      resource => resource.categories && resource.categories.includes(categoryId)
+    )
+    setResources(
+      getResourcesOnLocker(
+        filterResult,
+        lockerResponse.resources_locker
       )
     )
   }
 
   const handleClearFilters = () => {
-    setFilteredResources(
-      resourcesResponse.resources
-    )
+    if (resourcesResponse && lockerResponse) {
+      setResources(
+        getResourcesOnLocker(
+          resourcesResponse.resources,
+          lockerResponse.resources_locker
+        )
+      );
+    }
     setSearchField('')
     setActiveCategory('')
   }
@@ -89,11 +102,10 @@ const MarketPlaceScreen = () => {
   useEffect(() => {
     if (resourcesResponse && lockerResponse) {
       setResources(
-        resourcesResponse.resources.map((resource) => {
-          const index = lockerResponse.resources_locker.findIndex(lockerResource => lockerResource.resource_id === resource.id);
-          if (index > -1) return { ...resource, onLocker: true };
-          return resource;
-        })
+        getResourcesOnLocker(
+          resourcesResponse.resources,
+          lockerResponse.resources_locker
+        )
       );
     }
   }, [resourcesResponse, lockerResponse])
@@ -111,7 +123,7 @@ const MarketPlaceScreen = () => {
     />
     <MarketPlaceFeatured
       onLockerButtonPress={handleLockerButtonPress}
-      resources={filteredResources.length ? filteredResources : resources}
+      resources={resources}
       loading={loadingResources || loadingLocker}
     />
   </MarketPlaceContainer>

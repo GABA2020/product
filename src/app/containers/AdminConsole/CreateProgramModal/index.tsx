@@ -19,6 +19,7 @@ export interface CreateProgramModalProps {
     specialities: string[];
     tags: string[];
     id: string;
+    pictureName: string;
   }
 }
 
@@ -42,6 +43,7 @@ export const CreateProgramModal = (props: CreateProgramModalProps) => {
     const types = ['image/png', 'image/jpeg', 'application/pdf'];
 
     if (selected && types.includes(selected.type)) {
+      setPictureName(selected.name)
       setFile(selected);
     } else {
       setFile(null);
@@ -112,12 +114,13 @@ export const CreateProgramModal = (props: CreateProgramModalProps) => {
 
   useEffect(() => {
     if (Object.keys(defaultValues).length) {
-      setName(defaultValues.name || '')
-      setDescriptionName(defaultValues.description || '')
-      setLink(defaultValues.link || '')
-      setState(defaultValues.state || '')
-      setSpecialities(defaultValues.specialities || [])
-      setTags(defaultValues.tags || [])
+      setName(defaultValues.name)
+      setDescriptionName(defaultValues.description)
+      setLink(defaultValues.link)
+      setState(defaultValues.state)
+      setSpecialities(defaultValues.specialities)
+      setTags(defaultValues.tags)
+      setPictureName(defaultValues.pictureName)
     }
   }, [defaultValues])
 
@@ -128,7 +131,9 @@ export const CreateProgramModal = (props: CreateProgramModalProps) => {
       open={props.open}
       trigger={props.trigger}
     >
-      <Modal.Header>Create A New Program</Modal.Header>
+      <Modal.Header>
+        {defaultValues.id ? 'Edit Program' : 'Create A New Program'}
+      </Modal.Header>
       <Modal.Content>
         <Form>
           <Form.Input
@@ -159,7 +164,7 @@ export const CreateProgramModal = (props: CreateProgramModalProps) => {
             onChange={tags => setTags(tags)}
             initialTags={tags}
           />
-          <label>Picture name</label>
+          <label>Picture name {pictureName && `- current file: ${pictureName}`}</label>
           <input
             type="file"
             name="pictureName"
@@ -168,7 +173,10 @@ export const CreateProgramModal = (props: CreateProgramModalProps) => {
         </Form>
       </Modal.Content>
       <Modal.Actions>
-        <Form.Button content="Create Program" onClick={defaultValues.id ? onUpdateResource : onCreateResource} />
+        <Form.Button
+          content={defaultValues.id ? 'Edit Program' : 'Create Program'}
+          onClick={defaultValues.id ? onUpdateResource : onCreateResource} 
+        />
       </Modal.Actions>
     </Modal>
   );

@@ -125,6 +125,7 @@ export const AdminProgramsTab = () => {
               content="Create A New Program"
               icon="add"
               labelPosition="left"
+              onClick={() => {setSelectedProgram({})}}
             />
           }
         />

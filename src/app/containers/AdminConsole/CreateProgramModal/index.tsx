@@ -128,7 +128,9 @@ export const CreateProgramModal = (props: CreateProgramModalProps) => {
       open={props.open}
       trigger={props.trigger}
     >
-      <Modal.Header>Create A New Program</Modal.Header>
+      <Modal.Header>
+        {defaultValues.id ? 'Edit Program' : 'Create A New Program'}
+      </Modal.Header>
       <Modal.Content>
         <Form>
           <Form.Input
@@ -168,7 +170,10 @@ export const CreateProgramModal = (props: CreateProgramModalProps) => {
         </Form>
       </Modal.Content>
       <Modal.Actions>
-        <Form.Button content="Create Program" onClick={defaultValues.id ? onUpdateResource : onCreateResource} />
+        <Form.Button
+          content={defaultValues.id ? 'Edit Program' : 'Create Program'}
+          onClick={defaultValues.id ? onUpdateResource : onCreateResource} 
+        />
       </Modal.Actions>
     </Modal>
   );

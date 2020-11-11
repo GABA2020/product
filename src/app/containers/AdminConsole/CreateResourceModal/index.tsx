@@ -143,7 +143,11 @@ export const CreateResourceModal = (props: CreateResourceModalProps) => {
       open={props.open}
       trigger={props.trigger}
     >
-      <Modal.Header>Create A New Resource</Modal.Header>
+      <Modal.Header>
+        {
+          defaultValues.id ? "Edit Resource" : "Create A New Resource"
+        }
+      </Modal.Header>
       <Modal.Content>
         <Form>
           <Form.Input
@@ -186,7 +190,7 @@ export const CreateResourceModal = (props: CreateResourceModalProps) => {
         </Form>
       </Modal.Content>
       <Modal.Actions>
-        <Form.Button content="Create Resource" onClick={defaultValues.id ? onUpdateResource : onCreateResource} />
+        <Form.Button content={defaultValues.id ? "Edit Resource" : "Create Resource"} onClick={defaultValues.id ? onUpdateResource : onCreateResource} />
       </Modal.Actions>
     </Modal>
   );

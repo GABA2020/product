@@ -115,6 +115,7 @@ export const AdminResourcesTab = () => {
               content="Create A New Resource"
               icon="add"
               labelPosition="left"
+              onClick={() => {setSelectedResource({})}}
             />
           }
           defaultValues={{

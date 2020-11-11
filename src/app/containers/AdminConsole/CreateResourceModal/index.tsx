@@ -1,9 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { useMutation } from '@apollo/react-hooks';
-import { Form, Modal } from 'semantic-ui-react';
+import { Form, Modal, Dropdown } from 'semantic-ui-react';
 import { FormTagInput } from '../Tags';
 import { CREATE_RESOURCE, UPDATE_RESOURCE } from '../../../../service/mutations'
 import { storageFB} from '../../../../helpers/firebase.module';
+
+const options: any = [{
+  text: 'Free',
+  value: 'free',
+  key: 'fr'
+},{
+  text: 'Pre-Med',
+  value: 'pre-med',
+  key: 'pm'
+},{
+  text: 'Step One',
+  value: 'step-one',
+  key: 'so'
+},{
+  text: 'Step Two',
+  value: 'step-two',
+  key: 'tw'
+},{
+  text: 'Step Three',
+  value: 'step-three',
+  key: 'st'
+}]
 
 export interface CreateResourceModalProps {
   onClose: () => void;
@@ -25,7 +47,7 @@ export const CreateResourceModal = (props: CreateResourceModalProps) => {
   const [resourceName, setResourceName] = useState<string>('');
   const [description, setDescriptionName] = useState<string>('');
   const [link, setLink] = useState<string>('');
-  const [categories, setCategories] = useState<string[]>([]);
+  const [categories, setCategories] = useState<any>([]);
   const [tags, setTags] = useState<string[]>([]);
   const [pictureName, setPictureName] = useState<string>('');
   const [file, setFile] = useState<any>('')
@@ -139,11 +161,15 @@ export const CreateResourceModal = (props: CreateResourceModalProps) => {
             value={description}
           />
           <Form.Input label="Link" onChange={e => setLink(e.target.value)} value={link}/>
-          <FormTagInput
-            label="Categories"
-            placeholder="Press enter to add categories"
-            onChange={tags => setCategories(tags)}
-            initialTags={categories}
+          <label>Categories</label>
+          <Dropdown
+            placeholder='Select categories'
+            value={categories}
+            onChange={(_, data) => setCategories(data.value)}
+            fluid
+            multiple
+            selection
+            options={options}
           />
           <FormTagInput
             label="Tags"

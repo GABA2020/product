@@ -99,7 +99,7 @@ export const CreateResourceModal = (props: CreateResourceModalProps) => {
     if (!description || description.length === 0 || !description.trim()) {
       return;
     }
-
+    await fileStorage(file)
     await updateResource({
       variables: {
         idDoc: defaultValues.id,

@@ -2,11 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 
 import Stars from '../../../genericComponents/Stars';
-import {Resource} from '../../../../types/Resource';
+import { Resource } from '../../../../types/Resource';
 import { NavLink } from 'react-router-dom';
-import {Column} from '../../../genericComponents/Layout';
+import { Column } from '../../../genericComponents/Layout';
 import Button from '../../../genericComponents/Button';
 import theme from '../../../../theme';
+import { useStorage } from 'hook/useStorage';
 
 const Bitmap = require('../../../../assets/images/sprites/Bitmap.png');
 
@@ -34,7 +35,7 @@ const DetailsTitle = styled.h3`
   letter-spacing: -0.1px;
   line-height: 32px;
   margin-bottom: 15px;
-`
+`;
 
 const DetailsContent = styled.p`
   color: ${props => props.theme.color.darkBlue};
@@ -43,19 +44,19 @@ const DetailsContent = styled.p`
   letter-spacing: 0.1px;
   line-height: 24px;
   width: 310px;
-`
+`;
 
 const ReviewsFooter = styled.div`
   display: flex;
   margin: 20px 20px 10px -5px;
-`
+`;
 
-const Footer = styled(Column)``
+const Footer = styled(Column)``;
 
 const Reviews = styled.div`
   margin-left: 20px;
   margin-top: 10px;
-`
+`;
 
 const TagsSection = styled.div`
   display: flex;
@@ -64,7 +65,7 @@ const TagsSection = styled.div`
   flex-wrap: wrap;
   max-width: 400px;
   min-width: 400px;
-`
+`;
 
 const Tag = styled.div`
   background: ${props => props.theme.color.softPurple};
@@ -73,55 +74,64 @@ const Tag = styled.div`
   height: 30px;
   margin-right: 10px;
   margin-bottom: 5px;
-`
+`;
 
 const Image = styled.img`
   position: absolute;
   right: -350px;
   top: 10px;
-`
+  max-height: 210px;
+`;
 
 const CustomLink = styled(NavLink)`
   color: ${props => props.theme.color.darkBlue};
-`
+`;
 
 const Range = styled.p`
   color: ${props => props.theme.color.darkBlue};
   font-size: 16px;
   height: 72px;
   letter-spacing: 0.1px;
-`
+`;
 
 const AddToLocker: any = styled(Button)`
   position: absolute;
   right: 15px;
   top: 15px;
-`
+`;
 
 interface FeaturedItemProps {
-  item: Resource,
-  onLockerButtonPress: Function
+  item: Resource;
+  onLockerButtonPress: Function;
 }
 
 const FeaturedItem = (props: FeaturedItemProps) => {
   const { item, onLockerButtonPress } = props;
+  console.log('item', JSON.stringify(item));
+
+  const url = useStorage(`resources/${item.picture_name}`);
+
+  console.log('URL2', url);
   return (
     <ItemContainer>
-      <AddToLocker 
+      {console.log('URL', url)}
+      <AddToLocker
         onClick={() => {
-          onLockerButtonPress(item.id, !!item.onLocker)
-        }} 
-        backgroundColor={theme.color.darkBlue} 
+          onLockerButtonPress(item.id, !!item.onLocker);
+        }}
+        backgroundColor={theme.color.darkBlue}
         color={theme.color.white}
       >
         {item.onLocker ? 'Remove from locker' : 'Add to Locker'}
       </AddToLocker>
       <DetailsSection>
-        <DetailsTitle><CustomLink to={`/product-page/${item.id}`}>{item.name}</CustomLink></DetailsTitle>
+        <DetailsTitle>
+          <CustomLink to={`/product-page/${item.id}`}>{item.name}</CustomLink>
+        </DetailsTitle>
         <DetailsContent>{item.description || 'No description'}</DetailsContent>
         <Footer>
           <ReviewsFooter>
-            <Stars color="yellow" numberOfStars={item.rating || 0}/>
+            <Stars color="yellow" numberOfStars={item.rating || 0} />
             <Reviews>2,423 Reviews</Reviews>
           </ReviewsFooter>
           <Range>200$ - 1000$</Range>
@@ -131,8 +141,9 @@ const FeaturedItem = (props: FeaturedItemProps) => {
         <Tag>Slides</Tag>
         <Tag>Video</Tag>
       </TagsSection>
-      <Image src={Bitmap}/>
+      {url !== '' ? <Image src={url} /> : <Image src={Bitmap} />}
     </ItemContainer>
-)}
+  );
+};
 
 export default FeaturedItem;

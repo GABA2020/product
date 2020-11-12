@@ -23,6 +23,8 @@ const GET_RESOURCES = gql`
       categories
       picture_name
       rating
+      price_from
+      price_to
     }
   }
 `;
@@ -125,7 +127,9 @@ export const AdminResourcesTab = () => {
             categories: selectedResource.categories || '',
             id: selectedResource.id || '',
             tags: selectedResource.tags || '',
-            pictureName: selectedResource.picture_name
+            pictureName: selectedResource.picture_name || '',
+            price_from: selectedResource.price_from || '',
+            price_to: selectedResource.price_to || '',
           }}
         />
       </div>

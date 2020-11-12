@@ -19,7 +19,7 @@ const ItemContainer = styled.div`
   display: flex;
   padding: 30px;
   position: relative;
-  max-height: 220px;
+  height: 220px;
 `;
 
 const DetailsSection = styled.div`
@@ -48,7 +48,9 @@ const DetailsContent = styled.p`
 
 const ReviewsFooter = styled.div`
   display: flex;
-  margin: 20px 20px 10px -5px;
+  margin: 0px 20px 10px -5px;
+  position: absolute;
+  bottom: 20px;
 `;
 
 const Footer = styled(Column)``;
@@ -81,6 +83,7 @@ const Image = styled.img`
   right: -350px;
   top: 10px;
   max-height: 210px;
+  max-width: 310px;
 `;
 
 const CustomLink = styled(NavLink)`
@@ -92,6 +95,8 @@ const Range = styled.p`
   font-size: 16px;
   height: 72px;
   letter-spacing: 0.1px;
+  position: absolute;
+  bottom: -50px;
 `;
 
 const AddToLocker: any = styled(Button)`
@@ -132,14 +137,17 @@ const FeaturedItem = (props: FeaturedItemProps) => {
         <Footer>
           <ReviewsFooter>
             <Stars color="yellow" numberOfStars={item.rating || 0} />
-            <Reviews>2,423 Reviews</Reviews>
+            <Reviews>{item.reviewsCount} Reviews</Reviews>
           </ReviewsFooter>
-          <Range>200$ - 1000$</Range>
+          <Range>
+            ${item.price_from} - ${item.price_to}{' '}
+          </Range>
         </Footer>
       </DetailsSection>
       <TagsSection>
-        <Tag>Slides</Tag>
-        <Tag>Video</Tag>
+        {item.tags
+          ? item.tags.map((tagitem, index) => <Tag>{tagitem}</Tag>)
+          : 'no tag'}
       </TagsSection>
       {url !== '' ? <Image src={url} /> : <Image src={Bitmap} />}
     </ItemContainer>

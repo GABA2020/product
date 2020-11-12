@@ -11,6 +11,9 @@ export const RESOURCES = gql`
       name
       picture_name
       rating
+      price_from
+      price_to
+      reviewsCount
     }
   }
 `;

@@ -17,8 +17,8 @@ export const DELETE_FROM_LOCKER = gql`
 `
 
 export const CREATE_PROGRAM = gql`
-  mutation($programData: ProgramInput) {
-    createProgram(programData: $programData)
+  mutation($createData: ProgramInput) {
+    createProgram(createData: $createData)
   }
 `;
 
@@ -32,8 +32,8 @@ export const UPDATE_PROGRAM = gql`
 `
 
 export const CREATE_RESOURCE = gql`
-  mutation CreateResource($resourceData: ResourceInput!) {
-    createResource(resourceData: $resourceData)
+  mutation CreateResource($createData: ResourceInput) {
+    createResource(createData: $createData)
   }
 `;
 

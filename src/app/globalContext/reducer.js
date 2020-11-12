@@ -1,5 +1,5 @@
 import { auth, db } from 'helpers/firebase.module';
-
+// import {auth} from 'firebase/app';
 export const reducer = state => {
   return {
     //Only curry functions:::::
@@ -11,7 +11,7 @@ export const reducer = state => {
     logout: () => {
       auth.signOut();
       return ({
-        user:null,
+        user:{},
         isAuth:false,
       })
     },
@@ -22,8 +22,8 @@ export const reducer = state => {
 
 export const initialState = () => {
   return {
-    isAuth:false,
-    user: null,
+    isAuth: false,
+    user: {},
     showMenu: false,
   };
 };

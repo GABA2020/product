@@ -21,7 +21,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { AboutModal } from 'app/components/Modal/AboutModal';
 import { Context } from 'app/globalContext/GlobalContext';
-
+import { ADDUSERWORK } from '../../../service/queries';
 const arrayWork = ['work', 'research', 'volunteer', 'school', 'letter'];
 
 interface ICVWork {
@@ -44,8 +44,7 @@ export const CVWork: FC<ICVWork> = props => {
     arrayLength,
     loading,
   } = useSelector(userSelector);
-  const { state: { user:userProfile } } = useContext(Context);
-  
+  const { graphQLClient, state: { user:userProfile } } = useContext(Context);
 
   const [stateWork, setStateWork] = useState<string>(arrayWork[0]);
   const [aboutModal, setAboutModal] = useState<boolean>(false);
@@ -84,12 +83,18 @@ export const CVWork: FC<ICVWork> = props => {
               );
             }}
             addNewWorkExperience={workExperience => {
-              dispatch(
-                userActions.addNewWorkExperienceAction({
-                  email: userProfile.email,
-                  workExperience,
-                }),
-              );
+              graphQLClient.mutate({
+                variables:{...workExperience,email:userProfile.email},
+                mutation: ADDUSERWORK,
+              })
+              .then(result => console.log(result))
+              .catch(err => console.log(err));
+              // dispatch(
+              //   userActions.addNewWorkExperienceAction({
+              //     email: userProfile.email,
+              //     workExperience,
+              //   }),
+              // );
             }}
             deleteWorkExperience={workExperience => {
               dispatch(

@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useContext, useState } from 'react';
 import {
   mcat,
   step_one,
@@ -25,12 +25,14 @@ import { Step1Modal } from 'app/components/Modal/Step1Modal';
 import { Step2Modal } from 'app/components/Modal/Step2Modal';
 import { Step3Modal } from 'app/components/Modal/Step3Modal';
 import ScoreModal from 'app/profile/components/ScoreModal';
+import { Context } from 'app/globalContext/GlobalContext';
 
 export const Score = () => {
   useInjectSaga({ key: userSliceKey, saga: UserSaga });
   useInjectSaga({ key: storageSliceKey, saga: StorageSaga });
   const dispatch = useDispatch();
-  const { userProfile } = useSelector(userSelector);
+  // const { userProfile } = useSelector(userSelector);
+  const { state: { user:userProfile } } = useContext(Context);
   const [mcatModal, setMCATModal] = useState<boolean>(false);
   const [step1Modal, setStep1Modal] = useState<boolean>(false);
   const [step2Modal, setStep2Modal] = useState<boolean>(false);
@@ -101,83 +103,6 @@ export const Score = () => {
         uploadFile={uploadFileStep3}
         type={"Step Three"}
       />
-      {/* <MCATModal
-        userProfile={userProfile}
-        isShow={false}
-        onHide={() => {
-          setMCATModal(false);
-        }}
-        uploadFileMCAT={uploadFileMCAT}
-        updateUserProfile={newUserProfile => {
-          if (JSON.stringify(newUserProfile) !== JSON.stringify(userProfile)) {
-            dispatch(
-              userActions.updateUserProfileAction({
-                userProfile: { ...newUserProfile, mcat_review_requested: true },
-              }),
-            );
-          }
-        }}
-      />
-      <Step1Modal
-        userProfile={userProfile}
-        isShow={false}
-        onHide={() => {
-          setStep1Modal(false);
-        }}
-        uploadFileStep1={uploadFileStep1}
-        updateUserProfile={newUserProfile => {
-          if (JSON.stringify(newUserProfile) !== JSON.stringify(userProfile)) {
-            dispatch(
-              userActions.updateUserProfileAction({
-                userProfile: {
-                  ...newUserProfile,
-                  step_1_review_requested: true,
-                },
-              }),
-            );
-          }
-        }}
-      />
-      <Step2Modal
-        userProfile={userProfile}
-        isShow={step2Modal}
-        onHide={() => {
-          setStep2Modal(false);
-        }}
-        uploadFileStep2={uploadFileStep2}
-        updateUserProfile={newUserProfile => {
-          if (JSON.stringify(newUserProfile) !== JSON.stringify(userProfile)) {
-            dispatch(
-              userActions.updateUserProfileAction({
-                userProfile: {
-                  ...newUserProfile,
-                  step_2_review_requested: true,
-                },
-              }),
-            );
-          }
-        }}
-      />
-      <Step3Modal
-        userProfile={userProfile}
-        isShow={step3Modal}
-        onHide={() => {
-          setStep3Modal(false);
-        }}
-        uploadFileStep3={uploadFileStep3}
-        updateUserProfile={newUserProfile => {
-          if (JSON.stringify(newUserProfile) !== JSON.stringify(userProfile)) {
-            dispatch(
-              userActions.updateUserProfileAction({
-                userProfile: {
-                  ...newUserProfile,
-                  step_3_review_requested: true,
-                },
-              }),
-            );
-          }
-        }}
-      /> */}
       <section className="section-step-scope">
         <div className="container">
           <div className="list-score">

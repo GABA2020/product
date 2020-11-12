@@ -165,7 +165,7 @@ export const EditProfileModal: FC<IEditProfile> = props => {
   useEffect(() => {
     if (isShow === true) {
       setFieldValue('name', userProfile.name);
-      setFieldValue('specialty', program.specialty);
+      setFieldValue('specialty', program?.specialty||'');
       setFieldValue('year_in_program', userProfile.year_in_program);
       setFieldValue('degrees', userProfile.degrees);
       setFieldValue('avatar', userProfile.avatar);

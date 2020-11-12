@@ -5,6 +5,7 @@ import React, {
   useState,
   useCallback,
   useLayoutEffect,
+  useContext,
 } from 'react';
 import { Modal } from 'react-bootstrap';
 import '../../../styles/scss/Chat.scss';
@@ -21,6 +22,7 @@ import { FormInputText } from 'app/components/Modal/Chat/FormInputText';
 import { convertDateToTimestamp } from 'helpers/Unity';
 import moment from 'moment';
 import { ConnectQuestion } from 'app/components/Modal/Chat/ConnectQuestion';
+import { Context } from 'app/globalContext/GlobalContext';
 
 interface IChat {
   isShow: boolean;
@@ -47,7 +49,8 @@ export const Chat: FC<IChat> = props => {
     loading_listMessage,
     currentUserKey,
   } = useSelector(ChatSelector);
-  const { userProfile } = useSelector(userSelector);
+  const { state: { user:userProfile } } = useContext(Context);
+  // const { userProfile } = useSelector(userSelector);
   const [indexConversion, setIndexConversion] = useState(0);
 
   // const scrollToBottom = () => {

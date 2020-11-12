@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect, useContext } from 'react';
 import { bag } from 'assets/images';
 import { useInjectSaga } from 'utils/redux-injectors';
 import { actions, sliceKey } from 'redux/Locker/slice';
@@ -12,6 +12,7 @@ import Review from 'app/components/Review';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { EditResource } from 'app/components/Modal/ResourceModal/EditResource';
+import { Context } from 'app/globalContext/GlobalContext';
 
 const iniUserResource: ENTITIES.UserResource = {
   id: '',
@@ -46,7 +47,8 @@ export const Locker = () => {
     allUserResources,
   } = useSelector(lockerSelector);
 
-  const { userProfile } = useSelector(userSelector);
+  // const { userProfile } = useSelector(userSelector);
+  const { state: { user:userProfile } } = useContext(Context);
   const [addResourceModal, setAddResourceModal] = useState<boolean>(false);
   const [editResourceModal, setEditResourceModal] = useState<boolean>(false);
   const [resourceState, setResourceState] = useState<ENTITIES.UserResource>(

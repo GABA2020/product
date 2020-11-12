@@ -1,18 +1,21 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useContext, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useInjectSaga } from 'utils/redux-injectors';
 import { sliceKey, actions } from 'redux/Auth/slice';
 import { authSelector } from 'redux/Auth/selectors';
 import { AuthSaga } from 'redux/Auth/saga';
 import { useForm } from 'react-hook-form';
-import { auth } from '../../../helpers/firebase.module';
+import { auth, db} from '../../../helpers/firebase.module';
 import { Link } from 'react-router-dom';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers';
 import 'styles/scss/login.scss';
-
+import { DTO  } from '../../../types/DTO';
+import { toast } from 'react-toastify';
+import { history } from 'utils/history';
 import { Form, Input, Divider } from 'semantic-ui-react';
 import styled from 'styled-components';
+import { Context } from 'app/globalContext/GlobalContext';
 
 const loginSchema = yup.object().shape({
   email: yup.string().required('Email is a required field'),
@@ -24,18 +27,27 @@ export const SignIn: React.FC = props => {
   const { register, handleSubmit, errors } = useForm({
     resolver: yupResolver(loginSchema),
   });
+  const { dispatch: { login } } = useContext(Context);
 
-  useInjectSaga({ key: sliceKey, saga: AuthSaga });
 
-  const dispatch = useDispatch();
-  const { loading } = useSelector(authSelector);
-  const onSubmit = data => {
-    dispatch(
-      actions.loginAction({
-        email: data.email,
-        password: data.password,
-      }),
+  const onSubmit = async data => {
+
+    const response = await auth.signInWithEmailAndPassword(
+      data.email,
+      data.password,
     );
+    if (response.user) {
+      const memberRef = await db
+        .collection('member_data')
+        .doc(data.email)
+        .get();
+      const user: DTO.Auth.LoginResponse = memberRef.data() as DTO.Auth.LoginResponse;
+      login(user);
+      toast.info('Welcome to GABA !');
+      history.push(`/${user.username}`);
+    }else{
+      toast.error('Unable to log in with provided credentials');
+    }
   };
 
   return (

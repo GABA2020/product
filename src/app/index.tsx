@@ -32,6 +32,7 @@ import { AuthScreen } from './auth/screens/AuthScreen';
 import { AdminConsole } from './containers/AdminConsole';
 import { PaymentPage } from './containers/PaymentPage';
 import { LateralMenu } from './genericComponents/LateralMenu';
+import { Context } from './globalContext/GlobalContext';
 // Auth Route
 const AuthRoute = ({ component: Component, ...rest }) => {
   const { isAuth } = rest;
@@ -52,7 +53,9 @@ const AuthRoute = ({ component: Component, ...rest }) => {
 };
 
 export function App() {
-  const { isAuth } = useSelector(authSelector);
+  // const { isAuth } = useSelector(authSelector);
+  const { state: { isAuth } } = React.useContext(Context);
+
   const dispatch = useDispatch();
 
 

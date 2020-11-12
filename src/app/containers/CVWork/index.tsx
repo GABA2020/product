@@ -1,4 +1,4 @@
-import React, { Fragment, useState, FC } from 'react';
+import React, { Fragment, useState, FC, useContext } from 'react';
 import 'styles/scss/SectionExperience.scss';
 import { Work } from 'app/components/Work';
 import { Volunteer } from 'app/components/Volunteer';
@@ -20,6 +20,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { AboutModal } from 'app/components/Modal/AboutModal';
+import { Context } from 'app/globalContext/GlobalContext';
 
 const arrayWork = ['work', 'research', 'volunteer', 'school', 'letter'];
 
@@ -33,7 +34,7 @@ export const CVWork: FC<ICVWork> = props => {
   useInjectSaga({ key: storageSliceKey, saga: StorageSaga });
   const dispatch = useDispatch();
   const {
-    userProfile,
+    // userProfile,
     workExperiences,
     educations,
     volunteers,
@@ -43,6 +44,8 @@ export const CVWork: FC<ICVWork> = props => {
     arrayLength,
     loading,
   } = useSelector(userSelector);
+  const { state: { user:userProfile } } = useContext(Context);
+  
 
   const [stateWork, setStateWork] = useState<string>(arrayWork[0]);
   const [aboutModal, setAboutModal] = useState<boolean>(false);

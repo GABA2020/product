@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 
 import Stars from '../../../genericComponents/Stars';
 
@@ -11,12 +12,56 @@ interface ReviewProps {
 	user: string
 }
 
+const MessageBox = styled.div`
+  background-color: ${props => props.theme.color.softYellow};
+
+  .message-date span {
+    &::before {
+      background-color: ${props => props.theme.color.gabaYellow};
+    }
+  }
+
+  .message-type span {
+    &::before {
+      background-color: ${props => props.theme.color.gabaYellow};
+    }
+  }
+
+  div.message-bellow  a {
+    color: ${props => props.theme.color.darkBlue};
+  }
+`
+
+const MessageDescription = styled.div`
+  h4.message-heading {
+    color: ${props => props.theme.color.darkBlue} !important;
+  }
+
+  p.message-paragraph {
+    color: ${props => props.theme.color.darkBlue} !important;
+  }
+`
+
+const Button = styled.button`
+  font-size: 1.6rem;
+  font-weight: 500;
+  padding: 9px 14px;
+  line-height: 1.1;
+  color: ${props => props.theme.color.darkBlue};
+  background-color: ${props => props.theme.color.softPurple};
+  border-radius: 2px;
+  margin-top: -20px;
+  outline: none;
+  border: none;
+`
+ 
+
 const Review = (props: ReviewProps) => (
 	<div className="message-item">
-		<div className="message-box">
+		<MessageBox className="message-box">
 			<div className="message-front">
 				<div className="message-rating">
-					<Stars numberOfStars={props.numberOfStars} />
+					<Stars color="yellow" numberOfStars={props.numberOfStars} />
 				</div>
 				<div className="message-date">
 					<span>{props.date}</span>
@@ -25,32 +70,32 @@ const Review = (props: ReviewProps) => (
 					<span>{props.messageType}</span>
 				</div>
 			</div>
-			<div className="message-description">
+			<MessageDescription className="message-description">
 				<h4 className="message-heading">
 					{props.title}
 				</h4>
 				<p className="message-paragraph">
 					{props.comment}
 				</p>
-			</div>
+			</MessageDescription>
 			<div className="message-bellow">
 				<div className="message-action">
 					<ul className="action-enter">
 						<li>
-							<a href="#" className="btn btn-helpful">
+							<Button>
 								Helpful
-							</a>
+							</Button>
 						</li>
 						<li>
-							<a href="#" className="btn btn-reply">
+							<Button>
 								Reply
-							</a>
+							</Button>
 						</li>
 						<li>
 							<a href="#" className="btn-report">
 								<span className="icons-report">&nbsp;</span>{' '}
 								Report abuse
-						</a>
+						  </a>
 						</li>
 					</ul>
 				</div>
@@ -81,7 +126,7 @@ const Review = (props: ReviewProps) => (
 					</div>
 				</div>
 			</div>
-		</div>
+		</MessageBox>
 	</div>
 );
 

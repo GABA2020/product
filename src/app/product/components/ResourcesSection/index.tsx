@@ -1,4 +1,6 @@
 import React from 'react';
+import styled from 'styled-components';
+
 import Resource from './Resource'
 
 const resources = [{
@@ -21,6 +23,10 @@ const resources = [{
   id: '1234'
 },]
 
+const MoreRecommendationsLink = styled.a`
+  color: ${props => props.theme.color.darkBlue};
+`
+
 const ResourcesSection = () => (
   <section className="section-locker">
     <div className="container">
@@ -30,17 +36,14 @@ const ResourcesSection = () => (
             <h2>Recommended Resources</h2>
           </div>
         </div>
-        {/*end locker-col*/}
         <div className="locker-right">
           <div className="visual-learner">
-            <a href="#" className="btn-recommendations">
+            <MoreRecommendationsLink href="#" className="btn-recommendations">
               More Recommendations
-            </a>
+            </MoreRecommendationsLink>
           </div>
         </div>
-        {/*end locker-col*/}
       </div>
-      {/*end locker-front*/}
       <div className="locker-panel">
         <div className="locker-category">
           <ul className="locker-list">

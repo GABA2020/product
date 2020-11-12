@@ -1,4 +1,4 @@
-import { takeLatest, call, put } from 'redux-saga/effects';
+import { takeLatest,takeEvery, call, put } from 'redux-saga/effects';
 import { actions } from './slice';
 import { uploadFile, getFileURL } from 'services/index';
 import { DTO } from 'types/DTO';
@@ -31,5 +31,5 @@ export function* getFileUrlSaga({ payload }) {
 }
 export function* StorageSaga() {
   yield takeLatest(actions.uploadFileAction, uploadFileSaga);
-  yield takeLatest(actions.getFileUrlAction, getFileUrlSaga);
+  yield takeEvery(actions.getFileUrlAction, getFileUrlSaga);
 }

@@ -3,13 +3,24 @@ import styled from 'styled-components';
 
 import FeaturedItem from './FeaturedItem';
 import {Resource} from '../../../../types/Resource';
+import FeaturedItemSkeleton from './FeaturedItemSkeleton';
+
 const FilterByNameIcon = require('../../../../assets/images/sprites/FilterByName@2x.png');
 const FilterByPriceIcon = require('../../../../assets/images/sprites/FilterByPrice@2x.png');
 
 const FeaturedContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+`
+
+const ContentContainer = styled.div`
   padding: 85px 130px;
   display: flex;
   flex-direction: column;
+  align-self: center;
+  margin-left: -35px;
+  ${props => props.theme.rules.narrowWidth}
 `;
 
 const FeaturedHeader = styled.div`
@@ -54,30 +65,46 @@ const FilterImage = styled.img`
   height: 40px;
 `
 
-interface MarketPlaceSearchProps {
-  resources: Array<Resource>
+interface MarketPlaceFeaturedProps {
+  resources?: Array<Resource>;
+  onLockerButtonPress: Function;
+  loading: boolean;
 }
 
-const MarketPlaceSearch = (props: MarketPlaceSearchProps) => {
-  const { resources } = props;
+const MarketPlaceFeatured = ({
+  resources = [],
+  onLockerButtonPress,
+  loading
+}: MarketPlaceFeaturedProps) => {
   return (
   <FeaturedContainer>
-    <FeaturedHeader>
-      <Title>Featured</Title>
-      <Tabs>
-        <Tab active={true}>Resouces</Tab>
-        <Tab>Schools</Tab>
-        <Tab>Equipment</Tab>
-      </Tabs>
-      <FiltersContainer>
-        <FilterImage src={FilterByNameIcon}/>
-        <FilterImage src={FilterByPriceIcon}/>
-      </FiltersContainer>
-    </FeaturedHeader>
-    <>
-      {resources.slice(0, 5).map((item, index) => <FeaturedItem item={item} key={index}/>)}
-    </>
+    <ContentContainer>
+      <FeaturedHeader>
+        <Title>Featured</Title>
+        <Tabs>
+          <Tab active={true}>Resouces</Tab>
+          <Tab>Schools</Tab>
+        </Tabs>
+        <FiltersContainer>
+          <FilterImage src={FilterByNameIcon}/>
+          <FilterImage src={FilterByPriceIcon}/>
+        </FiltersContainer>
+      </FeaturedHeader>
+      <>
+        {
+        loading 
+          ? Array.from({ length: 4}).map(() => <FeaturedItemSkeleton />)
+          : resources.slice(0, 5).map((item, index) => (
+            <FeaturedItem
+              item={item}
+              key={index}
+              onLockerButtonPress={onLockerButtonPress}
+            />
+          ))
+        }
+      </>
+    </ContentContainer>
   </FeaturedContainer>
 )}
 
-export default MarketPlaceSearch;
+export default MarketPlaceFeatured;

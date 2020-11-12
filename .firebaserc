@@ -1,10 +1,18 @@
 {
   "projects": {
-    "hosting": "gaba-hosting",
-    "default": "august-water-280101"
+    "hosting": "gogaba",
+    "default": "august-water-280101",
+    "staging": "august-water-280101"
   },
   "targets": {
     "august-water-280101": {
+      "hosting": {
+        "react": [
+          "gogaba"
+        ]
+      }
+    },
+    "gogaba": {
       "hosting": {
         "react": [
           "gogaba"

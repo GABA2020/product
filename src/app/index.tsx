@@ -33,6 +33,7 @@ import { AdminConsole } from './containers/AdminConsole';
 import { PaymentPage } from './containers/PaymentPage';
 import { LateralMenu } from './genericComponents/LateralMenu';
 import { Context } from './globalContext/GlobalContext';
+import PeoplePage from './people/screens/PeoplePage'
 // Auth Route
 const AuthRoute = ({ component: Component, ...rest }) => {
   const { isAuth } = rest;
@@ -120,6 +121,12 @@ export function App() {
             isAuth={isAuth}
             exact
             path={RoutesTypes.MARKET_PLACE}
+            component={MainPage}
+          />
+          <AuthRoute
+            isAuth={isAuth}
+            exact
+            path={RoutesTypes.PEOPLE}
             component={MainPage}
           />
         </Switch>

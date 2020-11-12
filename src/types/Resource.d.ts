@@ -3,4 +3,6 @@ export interface Resource {
 	id: string;
 	name: string;
 	rating?: null | number;
+	onLocker?: boolean;
+	picture_name?:string;
 }

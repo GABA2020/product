@@ -1,7 +1,39 @@
 import React from 'react';
-import { img_board } from '../../../assets/images';
+import styled from 'styled-components';
 
-const BoardSection = () => (
+import { img_board } from '../../../assets/images';
+import Stars from '../../genericComponents/Stars';
+
+const Button = styled.button`
+  font-size: 1.6rem;
+  font-weight: 500;
+  padding: 9px 14px;
+  line-height: 1.1;
+  color: ${props => props.theme.color.darkBlue};
+  background-color: ${props => props.theme.color.softPurple};
+  border-radius: 2px;
+  margin-top: -20px;
+  outline: none;
+  border: none;
+  margin-top: 5px;
+`
+
+const BoardsReview = styled.div`
+margin-top: 5px;
+  a {
+    color: ${props => props.theme.color.darkBlue} !important;
+  }
+`
+
+interface BoardSectionProps {
+  title: string;
+  description: string;
+  rating: number | string;
+  onLocker: boolean;
+  onLockerButtonPress: Function;
+}
+
+const BoardSection = (props: BoardSectionProps) => (
   <section className="section-boards">
     <div className="container">
       <div className="media-boards">
@@ -9,54 +41,24 @@ const BoardSection = () => (
           <img alt="image" src={img_board} width={520} height={323} />
         </div>
         <div className="media-body">
-          <h3 className="boards-title">Boards &amp; Beyond</h3>
+          <h3 className="boards-title">{props.title}</h3>
           <div className="boards-prize">
-            <div className="boards-button">
-              <a href="#" className="btn btn-boards-match">
-                95% match
-              </a>
-            </div>
             <div className="boards-rating">
               <div className="vote-rating">
                 <ul className="vote-rating-list">
-                  <li className="rating-item active">
-                    <a href="#" className="rating-star">
-                      &nbsp;
-                    </a>
-                  </li>
-                  <li className="rating-item active">
-                    <a href="#" className="rating-star">
-                      &nbsp;
-                    </a>
-                  </li>
-                  <li className="rating-item active">
-                    <a href="#" className="rating-star">
-                      &nbsp;
-                    </a>
-                  </li>
-                  <li className="rating-item active">
-                    <a href="#" className="rating-star">
-                      &nbsp;
-                    </a>
-                  </li>
-                  <li className="rating-item">
-                    <a href="#" className="rating-star">
-                      &nbsp;
-                    </a>
-                  </li>
+                  <Stars color='yellow' numberOfStars={4}/>
                 </ul>
               </div>
             </div>
-            <div className="boards-review">
+            <BoardsReview className="boards-review">
               <a href="#">
-                <span className="review-num">5,156</span> Reviews
+                <span className="review-num">{props.rating}</span> Reviews
               </a>
-            </div>
+            </BoardsReview>
           </div>
           <div className="boards-caption">
             <p className="board-paragraph">
-              Video based service that offers classroom, clinical, and
-              board prep.
+              {props.description}
             </p>
             <ul className="member-check">
               <li>
@@ -66,6 +68,7 @@ const BoardSection = () => (
                     className="checkbox__styled__input"
                     id="members-1"
                     name="checkbox"
+                    checked={true}
                   />
                   <label
                     className="checkbox__styled__label"
@@ -84,6 +87,7 @@ const BoardSection = () => (
                     className="checkbox__styled__input"
                     id="members-2"
                     name="checkbox"
+                    checked={true}
                   />
                   <label
                     className="checkbox__styled__label"
@@ -103,6 +107,7 @@ const BoardSection = () => (
                     className="checkbox__styled__input"
                     id="members-3"
                     name="checkbox"
+                    checked={true}
                   />
                   <label
                     className="checkbox__styled__label"
@@ -119,15 +124,14 @@ const BoardSection = () => (
           <div className="boards-action">
             <ul className="action-button">
               <li>
-                <a href="#" className="btn btn-locker">
-                  Add to Locker
-                </a>
+                <Button onClick={() => props.onLockerButtonPress(props.onLocker)}>
+                  {props.onLocker ? 'Remove from locker' : 'Add to locker'}
+                </Button>
               </li>
               <li>
-                <a href="#" className="btn btn-beyond">
-                  <span className="icons-target">&nbsp;</span> Buy from
-                  Boards &amp; Beyond
-                </a>
+                <Button>
+                  <span className="icons-target" style={{color: 'yellow'}}>&nbsp;</span> Buy from 
+                </Button>
               </li>
             </ul>
           </div>

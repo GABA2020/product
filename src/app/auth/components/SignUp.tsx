@@ -265,7 +265,7 @@ export function SignUp() {
         )}
       </Form.Field>
       <Form.Field required>
-        <Label>School Year </Label>
+        <Label>Stundent Status </Label>
         <Select
           clearable
           options={[

@@ -22,22 +22,24 @@ const MarketPlaceScreen = () => {
   const [searchField, setSearchField] = useState('');
   const [resources, setResources] = useState([]);
   const [activeCategory, setActiveCategory] = useState('');
+  const [offset, setOffset] = useState(0);
   const email = useSelector((state: any) => state.auth.email);
 
+  // gql
   const {
     loading: loadingLocker,
     data: lockerResponse,
-    refetch: fetchLocker,
+    refetch: refecthLocker,
   } = useQuery(GET_LOCKER, { variables: { email } });
-  const { data: resourcesResponse, loading: loadingResources } = useQuery(
-    RESOURCES,
-    {
-      variables: { limit: 10 },
-    },
-  );
+  const {
+    data: resourcesResponse,
+    loading: loadingResources,
+    refetch: refetchResources
+  } = useQuery(RESOURCES, { variables: { limit: 10, offset: 0 }});
   const [addToLocker] = useMutation(ADD_RESOURCE_TO_LOCKER);
   const [removeFromLocker] = useMutation(DELETE_FROM_LOCKER);
 
+  // handlers
   const getResourcesOnLocker = (resources, resourcesFromLocker) => {
     return resources.map(resource => {
       const index = resourcesFromLocker.findIndex(
@@ -68,7 +70,7 @@ const MarketPlaceScreen = () => {
           },
         });
       }
-      fetchLocker();
+      refecthLocker();
     } catch (err) {
       console.log('Error: ', err);
     }
@@ -118,12 +120,16 @@ const MarketPlaceScreen = () => {
     if (resourcesResponse && lockerResponse) {
       setResources(
         getResourcesOnLocker(
-          resourcesResponse.resources,
+          [...resources, ...resourcesResponse.resources],
           lockerResponse.resources_locker,
         ),
       );
     }
   }, [resourcesResponse, lockerResponse]);
+
+  useEffect(() => {
+    refetchResources({ limit: 10, offset })
+  }, [offset])
 
   return (
     <MarketPlaceContainer>
@@ -140,6 +146,7 @@ const MarketPlaceScreen = () => {
         onLockerButtonPress={handleLockerButtonPress}
         resources={resources}
         loading={loadingResources || loadingLocker}
+        handleLoadMore={() => setOffset(prevOffset => prevOffset + 10)}
       />
     </MarketPlaceContainer>
   );

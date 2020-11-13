@@ -32,7 +32,10 @@ import { AuthScreen } from './auth/screens/AuthScreen';
 import { AdminConsole } from './containers/AdminConsole';
 import { PaymentPage } from './containers/PaymentPage';
 import { LateralMenu } from './genericComponents/LateralMenu';
+import { Context } from './globalContext/GlobalContext';
 import PeoplePage from './people/screens/PeoplePage'
+import { db } from '../helpers/firebase.module';
+
 // Auth Route
 const AuthRoute = ({ component: Component, ...rest }) => {
   const { isAuth } = rest;
@@ -53,17 +56,28 @@ const AuthRoute = ({ component: Component, ...rest }) => {
 };
 
 export function App() {
-  const { isAuth } = useSelector(authSelector);
-  const dispatch = useDispatch();
-
+  // const { isAuth } = useSelector(authSelector);
+  const { state: { isAuth }, dispatch:{ login } } = React.useContext(Context);
+  const [initialized, setInitialized] = React.useState(false)
 
   React.useEffect(() => {
-    auth().onAuthStateChanged(user => {
+    auth().onAuthStateChanged(async (user) => {
       if (!user) {
-        dispatch(authActions.logoutAction());
+        setInitialized(true)
+      }else{
+        const memberRef = await db
+        .collection('member_data')
+        .doc(user.email||'')
+        .get();
+        const userData = memberRef.data();
+        login(userData);
+        setInitialized(true)
       }
     });
-  }, [dispatch]);
+  }, []);
+
+  if(!initialized)return <></>;
+
 
   return (
     <React.Fragment>

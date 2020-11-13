@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useContext, useEffect } from 'react';
 import { CV } from '../../components/PDF/CV';
 import {
   sliceKey as userSliceKey,
@@ -11,6 +11,7 @@ import { AuthSaga } from 'redux/Auth/saga';
 import { userSelector } from 'redux/User/selectors';
 import { useSelector, useDispatch } from 'react-redux';
 import { authSelector } from 'redux/Auth/selectors';
+import { Context } from 'app/globalContext/GlobalContext';
 
 export const CVPage = () => {
   useInjectSaga({ key: userSliceKey, saga: UserSaga });
@@ -21,10 +22,13 @@ export const CVPage = () => {
     workExperiences,
     volunteers,
     researches,
-    userProfile,
+    // userProfile,
   } = useSelector(userSelector);
+  const { state: { user:userProfile } } = useContext(Context);
 
-  const { email } = useSelector(authSelector);
+  // const { email } = useSelector(authSelector);
+  // const { state: { user } } = useContext(Context);
+  // const userProfile.email = userProfile?.email;
 
   useEffect(() => {
     if (userProfile.email !== '') {
@@ -44,10 +48,10 @@ export const CVPage = () => {
   }, [userProfile.email]);
 
   useEffect(() => {
-    if (email !== '') {
-      dispatch(userActions.getUserProfileAction(email));
+    if (userProfile.email !== '') {
+      dispatch(userActions.getUserProfileAction(userProfile.email));
     }
-  }, [email]);
+  }, [userProfile.email]);
 
   return (
     <Fragment>

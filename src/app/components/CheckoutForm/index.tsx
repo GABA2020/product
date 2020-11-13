@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import axios from 'axios';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { useSelector } from 'react-redux';
 import { authSelector } from 'redux/Auth/selectors';
 import { db } from '../../../helpers/firebase.module';
 import RoutesTypes from '../../../types/Routes';
+import { Context } from 'app/globalContext/GlobalContext';
 
 export const CheckoutForm = () => {
   const [customerName, setCustomerName] = useState('');
@@ -21,7 +22,9 @@ export const CheckoutForm = () => {
   const stripe = useStripe() as any;
   const elements = useElements() as any;
 
-  const { email } = useSelector(authSelector);
+  const { state: { user } } = useContext(Context);
+  const email = user?.email;
+  // const { email } = useSelector(authSelector);
 
   const upgradeUser = async () => {
     await db.collection('member_data').doc(email).set(

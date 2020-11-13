@@ -1,4 +1,4 @@
-import React, { Fragment, useState, FC } from 'react';
+import React, { Fragment, useState, FC, useContext } from 'react';
 import 'styles/scss/SectionExperience.scss';
 import { Work } from 'app/components/Work';
 import { Volunteer } from 'app/components/Volunteer';
@@ -20,7 +20,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { AboutModal } from 'app/components/Modal/AboutModal';
-
+import { Context } from 'app/globalContext/GlobalContext';
+import { ADDUSERWORK, ADDUSERRESEARCH, ADDUSERVOLUNTEER } from '../../../service/queries';
 const arrayWork = ['work', 'research', 'volunteer', 'school', 'letter'];
 
 interface ICVWork {
@@ -33,7 +34,7 @@ export const CVWork: FC<ICVWork> = props => {
   useInjectSaga({ key: storageSliceKey, saga: StorageSaga });
   const dispatch = useDispatch();
   const {
-    userProfile,
+    // userProfile,
     workExperiences,
     educations,
     volunteers,
@@ -43,6 +44,7 @@ export const CVWork: FC<ICVWork> = props => {
     arrayLength,
     loading,
   } = useSelector(userSelector);
+  const { graphQLClient, state: { user:userProfile } } = useContext(Context);
 
   const [stateWork, setStateWork] = useState<string>(arrayWork[0]);
   const [aboutModal, setAboutModal] = useState<boolean>(false);
@@ -81,12 +83,18 @@ export const CVWork: FC<ICVWork> = props => {
               );
             }}
             addNewWorkExperience={workExperience => {
-              dispatch(
-                userActions.addNewWorkExperienceAction({
-                  email: userProfile.email,
-                  workExperience,
-                }),
-              );
+              graphQLClient.mutate({
+                variables:{...workExperience,email:userProfile.email},
+                mutation: ADDUSERWORK,
+              })
+              .then(result => console.log(result))
+              .catch(err => console.log(err));
+              // dispatch(
+              //   userActions.addNewWorkExperienceAction({
+              //     email: userProfile.email,
+              //     workExperience,
+              //   }),
+              // );
             }}
             deleteWorkExperience={workExperience => {
               dispatch(
@@ -120,12 +128,18 @@ export const CVWork: FC<ICVWork> = props => {
               );
             }}
             addNewResearch={research => {
-              dispatch(
-                userActions.addNewResearchAction({
-                  email: userProfile.email,
-                  research,
-                }),
-              );
+              graphQLClient.mutate({
+                variables:{...research,email:userProfile.email},
+                mutation: ADDUSERRESEARCH,
+              })
+              .then(result => console.log(result))
+              .catch(err => console.log(err));
+              // dispatch(
+              //   userActions.addNewResearchAction({
+              //     email: userProfile.email,
+              //     research,
+              //   }),
+              // );
             }}
             editResearch={research => {
               dispatch(
@@ -167,12 +181,18 @@ export const CVWork: FC<ICVWork> = props => {
               );
             }}
             addNewVolunteer={volunteer => {
-              dispatch(
-                userActions.addNewVolunteerAction({
-                  email: userProfile.email,
-                  volunteer,
-                }),
-              );
+              graphQLClient.mutate({
+                variables:{...volunteer,email:userProfile.email},
+                mutation: ADDUSERVOLUNTEER,
+              })
+              .then(result => console.log(result))
+              .catch(err => console.log(err));
+              // dispatch(
+              //   userActions.addNewVolunteerAction({
+              //     email: userProfile.email,
+              //     volunteer,
+              //   }),
+              // );
             }}
             editVolunteer={volunteer => {
               dispatch(

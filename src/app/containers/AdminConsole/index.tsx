@@ -17,6 +17,7 @@ import { useLazyQuery, useQuery } from '@apollo/react-hooks';
 import { ResourceRow } from './ResourceRow';
 import { CreateResourceModal } from './CreateResourceModal';
 import { constants } from 'crypto';
+import { Context } from 'app/globalContext/GlobalContext';
 import { AdminResourcesTab } from './AdminResourcesTab';
 import { AdminProgramsTab } from './AdminProgramsTab';
 
@@ -52,7 +53,10 @@ export const AdminConsole = () => {
 
   const itemsPerPage = 10;
 
-  const { isAuth, email } = useSelector(authSelector);
+  // const { isAuth, email } = useSelector(authSelector);
+  const { state: { isAuth, user } } = React.useContext(Context);
+  const email = user?.email;
+  
 
   const { docs } = useFirestoreVerification('member_data') as any;
 
@@ -63,7 +67,7 @@ export const AdminConsole = () => {
 
   if (error) return <p>An error occured!</p>;
 
-  const adminList = ['candice.blacknall@gogaba.co', 'snmunoz@gmail.com'];
+  const adminList = ['candice.blacknall@gogaba.co', 'snmunoz@gmail.com', 'aleoo7100@gmail.com'];
 
   const onMenuItemClicked = (menuItem: AdminMenuItems) => {
     setActiveMenuItem(menuItem);

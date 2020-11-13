@@ -1,4 +1,4 @@
-import React, { Fragment, FC } from 'react';
+import React, { Fragment, FC, useContext } from 'react';
 import { Modal } from 'react-bootstrap';
 import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -7,6 +7,7 @@ import 'styles/scss/ModalWorkExperience.scss';
 import { Formik } from 'formik';
 import { convertDateToTimestamp } from 'helpers/Unity';
 import moment from 'moment';
+import { Context } from 'app/globalContext/GlobalContext';
 
 const schema = yup.object().shape({
   job_title: yup
@@ -29,7 +30,7 @@ const schema = yup.object().shape({
 interface IAddWorkModal {
   isShow: boolean;
   onHide: () => void;
-  addNewWorkExperience: (workExperience: ENTITIES.WorkExperience) => void;
+  addNewWorkExperience: (workExperience) => void;
 }
 
 interface IForm {
@@ -66,22 +67,14 @@ export const AddWorkModal: FC<IAddWorkModal> = props => {
             }}
             validationSchema={schema}
             onSubmit={values => {
-              const newEx: ENTITIES.WorkExperience = {
-                id: '',
+              
+              const newEx = {
                 company: values.company,
-                company_address: values.company_address,
-                date_end: {
-                  seconds: convertDateToTimestamp(
-                    values.date_end.toDateString(),
-                  ),
-                },
-                date_start: {
-                  seconds: convertDateToTimestamp(
-                    values.date_start.toDateString(),
-                  ),
-                },
+                city: values.company_address,
+                end_date: `${values.date_end.getMonth()+1}/${values.date_end.getFullYear()}`,
+                start_date: `${values.date_start.getMonth()+1}/${values.date_start.getFullYear()}`,
                 description: values.description,
-                job_title: values.job_title,
+                title: values.job_title,
               };
               addNewWorkExperience(newEx);
             }}

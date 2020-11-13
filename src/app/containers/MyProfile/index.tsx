@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useInjectSaga } from 'utils/redux-injectors';
 import {
@@ -29,13 +29,16 @@ import { Score } from '../Score';
 import { img_user, verified_check } from 'assets/images';
 import { REF } from 'helpers/firebase.module';
 import Helmet from 'react-helmet';
+import { Context } from 'app/globalContext/GlobalContext';
 
 export const MyProfile = props => {
   useInjectSaga({ key: userSliceKey, saga: UserSaga });
   useInjectSaga({ key: programSliceKey, saga: ProgramSaga });
   useInjectSaga({ key: storageSliceKey, saga: StorageSaga });
   const dispatch = useDispatch();
-  const { userProfile, educations } = useSelector(userSelector);
+  const { educations } = useSelector(userSelector);
+  const { state: { user:userProfile } } = useContext(Context);
+
   const { program } = useSelector(programSelector);
 
   const [editModeState, setEditModeState] = useState<boolean>(true);
@@ -156,7 +159,7 @@ export const MyProfile = props => {
                 <ul className="profile-tag">
                   <li>
                     <a href="#" className="btn-profile-tag">
-                      {program.specialty}
+                      {program?.specialty}
                     </a>
                   </li>
                   <li>

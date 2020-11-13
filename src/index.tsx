@@ -48,7 +48,7 @@ interface Props {
 const ConnectedApp = ({ Component }: Props) => (
   <Provider store={store}>
     <ApolloProvider client={graphQLClient}>
-      <ContextProvider value={{}}>
+      <ContextProvider value={{graphQLClient}}>
         <ThemeProvider theme={theme}>
           <PersistGate loading={null} persistor={persistor}>
             <HelmetProvider>

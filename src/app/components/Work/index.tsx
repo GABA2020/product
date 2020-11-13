@@ -63,7 +63,7 @@ export const Work: FC<IWork> = props => {
     getWorkExperiences();
   }, []);
 
-  const onAddNewWorkExperience = (workExperience: ENTITIES.WorkExperience) => {
+  const onAddNewWorkExperience = (workExperience) => {
     addNewWorkExperience(workExperience);
     setIsShowModalAddWorkState(false);
   };

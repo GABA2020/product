@@ -1,4 +1,4 @@
-import React, { FC, Fragment, useEffect } from 'react';
+import React, { FC, Fragment, useContext, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useInjectSaga } from 'utils/redux-injectors';
 import {
@@ -17,6 +17,7 @@ import 'styles/scss/SectionProfile.scss';
 import { MyProfile } from '../MyProfile';
 import { GuestUserProfile } from '../GuestUserProfile';
 import { NavLink } from 'react-router-dom';
+import { Context } from 'app/globalContext/GlobalContext';
 
 interface IProfile {
   match: {
@@ -32,11 +33,13 @@ export const SearchUser: FC<IProfile> = props => {
   useInjectSaga({ key: chatSliceKey, saga: ChatSaga });
   const dispatch = useDispatch();
   const {
-    userProfile,
+    // userProfile,
     userSearchProfile,
     loadingUserSearchProfile,
   } = useSelector(userSelector);
 
+  const { state: { user:userProfile } } = useContext(Context);
+  
   useEffect(() => {
     dispatch(
       userActions.getUserSearchProfileAction({

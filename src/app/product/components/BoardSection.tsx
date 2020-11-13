@@ -80,45 +80,6 @@ const BoardSection = (props: BoardSectionProps) => (
                   </label>
                 </div>
               </li>
-              <li>
-                <div className="checkbox__styled">
-                  <input
-                    type="checkbox"
-                    className="checkbox__styled__input"
-                    id="members-2"
-                    name="checkbox"
-                    checked={true}
-                  />
-                  <label
-                    className="checkbox__styled__label"
-                    htmlFor="members-2"
-                  >
-                    <span className="size-label">
-                      90% of GABA members from your institution use this
-                      resource
-                    </span>
-                  </label>
-                </div>
-              </li>
-              <li>
-                <div className="checkbox__styled">
-                  <input
-                    type="checkbox"
-                    className="checkbox__styled__input"
-                    id="members-3"
-                    name="checkbox"
-                    checked={true}
-                  />
-                  <label
-                    className="checkbox__styled__label"
-                    htmlFor="members-3"
-                  >
-                    <span className="size-label">
-                      235 is the average Step One score of GABA members
-                    </span>
-                  </label>
-                </div>
-              </li>
             </ul>
           </div>
           <div className="boards-action">

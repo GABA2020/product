@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import FeaturedItem from './FeaturedItem';
 import { Resource } from '../../../../types/Resource';
 import FeaturedItemSkeleton from './FeaturedItemSkeleton';
+import Button from 'app/genericComponents/Button';
 
 const FilterByNameIcon = require('../../../../assets/images/sprites/FilterByName@2x.png');
 const FilterByPriceIcon = require('../../../../assets/images/sprites/FilterByPrice@2x.png');
@@ -15,7 +16,7 @@ const FeaturedContainer = styled.div`
 `;
 
 const ContentContainer = styled.div`
-  padding: 85px 130px;
+  padding: 85px 130px 20px 130px;
   display: flex;
   flex-direction: column;
   align-self: center;
@@ -66,16 +67,23 @@ const FilterImage = styled.img`
   height: 40px;
 `;
 
+const LoadMoreButton = styled(Button)`
+  align-self: center;
+  margin-bottom: 30px;
+`
+
 interface MarketPlaceFeaturedProps {
   resources?: Array<Resource>;
   onLockerButtonPress: Function;
   loading: boolean;
+  handleLoadMore: Function;
 }
 
 const MarketPlaceFeatured = ({
   resources = [],
   onLockerButtonPress,
   loading,
+  handleLoadMore
 }: MarketPlaceFeaturedProps) => {
   return (
     <FeaturedContainer>
@@ -103,6 +111,7 @@ const MarketPlaceFeatured = ({
               ))}
         </>
       </ContentContainer>
+      {!loading && <LoadMoreButton onClick={() => handleLoadMore()}>Load More Resources</LoadMoreButton>}
     </FeaturedContainer>
   );
 };

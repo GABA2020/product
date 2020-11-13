@@ -49,7 +49,7 @@ const schema = yup.object().shape({
 interface IAddResearchModal {
   isShow: boolean;
   onHide: () => void;
-  addNewResearch: (research: ENTITIES.Research) => void;
+  addNewResearch: (any) => void;
 }
 
 interface IForm {
@@ -101,26 +101,21 @@ export const AddResearchModal: FC<IAddResearchModal> = props => {
             }}
             validationSchema={schema}
             onSubmit={values => {
-              const newResearchType: string[] = [];
+              let newResearchType = "";
               values.research_type.forEach(item => {
-                newResearchType.push(item.value);
+                newResearchType=`${newResearchType},${item.value}`;
               });
-              const newResearch: ENTITIES.Research = {
-                id: '',
+              const newResearch = {
                 author: values.author,
-                event_address: values.event_address,
-                event_date: {
-                  seconds: convertDateToTimestamp(
-                    values.event_date.toDateString(),
-                  ),
-                },
+                event_date:`${values.event_date.getMonth()+1}/${values.event_date.getFullYear()}`,
                 event_name: values.event_name,
                 journal: values.journal,
                 link: values.link,
-                is_show_link: values.is_show_link,
                 primary_investigator: values.primary_investigator,
                 research_type: newResearchType,
-                title_of_work: values.title_of_work,
+                show_link: values.is_show_link,
+                work_title: values.title_of_work,
+                // event_address: values.event_address,
               };
               addNewResearch(newResearch);
             }}

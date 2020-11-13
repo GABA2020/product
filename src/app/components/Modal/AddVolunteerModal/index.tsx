@@ -38,7 +38,7 @@ const schema = yup.object().shape({
 interface IAddVolunteerModal {
   isShow: boolean;
   onHide: () => void;
-  addNewVolunteer: (volunteer: ENTITIES.Volunteer) => void;
+  addNewVolunteer: (any) => void;
 }
 
 interface IForm {
@@ -77,22 +77,13 @@ export const AddVolunteerModal: FC<IAddVolunteerModal> = props => {
             }}
             validationSchema={schema}
             onSubmit={values => {
-              const newVolunteer: ENTITIES.Volunteer = {
-                id: '',
-                date_end: {
-                  seconds: convertDateToTimestamp(
-                    values.date_end.toDateString(),
-                  ),
-                },
-                date_start: {
-                  seconds: convertDateToTimestamp(
-                    values.date_start.toDateString(),
-                  ),
-                },
+              const newVolunteer = {
+                end_date: `${values.date_end.getMonth()+1}/${values.date_end.getFullYear()}`,
+                start_date: `${values.date_start.getMonth()+1}/${values.date_start.getFullYear()}`,
                 description: values.description,
                 job_title: values.job_title,
-                number_of_hours_served: values.number_of_hours_served,
-                organization_address: values.organization_address,
+                nbr_hours_served: values.number_of_hours_served,
+                city: values.organization_address,
                 organization_name: values.organization_name,
               };
               addNewVolunteer(newVolunteer);

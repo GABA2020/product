@@ -71,16 +71,8 @@ export const AddWorkModal: FC<IAddWorkModal> = props => {
               const newEx = {
                 company: values.company,
                 city: values.company_address,
-                end_date: {
-                  seconds: convertDateToTimestamp(
-                    values.date_end.toDateString(),
-                  ),
-                },
-                start_date: {
-                  seconds: convertDateToTimestamp(
-                    values.date_start.toDateString(),
-                  ),
-                },
+                end_date: `${values.date_end.getMonth()+1}/${values.date_end.getFullYear()}`,
+                start_date: `${values.date_start.getMonth()+1}/${values.date_start.getFullYear()}`,
                 description: values.description,
                 title: values.job_title,
               };

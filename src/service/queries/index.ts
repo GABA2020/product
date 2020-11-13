@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const RESOURCES = gql`
-  query Resources($limit: Int!) {
-    resources(limit: $limit) {
+  query Resources($limit: Int!, $offset: Int!) {
+    resources(limit: $limit, offset: $offset) {
       id
       tags
       categories
@@ -11,9 +11,12 @@ export const RESOURCES = gql`
       name
       picture_name
       rating
+      price_from
+      price_to
+      reviewsCount
     }
   }
-`;
+`
 
 export const ADDUSERWORK = gql`
   mutation(
@@ -110,19 +113,32 @@ export const RESOURCE_DETAIL = gql`
   }
 `;
 
+export const CONNECTED_USERS = gql`
+  query ConnectedUsers($email: String!) {
+    connectedUsers(email: $email) {
+      email
+    }
+  }
+`;
+
+
 export const USERS_QUERY = gql`
   query Users {
     users {
       creationDate
       degrees
       email
-      gender
-      last_login
       medicalSchool
       name
       student_status
       username
       year_in_program
+      school_year
+      specialties
+      mcat
+      step_1
+      step_2
+      step_3
     }
   }
 `;

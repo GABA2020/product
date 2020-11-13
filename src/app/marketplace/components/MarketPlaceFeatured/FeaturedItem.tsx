@@ -19,36 +19,36 @@ const ItemContainer = styled.div`
   display: flex;
   padding: 30px;
   position: relative;
-  max-height: 220px;
+  min-height: 150px;
 `;
 
-const DetailsSection = styled.div`
-  display: flex;
-  flex-direction: column;
+const DetailsSection = styled(Column)`
+  margin-right: 20px;
 `;
 
 const DetailsTitle = styled.h3`
   color: ${props => props.theme.color.darkBlue};
   font-size: 24px;
   font-weight: bold;
-  height: 32px;
   letter-spacing: -0.1px;
   line-height: 32px;
   margin-bottom: 15px;
+  max-width: 450px;
 `;
 
 const DetailsContent = styled.p`
   color: ${props => props.theme.color.darkBlue};
   font-size: 16px;
-  height: 72px;
   letter-spacing: 0.1px;
   line-height: 24px;
   width: 310px;
+  text-align: justify;
 `;
 
 const ReviewsFooter = styled.div`
   display: flex;
-  margin: 20px 20px 10px -5px;
+  margin: 0px 20px 10px -5px;
+  bottom: 20px;
 `;
 
 const Footer = styled(Column)``;
@@ -63,8 +63,7 @@ const TagsSection = styled.div`
   flex-direction: row;
   margin-top: 50px;
   flex-wrap: wrap;
-  max-width: 400px;
-  min-width: 400px;
+  height: fit-content;
 `;
 
 const Tag = styled.div`
@@ -80,7 +79,9 @@ const Image = styled.img`
   position: absolute;
   right: -350px;
   top: 10px;
-  max-height: 210px;
+  height: 210px;
+  max-width: 310px;
+  object-fit: contain;
 `;
 
 const CustomLink = styled(NavLink)`
@@ -90,7 +91,6 @@ const CustomLink = styled(NavLink)`
 const Range = styled.p`
   color: ${props => props.theme.color.darkBlue};
   font-size: 16px;
-  height: 72px;
   letter-spacing: 0.1px;
 `;
 
@@ -107,14 +107,11 @@ interface FeaturedItemProps {
 
 const FeaturedItem = (props: FeaturedItemProps) => {
   const { item, onLockerButtonPress } = props;
-  console.log('item', JSON.stringify(item));
 
   const url = useStorage(`resources/${item.picture_name}`);
 
-  console.log('URL2', url);
   return (
     <ItemContainer>
-      {console.log('URL', url)}
       <AddToLocker
         onClick={() => {
           onLockerButtonPress(item.id, !!item.onLocker);
@@ -132,14 +129,17 @@ const FeaturedItem = (props: FeaturedItemProps) => {
         <Footer>
           <ReviewsFooter>
             <Stars color="yellow" numberOfStars={item.rating || 0} />
-            <Reviews>2,423 Reviews</Reviews>
+            <Reviews>{item.reviewsCount || 0} Reviews</Reviews>
           </ReviewsFooter>
-          <Range>200$ - 1000$</Range>
+          <Range>
+            ${item.price_from} - ${item.price_to}{' '}
+          </Range>
         </Footer>
       </DetailsSection>
       <TagsSection>
-        <Tag>Slides</Tag>
-        <Tag>Video</Tag>
+        {item.tags
+          ? item.tags.map((tagitem, index) => <Tag>{tagitem}</Tag>)
+          : 'no tag'}
       </TagsSection>
       {url !== '' ? <Image src={url} /> : <Image src={Bitmap} />}
     </ItemContainer>

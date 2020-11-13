@@ -70,7 +70,7 @@ export const CreateProgramModal = (props: CreateProgramModalProps) => {
     await fileStorage(file)
     await createProgram({
       variables: {
-        programData: {
+        createData: {
           name: name,
           description: description,
           link: link,

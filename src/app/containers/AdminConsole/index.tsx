@@ -93,8 +93,8 @@ export const AdminConsole = () => {
         activeItem={activeMenuItem}
         onItemClicked={onMenuItemClicked}
       />
-      {activeMenuItem === AdminMenuItems.RESOURCES && <AdminResourcesTab />}
-      {activeMenuItem === AdminMenuItems.PROGRAMS && <AdminProgramsTab />}
+      {adminList.includes(email as any) && activeMenuItem === AdminMenuItems.RESOURCES && <AdminResourcesTab />}
+      {adminList.includes(email as any) && activeMenuItem === AdminMenuItems.PROGRAMS && <AdminProgramsTab />}
       <section className="container">
         <section className="row">
           <section className="col">

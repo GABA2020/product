@@ -45,9 +45,9 @@ export const AdminVerifyProfileModal = ({
     }
   };
 
-  const handleVerify = () => {
+  const handleVerify = async () => {
     console.log('onclick');
-    verifyUser();
+    await verifyUser();
     sendVerificationEmail();
     setSelectedImg(null);
     refetch();

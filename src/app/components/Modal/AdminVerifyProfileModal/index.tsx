@@ -3,6 +3,7 @@ import emailjs from 'emailjs-com';
 import { db } from '../../../../helpers/firebase.module';
 import { useMutation } from '@apollo/client';
 import { UPDATE_USER_VALIDATION } from '../../../../service/mutations';
+import { useStorage } from 'hook/useStorage';
 
 export const AdminVerifyProfileModal = ({
   selectedImg,
@@ -38,6 +39,7 @@ export const AdminVerifyProfileModal = ({
     //   { merge: true },
     // );
   };
+  const url = useStorage(`files/${email}/verification/${selectedImg}`);
 
   const handleClick = e => {
     if (e.target.classList.contains('backdrop')) {
@@ -54,7 +56,7 @@ export const AdminVerifyProfileModal = ({
   };
   return (
     <div className="backdrop" onClick={handleClick}>
-      <a href={selectedImg} target="_blank" rel="noopener noreferrer">
+      <a href={url} target="_blank" rel="noopener noreferrer">
         <img
           className="img-fluid img-thumbnail"
           style={{
@@ -63,7 +65,7 @@ export const AdminVerifyProfileModal = ({
             display: 'block',
             margin: 'auto',
           }}
-          src={selectedImg}
+          src={url}
           alt="Click here to open PDF in another tab."
         />
       </a>

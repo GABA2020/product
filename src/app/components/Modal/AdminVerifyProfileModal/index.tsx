@@ -1,12 +1,15 @@
 import React from 'react';
 import emailjs from 'emailjs-com';
 import { db } from '../../../../helpers/firebase.module';
+import { useMutation } from '@apollo/client';
+import { UPDATE_USER_VALIDATION } from '../../../../service/mutations';
 
 export const AdminVerifyProfileModal = ({
   selectedImg,
   setSelectedImg,
   name,
   email,
+  refetch,
 }) => {
   const sendVerificationEmail = async () => {
     const template_params = {
@@ -20,13 +23,20 @@ export const AdminVerifyProfileModal = ({
     await emailjs.send(service_id, template_id, template_params, user_id);
   };
 
+  const [validateUser] = useMutation(UPDATE_USER_VALIDATION);
+
   const verifyUser = async () => {
-    await db.collection('member_data').doc(email).set(
-      {
-        verified: true,
+    await validateUser({
+      variables: {
+        email: email,
       },
-      { merge: true },
-    );
+    });
+    // await db.collection('member_data').doc(email).set(
+    //   {
+    //     verified: true,
+    //   },
+    //   { merge: true },
+    // );
   };
 
   const handleClick = e => {
@@ -36,9 +46,11 @@ export const AdminVerifyProfileModal = ({
   };
 
   const handleVerify = () => {
+    console.log('onclick');
     verifyUser();
     sendVerificationEmail();
     setSelectedImg(null);
+    refetch();
   };
   return (
     <div className="backdrop" onClick={handleClick}>

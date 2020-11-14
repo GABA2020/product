@@ -245,6 +245,19 @@ export const CONNECTED_USERS = gql`
   }
 `;
 
+export const UNVALIDATE_USERS = gql`
+  query UnvalidatedUser {
+    user_account(where: { verified: { _eq: false } }) {
+      email
+      name
+      last_name
+      medical_school
+      school_year
+      verification_file
+    }
+  }
+`;
+
 export const USERS_QUERY = gql`
   query Users {
     users {

@@ -49,3 +49,13 @@ export const UPDATE_RESOURCE = gql`
     updateResource(idDoc: $idDoc, updateData: $updateData)
   }
 `;
+export const UPDATE_USER_VALIDATION = gql`
+  mutation UpdateUserValidation($email: String!) {
+    update_user_account(
+      where: { email: { _eq: $email } }
+      _set: { verified: true }
+    ) {
+      affected_rows
+    }
+  }
+`;

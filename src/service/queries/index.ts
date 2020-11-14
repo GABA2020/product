@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const RESOURCES = gql`
-  query Resources($limit: Int!, $offset: Int!) {
-    resources(limit: $limit, offset: $offset) {
+  query Resources($limit: Int, $offset: Int, $categories: [String]) {
+    resources(limit: $limit, offset: $offset, categories: $categories) {
       id
       tags
       categories
@@ -16,7 +16,7 @@ export const RESOURCES = gql`
       reviewsCount
     }
   }
-`
+`;
 
 export const RESOURCE_DETAIL = gql`
   query Resource($id: String!) {

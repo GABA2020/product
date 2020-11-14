@@ -9,11 +9,12 @@ export interface TagInputProps {
 }
 
 export const FormTagInput = (props: TagInputProps) => {
-  const initialTags: string[] = props.initialTags || [];
-  const [tags, setTags] = useState(initialTags);
+  const [tags, setTags] = useState<any>([]);
   const addTag = event => {
     if (event.key === 'Enter' && event.target.value !== '') {
-      setTags([...tags, event.target.value]);
+      const newTags = [...tags, event.target.value]
+      setTags(newTags);
+      props.onChange && props.onChange(newTags);
       event.target.value = '';
     }
   };
@@ -23,9 +24,8 @@ export const FormTagInput = (props: TagInputProps) => {
   };
 
   useEffect(() => {
-    if (props.onChange)
-      props.onChange(tags)
-  }, [tags])
+    setTags(props.initialTags || [])
+  })
 
   return (
     <>

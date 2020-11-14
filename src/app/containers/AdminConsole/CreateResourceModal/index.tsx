@@ -220,7 +220,7 @@ export const CreateResourceModal = (props: CreateResourceModalProps) => {
           <FormTagInput
             label="Tags"
             placeholder="Press enter to add tags"
-            onChange={tags => setTags(tags)}
+            onChange={value => setTags(value)}
             initialTags={tags}
           />
           <Form.Input

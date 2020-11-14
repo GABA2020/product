@@ -33,7 +33,7 @@ export function* loginSaga({ payload }) {
     const response: DTO.Auth.LoginResponse = yield call(login, payload);
     if (response.username) {
       if (
-        response.last_login.trim() !== '' &&
+        response.last_login?.trim() !== '' &&
         moment(response.last_login).isValid()
       ) {
         const last_login = moment(response.last_login).format('yyyy-MM-DD');

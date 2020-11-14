@@ -196,13 +196,12 @@ export const CV: FC<ICV> = props => {
         <View key={index} style={styles.section_education_content_wrap}>
           <View style={styles.section_school_name}>
             <Text style={styles.text_bold}>{item.company}</Text>
-            <Text>{item.company_address}</Text>
+            <Text>{item.city}</Text>
           </View>
           <View style={styles.section_school_name}>
-            <Text style={styles.text_italic}>{item.job_title}</Text>
+            <Text style={styles.text_italic}>{item.title}</Text>
             <Text style={styles.text_italic}>
-              {moment.unix(item.date_start.seconds).format(MonthYearFormat)} -
-              {moment.unix(item.date_end.seconds).format(MonthYearFormat)}
+              {item.start_date} - {item.end_date}
             </Text>
           </View>
           {item.description.split(/x?[-+\n]/).map((value, index) => {

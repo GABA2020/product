@@ -1,17 +1,19 @@
-import React, { Fragment, FC } from 'react';
+import React, { Fragment, FC, useContext } from 'react';
 import { img_user } from 'assets/images';
 import moment from 'moment';
 import { useUser } from 'hook/useUser';
 import { userSelector } from 'redux/User/selectors';
 import { useSelector } from 'react-redux';
 import { useStorage } from 'hook/useStorage';
+import { Context } from 'app/globalContext/GlobalContext';
 interface IChatListItem {
   lastMessageItem: ENTITIES.LastMessage;
   openMessage: (userKeyMail: string) => void;
 }
 export const ChatListitem: FC<IChatListItem> = props => {
   const { lastMessageItem, openMessage } = props;
-  const { userProfile } = useSelector(userSelector);
+  const { state: { user:userProfile } } = useContext(Context);
+  // const { userProfile } = useSelector(userSelector);
 
   const guestUser = useUser(
     lastMessageItem.users.filter(item => item !== userProfile.email)[0],

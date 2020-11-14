@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useInjectSaga } from 'utils/redux-injectors';
 import { sliceKey as userSliceKey } from 'redux/User/slice';
@@ -25,6 +25,7 @@ import { ChatSelector } from 'redux/Chat/selectors';
 import { isUserConnected } from 'services';
 import { showConfirmMessage } from 'helpers/Swal.module';
 import { Message } from 'helpers/Message';
+import { Context } from 'app/globalContext/GlobalContext';
 
 export const GuestUserProfile = props => {
   useInjectSaga({ key: userSliceKey, saga: UserSaga });
@@ -32,7 +33,11 @@ export const GuestUserProfile = props => {
   useInjectSaga({ key: chatSliceKey, saga: ChatSaga });
 
   const dispatch = useDispatch();
-  const { userSearchProfile, userProfile } = useSelector(userSelector);
+  const { 
+    userSearchProfile, 
+    // userProfile 
+  } = useSelector(userSelector);
+  const { state: { user:userProfile } } = useContext(Context);
   const { program } = useSelector(programSelector);
   const { listLastMessage } = useSelector(ChatSelector);
 
@@ -136,7 +141,7 @@ export const GuestUserProfile = props => {
                 <ul className="profile-tag">
                   <li>
                     <a href="#" className="btn-profile-tag">
-                      {program.specialty}
+                      {program?.specialty}
                     </a>
                   </li>
                   <li>

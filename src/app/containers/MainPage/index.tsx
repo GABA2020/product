@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { authSelector } from '../../../redux/Auth/selectors';
 import { SearchUser } from '../SearchUser';
 import MarketPlacePage from '../../marketplace/screens/MarketPlaceScreen';
+import { Context } from 'app/globalContext/GlobalContext';
 import PeoplePage from '../../people/screens/PeoplePage';
 
 // Auth Route
@@ -27,7 +28,8 @@ const AuthRoute = ({ component: Component, ...rest }) => {
   );
 };
 export const MainPage = () => {
-  const { isAuth } = useSelector(authSelector);
+  const { state: { isAuth, } } = React.useContext(Context);
+  // const { isAuth } = useSelector(authSelector);
   const dispatch = useDispatch();
 
   useEffect(() => {

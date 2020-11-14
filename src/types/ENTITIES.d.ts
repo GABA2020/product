@@ -117,11 +117,11 @@ declare namespace ENTITIES {
   interface WorkExperience {
     id: string;
     company: string;
-    company_address: string;
-    date_end: ITime;
-    date_start: ITime;
+    city: string;
+    end_date: string;
+    start_date: string;
     description: string;
-    job_title: string;
+    title: string;
   }
   interface Volunteer {
     id: string;

@@ -34,10 +34,15 @@ export const Header = () => {
   useInjectSaga({ key: authSlice, saga: AuthSaga });
   useInjectSaga({ key: chatSlice, saga: ChatSaga });
 
-  const {dispatch:{ changeShowMenu } } = useContext(Context);
+  // const {dispatch:{ changeShowMenu } } = useContext(Context);
 
-  const { isAuth, email } = useSelector(authSelector);
-  const { userProfile, userSearchResults } = useSelector(userSelector);
+  // const { isAuth, email } = useSelector(authSelector);
+  const { state: { isAuth, user }, dispatch:{ changeShowMenu, logout } } = React.useContext(Context);
+  const email = user?.email;
+
+  const { userSearchResults } = useSelector(userSelector);
+  const { state: { user:userProfile } } = useContext(Context);
+
   const { listLastMessage } = useSelector(ChatSelector);
   const dispatch = useDispatch();
 
@@ -71,7 +76,8 @@ export const Header = () => {
   };
 
   const signOut = () => {
-    dispatch(authActions.logoutAction());
+    // dispatch(authActions.logoutAction());
+    logout()
   };
 
   const adminList = ['candice.blacknall@gogaba.co'];

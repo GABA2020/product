@@ -32,7 +32,11 @@ import { AuthScreen } from './auth/screens/AuthScreen';
 import { AdminConsole } from './containers/AdminConsole';
 import { PaymentPage } from './containers/PaymentPage';
 import { LateralMenu } from './genericComponents/LateralMenu';
+import { Context } from './globalContext/GlobalContext';
 import PeoplePage from './people/screens/PeoplePage'
+import { db } from '../helpers/firebase.module';
+import { GET_USER_ACCOUNT, GET_USER_DATA } from 'service/queries';
+
 // Auth Route
 const AuthRoute = ({ component: Component, ...rest }) => {
   const { isAuth } = rest;
@@ -53,17 +57,47 @@ const AuthRoute = ({ component: Component, ...rest }) => {
 };
 
 export function App() {
-  const { isAuth } = useSelector(authSelector);
-  const dispatch = useDispatch();
+  // const { isAuth } = useSelector(authSelector);
+  const { graphQLClient, state: { isAuth, userWorks }, dispatch:{ login } } = React.useContext(Context);
+  const [initialized, setInitialized] = React.useState(false)
 
+  console.log(userWorks)
 
   React.useEffect(() => {
-    auth().onAuthStateChanged(user => {
+    auth().onAuthStateChanged(async (user) => {
       if (!user) {
-        dispatch(authActions.logoutAction());
+        setInitialized(true)
+      }else{
+        const memberRef = await db
+        .collection('member_data')
+        .doc(user.email||'')
+        .get();
+        const userFirestore = memberRef.data();
+        let userAccount = {};
+        let userDataHasura = {};
+        await graphQLClient
+          .query({
+            query: GET_USER_ACCOUNT,
+            variables: { email: user.email },
+          })
+          .then(r => userAccount=r?.data?.user_account[0])
+          .catch(e => console.log(e));
+        await graphQLClient
+          .query({
+            query: GET_USER_DATA,
+            variables: { email: user.email },
+          })
+          .then(r => userDataHasura=r.data?.user)
+          .catch(e => console.log(e));
+          console.log('user',userFirestore,userAccount,userDataHasura)
+        login({userFirestore,userAccount,userDataHasura});
+        setInitialized(true)
       }
     });
-  }, [dispatch]);
+  }, []);
+
+  if(!initialized)return <></>;
+
 
   return (
     <React.Fragment>

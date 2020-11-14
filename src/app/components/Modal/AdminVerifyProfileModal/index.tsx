@@ -1,12 +1,16 @@
 import React from 'react';
 import emailjs from 'emailjs-com';
 import { db } from '../../../../helpers/firebase.module';
+import { useMutation } from '@apollo/client';
+import { UPDATE_USER_VALIDATION } from '../../../../service/mutations';
+import { useStorage } from 'hook/useStorage';
 
 export const AdminVerifyProfileModal = ({
   selectedImg,
   setSelectedImg,
   name,
   email,
+  refetch,
 }) => {
   const sendVerificationEmail = async () => {
     const template_params = {
@@ -20,14 +24,22 @@ export const AdminVerifyProfileModal = ({
     await emailjs.send(service_id, template_id, template_params, user_id);
   };
 
+  const [validateUser] = useMutation(UPDATE_USER_VALIDATION);
+
   const verifyUser = async () => {
-    await db.collection('member_data').doc(email).set(
-      {
-        verified: true,
+    await validateUser({
+      variables: {
+        email: email,
       },
-      { merge: true },
-    );
+    });
+    // await db.collection('member_data').doc(email).set(
+    //   {
+    //     verified: true,
+    //   },
+    //   { merge: true },
+    // );
   };
+  const url = useStorage(`files/${email}/verification/${selectedImg}`);
 
   const handleClick = e => {
     if (e.target.classList.contains('backdrop')) {
@@ -35,14 +47,16 @@ export const AdminVerifyProfileModal = ({
     }
   };
 
-  const handleVerify = () => {
-    verifyUser();
+  const handleVerify = async () => {
+    console.log('onclick');
+    await verifyUser();
     sendVerificationEmail();
     setSelectedImg(null);
+    refetch();
   };
   return (
     <div className="backdrop" onClick={handleClick}>
-      <a href={selectedImg} target="_blank" rel="noopener noreferrer">
+      <a href={url} target="_blank" rel="noopener noreferrer">
         <img
           className="img-fluid img-thumbnail"
           style={{
@@ -51,7 +65,7 @@ export const AdminVerifyProfileModal = ({
             display: 'block',
             margin: 'auto',
           }}
-          src={selectedImg}
+          src={url}
           alt="Click here to open PDF in another tab."
         />
       </a>

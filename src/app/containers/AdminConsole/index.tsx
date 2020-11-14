@@ -17,8 +17,10 @@ import { useLazyQuery, useQuery } from '@apollo/react-hooks';
 import { ResourceRow } from './ResourceRow';
 import { CreateResourceModal } from './CreateResourceModal';
 import { constants } from 'crypto';
+import { Context } from 'app/globalContext/GlobalContext';
 import { AdminResourcesTab } from './AdminResourcesTab';
 import { AdminProgramsTab } from './AdminProgramsTab';
+import { UNVALIDATE_USERS } from '../../../service/queries';
 
 const GET_RESOURCES = gql`
   query Resources($limit: Int, $offset: Int, $categories: [String]) {
@@ -36,7 +38,7 @@ const GET_RESOURCES = gql`
 
 export const AdminConsole = () => {
   const [selectedImg, setSelectedImg] = useState(null);
-  const [name, setName] = useState(null);
+  const [name, setName] = useState('');
   const [emails, setEmail] = useState(null);
   const [activeMenuItem, setActiveMenuItem] = useState(
     AdminMenuItems.RESOURCES,
@@ -52,9 +54,20 @@ export const AdminConsole = () => {
 
   const itemsPerPage = 10;
 
-  const { isAuth, email } = useSelector(authSelector);
+  // const { isAuth, email } = useSelector(authSelector);
+  const {
+    state: { isAuth, user },
+  } = React.useContext(Context);
+  const email = user?.email;
 
-  const { docs } = useFirestoreVerification('member_data') as any;
+  const {
+    loading: loadingUnvalidated,
+    data: unvalidatedResponse,
+    error: unvalidatedError,
+    refetch: fetchUnvalidated,
+  } = useQuery(UNVALIDATE_USERS);
+
+  //const { docs } = useFirestoreVerification('member_data') as any;
 
   const { mcat } = useFirestoreMcat('member_data') as any;
   const { step1 } = useFirestoreStep1('member_data') as any;
@@ -63,11 +76,16 @@ export const AdminConsole = () => {
 
   if (error) return <p>An error occured!</p>;
 
-  const adminList = ['candice.blacknall@gogaba.co', 'snmunoz@gmail.com'];
+  const adminList = [
+    'candice.blacknall@gogaba.co',
+    'snmunoz@gmail.com',
+    'aleoo7100@gmail.com',
+  ];
 
   const onMenuItemClicked = (menuItem: AdminMenuItems) => {
     setActiveMenuItem(menuItem);
   };
+  //console.log(unvalidatedError,loadingUnvalidated, unvalidatedResponse )
 
   return (
     <>
@@ -75,24 +93,24 @@ export const AdminConsole = () => {
         activeItem={activeMenuItem}
         onItemClicked={onMenuItemClicked}
       />
-      {activeMenuItem === AdminMenuItems.RESOURCES && <AdminResourcesTab />}
-      {activeMenuItem === AdminMenuItems.PROGRAMS && <AdminProgramsTab />}
+      {adminList.includes(email as any) && activeMenuItem === AdminMenuItems.RESOURCES && <AdminResourcesTab />}
+      {adminList.includes(email as any) && activeMenuItem === AdminMenuItems.PROGRAMS && <AdminProgramsTab />}
       <section className="container">
         <section className="row">
           <section className="col">
-            {docs &&
+            {unvalidatedResponse &&
               adminList.includes(email as any) &&
-              docs.map(doc => (
+              unvalidatedResponse.user_account.map(doc => (
                 <>
                   <div className="" key={doc.id}>
-                    <p>Name : {doc.name}</p>
+                    <p>Name : {`${doc.name} ${doc.last_name}`}</p>
                     <p>Email: {doc.email}</p>
-                    <p>Medical School: {doc.medicalSchool}</p>
-                    <p>Year: {doc.student_status}</p>
+                    <p>Medical School: {doc.medical_school}</p>
+                    <p>Year: {doc.school_year}</p>
                     <button
                       onClick={() => {
-                        setSelectedImg(doc.schoolVerification);
-                        setName(doc.firstName);
+                        setSelectedImg(doc.verification_file);
+                        setName(`${doc.name} ${doc.last_name}`);
                         setEmail(doc.email);
                       }}
                       className="btn btn-success"
@@ -213,6 +231,7 @@ export const AdminConsole = () => {
                 setSelectedImg={setSelectedImg}
                 name={name}
                 email={emails}
+                refetch={fetchUnvalidated}
               />
             )}
           </section>

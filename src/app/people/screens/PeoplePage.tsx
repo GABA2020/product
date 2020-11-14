@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import { useQuery, useMutation } from '@apollo/client';
 
@@ -13,6 +13,7 @@ import { USERS_QUERY, CONNECTED_USERS } from '../../../service/queries';
 import { useSelector } from 'react-redux';
 
 import { CONNECT_TO_USER } from '../../../service/mutations';
+import { Context } from 'app/globalContext/GlobalContext';
 
 const CardsContainer = styled(Column)`
   align-items: center;
@@ -21,12 +22,16 @@ const CardsContainer = styled(Column)`
 `;
 
 const PeoplePageScreen = () => {
-  const emailSender = useSelector((state: any) => state.auth.email);
+  const {
+    state: { user },
+  } = useContext(Context);
+  const emailSender = user.email;
   const {
     loading: loadingConnect,
     data: connectResponse,
+    error: connectError,
     refetch: fetchConnect,
-  } = useQuery(CONNECTED_USERS, { variables: { emailSender } });
+  } = useQuery(CONNECTED_USERS, { variables: { email: emailSender } });
   const { data: userResponse, loading: loadinUsers } = useQuery(USERS_QUERY);
 
   const [connectToUser] = useMutation(CONNECT_TO_USER);
@@ -73,14 +78,15 @@ const PeoplePageScreen = () => {
     //   console.log('users State', users);
     // }
     // console.log("efect2", connectResponse, loadingConnect);
-    if (!loadingConnect && connectResponse) {
-      console.log('users State2', users);
+    // if (!loadingConnect && connectResponse) {
+    //   console.log('users State2', users);
 
-      setUsers(
-        getConnectedUsers(userResponse.users, connectResponse.connectedUsers),
-      );
-    }
+    //   setUsers(
+    //     getConnectedUsers(userResponse.users, connectResponse.connectedUsers),
+    //   );
+    // }
   }, [connectResponse, loadingConnect, userResponse, loadinUsers]);
+  console.log('connects', connectResponse, loadingConnect, connectError);
 
   return (
     <GenericContainer justify="center">

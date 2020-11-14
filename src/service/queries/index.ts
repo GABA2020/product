@@ -1,5 +1,129 @@
 import { gql } from '@apollo/client';
 
+export const CREATE_USER = gql`
+  mutation(
+    $email: String!
+    $name: String!
+    $last_name: String!
+    $medical_school: String!
+    $school_year: String!
+    $username: String!
+    $password: String!
+    $verification_file: String!
+  ) {
+    createUser(
+      userData: {
+        email: $email
+        last_name: $last_name
+        medical_school: $medical_school
+        name: $name
+        password: $password
+        school_year: $school_year
+        username: $username
+        verification_file: $verification_file
+      }
+    ) {
+      user_uid
+    }
+  }
+`;
+
+export const GET_USER_ACCOUNT = gql`
+  query($email: String!) {
+    user_account(where: { email: { _eq: $email } }) {
+      creation_date
+      email
+      last_name
+      medical_school
+      membership_type
+      name
+      payment_complete
+      red_flag
+      school_year
+      uid
+      username
+      verified
+    }
+  }
+`;
+export const GET_USER_DATA = gql`
+  query($email: String!) {
+    user(email: $email) {
+      avatar
+      creationDate
+      degrees
+      email
+      gender
+      last_login
+      mcat
+      medicalSchool
+      name
+      school_year
+      step_1
+      specialties
+      step_2
+      step_3
+      student_status
+      username
+      year_in_program
+      works {
+        id
+        city
+        company
+        description
+        end_date
+        start_date
+        title
+        email
+      }
+      volunteers {
+        id
+        city
+        description
+        email
+        end_date
+        job_title
+        nbr_hours_served
+        organization_name
+        start_date
+      }
+      schools {
+        id
+        city
+        email
+        degree_type
+        end_date
+        honors
+        majors
+        school
+        start_date
+      }
+      researchs {
+        id
+        author
+        email
+        event_date
+        event_name
+        jurnal
+        link
+        primary_investigator
+        show_link
+        research_type
+        work_title
+      }
+      letters {
+        id
+        document_name
+        document_type
+        email
+        link
+        receive_date
+        show_link
+      }
+    }
+  }
+`;
+
 export const RESOURCES = gql`
   query Resources($limit: Int!, $offset: Int!) {
     resources(limit: $limit, offset: $offset) {
@@ -16,9 +140,9 @@ export const RESOURCES = gql`
       reviewsCount
     }
   }
-`
+`;
 
-export const ADDUSERWORK = gql`
+export const ADD_USER_WORK = gql`
   mutation(
     $city: String!
     $company: String!
@@ -42,7 +166,7 @@ export const ADDUSERWORK = gql`
   }
 `;
 
-export const ADDUSERRESEARCH = gql`
+export const ADD_USER_RESEARCH = gql`
   mutation(
     $author: String!
     $email: String!
@@ -72,7 +196,7 @@ export const ADDUSERRESEARCH = gql`
   }
 `;
 
-export const ADDUSERVOLUNTEER = gql`
+export const ADD_USER_VOLUNTEER = gql`
   mutation(
     $city: String!
     $description: String!
@@ -120,7 +244,6 @@ export const CONNECTED_USERS = gql`
     }
   }
 `;
-
 
 export const USERS_QUERY = gql`
   query Users {

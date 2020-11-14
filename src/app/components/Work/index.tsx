@@ -46,17 +46,13 @@ export const Work: FC<IWork> = props => {
   const [workExperienceState, setWorkExperienceState] = useState<
     ENTITIES.WorkExperience
   >({
-    id: '',
+    id:'',
     company: '',
-    company_address: '',
-    date_end: {
-      seconds: 0,
-    },
-    date_start: {
-      seconds: 0,
-    },
+    city: '',
+    end_date: '',
+    start_date: '',
     description: '',
-    job_title: '',
+    title: '',
   });
 
   useEffect(() => {
@@ -78,13 +74,13 @@ export const Work: FC<IWork> = props => {
   };
   return (
     <Fragment>
-      <EditWorkModal
+      {/* <EditWorkModal
         isShow={isShowModalEditWorkState}
         onHide={() => setIsShowModalEditWorkState(false)}
         workExperience={workExperienceState}
         editWorkExperience={onEditNewWorkExperience}
         deleteWorkExperience={onDeleteWorkExperience}
-      ></EditWorkModal>
+      ></EditWorkModal> */}
       <AddWorkModal
         addNewWorkExperience={onAddNewWorkExperience}
         isShow={isShowModalAddWorkState}
@@ -114,7 +110,7 @@ export const Work: FC<IWork> = props => {
                 <div className="accordion">
                   <div className="accordion-item">
                     <div className="title-wrapper">
-                      <p className="title">{item.job_title}</p>
+                      <p className="title">{item.title}</p>
                       {editMode === true ? (
                         <a
                           onClick={e => {
@@ -130,10 +126,10 @@ export const Work: FC<IWork> = props => {
                     </div>
                     <div className="sub-title">
                       <p>
-                        {item.company} • {item.company_address}
+                        {item.company} • {item.city}
                       </p>
                       <p>
-                        {moment
+                        {/* {moment
                           .unix(item.date_start.seconds)
                           .format(MonthYearFormat)}{' '}
                         –{' '}
@@ -143,7 +139,8 @@ export const Work: FC<IWork> = props => {
                         {getDifferenceMonthYear(
                           item.date_start.seconds,
                           item.date_end.seconds,
-                        )}
+                        )} */}
+                        {`${item.start_date} - ${item.end_date}`}
                       </p>
                     </div>
                     <div className="content">

@@ -5,17 +5,18 @@ import { sliceKey, actions } from 'redux/Auth/slice';
 import { authSelector } from 'redux/Auth/selectors';
 import { AuthSaga } from 'redux/Auth/saga';
 import { useForm } from 'react-hook-form';
-import { auth, db} from '../../../helpers/firebase.module';
+import { auth, db } from '../../../helpers/firebase.module';
 import { Link } from 'react-router-dom';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers';
 import 'styles/scss/login.scss';
-import { DTO  } from '../../../types/DTO';
+import { DTO } from '../../../types/DTO';
 import { toast } from 'react-toastify';
 import { history } from 'utils/history';
 import { Form, Input, Divider } from 'semantic-ui-react';
 import styled from 'styled-components';
 import { Context } from 'app/globalContext/GlobalContext';
+import { GET_USER_ACCOUNT, GET_USER_DATA } from 'service/queries';
 
 const loginSchema = yup.object().shape({
   email: yup.string().required('Email is a required field'),
@@ -23,15 +24,16 @@ const loginSchema = yup.object().shape({
 });
 
 export const SignIn: React.FC = props => {
-  const [email, setEmail] = useState('')
+  const [email, setEmail] = useState('');
   const { register, handleSubmit, errors } = useForm({
     resolver: yupResolver(loginSchema),
   });
-  const { dispatch: { login } } = useContext(Context);
-
+  const {
+    graphQLClient,
+    dispatch: { login },
+  } = useContext(Context);
 
   const onSubmit = async data => {
-
     const response = await auth.signInWithEmailAndPassword(
       data.email,
       data.password,
@@ -41,11 +43,27 @@ export const SignIn: React.FC = props => {
         .collection('member_data')
         .doc(data.email)
         .get();
-      const user: DTO.Auth.LoginResponse = memberRef.data() as DTO.Auth.LoginResponse;
-      login(user);
+      const userFirestore = memberRef.data();
+      let userAccount = {};
+      let userDataHasura = {};
+      await graphQLClient
+        .query({
+          query: GET_USER_ACCOUNT,
+          variables: { email: data.email },
+        })
+        .then(r => userAccount=r?.data?.user_account[0])
+        .catch(e => console.log(e));
+      await graphQLClient
+        .query({
+          query: GET_USER_DATA,
+          variables: { email: data.email },
+        })
+        .then(r => userDataHasura=r.data?.user)
+        .catch(e => console.log(e));
+      login({userFirestore,userAccount,userDataHasura});
       toast.info('Welcome to GABA !');
-      history.push(`/${user.username}`);
-    }else{
+      history.push(`/${userFirestore?.username || ''}`);
+    } else {
       toast.error('Unable to log in with provided credentials');
     }
   };
@@ -61,7 +79,7 @@ export const SignIn: React.FC = props => {
           name="email"
           type="text"
           id="inputEmail"
-          onChange={({target})=>setEmail(target.value)}
+          onChange={({ target }) => setEmail(target.value)}
           autoFocus
         />
         {errors.email && (
@@ -81,7 +99,7 @@ export const SignIn: React.FC = props => {
           <span className={'text-danger'}>{errors.password.message}</span>
         )}
       </Form.Field>
-      <br/>
+      <br />
       <Form.Button
         content="Join GABA"
         primary
@@ -94,11 +112,14 @@ export const SignIn: React.FC = props => {
         <a
           onClick={e => {
             e.preventDefault();
-            auth.sendPasswordResetEmail(email).then(()=> {
-              console.log('reset password send')
-            }).catch((error)=> {
-              // An error happened.
-            });
+            auth
+              .sendPasswordResetEmail(email)
+              .then(() => {
+                console.log('reset password send');
+              })
+              .catch(error => {
+                // An error happened.
+              });
           }}
           className="mb-3"
           href="#"

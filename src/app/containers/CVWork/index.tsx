@@ -21,7 +21,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { AboutModal } from 'app/components/Modal/AboutModal';
 import { Context } from 'app/globalContext/GlobalContext';
-import { ADDUSERWORK, ADDUSERRESEARCH, ADDUSERVOLUNTEER } from '../../../service/queries';
+import { ADD_USER_WORK, ADD_USER_RESEARCH, ADD_USER_VOLUNTEER } from '../../../service/queries';
 const arrayWork = ['work', 'research', 'volunteer', 'school', 'letter'];
 
 interface ICVWork {
@@ -44,7 +44,7 @@ export const CVWork: FC<ICVWork> = props => {
     arrayLength,
     loading,
   } = useSelector(userSelector);
-  const { graphQLClient, state: { user:userProfile } } = useContext(Context);
+  const { graphQLClient, state: { user:userProfile, userWorks } } = useContext(Context);
 
   const [stateWork, setStateWork] = useState<string>(arrayWork[0]);
   const [aboutModal, setAboutModal] = useState<boolean>(false);
@@ -57,7 +57,7 @@ export const CVWork: FC<ICVWork> = props => {
             loading={loading}
             editMode={editMode}
             userProfile={userProfile}
-            workExperiences={workExperiences}
+            workExperiences={userWorks||[]}
             arrayLength={arrayLength}
             getWorkExperiences={() => {
               dispatch(
@@ -85,7 +85,7 @@ export const CVWork: FC<ICVWork> = props => {
             addNewWorkExperience={workExperience => {
               graphQLClient.mutate({
                 variables:{...workExperience,email:userProfile.email},
-                mutation: ADDUSERWORK,
+                mutation: ADD_USER_WORK,
               })
               .then(result => console.log(result))
               .catch(err => console.log(err));
@@ -97,12 +97,13 @@ export const CVWork: FC<ICVWork> = props => {
               // );
             }}
             deleteWorkExperience={workExperience => {
-              dispatch(
-                userActions.deleteWorkExperienceActionAction({
-                  email: userProfile.email,
-                  id: workExperience.id,
-                }),
-              );
+              // dispatch(
+              //   userActions.deleteWorkExperienceActionAction({
+              //     email: userProfile.email,
+              //     // id: workExperience.id,
+              //     // id: ''
+              //   }),
+              // );
             }}
           ></Work>
         );
@@ -130,7 +131,7 @@ export const CVWork: FC<ICVWork> = props => {
             addNewResearch={research => {
               graphQLClient.mutate({
                 variables:{...research,email:userProfile.email},
-                mutation: ADDUSERRESEARCH,
+                mutation: ADD_USER_RESEARCH,
               })
               .then(result => console.log(result))
               .catch(err => console.log(err));
@@ -183,7 +184,7 @@ export const CVWork: FC<ICVWork> = props => {
             addNewVolunteer={volunteer => {
               graphQLClient.mutate({
                 variables:{...volunteer,email:userProfile.email},
-                mutation: ADDUSERVOLUNTEER,
+                mutation: ADD_USER_VOLUNTEER,
               })
               .then(result => console.log(result))
               .catch(err => console.log(err));
@@ -234,12 +235,18 @@ export const CVWork: FC<ICVWork> = props => {
               );
             }}
             addNewEducation={education => {
-              dispatch(
-                userActions.addNewEducationAction({
-                  email: userProfile.email,
-                  education,
-                }),
-              );
+              graphQLClient.mutate({
+                variables:{...education,email:userProfile.email},
+                mutation: ADD_USER_WORK,
+              })
+              .then(result => console.log(result))
+              .catch(err => console.log(err));
+              // dispatch(
+              //   userActions.addNewEducationAction({
+              //     email: userProfile.email,
+              //     education,
+              //   }),
+              // );
             }}
             editEducation={education => {
               dispatch(

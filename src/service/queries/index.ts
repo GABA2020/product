@@ -125,8 +125,8 @@ export const GET_USER_DATA = gql`
 `;
 
 export const RESOURCES = gql`
-  query Resources($limit: Int!, $offset: Int!) {
-    resources(limit: $limit, offset: $offset) {
+  query Resources($limit: Int, $offset: Int, $categories: [String]) {
+    resources(limit: $limit, offset: $offset, categories: $categories) {
       id
       tags
       categories

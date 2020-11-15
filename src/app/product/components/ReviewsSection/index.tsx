@@ -1,58 +1,11 @@
 import React, { useState } from 'react';
-
-import Review from './Review'
 import styled from 'styled-components';
+
+import Review from './Review';
+import { IComment } from '../../../../types/Resource'
+
 const YellowStar = require('../../../../assets/images/front/YellowStar@2x.png');
 const YellowActiveStar = require('../../../../assets/images/front/YellowActiveStar@2x.png');
-
-const REVIEWS = [{
-	numberOfStars: 3,
-	title: 'awesome resource, but you’ll be paying a pretty penny',
-	comment: `
-		I love B&amp;B, but honestly it’s expensive. I agree
-		with the other reviewers here. The price could be
-		better. BUT when you’re prepping for STEP 1 you’ll
-		pay any price to get that dream score! My goal was
-		to get a 250 or above so I spared no expense.
-	`,
-	date: 'May 15, 2020',
-  messageType: 'Step One',
-  exam: '1',
-	user: '@anotherdoc',
-	id: '1234'
-},
-{
-	numberOfStars: 3,
-	title: 'awesome resource, but you’ll be paying a pretty penny',
-	comment: `
-		I love B&amp;B, but honestly it’s expensive. I agree
-		with the other reviewers here. The price could be
-		better. BUT when you’re prepping for STEP 1 you’ll
-		pay any price to get that dream score! My goal was
-		to get a 250 or above so I spared no expense.
-	`,
-	date: 'May 15, 2020',
-  messageType: 'Step Two',
-  exam: '2',
-	user: '@anotherdoc',
-	id: '1234'
-},
-{
-	numberOfStars: 5,
-	title: 'dude, I was almost',
-	comment: `
-		I love B&amp;B, but honestly it’s expensive. I agree
-		with the other reviewers here. The price could be
-		better. BUT when you’re prepping for STEP 1 you’ll
-		pay any price to get that dream score! My goal was
-		to get a 250 or above so I spared no expense.
-	`,
-	date: 'May 15, 2020',
-  messageType: 'Step One',
-  exam: '1',
-	user: '@anotherdoc',
-	id: '1234'
-}]
 
 const judgeReviews = [{
   value: 85,
@@ -100,17 +53,18 @@ const StarContainer = styled.div`
   margin-right: -2px;
 `
 
-const ReviewSection = () => {
-  let [reviews, setReviews] = useState(REVIEWS);
-  const handleFilterReviews =  (property, value) => setReviews(
-    REVIEWS.filter(rev => rev[property] === value)
-  )
+interface ReviewSectionProps {
+  comments: Array<IComment>;
+  loadMore: Function;
+}
 
+const ReviewSection = (props: ReviewSectionProps) => {
   const [activeStar, setActiveStar]: any = useState(null);
+
+  const handleFilterReviews =  (property, value) => {}
 
   const handleClearFilters = () => {
     setActiveStar(null)
-    setReviews(REVIEWS)
   }
 
   return (
@@ -201,13 +155,13 @@ const ReviewSection = () => {
             <div className="review-content">
               <div className="portlet-message">
                 {
-                  reviews.map(rev => (
+                  props.comments.map(rev => (
                     <Review {...rev}/>
                   ))
                 }
               </div>
               <div className="load-more">
-                <Button>
+                <Button onClick={() => props.loadMore()}>
                   Load More Reviews
                 </Button>
               </div>

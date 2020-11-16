@@ -49,6 +49,7 @@ export const UPDATE_RESOURCE = gql`
     updateResource(idDoc: $idDoc, updateData: $updateData)
   }
 `;
+
 export const UPDATE_USER_VALIDATION = gql`
   mutation UpdateUserValidation($email: String!) {
     update_user_account(
@@ -59,3 +60,33 @@ export const UPDATE_USER_VALIDATION = gql`
     }
   }
 `;
+
+export const CREATE_REVIEW = gql`
+  mutation CreateReview(
+    $comment: String!,
+    $myRating: Int!,
+    $resourceId: String!,
+    $specialties: [String]!,
+    $subjects: [String]!,
+    $title: String!,
+    $usedInTests: [String]!,
+    $used_end: String!,
+    $used_start: String!,
+    $userId: String!
+  ) {
+    createReviewComment(reviewtData: {
+      comment: $comment,
+      myRating: $myRating,
+      resourceId: $resourceId,
+      specialties: $specialties,
+      subjects: $subjects,
+      title: $title,
+      usedInTests: $usedInTests,
+      used_end: $used_end,
+      used_start: $used_start,
+      userId: $userId
+    }) {
+      resource_review_id
+    }
+  }
+`

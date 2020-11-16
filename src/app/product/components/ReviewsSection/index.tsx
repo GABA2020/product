@@ -55,7 +55,8 @@ const StarContainer = styled.div`
 
 interface ReviewSectionProps {
   comments: Array<IComment>;
-  loadMore: Function;
+  loadMore: () => void;
+  handleCreateReview: () => void;
 }
 
 const ReviewSection = (props: ReviewSectionProps) => {
@@ -145,7 +146,7 @@ const ReviewSection = (props: ReviewSectionProps) => {
                 <p>Help other students with your insight.</p>
               </div>
               <div className="write-button">
-                <Button>
+                <Button onClick={props.handleCreateReview}>
                   Write a Review
                 </Button>
               </div>

@@ -10,3 +10,15 @@ export interface Resource {
   reviewsCount?: null | number;
   tags?: string[];
 }
+
+export interface IComment {
+  comment: string;
+  createdAt: string | number;
+  id: string;
+  rating: number;
+  specialties: array | null;
+  subjects: null;
+  title: string;
+  usedInTests: array<string>;
+  username: string | null;
+}

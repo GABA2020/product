@@ -125,8 +125,8 @@ export const GET_USER_DATA = gql`
 `;
 
 export const RESOURCES = gql`
-  query Resources($limit: Int!, $offset: Int!) {
-    resources(limit: $limit, offset: $offset) {
+  query Resources($limit: Int, $offset: Int, $categories: [String]) {
+    resources(limit: $limit, offset: $offset, categories: $categories) {
       id
       tags
       categories
@@ -280,9 +280,25 @@ export const USERS_QUERY = gql`
 `;
 
 export const GET_LOCKER = gql`
-  query getResources($email: String!) {
+  query GetLocker($email: String!) {
     resources_locker(where: { user_id: { _eq: $email } }) {
       resource_id
+    }
+  }
+`;
+
+export const GET_RESOURCE_COMMENTS = gql`
+  query GetResourceComments($id: String!, $limit: Int, $offset: Int) {
+    resourceComments(docId: $id, limit: $limit, offset: $offset) {
+      comment
+      createdAt
+      id
+      rating
+      specialties
+      subjects
+      title
+      usedInTests
+      username
     }
   }
 `;

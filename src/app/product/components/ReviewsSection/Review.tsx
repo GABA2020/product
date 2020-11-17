@@ -1,16 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
+import { IComment } from '../../../../types/Resource';
+import moment from 'moment';
 
 import Stars from '../../../genericComponents/Stars';
-
-interface ReviewProps {
-	numberOfStars: number,
-	title: string,
-	comment: string,
-	date: string,
-	messageType: string,
-	user: string
-}
 
 const MessageBox = styled.div`
   background-color: ${props => props.theme.color.softYellow};
@@ -56,23 +49,23 @@ const Button = styled.button`
 `
  
 
-const Review = (props: ReviewProps) => (
+const Review = (props: IComment) => (
 	<div className="message-item">
 		<MessageBox className="message-box">
 			<div className="message-front">
 				<div className="message-rating">
-					<Stars color="yellow" numberOfStars={props.numberOfStars} />
+					<Stars color="yellow" numberOfStars={props.rating} />
 				</div>
 				<div className="message-date">
-					<span>{props.date}</span>
+					<span>{moment(Number(props.createdAt)).format('MMMM d, YYYY')}</span>
 				</div>
 				<div className="message-type">
-					<span>{props.messageType}</span>
+					<span>Step One</span>
 				</div>
 			</div>
 			<MessageDescription className="message-description">
 				<h4 className="message-heading">
-					{props.title}
+					{props.title || 'No title'}
 				</h4>
 				<p className="message-paragraph">
 					{props.comment}
@@ -103,17 +96,20 @@ const Review = (props: ReviewProps) => (
 					<div className="author-descript">
 						<h4 className="author-title">
 							<a href="#">
-								<span>@anotherdoc</span>
+								<span>{props.username || 'No user'}</span>
 							</a>
 						</h4>
 						<ul className="author-link">
-							<li>
-								<a href="#">Step One 252</a>
-							</li>
-							<li> |</li>
-							<li>
-								<a href="#">Step Two 235</a>
-							</li>
+							{props.usedInTests.map(test => (
+								<React.Fragment key={test}>
+									<li>
+										<a href="#">{test}</a>
+									</li>
+									<li>
+										|
+									</li>
+								</React.Fragment>
+							))}
 						</ul>
 					</div>
 					<div className="author-image">

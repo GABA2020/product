@@ -12,22 +12,7 @@ import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
 import { CreateResourceModal } from '../CreateResourceModal';
 import { ResourceRow } from '../ResourceRow';
-
-const GET_RESOURCES = gql`
-  query Resources($limit: Int, $offset: Int, $categories: [String]) {
-    resources(limit: $limit, offset: $offset, categories: $categories) {
-      id
-      name
-      description
-      link
-      categories
-      picture_name
-      rating
-      price_from
-      price_to
-    }
-  }
-`;
+import { RESOURCES } from '../../../../service/queries'
 
 export const AdminResourcesTab = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -39,7 +24,7 @@ export const AdminResourcesTab = () => {
 
   const itemsPerPage = 10;
 
-  var { loading, error, data, fetchMore } = useQuery(GET_RESOURCES, {
+  var { loading, error, data, fetchMore } = useQuery(RESOURCES, {
     fetchPolicy: 'network-only',
     onCompleted: data => {
       setResources([...data.resources]);
@@ -126,7 +111,7 @@ export const AdminResourcesTab = () => {
             link: selectedResource.link || '',
             categories: selectedResource.categories || '',
             id: selectedResource.id || '',
-            tags: selectedResource.tags || '',
+            tags: selectedResource.tags || [],
             pictureName: selectedResource.picture_name || '',
             price_from: selectedResource.price_from || '',
             price_to: selectedResource.price_to || '',

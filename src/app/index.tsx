@@ -33,9 +33,16 @@ import { AdminConsole } from './containers/AdminConsole';
 import { PaymentPage } from './containers/PaymentPage';
 import { LateralMenu } from './genericComponents/LateralMenu';
 import { Context } from './globalContext/GlobalContext';
-import PeoplePage from './people/screens/PeoplePage'
+import PeoplePage from './people/screens/PeoplePage';
 import { db } from '../helpers/firebase.module';
 import { GET_USER_ACCOUNT, GET_USER_DATA } from 'service/queries';
+import TagManager from 'react-gtm-module';
+
+const tagManagerArgs = {
+  gtmId: 'G-BC79F2ZCLJ',
+};
+
+TagManager.initialize(tagManagerArgs);
 
 // Auth Route
 const AuthRoute = ({ component: Component, ...rest }) => {
@@ -58,20 +65,24 @@ const AuthRoute = ({ component: Component, ...rest }) => {
 
 export function App() {
   // const { isAuth } = useSelector(authSelector);
-  const { graphQLClient, state: { isAuth, userWorks }, dispatch:{ login } } = React.useContext(Context);
-  const [initialized, setInitialized] = React.useState(false)
+  const {
+    graphQLClient,
+    state: { isAuth, userWorks },
+    dispatch: { login },
+  } = React.useContext(Context);
+  const [initialized, setInitialized] = React.useState(false);
 
-  console.log(userWorks)
+  console.log(userWorks);
 
   React.useEffect(() => {
-    auth().onAuthStateChanged(async (user) => {
+    auth().onAuthStateChanged(async user => {
       if (!user) {
-        setInitialized(true)
-      }else{
+        setInitialized(true);
+      } else {
         const memberRef = await db
-        .collection('member_data')
-        .doc(user.email||'')
-        .get();
+          .collection('member_data')
+          .doc(user.email || '')
+          .get();
         const userFirestore = memberRef.data();
         let userAccount = {};
         let userDataHasura = {};
@@ -80,24 +91,23 @@ export function App() {
             query: GET_USER_ACCOUNT,
             variables: { email: user.email },
           })
-          .then(r => userAccount=r?.data?.user_account[0])
+          .then(r => (userAccount = r?.data?.user_account[0]))
           .catch(e => console.log(e));
         await graphQLClient
           .query({
             query: GET_USER_DATA,
             variables: { email: user.email },
           })
-          .then(r => userDataHasura=r.data?.user)
+          .then(r => (userDataHasura = r.data?.user))
           .catch(e => console.log(e));
-          console.log('user',userFirestore,userAccount,userDataHasura)
-        login({userFirestore,userAccount,userDataHasura});
-        setInitialized(true)
+        console.log('user', userFirestore, userAccount, userDataHasura);
+        login({ userFirestore, userAccount, userDataHasura });
+        setInitialized(true);
       }
     });
   }, []);
 
-  if(!initialized)return <></>;
-
+  if (!initialized) return <></>;
 
   return (
     <React.Fragment>

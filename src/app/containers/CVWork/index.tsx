@@ -1,6 +1,6 @@
 import React, { Fragment, useState, FC, useContext } from 'react';
 import 'styles/scss/SectionExperience.scss';
-import { Work } from 'app/components/Work';
+import { Work } from 'app/profile/components/work/Work';
 import { Volunteer } from 'app/components/Volunteer';
 import { Research } from 'app/components/Research';
 import { Letter } from 'app/components/Letter';
@@ -21,7 +21,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { AboutModal } from 'app/components/Modal/AboutModal';
 import { Context } from 'app/globalContext/GlobalContext';
-import { ADD_USER_WORK, ADD_USER_RESEARCH, ADD_USER_VOLUNTEER } from '../../../service/queries';
+import {
+  ADD_USER_WORK,
+  ADD_USER_RESEARCH,
+  ADD_USER_VOLUNTEER,
+  DELETE_USER_SUBCOLECTION,
+  EDIT_USER_SUBCOLECTION,
+} from '../../../service/queries';
 const arrayWork = ['work', 'research', 'volunteer', 'school', 'letter'];
 
 interface ICVWork {
@@ -44,10 +50,52 @@ export const CVWork: FC<ICVWork> = props => {
     arrayLength,
     loading,
   } = useSelector(userSelector);
-  const { graphQLClient, state: { user:userProfile, userWorks } } = useContext(Context);
+  const {
+    graphQLClient,
+    state: { user: userProfile, userWorks },
+  } = useContext(Context);
 
   const [stateWork, setStateWork] = useState<string>(arrayWork[0]);
   const [aboutModal, setAboutModal] = useState<boolean>(false);
+
+  function addWorkExperience(workExperience) {
+    graphQLClient
+      .mutate({
+        variables: { ...workExperience, email: userProfile.email },
+        mutation: ADD_USER_WORK,
+      })
+      .then(result => console.log(result))
+      .catch(err => console.log(err));
+  }
+
+  function editWorkExperience(workExperience) {
+    graphQLClient
+      .mutate({
+        variables: {
+          ...workExperience,
+          subcollectionId: workExperience.id,
+          subcollectionName: 'works',
+          email: userProfile.email,
+        },
+        mutation: EDIT_USER_SUBCOLECTION,
+      })
+      .then(result => console.log(result))
+      .catch(err => console.log(err));
+  }
+  
+  function deleteWorkExperience(workExperienceId) {
+    graphQLClient
+      .mutate({
+        variables: {
+          subcollectionId: workExperienceId,
+          subcollectionName: 'works',
+          email: userProfile.email,
+        },
+        mutation: DELETE_USER_SUBCOLECTION,
+      })
+      .then(result => console.log(result))
+      .catch(err => console.log(err));
+  }
 
   const renderCVWithCondition = () => {
     switch (stateWork) {
@@ -57,54 +105,11 @@ export const CVWork: FC<ICVWork> = props => {
             loading={loading}
             editMode={editMode}
             userProfile={userProfile}
-            workExperiences={userWorks||[]}
+            workExperiences={userWorks || []}
             arrayLength={arrayLength}
-            getWorkExperiences={() => {
-              dispatch(
-                userActions.getWorkExperiencesAction({
-                  email: userProfile.email,
-                }),
-              );
-            }}
-            getMoreWorkExperiences={() => {
-              dispatch(
-                userActions.getMoreWorkExperiencesAction({
-                  email: userProfile.email,
-                  lastQuery,
-                }),
-              );
-            }}
-            editWorkExperience={workExperience => {
-              dispatch(
-                userActions.editWorkExperienceAction({
-                  email: userProfile.email,
-                  workExperience,
-                }),
-              );
-            }}
-            addNewWorkExperience={workExperience => {
-              graphQLClient.mutate({
-                variables:{...workExperience,email:userProfile.email},
-                mutation: ADD_USER_WORK,
-              })
-              .then(result => console.log(result))
-              .catch(err => console.log(err));
-              // dispatch(
-              //   userActions.addNewWorkExperienceAction({
-              //     email: userProfile.email,
-              //     workExperience,
-              //   }),
-              // );
-            }}
-            deleteWorkExperience={workExperience => {
-              // dispatch(
-              //   userActions.deleteWorkExperienceActionAction({
-              //     email: userProfile.email,
-              //     // id: workExperience.id,
-              //     // id: ''
-              //   }),
-              // );
-            }}
+            editWorkExperience={editWorkExperience}
+            addNewWorkExperience={addWorkExperience}
+            deleteWorkExperience={deleteWorkExperience}
           ></Work>
         );
       case arrayWork[1]:
@@ -129,12 +134,13 @@ export const CVWork: FC<ICVWork> = props => {
               );
             }}
             addNewResearch={research => {
-              graphQLClient.mutate({
-                variables:{...research,email:userProfile.email},
-                mutation: ADD_USER_RESEARCH,
-              })
-              .then(result => console.log(result))
-              .catch(err => console.log(err));
+              graphQLClient
+                .mutate({
+                  variables: { ...research, email: userProfile.email },
+                  mutation: ADD_USER_RESEARCH,
+                })
+                .then(result => console.log(result))
+                .catch(err => console.log(err));
               // dispatch(
               //   userActions.addNewResearchAction({
               //     email: userProfile.email,
@@ -182,12 +188,13 @@ export const CVWork: FC<ICVWork> = props => {
               );
             }}
             addNewVolunteer={volunteer => {
-              graphQLClient.mutate({
-                variables:{...volunteer,email:userProfile.email},
-                mutation: ADD_USER_VOLUNTEER,
-              })
-              .then(result => console.log(result))
-              .catch(err => console.log(err));
+              graphQLClient
+                .mutate({
+                  variables: { ...volunteer, email: userProfile.email },
+                  mutation: ADD_USER_VOLUNTEER,
+                })
+                .then(result => console.log(result))
+                .catch(err => console.log(err));
               // dispatch(
               //   userActions.addNewVolunteerAction({
               //     email: userProfile.email,
@@ -235,12 +242,13 @@ export const CVWork: FC<ICVWork> = props => {
               );
             }}
             addNewEducation={education => {
-              graphQLClient.mutate({
-                variables:{...education,email:userProfile.email},
-                mutation: ADD_USER_WORK,
-              })
-              .then(result => console.log(result))
-              .catch(err => console.log(err));
+              graphQLClient
+                .mutate({
+                  variables: { ...education, email: userProfile.email },
+                  mutation: ADD_USER_WORK,
+                })
+                .then(result => console.log(result))
+                .catch(err => console.log(err));
               // dispatch(
               //   userActions.addNewEducationAction({
               //     email: userProfile.email,

@@ -40,6 +40,7 @@ import { GET_USER_ACCOUNT, GET_USER_DATA } from 'service/queries';
 // Auth Route
 const AuthRoute = ({ component: Component, ...rest }) => {
   const { isAuth } = rest;
+  if(isAuth&&(rest.path===RoutesTypes.AUTH))return(<Redirect to={RoutesTypes.HOME} />)
   return (
     <Route
       {...rest}
@@ -60,8 +61,6 @@ export function App() {
   // const { isAuth } = useSelector(authSelector);
   const { graphQLClient, state: { isAuth, userWorks }, dispatch:{ login } } = React.useContext(Context);
   const [initialized, setInitialized] = React.useState(false)
-
-  console.log(userWorks)
 
   React.useEffect(() => {
     auth().onAuthStateChanged(async (user) => {

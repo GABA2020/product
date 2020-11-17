@@ -166,6 +166,48 @@ export const ADD_USER_WORK = gql`
   }
 `;
 
+export const EDIT_USER_SUBCOLECTION = gql`
+  mutation(
+    $email: String!
+    $subcollectionName: String!
+    $subcollectionId: String!
+    $title: String!
+    $company: String!
+    $city: String!
+    $start_date: String!
+    $end_date: String!
+    $description: String!
+  ) {
+    editUserSubCollection(
+      email: $email
+      subcollectionName: $subcollectionName
+      subcollectionId: $subcollectionId
+      updateSCData: {
+        title: $title
+        company: $company
+        city: $city
+        start_date: $start_date
+        end_date: $end_date
+        description: $description
+      }
+    )
+  }
+`;
+
+export const DELETE_USER_SUBCOLECTION = gql`
+  mutation(
+    $email: String!
+    $subcollectionName: String!
+    $subcollectionId: String!
+  ) {
+    deleteUserSubcollection(
+      email: $email
+      subcollectionName: $subcollectionName
+      subcollectionId: $subcollectionId
+    )
+  }
+`;
+
 export const ADD_USER_RESEARCH = gql`
   mutation(
     $author: String!

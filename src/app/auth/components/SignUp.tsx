@@ -105,6 +105,7 @@ export function SignUp() {
         username: data.username,
         verification_file:file?.name||''
       };
+      console.log(variables)
       await graphQLClient
         .mutate({
           variables,

@@ -47,6 +47,7 @@ TagManager.initialize(tagManagerArgs);
 // Auth Route
 const AuthRoute = ({ component: Component, ...rest }) => {
   const { isAuth } = rest;
+  if(isAuth&&(rest.path===RoutesTypes.AUTH))return(<Redirect to={RoutesTypes.HOME} />)
   return (
     <Route
       {...rest}
@@ -71,8 +72,6 @@ export function App() {
     dispatch: { login },
   } = React.useContext(Context);
   const [initialized, setInitialized] = React.useState(false);
-
-  console.log(userWorks);
 
   React.useEffect(() => {
     auth().onAuthStateChanged(async user => {

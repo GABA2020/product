@@ -97,6 +97,7 @@ export const GET_USER_DATA = gql`
         majors
         school
         start_date
+        is_present_date
       }
       researchs {
         id
@@ -104,12 +105,13 @@ export const GET_USER_DATA = gql`
         email
         event_date
         event_name
-        jurnal
+        journal
         link
         primary_investigator
         show_link
         research_type
         work_title
+        city
       }
       letters {
         id
@@ -142,41 +144,110 @@ export const RESOURCES = gql`
   }
 `;
 
-export const ADD_USER_WORK = gql`
+    
+
+
+export const ADD_USER_SUBCOLLECTION = gql`
   mutation(
-    $city: String!
-    $company: String!
-    $description: String!
     $email: String!
-    $end_date: String!
-    $start_date: String!
-    $title: String!
+    $subcollectionName: SubcollectionName!
+    $city: String
+    $company: String
+    $description: String
+    $end_date: String
+    $start_date: String
+    $title: String
+    $author: String
+    $event_date: String
+    $event_name: String
+    $journal: String
+    $link: String
+    $primary_investigator: String
+    $research_type: String
+    $show_link: Boolean
+    $work_title: String
+    $job_title: String
+    $nbr_hours_served: Int
+    $organization_name: String
+    $degree_type: String
+    $honors: String
+    $majors: String
+    $school: String
+    $is_present_date: Boolean
+    $document_name: String
+    $document_type: String
+    $receive_date: String
   ) {
-    addUserWork(
-      userWorkData: {
-        city: $city
-        company: $company
-        description: $description
-        email: $email
-        end_date: $end_date
-        start_date: $start_date
+    addUserSubCollection(
+      email: $email
+      subcollectionName: $subcollectionName
+      createSCData: {
         title: $title
+        company: $company
+        city: $city
+        start_date: $start_date
+        end_date: $end_date
+        description: $description
+        author: $author
+        event_date: $event_date
+        event_name: $event_name
+        journal: $journal
+        link: $link
+        primary_investigator: $primary_investigator
+        research_type: $research_type
+        show_link: $show_link
+        work_title: $work_title
+        job_title: $job_title
+        nbr_hours_served: $nbr_hours_served
+        organization_name: $organization_name
+        degree_type: $degree_type
+        honors: $honors
+        majors: $majors
+        school: $school
+        is_present_date: $is_present_date
+        document_name: $document_name
+        document_type: $document_type
+        receive_date: $receive_date
       }
-    )
+    ) {
+      id
+      error
+    }
   }
 `;
 
-export const EDIT_USER_SUBCOLECTION = gql`
+export const EDIT_USER_SUBCOLLECTION = gql`
   mutation(
     $email: String!
-    $subcollectionName: String!
+    $subcollectionName: SubcollectionName!
     $subcollectionId: String!
-    $title: String!
-    $company: String!
-    $city: String!
-    $start_date: String!
-    $end_date: String!
-    $description: String!
+    $city: String
+    $company: String
+    $description: String
+    $end_date: String
+    $start_date: String
+    $title: String
+    $author: String
+    $event_date: String
+    $event_name: String
+    $journal: String
+    $link: String
+    $primary_investigator: String
+    $research_type: String
+    $show_link: Boolean
+    $work_title: String
+    $job_title: String
+    $nbr_hours_served: Int
+    $organization_name: String
+    $degree_type: String
+    $honors: String
+    $majors: String
+    $school: String
+    $is_present_date: Boolean
+    $document_name: String
+    $document_type: String
+    $receive_date: String
+    
   ) {
     editUserSubCollection(
       email: $email
@@ -189,15 +260,35 @@ export const EDIT_USER_SUBCOLECTION = gql`
         start_date: $start_date
         end_date: $end_date
         description: $description
+        event_date: $event_date
+        author: $author
+        event_name: $event_name
+        journal: $journal
+        link: $link
+        primary_investigator: $primary_investigator
+        research_type: $research_type
+        show_link: $show_link
+        work_title: $work_title
+        job_title: $job_title
+        nbr_hours_served: $nbr_hours_served
+        organization_name: $organization_name
+        degree_type: $degree_type
+        honors: $honors
+        majors: $majors
+        school: $school
+        is_present_date: $is_present_date
+        document_name: $document_name
+        document_type: $document_type
+        receive_date: $receive_date
       }
     )
   }
 `;
 
-export const DELETE_USER_SUBCOLECTION = gql`
+export const DELETE_USER_SUBCOLLECTION = gql`
   mutation(
     $email: String!
-    $subcollectionName: String!
+    $subcollectionName: SubcollectionName!
     $subcollectionId: String!
   ) {
     deleteUserSubcollection(

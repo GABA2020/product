@@ -1,4 +1,4 @@
-import React, { Fragment, FC, useContext } from 'react';
+import React, { Fragment, FC } from 'react';
 import { Modal } from 'react-bootstrap';
 import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -8,12 +8,24 @@ import { Formik } from 'formik';
 import moment from 'moment';
 
 const schema = yup.object().shape({
-  title: yup.string().max(200, 'Title must be at most 200 characters'),
-  company: yup.string().max(200, 'Company must be at most 200 characters'),
-  city: yup.string().max(200, 'Company Address must be at most 200 characters'),
+  job_title: yup.string().max(200, 'Job title must be at most 200 characters'),
+  nbr_hours_served: yup
+    .number()
+    .typeError('Number of hours served must be a number')
+    .min(0)
+    .max(
+      2000000,
+      'Number of hours served  must be less than or equal to 2000000',
+    ),
+  city: yup
+    .string()
+    .max(200, 'Organization address must be at most 200 characters'),
+  organization_name: yup
+    .string()
+    .max(200, 'Organization name must be at most 200 characters'),
   description: yup
     .string()
-    .max(300, 'Description must be at most 300 characters'),
+    .max(500, 'Description must be at most 500 characters'),
   start_date: yup.date(),
   end_date: yup
     .date()
@@ -21,50 +33,52 @@ const schema = yup.object().shape({
 });
 
 const initialValues = {
-  company: '',
-  city: '',
   end_date: new Date(),
   start_date: new Date(),
   description: '',
-  title: '',
+  job_title: '',
+  nbr_hours_served: '',
+  city: '',
+  organization_name: '',
 };
 
-export function WorkModal(props) {
+export function VolunteerModal(props) {
   const {
     isShow,
     onHide,
-    addNewWorkExperience,
-    editWorkExPerience,
-    deleteWorkExperience,
+    addNewVolunteer,
+    editVolunteer,
+    deleteVolunteer,
     editValues,
   } = props;
 
   function onSubmit(values) {
-    const newWork = {
-      id:'',
+    const newVolunteer = {
+      id: '',
       subcollectionId: '',
-      company: values.company,
       city: values.city,
-      end_date: `${ values.end_date.getMonth() + 1}/${values.end_date.getFullYear()}`,
-      start_date: `${values.start_date.getMonth() + 1 }/${values.start_date.getFullYear()}`,
       description: values.description,
-      title: values.title,
-      subcollectionName: "works"
+      start_date: `${values.start_date.getMonth() + 1 }/${values.start_date.getFullYear()}`,
+      end_date: `${ values.end_date.getMonth() + 1}/${values.end_date.getFullYear()}`,
+      job_title: values.job_title,
+      nbr_hours_served: values.nbr_hours_served,
+      organization_name: values.organization_name,
+      subcollectionName: "volunteers"
     };
     if (editValues) {
-      newWork.subcollectionId = editValues.id;
-      newWork.id = editValues.id;
-      editWorkExPerience(newWork);
+      newVolunteer.subcollectionId = editValues.id;
+      newVolunteer.id = editValues.id;
+      editVolunteer(newVolunteer);
     } else {
-      addNewWorkExperience(newWork);
+      addNewVolunteer(newVolunteer);
     }
   }
 
   function onDelete(e) {
     e.preventDefault();
-    deleteWorkExperience({
+    deleteVolunteer({
       subcollectionId:editValues.id,
-      subcollectionName: 'works'
+      subcollectionName: 'volunteers'
     });
   }
 
@@ -72,7 +86,7 @@ export function WorkModal(props) {
     <Fragment>
       <Modal backdrop="static" show={isShow} onHide={onHide}>
         <Modal.Header closeButton>
-          <Modal.Title>{editValues ? 'Edit experience' : 'Add experience'}</Modal.Title>
+          <Modal.Title>{editValues ? 'Edit Volunteer' : 'Add Volunteer'}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Formik
@@ -97,34 +111,6 @@ export function WorkModal(props) {
               setFieldValue,
             }) => (
               <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                  <label htmlFor="exampleInputEmail1">Title</label>
-                  <input
-                    name="title"
-                    type="text"
-                    className="form-control"
-                    placeholder="Title"
-                    value={values.title}
-                    onChange={handleChange}
-                  />
-                  {touched.title && errors.title && (
-                    <span className={'text-danger'}>{errors.title}</span>
-                  )}
-                </div>
-                <div className="form-group">
-                  <label htmlFor="exampleInputPassword1">Company</label>
-                  <input
-                    name="company"
-                    type="text"
-                    className="form-control"
-                    placeholder="Company"
-                    value={values.company}
-                    onChange={handleChange}
-                  />
-                  {touched.company && errors.company && (
-                    <span className={'text-danger'}>{errors.company}</span>
-                  )}
-                </div>
                 <div className="form-group">
                   <div className="row">
                     <div className="col-md-6">
@@ -180,6 +166,24 @@ export function WorkModal(props) {
                   </div>
                 </div>
                 <div className="form-group">
+                  <label htmlFor="exampleInputPassword1">
+                    Organization Name
+                  </label>
+                  <input
+                    name="organization_name"
+                    type="text"
+                    className="form-control"
+                    placeholder="Organization Name"
+                    value={values.organization_name}
+                    onChange={handleChange}
+                  />
+                  {touched.organization_name && errors.organization_name && (
+                    <span className={'text-danger'}>
+                      {errors.organization_name}
+                    </span>
+                  )}
+                </div>
+                <div className="form-group">
                   <label htmlFor="exampleInputPassword1">City, State</label>
                   <input
                     name="city"
@@ -189,18 +193,56 @@ export function WorkModal(props) {
                     value={values.city}
                     onChange={handleChange}
                   />
-                  {touched.city && errors.city && (
-                    <span className={'text-danger'}>{errors.city}</span>
+                  {touched.city &&
+                    errors.city && (
+                      <span className={'text-danger'}>
+                        {errors.city}
+                      </span>
+                    )}
+                </div>
+                <div className="form-group">
+                  <label htmlFor="exampleInputEmail1">Job title</label>
+                  <input
+                    name="job_title"
+                    type="text"
+                    className="form-control"
+                    placeholder="Job title"
+                    value={values.job_title}
+                    onChange={handleChange}
+                  />
+                  {touched.job_title && errors.job_title && (
+                    <span className={'text-danger'}>{errors.job_title}</span>
                   )}
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="exampleInputPassword1">
+                    Number of hours served{' '}
+                  </label>
+                  <input
+                    name="nbr_hours_served"
+                    type="number"
+                    min={0}
+                    className="form-control"
+                    placeholder="Number of hours served"
+                    value={values.nbr_hours_served}
+                    onChange={handleChange}
+                  />
+                  {touched.nbr_hours_served &&
+                    errors.nbr_hours_served && (
+                      <span className={'text-danger'}>
+                        {errors.nbr_hours_served}
+                      </span>
+                    )}
                 </div>
                 <div className="form-group">
                   <label htmlFor="exampleInputPassword1">Description</label>
                   <textarea
                     rows={5}
-                    value={values.description}
                     className="form-control"
                     name="description"
                     onChange={handleChange}
+                    value={values.description}
                   ></textarea>
                   {touched.description && errors.description && (
                     <span className={'text-danger'}>{errors.description}</span>

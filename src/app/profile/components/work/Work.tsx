@@ -8,7 +8,7 @@ import { WorkModal } from './WorkModal'
 const renderTextArea = (text: string) => {
   return text.replace(/\n/g, '<br>');
 };
-export const Work = props => {
+export function Work(props){
   const {
     workExperiences,
     editMode,

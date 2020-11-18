@@ -1,9 +1,9 @@
 import React, { Fragment, useState, FC, useContext } from 'react';
 import 'styles/scss/SectionExperience.scss';
 import { Work } from 'app/profile/components/work/Work';
-import { Volunteer } from 'app/components/Volunteer';
-import { Research } from 'app/components/Research';
-import { Letter } from 'app/components/Letter';
+import { Research } from 'app/profile/components/research/Research';
+import { Volunteer } from 'app/profile/components/volunteer/Volunteer';
+import { Letter } from 'app/profile/components/letter/Letter';
 import { Education } from 'app/components/Education';
 import { useInjectSaga } from 'utils/redux-injectors';
 import {
@@ -22,12 +22,12 @@ import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { AboutModal } from 'app/components/Modal/AboutModal';
 import { Context } from 'app/globalContext/GlobalContext';
 import {
-  ADD_USER_WORK,
-  ADD_USER_RESEARCH,
   ADD_USER_VOLUNTEER,
-  DELETE_USER_SUBCOLECTION,
-  EDIT_USER_SUBCOLECTION,
+  DELETE_USER_SUBCOLLECTION,
+  EDIT_USER_SUBCOLLECTION,
+  ADD_USER_SUBCOLLECTION,
 } from '../../../service/queries';
+import { School } from 'app/profile/components/school/School';
 const arrayWork = ['work', 'research', 'volunteer', 'school', 'letter'];
 
 interface ICVWork {
@@ -52,49 +52,166 @@ export const CVWork: FC<ICVWork> = props => {
   } = useSelector(userSelector);
   const {
     graphQLClient,
-    state: { user: userProfile, userWorks },
+    state: {
+      user: userProfile,
+      userWorks,
+      userResearchs,
+      userVolunteers,
+      userSchools,
+      userLetters,
+    },
+    dispatch: {
+      setUserWorwks,
+      setUserVolunteers,
+      setUserSchools,
+      setUserResearchs,
+      setUserLetters,
+    },
   } = useContext(Context);
 
   const [stateWork, setStateWork] = useState<string>(arrayWork[0]);
   const [aboutModal, setAboutModal] = useState<boolean>(false);
 
+  // -------------------addUserSubcollection-------------------------
+  function addUserSubcollection(subcollection) {
+    return new Promise((resolve, reject) => {
+      graphQLClient
+        .mutate({
+          variables: { ...subcollection, email: userProfile.email },
+          mutation: ADD_USER_SUBCOLLECTION,
+        })
+        .then(result => resolve(result))
+        .catch(err => reject(err));
+    });
+  }
   function addWorkExperience(workExperience) {
-    graphQLClient
-      .mutate({
-        variables: { ...workExperience, email: userProfile.email },
-        mutation: ADD_USER_WORK,
-      })
-      .then(result => console.log(result))
-      .catch(err => console.log(err));
+    addUserSubcollection(workExperience).then((r: any) => {
+      const id = r?.data?.addUserSubCollection?.id;
+      workExperience.id = id;
+      setUserWorwks([workExperience, ...userWorks]);
+    });
   }
-
+  function addResearch(research) {
+    addUserSubcollection(research).then((r: any) => {
+      const id = r?.data?.addUserSubCollection?.id;
+      research.id = id;
+      setUserResearchs([research, ...userResearchs]);
+    });
+  }
+  function addVolunteer(volunteer) {
+    addUserSubcollection(volunteer).then((r: any) => {
+      const id = r?.data?.addUserSubCollection?.id;
+      volunteer.id = id;
+      setUserVolunteers([volunteer, ...userVolunteers]);
+    });
+  }
+  function addSchool(school) {
+    addUserSubcollection(school).then((r: any) => {
+      const id = r?.data?.addUserSubCollection?.id;
+      school.id = id;
+      setUserSchools([school, ...userSchools]);
+    });
+  }
+  function addNewLetter(letter) {
+    addUserSubcollection(letter).then((r: any) => {
+      const id = r?.data?.addUserSubCollection?.id;
+      letter.id = id;
+      setUserLetters([letter, ...userLetters]);
+    });
+  }
+  // ----------------------editUserSubcollection-----------------------------
+  function editUserSubcollection(subcollection) {
+    return new Promise((resolve, reject) => {
+      graphQLClient
+        .mutate({
+          variables: { ...subcollection, email: userProfile.email },
+          mutation: EDIT_USER_SUBCOLLECTION,
+        })
+        .then(result => resolve(result))
+        .catch(err => reject(err));
+    });
+  }
   function editWorkExperience(workExperience) {
-    graphQLClient
-      .mutate({
-        variables: {
-          ...workExperience,
-          subcollectionId: workExperience.id,
-          subcollectionName: 'works',
-          email: userProfile.email,
-        },
-        mutation: EDIT_USER_SUBCOLECTION,
-      })
-      .then(result => console.log(result))
-      .catch(err => console.log(err));
+    editUserSubcollection(workExperience).then(r=>{
+      const newUserWork = userWorks.slice();
+      const index = newUserWork.findIndex(i=>i.id===workExperience.id)
+      newUserWork.splice(index, 1, workExperience)
+      setUserWorwks(newUserWork)
+    });
   }
-  
-  function deleteWorkExperience(workExperienceId) {
-    graphQLClient
-      .mutate({
-        variables: {
-          subcollectionId: workExperienceId,
-          subcollectionName: 'works',
-          email: userProfile.email,
-        },
-        mutation: DELETE_USER_SUBCOLECTION,
-      })
-      .then(result => console.log(result))
-      .catch(err => console.log(err));
+  function editResearch(research) {
+    editUserSubcollection(research).then(r=>{
+      const newUserResearch = userResearchs.slice();
+      const index = newUserResearch.findIndex(i=>i.id===research.id)
+      newUserResearch.splice(index, 1, research)
+      setUserResearchs(newUserResearch)
+    });
+  }
+  function editVolunteer(volunteer) {
+    editUserSubcollection(volunteer).then(r=>{
+      const newUserVolunteer = userVolunteers.slice();
+      const index = newUserVolunteer.findIndex(i=>i.id===volunteer.id)
+      newUserVolunteer.splice(index, 1, volunteer)
+      setUserVolunteers(newUserVolunteer)
+    });
+  }
+  function editSchool(school) {
+    editUserSubcollection(school).then(r=>{
+      const newUserSchool = userSchools.slice();
+      const index = newUserSchool.findIndex(i=>i.id===school.id)
+      newUserSchool.splice(index, 1, school)
+      setUserSchools(newUserSchool)
+    });
+  }
+  function editLetter(letter) {
+    editUserSubcollection(letter).then(r=>{
+      const newUserLetter = userLetters.slice();
+      const index = newUserLetter.findIndex(i=>i.id===letter.id)
+      newUserLetter.splice(index, 1, letter)
+      setUserLetters(newUserLetter)
+    });
+  }
+  // ---------------------deleteUserSubcollection------------------------------
+  function deleteUserSubcollection(subcollection) {
+    return new Promise((resolve, reject) => {
+      graphQLClient
+        .mutate({
+          variables: { ...subcollection, email: userProfile.email },
+          mutation: DELETE_USER_SUBCOLLECTION,
+        })
+        .then(result => resolve(subcollection.subcollectionId))
+        .catch(err => reject(err));
+    });
+  }
+  function deleteWorkExperience(workExperience) {
+    deleteUserSubcollection(workExperience).then(id => {
+      const newUserWork = userWorks.filter(r => r.id !== id);
+      setUserWorwks(newUserWork);
+    });
+  }
+  function deleteResearch(research) {
+    deleteUserSubcollection(research).then(id => {
+      const newUserResearch = userResearchs.filter(r => r.id !== id);
+      setUserResearchs(newUserResearch);
+    });
+  }
+  function deleteVolunteer(volunteer) {
+    deleteUserSubcollection(volunteer).then(id => {
+      const newUserVolunteer = userVolunteers.filter(r => r.id !== id);
+      setUserVolunteers(newUserVolunteer);
+    });
+  }
+  function deleteSchool(school) {
+    deleteUserSubcollection(school).then(id => {
+      const newUserSchools = userSchools.filter(r => r.id !== id);
+      setUserSchools(newUserSchools);
+    });
+  }
+  function deleteLetter(letter) {
+    deleteUserSubcollection(letter).then(id => {
+      const newUserLetters = userLetters.filter(r => r.id !== id);
+      setUserLetters(newUserLetters);
+    });
   }
 
   const renderCVWithCondition = () => {
@@ -115,163 +232,38 @@ export const CVWork: FC<ICVWork> = props => {
       case arrayWork[1]:
         return (
           <Research
-            researches={researches}
+            researches={userResearchs || []}
             editMode={editMode}
             userProfile={userProfile}
             arrayLength={arrayLength}
             loading={loading}
-            getResearches={() => {
-              dispatch(
-                userActions.getResearchesAction({ email: userProfile.email }),
-              );
-            }}
-            getMoreResearches={() => {
-              dispatch(
-                userActions.getMoreResearchesAction({
-                  email: userProfile.email,
-                  lastQuery,
-                }),
-              );
-            }}
-            addNewResearch={research => {
-              graphQLClient
-                .mutate({
-                  variables: { ...research, email: userProfile.email },
-                  mutation: ADD_USER_RESEARCH,
-                })
-                .then(result => console.log(result))
-                .catch(err => console.log(err));
-              // dispatch(
-              //   userActions.addNewResearchAction({
-              //     email: userProfile.email,
-              //     research,
-              //   }),
-              // );
-            }}
-            editResearch={research => {
-              dispatch(
-                userActions.editResearchAction({
-                  email: userProfile.email,
-                  research,
-                }),
-              );
-            }}
-            deleteResearch={research => {
-              dispatch(
-                userActions.deleteResearchAction({
-                  email: userProfile.email,
-                  id: research.id,
-                }),
-              );
-            }}
+            addNewResearch={addResearch}
+            editResearch={editResearch}
+            deleteResearch={deleteResearch}
           />
         );
       case arrayWork[2]:
         return (
           <Volunteer
-            volunteers={volunteers}
+            volunteers={userVolunteers || []}
             editMode={editMode}
-            userProfile={userProfile}
             arrayLength={arrayLength}
             loading={loading}
-            getVolunteers={() => {
-              dispatch(
-                userActions.getVolunteersAction({ email: userProfile.email }),
-              );
-            }}
-            getMoreVolunteers={() => {
-              dispatch(
-                userActions.getMoreVolunteersAction({
-                  email: userProfile.email,
-                  lastQuery,
-                }),
-              );
-            }}
-            addNewVolunteer={volunteer => {
-              graphQLClient
-                .mutate({
-                  variables: { ...volunteer, email: userProfile.email },
-                  mutation: ADD_USER_VOLUNTEER,
-                })
-                .then(result => console.log(result))
-                .catch(err => console.log(err));
-              // dispatch(
-              //   userActions.addNewVolunteerAction({
-              //     email: userProfile.email,
-              //     volunteer,
-              //   }),
-              // );
-            }}
-            editVolunteer={volunteer => {
-              dispatch(
-                userActions.editVolunteerAction({
-                  email: userProfile.email,
-                  volunteer,
-                }),
-              );
-            }}
-            deleteVolunteer={volunteer => {
-              dispatch(
-                userActions.deleteVolunteerAction({
-                  email: userProfile.email,
-                  id: volunteer.id,
-                }),
-              );
-            }}
+            addNewVolunteer={addVolunteer}
+            editVolunteer={editVolunteer}
+            deleteVolunteer={deleteVolunteer}
           />
         );
       case arrayWork[3]:
         return (
-          <Education
+          <School
+            schools={userSchools}
             editMode={editMode}
-            educations={educations}
-            userProfile={userProfile}
             arrayLength={arrayLength}
             loading={loading}
-            getEducations={() => {
-              dispatch(
-                userActions.getEducationsAction({ email: userProfile.email }),
-              );
-            }}
-            getMoreEducations={() => {
-              dispatch(
-                userActions.getMoreEducationsAction({
-                  email: userProfile.email,
-                  lastQuery,
-                }),
-              );
-            }}
-            addNewEducation={education => {
-              graphQLClient
-                .mutate({
-                  variables: { ...education, email: userProfile.email },
-                  mutation: ADD_USER_WORK,
-                })
-                .then(result => console.log(result))
-                .catch(err => console.log(err));
-              // dispatch(
-              //   userActions.addNewEducationAction({
-              //     email: userProfile.email,
-              //     education,
-              //   }),
-              // );
-            }}
-            editEducation={education => {
-              dispatch(
-                userActions.editEducationAction({
-                  email: userProfile.email,
-                  education,
-                }),
-              );
-            }}
-            deleteEducation={education => {
-              dispatch(
-                userActions.deleteEducationAction({
-                  email: userProfile.email,
-                  id: education.id,
-                }),
-              );
-            }}
+            addNewSchool={addSchool}
+            editSchool={editSchool}
+            deleteSchool={deleteSchool}
           />
         );
       case arrayWork[4]:
@@ -279,46 +271,12 @@ export const CVWork: FC<ICVWork> = props => {
           <Letter
             userProfile={userProfile}
             editMode={editMode}
-            letters={letters}
+            letters={userLetters}
             arrayLength={arrayLength}
             loading={loading}
-            getLetters={() => {
-              dispatch(
-                userActions.getLettersAction({ email: userProfile.email }),
-              );
-            }}
-            getMoreLetters={() => {
-              dispatch(
-                userActions.getMoreLettersAction({
-                  email: userProfile.email,
-                  lastQuery,
-                }),
-              );
-            }}
-            addNewLetter={letter => {
-              dispatch(
-                userActions.addNewLetterAction({
-                  email: userProfile.email,
-                  letter,
-                }),
-              );
-            }}
-            editLetter={letter => {
-              dispatch(
-                userActions.editLetterAction({
-                  email: userProfile.email,
-                  letter,
-                }),
-              );
-            }}
-            deleteLetter={letters => {
-              dispatch(
-                userActions.deleteLetterAction({
-                  email: userProfile.email,
-                  id: letters.id,
-                }),
-              );
-            }}
+            addNewLetter={addNewLetter}
+            editLetter={editLetter}
+            deleteLetter={deleteLetter}
           />
         );
       default:

@@ -310,8 +310,18 @@ export const GET_RESOURCE_COMMENTS = gql`
 
 export const GET_RESOURCE_PERCENTAGE = gql`
   query GetResourcePercentage($resourceId: String!) {
-    resourceUsePercent(resourceId: $resourceId){
+    resourceUsePercent(resourceId: $resourceId) {
       percentage
+    }
+  }
+`;
+
+export const GET_HELPFUL_REVIEWS = gql`
+  query GetHelpfulReviews($resourceId: String!, $userId: String!) {
+    helpful_review(
+      where: { resource_id: { _eq: $resourceId }, user_id: { _eq: $userId } }
+    ) {
+      resource_review_id
     }
   }
 `;

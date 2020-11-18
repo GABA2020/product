@@ -22,7 +22,8 @@ export interface IComment {
   usedInTests: array<string>;
   username: string | null;
   replies: Array<{
-    comment: String
-    username: String
+    comment: String;
+    username: String;
   }>;
+  isHelpful: boolean;
 }

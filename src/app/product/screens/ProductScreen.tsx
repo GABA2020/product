@@ -1,7 +1,5 @@
-import React, { Fragment, useState, useEffect } from 'react';
-import {
-  useParams
-} from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { useLazyQuery, useQuery, useMutation } from '@apollo/client';
 import { useSelector } from 'react-redux';
 
@@ -15,12 +13,18 @@ import {
   RESOURCE_DETAIL,
   GET_LOCKER,
   GET_RESOURCE_COMMENTS,
-  GET_RESOURCE_PERCENTAGE
+  GET_RESOURCE_PERCENTAGE,
+  GET_HELPFUL_REVIEWS,
 } from '../../../service/queries';
-import { DELETE_FROM_LOCKER, ADD_RESOURCE_TO_LOCKER } from '../../../service/mutations';
+import {
+  DELETE_FROM_LOCKER,
+  ADD_RESOURCE_TO_LOCKER,
+  ADD_HELPFUL_REVIEW,
+  DELETE_HELPFUL_REVIEW,
+} from '../../../service/mutations';
 
 interface params {
-  id: string
+  id: string;
 }
 
 const Product = () => {
@@ -33,99 +37,154 @@ const Product = () => {
   const [modalVisibility, setModalVisibility] = useState(false);
   const [replyModal, setReplyModal] = useState({
     commentId: '',
-    visibility: false
+    visibility: false,
   });
   const [resourceDetail, setResourceDetail] = useState({
     name: '',
     description: '',
     rating: 0,
-    reviewsCount: 0
+    reviewsCount: 0,
   });
+  const [helpfulReviews, setHelpfulReviews] = useState([]);
 
   //gql
-  const { 
+  const {
     loading: loadingLocker,
     data: lockerResponse,
-    refetch: fetchLocker
-  }= useQuery(GET_LOCKER, { variables: { email }});
+    refetch: fetchLocker,
+  } = useQuery(GET_LOCKER, { variables: { email } });
+
+  const { refetch: fetchHelpfulReviews } = useQuery(GET_HELPFUL_REVIEWS, {
+    onCompleted: data => {
+      setHelpfulReviews(data.helpful_review);
+    },
+    variables: {
+      resourceId: id,
+      userId: email,
+    },
+    notifyOnNetworkStatusChange: true,
+  });
+
   const [fetchComments, { loading: loadingComments }] = useLazyQuery(
-    GET_RESOURCE_COMMENTS, 
-    { onCompleted: data => setComments((prevComments) => [...prevComments, ...data.resourceComments]) }
+    GET_RESOURCE_COMMENTS,
+    {
+      onCompleted: data => {
+        setComments(prevComments => [
+          ...prevComments,
+          ...data.resourceComments,
+        ]);
+      },
+    },
   );
-  const [refetchCurrentComments] = useLazyQuery(
-    GET_RESOURCE_COMMENTS, 
-    { onCompleted: data => setComments((prevComments) => data.resourceComments) }
-  );
+
+  const [refetchCurrentComments] = useLazyQuery(GET_RESOURCE_COMMENTS, {
+    onCompleted: data => setComments(prevComments => data.resourceComments),
+  });
+
   const [removeFromLocker] = useMutation(DELETE_FROM_LOCKER);
   const [addToLocker] = useMutation(ADD_RESOURCE_TO_LOCKER);
-  const {data: resourceDetailResponse, loading: loadingResource} = useQuery(RESOURCE_DETAIL, {
-    variables: { id },
-    onCompleted: data => {
-      setResourceDetail(data.resource)
+  const [addHelpfulReview] = useMutation(ADD_HELPFUL_REVIEW, {
+    onCompleted: () => {
+      fetchHelpfulReviews();
     },
-    onError: err => console.log(err)
   });
+  const [removeHelpfulReview] = useMutation(DELETE_HELPFUL_REVIEW, {
+    onCompleted: () => {
+      fetchHelpfulReviews();
+    },
+  });
+
+  const { data: resourceDetailResponse, loading: loadingResource } = useQuery(
+    RESOURCE_DETAIL,
+    {
+      variables: { id },
+      onCompleted: data => {
+        setResourceDetail(data.resource);
+      },
+      onError: err => console.log(err),
+    },
+  );
+
   const {
     data: resourcePercentageResponse,
-    loading: loadingPercentage
-  } = useQuery(GET_RESOURCE_PERCENTAGE, { variables: { resourceId: id }})
+    loading: loadingPercentage,
+  } = useQuery(GET_RESOURCE_PERCENTAGE, { variables: { resourceId: id } });
 
-  const handleLockerButtonPress = async (isOnLocker: boolean)=> {
+  const handleLockerButtonPress = async (isOnLocker: boolean) => {
     try {
       if (isOnLocker) {
-        await removeFromLocker({ variables: {
-          user_id: email,
-          resource_id: id
-        }})
+        await removeFromLocker({
+          variables: {
+            user_id: email,
+            resource_id: id,
+          },
+        });
       } else {
-        await addToLocker({ variables: {
-          user_id: email,
-          resource_id: id
-        }})
+        await addToLocker({
+          variables: {
+            user_id: email,
+            resource_id: id,
+          },
+        });
       }
-      fetchLocker()
+      fetchLocker();
     } catch (err) {
-      console.log("Error: ", err)
+      console.log('Error: ', err);
     }
   };
 
   useEffect(() => {
     if (lockerResponse) {
-      const index = lockerResponse
-        .resources_locker
-        .findIndex(lockerResource =>  lockerResource.resource_id === id);
+      const index = lockerResponse.resources_locker.findIndex(
+        lockerResource => lockerResource.resource_id === id,
+      );
 
-      setOnLocker((index > -1));
+      setOnLocker(index > -1);
     }
-  }, [lockerResponse])
+  }, [lockerResponse]);
 
   useEffect(() => {
-    fetchComments({ variables: {id, limit: 5, offset: 0 }})
-  }, [])
+    fetchComments({ variables: { id, limit: 5, offset: 0 } });
+  }, []);
 
   const handleLoadMore = () => {
     setOffset(prevOffset => {
-      const newOffset = prevOffset + 5
-      fetchComments({ variables: {id, limit: 5, offset: newOffset }})
+      const newOffset = prevOffset + 5;
+      fetchComments({ variables: { id, limit: 5, offset: newOffset } });
 
-      return newOffset
-    })
-  }
-  
+      return newOffset;
+    });
+  };
+
   const reloadCurrentComments = () => {
-    refetchCurrentComments({ variables: {id, limit: offset, offset: 0 }})
-  }
+    refetchCurrentComments({ variables: { id, limit: offset, offset: 0 } });
+  };
 
-  if (
-    loadingResource ||
-    loadingLocker ||
-    loadingPercentage ||
-    loadingComments
-  ) return null;
+  const markReviewAsHelpful = (commentId: string, isHelpful: boolean) => {
+    if (!isHelpful)
+      addHelpfulReview({
+        variables: {
+          commentId,
+          userId: email,
+          resourceId: id,
+        },
+      });
+    else {
+      removeHelpfulReview({
+        variables: {
+          commentId,
+          userId: email,
+        },
+      });
+    }
+  };
+
+  if (loadingResource || loadingLocker || loadingPercentage || loadingComments)
+    return null;
 
   return (
     <section id="page_content">
-      <BoardSection 
+      <BoardSection
         title={resourceDetail.name}
         description={resourceDetail.description}
         rating={resourceDetail.rating}
@@ -136,25 +195,26 @@ const Product = () => {
       />
       <ReviewsSection
         loadMore={handleLoadMore}
-        comments={comments}
+        comments={comments.map(comment => {
+          const isHelpful = !!helpfulReviews.filter(
+            (review: any) => review.resource_review_id === comment.id,
+          ).length;
+          return isHelpful ? { ...comment, isHelpful: true } : comment;
+        })}
         handleReply={setReplyModal}
+        markReviewAsHelpful={markReviewAsHelpful}
       />
       <ResourcesSection />
-      {
-        modalVisibility && (
-          <ReviewModal
-            onClose={() => setModalVisibility(false)}/>
-        )
-      }
-      {
-        replyModal.visibility && (
-          <ReplyModal
-            onClose={() => setReplyModal({ visibility: false, commentId: ''})}
-            commentId={replyModal.commentId}
-            handleReload={reloadCurrentComments}
-          />
-        )
-      }
+      {modalVisibility && (
+        <ReviewModal onClose={() => setModalVisibility(false)} />
+      )}
+      {replyModal.visibility && (
+        <ReplyModal
+          onClose={() => setReplyModal({ visibility: false, commentId: '' })}
+          commentId={replyModal.commentId}
+          handleReload={reloadCurrentComments}
+        />
+      )}
     </section>
   );
 };

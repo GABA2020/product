@@ -51,16 +51,16 @@ export const SignIn: React.FC = props => {
           query: GET_USER_ACCOUNT,
           variables: { email: data.email },
         })
-        .then(r => userAccount=r?.data?.user_account[0])
+        .then(r => (userAccount = r?.data?.user_account[0]))
         .catch(e => console.log(e));
       await graphQLClient
         .query({
           query: GET_USER_DATA,
           variables: { email: data.email },
         })
-        .then(r => userDataHasura=r.data?.user)
+        .then(r => (userDataHasura = r.data?.user))
         .catch(e => console.log(e));
-      login({userFirestore,userAccount,userDataHasura});
+      login({ userFirestore, userAccount, userDataHasura });
       toast.info('Welcome to GABA !');
       history.push(`/${userFirestore?.username || ''}`);
     } else {

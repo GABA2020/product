@@ -36,18 +36,20 @@ import { Context } from './globalContext/GlobalContext';
 import PeoplePage from './people/screens/PeoplePage';
 import { db } from '../helpers/firebase.module';
 import { GET_USER_ACCOUNT, GET_USER_DATA } from 'service/queries';
-import TagManager from 'react-gtm-module';
+import ReactGA from 'react-ga';
 
-const tagManagerArgs = {
-  gtmId: 'G-BC79F2ZCLJ',
-};
-
-TagManager.initialize(tagManagerArgs);
+export const initGA = () => {       
+  ReactGA.initialize('G-BC79F2ZCLJ'); // put your tracking id here
+} 
+export const GApageView = (page) => {   
+  ReactGA.pageview(page);   
+}
 
 // Auth Route
 const AuthRoute = ({ component: Component, ...rest }) => {
   const { isAuth } = rest;
-  if(isAuth&&(rest.path===RoutesTypes.AUTH))return(<Redirect to={RoutesTypes.HOME} />)
+  if (isAuth && rest.path === RoutesTypes.AUTH)
+    return <Redirect to={RoutesTypes.HOME} />;
   return (
     <Route
       {...rest}
@@ -74,6 +76,8 @@ export function App() {
   const [initialized, setInitialized] = React.useState(false);
 
   React.useEffect(() => {
+    initGA();
+
     auth().onAuthStateChanged(async user => {
       if (!user) {
         setInitialized(true);

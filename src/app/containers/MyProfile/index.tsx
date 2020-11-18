@@ -30,6 +30,7 @@ import { img_user, verified_check } from 'assets/images';
 import { REF } from 'helpers/firebase.module';
 import Helmet from 'react-helmet';
 import { Context } from 'app/globalContext/GlobalContext';
+import { GApageView } from 'app';
 
 export const MyProfile = props => {
   useInjectSaga({ key: userSliceKey, saga: UserSaga });
@@ -37,7 +38,9 @@ export const MyProfile = props => {
   useInjectSaga({ key: storageSliceKey, saga: StorageSaga });
   const dispatch = useDispatch();
   const { educations } = useSelector(userSelector);
-  const { state: { user:userProfile } } = useContext(Context);
+  const {
+    state: { user: userProfile },
+  } = useContext(Context);
 
   const { program } = useSelector(programSelector);
 
@@ -49,6 +52,10 @@ export const MyProfile = props => {
   ] = useState<boolean>(false);
 
   const image = useStorage(`${REF.avatars}/${userProfile.avatar}`);
+
+  useEffect(() => {
+    GApageView('Home');
+  }, []);
 
   useEffect(() => {
     dispatch(

@@ -2,19 +2,17 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useMutation } from '@apollo/react-hooks';
 import { useSelector } from 'react-redux';
-import {
-  useParams
-} from "react-router-dom";
+import { useParams } from 'react-router-dom';
 
 import { Column, Row } from '../../genericComponents/Layout';
 import theme from '../../../theme';
-import { REPLY_COMMENT } from '../../../service/mutations'
+import { REPLY_COMMENT } from '../../../service/mutations';
 
 const inputFontStyle = `
   font-size: 16px;
   font-weight: 500;
   letter-spacing: 0.1px;
-`
+`;
 
 const ModalContainer = styled(Column)`
   width: 100%;
@@ -41,24 +39,24 @@ const ModalHeader = styled.div`
   padding: 41px 200px 26px 200px;
   background-color: white;
   border-bottom: 1px solid ${props => props.theme.color.softGray};
-`
+`;
 
 const HeaderTitle = styled.h3`
   width: 100%;
   border-bottom: 2px solid ${props => props.theme.color.gabaYellow};
   padding-bottom: 20px;
-`
+`;
 
 const ModalContent = styled(Column)`
   padding: 26px 200px 41px 200px;
   width: 100%;
-`
+`;
 
 const Divider = styled.div`
   width: 100%;
   border-bottom: 1px solid lightgray;
   margin: 25px 0;
-`
+`;
 
 const FormSection = styled(Row)`
   flex-wrap: wrap;
@@ -77,9 +75,9 @@ const FormSection = styled(Row)`
   }
 
   .custom-date {
-    width: 170px
+    width: 170px;
   }
-`
+`;
 
 const Subtitle = styled.p`
   width: 100%;
@@ -100,7 +98,7 @@ const Subtitle = styled.p`
     position: absolute;
     left: -7px;
   }
-`
+`;
 
 const TextArea = styled.textarea`
   border: 1px solid lightgray;
@@ -110,10 +108,10 @@ const TextArea = styled.textarea`
   width: 100%;
   padding-top: 10px;
   ${inputFontStyle}
-`
+`;
 
 const ModalButton = styled.button`
-  background: ${(props: { background: string}) => props.background};
+  background: ${(props: { background: string }) => props.background};
   border-radius: 6px;
   height: 48px;
   color: ${props => props.theme.color.darkBlue};
@@ -122,66 +120,80 @@ const ModalButton = styled.button`
   text-align: center;
   width: 48%;
   border: none;
-`
+`;
 
 const ButtonsContainer = styled(Row)`
   justify-content: space-between;
-  width: 100%;  
-`
+  width: 100%;
+`;
 
 interface params {
-  id: string
+  id: string;
 }
 
-const ReplyModal = (
-  {
-    onClose,
-    commentId,
-    handleReload
-  }: {
-    onClose: () => void,
-    commentId: string,
-    handleReload: () => void
-  }
-) => {
+const ReplyModal = ({
+  onClose,
+  commentId,
+  handleReload,
+}: {
+  onClose: () => void;
+  commentId: string;
+  handleReload: () => void;
+}) => {
   //to do: centralize modals
-  const [comment, setComment] = useState('')
-  const { username } = useSelector((state: any) => state.auth);
+  const [comment, setComment] = useState('');
+  const { username } = useSelector((state: any) => state.user.userProfile);
+
   let { id }: params = useParams();
-  const [replyComment] = useMutation(REPLY_COMMENT, { onCompleted: () => {
-    onClose()
-    handleReload()
-  }})
+  const [replyComment] = useMutation(REPLY_COMMENT, {
+    onCompleted: () => {
+      onClose();
+      handleReload();
+    },
+  });
 
   const handleSave = () => {
+    console.log({ comment, username, commentId });
     replyComment({
       variables: {
         comment,
         username,
         docId: id,
-        commentId
-      }
-    })
-  }
+        commentId,
+      },
+    });
+  };
 
   return (
     <ModalContainer>
       <Modal>
         <ModalHeader>
-          <HeaderTitle>
-            Write A Reply
-          </HeaderTitle>
+          <HeaderTitle>Write A Reply</HeaderTitle>
         </ModalHeader>
         <ModalContent>
-          <FormSection >
+          <FormSection>
             <Subtitle>Review</Subtitle>
-            <TextArea rows={6} value={comment} onChange={({ target: { value }}) => setComment(value)}/>
+            <TextArea
+              rows={6}
+              value={comment}
+              onChange={({ target: { value } }) => setComment(value)}
+            />
           </FormSection>
-          <Divider/>
-          <FormSection >
+          <Divider />
+          <FormSection>
             <ButtonsContainer>
-              <ModalButton onClick={onClose} background={theme.color.softPurple}>Cancel</ModalButton>
-              <ModalButton onClick={handleSave} background={theme.color.darkGray}>Send Reply</ModalButton>
+              <ModalButton
+                onClick={onClose}
+                background={theme.color.softPurple}
+              >
+                Cancel
+              </ModalButton>
+              <ModalButton
+                onClick={handleSave}
+                background={theme.color.darkGray}
+              >
+                Send Reply
+              </ModalButton>
             </ButtonsContainer>
           </FormSection>
         </ModalContent>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { SetStateAction, useState } from 'react';
 import styled from 'styled-components';
 
 import Review from './Review';
@@ -56,7 +56,7 @@ const StarContainer = styled.div`
 interface ReviewSectionProps {
   comments: Array<IComment>;
   loadMore: () => void;
-  handleCreateReview: () => void;
+  handleReply: any;
 }
 
 const ReviewSection = (props: ReviewSectionProps) => {
@@ -141,15 +141,6 @@ const ReviewSection = (props: ReviewSectionProps) => {
               <Button onClick={handleClearFilters} style={{marginBottom: 20}}>
                 Clear Filters
               </Button>
-              <h3 className="mention-title">Review this resource</h3>
-              <div className="mention-insight">
-                <p>Help other students with your insight.</p>
-              </div>
-              <div className="write-button">
-                <Button onClick={props.handleCreateReview}>
-                  Write a Review
-                </Button>
-              </div>
             </div>
           </div>
           <div className="review-main">
@@ -157,7 +148,7 @@ const ReviewSection = (props: ReviewSectionProps) => {
               <div className="portlet-message">
                 {
                   props.comments.map(rev => (
-                    <Review {...rev}/>
+                    <Review handleReply={props.handleReply} {...rev}/>
                   ))
                 }
               </div>

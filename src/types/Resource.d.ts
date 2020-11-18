@@ -21,4 +21,8 @@ export interface IComment {
   title: string;
   usedInTests: array<string>;
   username: string | null;
+  replies: Array<{
+    comment: String
+    username: String
+  }>;
 }

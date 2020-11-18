@@ -5,8 +5,8 @@ const YellowActiveStar = require('../../assets/images/front/YellowActiveStar@2x.
 const YellowStar = require('../../assets/images/front/YellowStar@2x.png');
 
 interface StarsProps {
-  numberOfStars: number,
-  color?: 'blue' | 'yellow',
+  numberOfStars: number | string;
+  color?: 'blue' | 'yellow';
   onChange?: (stars: number) => void;
 }
 

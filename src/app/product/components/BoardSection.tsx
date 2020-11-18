@@ -31,6 +31,8 @@ interface BoardSectionProps {
   rating: number | string;
   onLocker: boolean;
   onLockerButtonPress: Function;
+  handleCreateReview: () => void;
+  reviewsCount: number | string;
 }
 
 const BoardSection = (props: BoardSectionProps) => (
@@ -46,13 +48,13 @@ const BoardSection = (props: BoardSectionProps) => (
             <div className="boards-rating">
               <div className="vote-rating">
                 <ul className="vote-rating-list">
-                  <Stars color='yellow' numberOfStars={4}/>
+                  <Stars color='yellow' numberOfStars={props.rating}/>
                 </ul>
               </div>
             </div>
             <BoardsReview className="boards-review">
               <a href="#">
-                <span className="review-num">{props.rating}</span> Reviews
+                <span className="review-num">{props.reviewsCount || 0}</span> Reviews
               </a>
             </BoardsReview>
           </div>
@@ -92,6 +94,11 @@ const BoardSection = (props: BoardSectionProps) => (
               <li>
                 <Button>
                   <span className="icons-target" style={{color: 'yellow'}}>&nbsp;</span> Buy from 
+                </Button>
+              </li>
+              <li>
+                <Button onClick={props.handleCreateReview}>
+                  Write a Review
                 </Button>
               </li>
             </ul>

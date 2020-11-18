@@ -90,3 +90,19 @@ export const CREATE_REVIEW = gql`
     }
   }
 `
+
+export const REPLY_COMMENT = gql`
+  mutation ReplyComment(
+    $comment: String!,
+    $commentId: String!,
+    $docId: String!,
+    $username: String!
+  ) {
+    replyResourceComment(replyData: { 
+      comment: $comment,
+      commentId: $commentId,
+      docId: $docId,
+      username: $username
+    })
+  }
+`

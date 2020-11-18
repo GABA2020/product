@@ -366,6 +366,7 @@ export const RESOURCE_DETAIL = gql`
       picture_name
       rating
       tags
+      reviewsCount
     }
   }
 `;
@@ -432,6 +433,18 @@ export const GET_RESOURCE_COMMENTS = gql`
       title
       usedInTests
       username
+      replies {
+        comment
+        username
+      }
+    }
+  }
+`;
+
+export const GET_RESOURCE_PERCENTAGE = gql`
+  query GetResourcePercentage($resourceId: String!) {
+    resourceUsePercent(resourceId: $resourceId){
+      percentage
     }
   }
 `;

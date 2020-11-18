@@ -11,6 +11,7 @@ enum RoutesTypes {
   ADMIN_CONSOLE = '/admin-console',
   MARKET_PLACE = '/marketplace',
   PEOPLE = '/people',
+  APLICANTDB = '/applicant-database',
 }
 
 export default RoutesTypes;

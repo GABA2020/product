@@ -38,12 +38,12 @@ import { db } from '../helpers/firebase.module';
 import { GET_USER_ACCOUNT, GET_USER_DATA } from 'service/queries';
 import ReactGA from 'react-ga';
 
-export const initGA = () => {       
-  ReactGA.initialize('G-BC79F2ZCLJ'); // put your tracking id here
-} 
-export const GApageView = (page) => {   
-  ReactGA.pageview(page);   
-}
+export const initGA = () => {
+  ReactGA.initialize('UA-183349067-1'); // put your tracking id here
+};
+export const GApageView = page => {
+  ReactGA.pageview(page);
+};
 
 // Auth Route
 const AuthRoute = ({ component: Component, ...rest }) => {

@@ -62,7 +62,7 @@ export const SignIn: React.FC = props => {
         .catch(e => console.log(e));
       login({ userFirestore, userAccount, userDataHasura });
       toast.info('Welcome to GABA !');
-      history.push(`/${userFirestore?.username || ''}`);
+      history.push(`/home/${userFirestore?.username || ''}`);
     } else {
       toast.error('Unable to log in with provided credentials');
     }

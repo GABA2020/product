@@ -5,6 +5,7 @@ import FeaturedItem from './FeaturedItem';
 import { Resource } from '../../../../types/Resource';
 import FeaturedItemSkeleton from './FeaturedItemSkeleton';
 import Button from 'app/genericComponents/Button';
+import { Link } from 'react-router-dom';
 
 const FilterByNameIcon = require('../../../../assets/images/sprites/FilterByName@2x.png');
 const FilterByPriceIcon = require('../../../../assets/images/sprites/FilterByPrice@2x.png');
@@ -70,7 +71,7 @@ const FilterImage = styled.img`
 const LoadMoreButton = styled(Button)`
   align-self: center;
   margin-bottom: 30px;
-`
+`;
 
 interface MarketPlaceFeaturedProps {
   resources?: Array<Resource>;
@@ -83,7 +84,7 @@ const MarketPlaceFeatured = ({
   resources = [],
   onLockerButtonPress,
   loading,
-  handleLoadMore
+  handleLoadMore,
 }: MarketPlaceFeaturedProps) => {
   return (
     <FeaturedContainer>
@@ -92,7 +93,17 @@ const MarketPlaceFeatured = ({
           <Title>Featured</Title>
           <Tabs>
             <Tab active={true}>Resouces</Tab>
-            <Tab>Schools</Tab>
+            <Tab>
+              <Link
+                to={{
+                  pathname: 'https://airtable.com/shruwb1Qwbpcjt03g',
+                }}
+                target="_blank"
+              >
+                {' '}
+                Schools{' '}
+              </Link>
+            </Tab>
           </Tabs>
           <FiltersContainer>
             <FilterImage src={FilterByNameIcon} />
@@ -111,7 +122,11 @@ const MarketPlaceFeatured = ({
               ))}
         </>
       </ContentContainer>
-      {!loading && <LoadMoreButton onClick={() => handleLoadMore()}>Load More Resources</LoadMoreButton>}
+      {!loading && (
+        <LoadMoreButton onClick={() => handleLoadMore()}>
+          Load More Resources
+        </LoadMoreButton>
+      )}
     </FeaturedContainer>
   );
 };

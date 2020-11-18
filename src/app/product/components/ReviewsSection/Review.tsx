@@ -65,8 +65,8 @@ const ReviewRepliesContainer: any = styled(Column)`
 const ArrowContainer = styled(Row)`
   width: 100%;
   justify-content: center;
-  font-size: 10px;
-
+  font-size: 14px;
+  cursor: pointer;
   p {
     margin: 0;
   }

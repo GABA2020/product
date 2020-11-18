@@ -79,7 +79,7 @@ export const AdminConsole = () => {
   const adminList = [
     'candice.blacknall@gogaba.co',
     'snmunoz@gmail.com',
-    'aleoo7100@gmail.com',
+    'aleoo7100+1@gmail.com',
   ];
 
   const onMenuItemClicked = (menuItem: AdminMenuItems) => {

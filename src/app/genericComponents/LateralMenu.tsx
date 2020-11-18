@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Menu, Sidebar } from 'semantic-ui-react';
 import { Context } from 'app/globalContext/GlobalContext';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 
 export function LateralMenu({ children }) {
   const {
@@ -33,10 +33,21 @@ export function LateralMenu({ children }) {
         </Menu.Item>
         <Menu.Item
           onClick={() => changeShowMenu(false)}
-          as={NavLink} 
-          to='/people'>
+          as={NavLink}
+          to="/people"
+        >
           People
         </Menu.Item>
+        <Link
+          onClick={() => changeShowMenu(false)}
+          to={{
+            pathname: 'https://airtable.com/shrKweFzBEkoWqzTp',
+          }}
+          target="_blank"
+        >
+          {' '}
+          Applicant Database{' '}
+        </Link>
       </Sidebar>
       <Sidebar.Pusher dimmed={showMenu}>{children}</Sidebar.Pusher>
     </Sidebar.Pushable>

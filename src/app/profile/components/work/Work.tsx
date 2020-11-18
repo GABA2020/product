@@ -1,30 +1,16 @@
 import React, { Fragment, useEffect, FC, useState } from 'react';
 import { faEdit, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { EditWorkModal } from '../Modal/EditWorkModal';
-import { AddWorkModal } from '../Modal/AddWorkModal';
-import moment from 'moment';
-import { MonthYearFormat, getDifferenceMonthYear } from 'helpers/Unity';
-import { down_arrow } from 'assets/images';
+import { down_arrow } from '../../../../assets/images';
+import { WorkModal } from './WorkModal'
 
-interface IWork {
-  workExperiences: ENTITIES.WorkExperience[];
-  userProfile: ENTITIES.UserProfile;
-  editMode: boolean;
-  arrayLength: number;
-  loading: boolean;
-  editWorkExperience: (workExperience: ENTITIES.WorkExperience) => void;
-  addNewWorkExperience: (workExperience: ENTITIES.WorkExperience) => void;
-  deleteWorkExperience: (workExperience: ENTITIES.WorkExperience) => void;
-  getMoreWorkExperiences: () => void;
-}
+
 const renderTextArea = (text: string) => {
   return text.replace(/\n/g, '<br>');
 };
-export const Work: FC<IWork> = props => {
+export function Work(props){
   const {
     workExperiences,
-    userProfile,
     editMode,
     arrayLength,
     loading,
@@ -34,52 +20,41 @@ export const Work: FC<IWork> = props => {
     getMoreWorkExperiences,
   } = props;
   /* state modal display */
-  const [isShowModalEditWorkState, setIsShowModalEditWorkState] = useState<
-    boolean
-  >(false);
-  const [isShowModalAddWorkState, setIsShowModalAddWorkState] = useState<
-    boolean
-  >(false);
+  const [isShowModalWorkState, setIsShowModalWorkState] = useState(false);
   /* end state modal display */
-  const [workExperienceState, setWorkExperienceState] = useState<
-    ENTITIES.WorkExperience
-  >({
-    id:'',
-    company: '',
-    city: '',
-    end_date: '',
-    start_date: '',
-    description: '',
-    title: '',
-  });
+  const [workExperienceState, setWorkExperienceState] = useState();
 
-  const onAddNewWorkExperience = (workExperience) => {
+  function onAddNewWorkExperience(workExperience) {
     addNewWorkExperience(workExperience);
-    setIsShowModalAddWorkState(false);
-  };
-  const onEditNewWorkExperience = (workExperience: ENTITIES.WorkExperience) => {
+    hideWorkModal();
+  }
+
+  function onEditNewWorkExperience(workExperience){
     editWorkExperience(workExperience);
-    setIsShowModalEditWorkState(false);
+    hideWorkModal();
   };
 
-  const onDeleteWorkExperience = (workExperience: ENTITIES.WorkExperience) => {
+  function onDeleteWorkExperience(workExperience){
     deleteWorkExperience(workExperience);
-    setIsShowModalEditWorkState(false);
+    hideWorkModal();
   };
+
+  function hideWorkModal() {
+    setIsShowModalWorkState(false);
+    setWorkExperienceState(undefined);
+  }
+
+
   return (
     <Fragment>
-      {/* <EditWorkModal
-        isShow={isShowModalEditWorkState}
-        onHide={() => setIsShowModalEditWorkState(false)}
-        workExperience={workExperienceState}
-        editWorkExperience={onEditNewWorkExperience}
-        deleteWorkExperience={onDeleteWorkExperience}
-      ></EditWorkModal> */}
-      <AddWorkModal
+      <WorkModal
         addNewWorkExperience={onAddNewWorkExperience}
-        isShow={isShowModalAddWorkState}
-        onHide={() => setIsShowModalAddWorkState(false)}
-      ></AddWorkModal>
+        editWorkExPerience={onEditNewWorkExperience}
+        deleteWorkExperience={onDeleteWorkExperience}
+        isShow={isShowModalWorkState}
+        onHide={hideWorkModal}
+        editValues={workExperienceState}
+      />
       <div className="main-title">
         <div className="main-title-work">
           <h2> Work</h2>
@@ -88,7 +63,7 @@ export const Work: FC<IWork> = props => {
               href="#"
               onClick={e => {
                 e.preventDefault();
-                setIsShowModalAddWorkState(true);
+                setIsShowModalWorkState(true);
               }}
             >
               <FontAwesomeIcon icon={faPlusCircle} />
@@ -110,7 +85,7 @@ export const Work: FC<IWork> = props => {
                           onClick={e => {
                             e.preventDefault();
                             setWorkExperienceState(item);
-                            setIsShowModalEditWorkState(true);
+                            setIsShowModalWorkState(true);
                           }}
                           href="#"
                         >

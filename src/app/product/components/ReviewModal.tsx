@@ -3,21 +3,19 @@ import styled from 'styled-components';
 import DatePicker from 'react-datepicker';
 import { useMutation } from '@apollo/react-hooks';
 import { useSelector } from 'react-redux';
-import {
-  useParams
-} from "react-router-dom";
+import { useParams } from 'react-router-dom';
 
 import { Column, Row } from '../../genericComponents/Layout';
 import Checkbox from '../../genericComponents/Checkbox';
 import Stars from '../../genericComponents/Stars';
 import theme from '../../../theme';
-import { CREATE_REVIEW } from '../../../service/mutations'
+import { CREATE_REVIEW } from '../../../service/mutations';
 
 const inputFontStyle = `
   font-size: 16px;
   font-weight: 500;
   letter-spacing: 0.1px;
-`
+`;
 
 const ModalContainer = styled(Column)`
   width: 100%;
@@ -44,24 +42,24 @@ const ModalHeader = styled.div`
   padding: 41px 200px 26px 200px;
   background-color: white;
   border-bottom: 1px solid ${props => props.theme.color.softGray};
-`
+`;
 
 const HeaderTitle = styled.h3`
   width: 100%;
   border-bottom: 2px solid ${props => props.theme.color.gabaYellow};
   padding-bottom: 20px;
-`
+`;
 
 const ModalContent = styled(Column)`
   padding: 26px 200px 41px 200px;
   width: 100%;
-`
+`;
 
 const Divider = styled.div`
   width: 100%;
   border-bottom: 1px solid lightgray;
   margin: 25px 0;
-`
+`;
 
 const FormSection = styled(Row)`
   flex-wrap: wrap;
@@ -80,9 +78,9 @@ const FormSection = styled(Row)`
   }
 
   .custom-date {
-    width: 170px
+    width: 170px;
   }
-`
+`;
 
 const Subtitle = styled.p`
   width: 100%;
@@ -103,11 +101,11 @@ const Subtitle = styled.p`
     position: absolute;
     left: -7px;
   }
-`
+`;
 
 const CheckboxContainer = styled.div`
   width: 50%;
-`
+`;
 
 const TextInput = styled.input`
   height: 40px;
@@ -117,7 +115,7 @@ const TextInput = styled.input`
   padding-left: 10px;
   width: 100%;
   ${inputFontStyle}
-`
+`;
 
 const TextArea = styled.textarea`
   border: 1px solid lightgray;
@@ -127,10 +125,10 @@ const TextArea = styled.textarea`
   width: 100%;
   padding-top: 10px;
   ${inputFontStyle}
-`
+`;
 
 const ModalButton = styled.button`
-  background: ${(props: { background: string}) => props.background};
+  background: ${(props: { background: string }) => props.background};
   border-radius: 6px;
   height: 48px;
   color: ${props => props.theme.color.darkBlue};
@@ -139,68 +137,69 @@ const ModalButton = styled.button`
   text-align: center;
   width: 48%;
   border: none;
-`
+`;
 
 const ButtonsContainer = styled(Row)`
   justify-content: space-between;
-  width: 100%;  
-`
+  width: 100%;
+`;
 
 interface params {
-  id: string
+  id: string;
 }
 
-const ReviewModal = (
-  { onClose }: { onClose: () => void }
-) => {
-  const [startDateValue, setStartDateValue] = useState(new Date())
-  const [endDateValue, setEndDateValue] = useState(new Date())
+const ReviewModal = ({ onClose }: { onClose: () => void }) => {
+  const [startDateValue, setStartDateValue] = useState(new Date());
+  const [endDateValue, setEndDateValue] = useState(new Date());
   const [exams, setExams] = useState({
     'Subject One': false,
     'Exam Title One': false,
     'Subject Two': false,
-    'Exam Title Two': false
-  })
-  const [examDate, setExamDate] = useState(new Date())
-  const [stars, setStars] = useState(0)
-  const [title, setTitle] = useState('')
-  const [comment, setComment] = useState('')
+    'Exam Title Two': false,
+  });
+  const [examDate, setExamDate] = useState(new Date());
+  const [stars, setStars] = useState(0);
+  const [title, setTitle] = useState('');
+  const [comment, setComment] = useState('');
   let { id }: params = useParams();
   const email = useSelector((state: any) => state.auth.email);
-  const [createReview, { data }] = useMutation(CREATE_REVIEW, { onCompleted: () => onClose()})
+  const [createReview, { data }] = useMutation(CREATE_REVIEW, {
+    onCompleted: () => onClose(),
+  });
 
-  const handleCheckboxChange = exam => setExams(prevExams => {
-    return {
-      ...prevExams,
-      [exam]: !prevExams[exam]
-    }
-  })
+  const handleCheckboxChange = exam =>
+    setExams(prevExams => {
+      return {
+        ...prevExams,
+        [exam]: !prevExams[exam],
+      };
+    });
 
   const handleSave = () => {
-    createReview({ variables: {
-      comment,
-      myRating: stars,
-      resourceId: id,
-      specialties: [],
-      subjects: [],
-      title,
-      usedInTests: Object.keys(exams).filter(key => exams[key]),
-      used_end: endDateValue,
-      used_start: startDateValue,
-      userId: email
-    }})
-  }
+    createReview({
+      variables: {
+        comment,
+        myRating: stars,
+        resourceId: id,
+        specialties: [],
+        subjects: [],
+        title,
+        usedInTests: Object.keys(exams).filter(key => exams[key]),
+        used_end: endDateValue,
+        used_start: startDateValue,
+        userId: email,
+      },
+    });
+  };
 
   return (
     <ModalContainer>
       <Modal>
         <ModalHeader>
-          <HeaderTitle>
-            Review Boards and beyond!
-          </HeaderTitle>
+          <HeaderTitle>Review Boards and beyond!</HeaderTitle>
         </ModalHeader>
         <ModalContent>
-          <FormSection >
+          <FormSection>
             <Subtitle>When did you start?</Subtitle>
             <Row>
               <label>Start: </label>
@@ -221,40 +220,40 @@ const ReviewModal = (
               />
             </Row>
           </FormSection>
-          <Divider/>
+          <Divider />
           <FormSection>
             <Subtitle>When did you use this resource for?</Subtitle>
             <CheckboxContainer>
               <Checkbox
-                onChange={() => handleCheckboxChange('Subject One')} 
+                onChange={() => handleCheckboxChange('Subject One')}
                 label="Subject One"
                 checked={exams['Subject One']}
               />
             </CheckboxContainer>
             <CheckboxContainer>
               <Checkbox
-                onChange={() => handleCheckboxChange('Exam Title One')} 
+                onChange={() => handleCheckboxChange('Exam Title One')}
                 label="Exam Title One"
                 checked={exams['Exam Title One']}
               />
             </CheckboxContainer>
             <CheckboxContainer>
               <Checkbox
-                onChange={() => handleCheckboxChange('Subject Two')} 
+                onChange={() => handleCheckboxChange('Subject Two')}
                 label="Subject Two"
                 checked={exams['Subject Two']}
               />
             </CheckboxContainer>
             <CheckboxContainer>
               <Checkbox
-                onChange={() => handleCheckboxChange('Exam Title Two')} 
+                onChange={() => handleCheckboxChange('Exam Title Two')}
                 label="Exam Title Two"
                 checked={exams['Exam Title Two']}
               />
             </CheckboxContainer>
           </FormSection>
-          <Divider/>
-          <FormSection >
+          <Divider />
+          <FormSection>
             <Subtitle>When did you take the exam?</Subtitle>
             <Row>
               <label>Date: </label>
@@ -266,28 +265,49 @@ const ReviewModal = (
               />
             </Row>
           </FormSection>
-          <Divider/>
-          <FormSection >
+          <Divider />
+          <FormSection>
             <Subtitle>Star Rating</Subtitle>
             <Row>
-              <Stars onChange={numOfStars => setStars(numOfStars)} numberOfStars={stars} color='yellow'/>
+              <Stars
+                onChange={numOfStars => setStars(numOfStars)}
+                numberOfStars={stars}
+                color="yellow"
+              />
             </Row>
           </FormSection>
-          <Divider/>
-          <FormSection >
+          <Divider />
+          <FormSection>
             <Subtitle>Review Title</Subtitle>
-            <TextInput value={title} onChange={({ target: { value }}) => setTitle(value)}/>
+            <TextInput
+              value={title}
+              onChange={({ target: { value } }) => setTitle(value)}
+            />
           </FormSection>
-          <Divider/>
-          <FormSection >
+          <Divider />
+          <FormSection>
             <Subtitle>Review</Subtitle>
-            <TextArea rows={6} value={comment} onChange={({ target: { value }}) => setComment(value)}/>
+            <TextArea
+              rows={6}
+              value={comment}
+              onChange={({ target: { value } }) => setComment(value)}
+            />
           </FormSection>
-          <Divider/>
-          <FormSection >
+          <Divider />
+          <FormSection>
             <ButtonsContainer>
-              <ModalButton onClick={onClose} background={theme.color.softPurple}>Cancel</ModalButton>
-              <ModalButton onClick={handleSave} background={theme.color.darkGray}>Save To Locker</ModalButton>
+              <ModalButton
+                onClick={onClose}
+                background={theme.color.softPurple}
+              >
+                Cancel
+              </ModalButton>
+              <ModalButton
+                onClick={handleSave}
+                background={theme.color.darkGray}
+              >
+                Save To Locker
+              </ModalButton>
             </ButtonsContainer>
           </FormSection>
         </ModalContent>

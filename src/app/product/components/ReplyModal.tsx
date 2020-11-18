@@ -143,6 +143,7 @@ const ReplyModal = ({
   //to do: centralize modals
   const [comment, setComment] = useState('');
   const { username } = useSelector((state: any) => state.user.userProfile);
+
   let { id }: params = useParams();
   const [replyComment] = useMutation(REPLY_COMMENT, {
     onCompleted: () => {
@@ -152,6 +153,7 @@ const ReplyModal = ({
   });
 
   const handleSave = () => {
+    console.log({ comment, username, commentId });
     replyComment({
       variables: {
         comment,

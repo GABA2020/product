@@ -14,6 +14,7 @@ import { useSelector } from 'react-redux';
 
 import { CONNECT_TO_USER } from '../../../service/mutations';
 import { Context } from 'app/globalContext/GlobalContext';
+import { GApageView } from 'app';
 
 const CardsContainer = styled(Column)`
   align-items: center;
@@ -71,22 +72,8 @@ const PeoplePageScreen = () => {
   };
 
   useEffect(() => {
-    // console.log("efect", userResponse, loadinUsers);
-    // if (!loadinUsers && userResponse) {
-    //   console.log("efect post", userResponse, loadinUsers);
-    //   setUsers(userResponse.users);
-    //   console.log('users State', users);
-    // }
-    // console.log("efect2", connectResponse, loadingConnect);
-    // if (!loadingConnect && connectResponse) {
-    //   console.log('users State2', users);
-
-    //   setUsers(
-    //     getConnectedUsers(userResponse.users, connectResponse.connectedUsers),
-    //   );
-    // }
-  }, [connectResponse, loadingConnect, userResponse, loadinUsers]);
-  console.log('connects', connectResponse, loadingConnect, connectError);
+    GApageView('People');
+  }, []);
 
   return (
     <GenericContainer justify="center">

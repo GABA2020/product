@@ -12,6 +12,7 @@ import {
   ADD_RESOURCE_TO_LOCKER,
   DELETE_FROM_LOCKER,
 } from '../../../service/mutations';
+import { GApageView } from 'app';
 
 const MarketPlaceContainer = styled(Segment.Group)`
   margin: 0 !important;
@@ -126,6 +127,10 @@ const MarketPlaceScreen = () => {
       );
     }
   }, [resourcesResponse, lockerResponse]);
+
+  useEffect(() => {
+    GApageView('Marketplace');
+  }, []);
 
   useEffect(() => {
     refetchResources({ limit: 10, offset })

@@ -18,7 +18,7 @@ export function HomePage() {
             exact
             path={RoutesTypes.HOME}
             render={() => {
-              return <Redirect to={`/${username}`} />;
+              return <Redirect to={`home/${username}`} />;
             }}
           ></Route>
         </Switch>

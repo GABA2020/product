@@ -2,7 +2,7 @@ enum RoutesTypes {
   HOME = '/',
   AUTH = '/auth',
   PROFILE = '/profile',
-  USER = '/:username',
+  USER = '/home/:username',
   PRODUCT = '/product-page/:id',
   SIGN_IN = '/sign-in',
   CV_PREVIEW = '/cv/download',
@@ -10,7 +10,8 @@ enum RoutesTypes {
   PAYMENT = '/payment',
   ADMIN_CONSOLE = '/admin-console',
   MARKET_PLACE = '/marketplace',
-  PEOPLE='/people'
+  PEOPLE = '/people',
+  APLICANTDB = '/applicant-database',
 }
 
 export default RoutesTypes;

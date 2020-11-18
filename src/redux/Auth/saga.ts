@@ -12,7 +12,7 @@ const isUserPayment = (
   membership_type: string,
   payment_complete: boolean,
 ) => {
-  console.log("moment", moment().diff(last_login, 'days'));
+  console.log('moment', moment().diff(last_login, 'days'));
   if (
     membership_type === 'GABASilver' &&
     payment_complete === false &&
@@ -50,15 +50,15 @@ export function* loginSaga({ payload }) {
         } else {
           yield put(actions.loginActionSuccess(response.username));
           toast.info('Welcome to GABA !');
-          history.push(`/${response.username}`);
-        }          
+          history.push(`/home/${response.username}`);
+        }
       } else {
         // yield put(actions.loginActionFailed());
         // alert('Redirect to payment page');
         yield put(actions.loginActionSuccess(response.username));
         yield call(updateLastLogin, payload);
         toast.info('Welcome to GABA !');
-        history.push(`/${response.username}`);        
+        history.push(`/home/${response.username}`);
       }
     }
   } catch (e) {

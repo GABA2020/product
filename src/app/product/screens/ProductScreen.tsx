@@ -8,6 +8,7 @@ import ReviewsSection from '../components/ReviewsSection/';
 import ResourcesSection from '../components/ResourcesSection/';
 import ReviewModal from '../components/ReviewModal';
 import ReplyModal from '../components/ReplyModal';
+import { GApageView } from 'app';
 
 import {
   RESOURCE_DETAIL,
@@ -29,6 +30,7 @@ interface params {
 
 const Product = () => {
   let { id }: params = useParams();
+  GApageView(`Product ${id}`);
 
   const email = useSelector((state: any) => state.auth.email);
   const [onLocker, setOnLocker] = useState(false);
@@ -138,7 +140,6 @@ const Product = () => {
       const index = lockerResponse.resources_locker.findIndex(
         lockerResource => lockerResource.resource_id === id,
       );
-
       setOnLocker(index > -1);
     }
   }, [lockerResponse]);

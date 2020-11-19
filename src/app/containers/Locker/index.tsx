@@ -14,6 +14,10 @@ import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { EditResource } from 'app/components/Modal/ResourceModal/EditResource';
 import { Context } from 'app/globalContext/GlobalContext';
 import { NavLink } from 'react-router-dom';
+import { useQuery } from '@apollo/client';
+import { CONNECTED_USERS } from 'service/queries';
+
+
 
 const iniUserResource: ENTITIES.UserResource = {
   id: '',
@@ -36,6 +40,14 @@ const iniUserResource: ENTITIES.UserResource = {
 };
 
 export const Locker = () => {
+
+  // const {
+  //   loading: loadingConnect,
+  //   data: connectResponse,
+  //   error: connectError,
+  //   refetch: fetchConnect,
+  // } = useQuery(CONNECTED_USERS, { variables: { email: emailSender } });
+
   useInjectSaga({ key: sliceKey, saga: LockerSaga });
   const dispatch = useDispatch();
   const {
@@ -61,18 +73,20 @@ export const Locker = () => {
   const [tabState, setTabState] = useState(0); // 0 => resource, 1 => review
 
   useEffect(() => {
-    if (userProfile.email !== '') {
-      dispatch(
-        actions.getAllUserResourceAction({
-          email: userProfile.email,
-        }),
-      );
-      dispatch(
-        actions.getUserResourcesAction({
-          email: userProfile.email,
-        }),
-      );
-    }
+    // if (userProfile.email !== '') {
+    //   dispatch(
+    //     actions.getAllUserResourceAction({
+    //       email: userProfile.email,
+    //     }),
+    //   );
+    //   dispatch(
+    //     actions.getUserResourcesAction({
+    //       email: userProfile.email,
+    //     }),
+    //   );
+    // }
+
+
   }, [userProfile.email]);
 
   const renderReviews = (reviews: ENTITIES.UserResource[]) => {

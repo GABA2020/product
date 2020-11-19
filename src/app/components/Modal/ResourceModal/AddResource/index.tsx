@@ -512,7 +512,7 @@ const AddReviewModal = ({ onClose }: { onClose: () => void }) => {
   const [id, setId] = useState('');
   const [titleHeader, setTitleHeadet] = useState('Choose a resource:');
   //let { id }: params = useParams();
-  const email = useSelector((state: any) => state.auth.email);
+  //const email = useSelector((state: any) => state.auth.email);
   const {
     state: { user },
   } = useContext(Context);
@@ -544,7 +544,7 @@ const AddReviewModal = ({ onClose }: { onClose: () => void }) => {
         usedInTests: Object.keys(exams).filter(key => exams[key]),
         used_end: endDateValue,
         used_start: startDateValue,
-        userId: email,
+        userId: user.email,
         username: user.username,
       },
     });

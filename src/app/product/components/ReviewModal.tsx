@@ -164,6 +164,7 @@ const ReviewModal = ({ onClose }: { onClose: () => void }) => {
   const [comment, setComment] = useState('');
   let { id }: params = useParams();
   const email = useSelector((state: any) => state.auth.email);
+  
   const [createReview, { data }] = useMutation(CREATE_REVIEW, {
     onCompleted: () => onClose(),
   });
@@ -191,7 +192,7 @@ const ReviewModal = ({ onClose }: { onClose: () => void }) => {
         usedInTests: Object.keys(exams).filter(key => exams[key]),
         used_end: endDateValue,
         used_start: startDateValue,
-        userId: email,
+        userId: user.email,
         username: user.username,
       },
     });

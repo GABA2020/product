@@ -63,46 +63,81 @@ export const UPDATE_USER_VALIDATION = gql`
 
 export const CREATE_REVIEW = gql`
   mutation CreateReview(
-    $comment: String!,
-    $myRating: Int!,
-    $resourceId: String!,
-    $specialties: [String]!,
-    $subjects: [String]!,
-    $title: String!,
-    $usedInTests: [String]!,
-    $used_end: String!,
-    $used_start: String!,
+    $comment: String!
+    $myRating: Int!
+    $resourceId: String!
+    $specialties: [String]!
+    $subjects: [String]!
+    $title: String!
+    $usedInTests: [String]!
+    $used_end: String!
+    $used_start: String!
     $userId: String!
   ) {
-    createReviewComment(reviewtData: {
-      comment: $comment,
-      myRating: $myRating,
-      resourceId: $resourceId,
-      specialties: $specialties,
-      subjects: $subjects,
-      title: $title,
-      usedInTests: $usedInTests,
-      used_end: $used_end,
-      used_start: $used_start,
-      userId: $userId
-    }) {
+    createReviewComment(
+      reviewtData: {
+        comment: $comment
+        myRating: $myRating
+        resourceId: $resourceId
+        specialties: $specialties
+        subjects: $subjects
+        title: $title
+        usedInTests: $usedInTests
+        used_end: $used_end
+        used_start: $used_start
+        userId: $userId
+      }
+    ) {
       resource_review_id
     }
   }
-`
+`;
 
 export const REPLY_COMMENT = gql`
   mutation ReplyComment(
-    $comment: String!,
-    $commentId: String!,
-    $docId: String!,
+    $comment: String!
+    $commentId: String!
+    $docId: String!
     $username: String!
   ) {
-    replyResourceComment(replyData: { 
-      comment: $comment,
-      commentId: $commentId,
-      docId: $docId,
-      username: $username
-    })
+    replyResourceComment(
+      replyData: {
+        comment: $comment
+        commentId: $commentId
+        docId: $docId
+        username: $username
+      }
+    )
   }
-`
+`;
+
+export const ADD_HELPFUL_REVIEW = gql`
+  mutation AddHelpfulReview(
+    $resourceId: String!
+    $commentId: String!
+    $userId: String!
+  ) {
+    insert_helpful_review(
+      objects: {
+        resource_id: $resourceId
+        resource_review_id: $commentId
+        user_id: $userId
+      }
+    ) {
+      affected_rows
+    }
+  }
+`;
+
+export const DELETE_HELPFUL_REVIEW = gql`
+  mutation RemoveHelpfulReview($commentId: String!, $userId: String!) {
+    delete_helpful_review(
+      where: {
+        resource_review_id: { _eq: $commentId }
+        user_id: { _eq: $userId }
+      }
+    ) {
+      affected_rows
+    }
+  }
+`;

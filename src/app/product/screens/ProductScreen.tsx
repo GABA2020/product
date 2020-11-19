@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useLazyQuery, useQuery, useMutation } from '@apollo/client';
 import { useSelector } from 'react-redux';
@@ -14,12 +14,14 @@ import {
   GET_LOCKER,
   GET_RESOURCE_COMMENTS,
   GET_RESOURCE_PERCENTAGE,
+  GET_HELPFUL_REVIEWS,
 } from '../../../service/queries';
 import {
   DELETE_FROM_LOCKER,
   ADD_RESOURCE_TO_LOCKER,
+  ADD_HELPFUL_REVIEW,
+  DELETE_HELPFUL_REVIEW,
 } from '../../../service/mutations';
-import { GApageView } from 'app';
 
 interface params {
   id: string;
@@ -43,6 +45,7 @@ const Product = () => {
     rating: 0,
     reviewsCount: 0,
   });
+  const [helpfulReviews, setHelpfulReviews] = useState([]);
 
   //gql
   const {
@@ -50,21 +53,47 @@ const Product = () => {
     data: lockerResponse,
     refetch: fetchLocker,
   } = useQuery(GET_LOCKER, { variables: { email } });
+
+  const { refetch: fetchHelpfulReviews } = useQuery(GET_HELPFUL_REVIEWS, {
+    onCompleted: data => {
+      setHelpfulReviews(data.helpful_review);
+    },
+    variables: {
+      resourceId: id,
+      userId: email,
+    },
+    notifyOnNetworkStatusChange: true,
+  });
+
   const [fetchComments, { loading: loadingComments }] = useLazyQuery(
     GET_RESOURCE_COMMENTS,
     {
-      onCompleted: data =>
+      onCompleted: data => {
         setComments(prevComments => [
           ...prevComments,
           ...data.resourceComments,
-        ]),
+        ]);
+      },
     },
   );
+
   const [refetchCurrentComments] = useLazyQuery(GET_RESOURCE_COMMENTS, {
     onCompleted: data => setComments(prevComments => data.resourceComments),
   });
+
   const [removeFromLocker] = useMutation(DELETE_FROM_LOCKER);
   const [addToLocker] = useMutation(ADD_RESOURCE_TO_LOCKER);
+  const [addHelpfulReview] = useMutation(ADD_HELPFUL_REVIEW, {
+    onCompleted: () => {
+      fetchHelpfulReviews();
+    },
+  });
+  const [removeHelpfulReview] = useMutation(DELETE_HELPFUL_REVIEW, {
+    onCompleted: () => {
+      fetchHelpfulReviews();
+    },
+  });
+
   const { data: resourceDetailResponse, loading: loadingResource } = useQuery(
     RESOURCE_DETAIL,
     {
@@ -75,6 +104,7 @@ const Product = () => {
       onError: err => console.log(err),
     },
   );
+
   const {
     data: resourcePercentageResponse,
     loading: loadingPercentage,
@@ -110,7 +140,6 @@ const Product = () => {
       );
 
       setOnLocker(index > -1);
-      GApageView(`Product ${lockerResponse.name}`);
     }
   }, [lockerResponse]);
 
@@ -131,6 +160,25 @@ const Product = () => {
     refetchCurrentComments({ variables: { id, limit: offset, offset: 0 } });
   };
 
+  const markReviewAsHelpful = (commentId: string, isHelpful: boolean) => {
+    if (!isHelpful)
+      addHelpfulReview({
+        variables: {
+          commentId,
+          userId: email,
+          resourceId: id,
+        },
+      });
+    else {
+      removeHelpfulReview({
+        variables: {
+          commentId,
+          userId: email,
+        },
+      });
+    }
+  };
+
   if (loadingResource || loadingLocker || loadingPercentage || loadingComments)
     return null;
 
@@ -147,8 +195,14 @@ const Product = () => {
       />
       <ReviewsSection
         loadMore={handleLoadMore}
-        comments={comments}
+        comments={comments.map(comment => {
+          const isHelpful = !!helpfulReviews.filter(
+            (review: any) => review.resource_review_id === comment.id,
+          ).length;
+          return isHelpful ? { ...comment, isHelpful: true } : comment;
+        })}
         handleReply={setReplyModal}
+        markReviewAsHelpful={markReviewAsHelpful}
       />
       <ResourcesSection />
       {modalVisibility && (

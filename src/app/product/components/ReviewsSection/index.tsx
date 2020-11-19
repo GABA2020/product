@@ -63,6 +63,7 @@ interface ReviewSectionProps {
   comments: Array<IComment>;
   loadMore: () => void;
   handleReply: any;
+  markReviewAsHelpful: (commentId: string, isHelpful: boolean) => void;
 }
 
 const ReviewSection = (props: ReviewSectionProps) => {
@@ -92,6 +93,7 @@ const ReviewSection = (props: ReviewSectionProps) => {
                     <StarContainer className="judge-num-star">
                       <span className="judge-num">{rev.stars}</span>
                       <img
+                        alt=""
                         onClick={() => {
                           setActiveStar(rev.stars);
                           handleFilterReviews('numberOfStars', rev.stars);
@@ -159,7 +161,11 @@ const ReviewSection = (props: ReviewSectionProps) => {
             <div className="review-content">
               <div className="portlet-message">
                 {props.comments.map(rev => (
-                  <Review handleReply={props.handleReply} {...rev} />
+                  <Review
+                    markReviewAsHelpful={props.markReviewAsHelpful}
+                    handleReply={props.handleReply}
+                    {...rev}
+                  />
                 ))}
               </div>
               <div className="load-more">

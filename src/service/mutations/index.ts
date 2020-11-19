@@ -112,3 +112,34 @@ export const REPLY_COMMENT = gql`
     )
   }
 `;
+
+export const ADD_HELPFUL_REVIEW = gql`
+  mutation AddHelpfulReview(
+    $resourceId: String!
+    $commentId: String!
+    $userId: String!
+  ) {
+    insert_helpful_review(
+      objects: {
+        resource_id: $resourceId
+        resource_review_id: $commentId
+        user_id: $userId
+      }
+    ) {
+      affected_rows
+    }
+  }
+`;
+
+export const DELETE_HELPFUL_REVIEW = gql`
+  mutation RemoveHelpfulReview($commentId: String!, $userId: String!) {
+    delete_helpful_review(
+      where: {
+        resource_review_id: { _eq: $commentId }
+        user_id: { _eq: $userId }
+      }
+    ) {
+      affected_rows
+    }
+  }
+`;

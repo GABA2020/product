@@ -86,8 +86,14 @@ const ToggleReviewsArrow: any = styled.div`
   transition: transform 0.4s linear;
 `;
 
+const HelpfulButton: any = styled(Button)`
+  ${(props: any) =>
+    props.isHelpful ? `background-color: ${props.theme.color.gabaYellow}` : ''}
+`;
+
 interface ReviewProps extends IComment {
   handleReply: any;
+  markReviewAsHelpful: (commentId: string, isHelpful: boolean) => void;
 }
 
 const Review = (props: ReviewProps) => {
@@ -117,7 +123,14 @@ const Review = (props: ReviewProps) => {
           <div className="message-action">
             <ul className="action-enter">
               <li>
-                <Button>Helpful</Button>
+                <HelpfulButton
+                  onClick={() =>
+                    props.markReviewAsHelpful(props.id, props.isHelpful)
+                  }
+                  isHelpful={props.isHelpful}
+                >
+                  {props.isHelpful ? 'Not Helpful' : 'Helpful'}
+                </HelpfulButton>
               </li>
               <li>
                 <Button

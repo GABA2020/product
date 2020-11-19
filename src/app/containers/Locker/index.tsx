@@ -6,13 +6,14 @@ import { LockerSaga } from 'redux/Locker/saga';
 import { useDispatch, useSelector } from 'react-redux';
 import { lockerSelector } from 'redux/Locker/selectors';
 import { userSelector } from 'redux/User/selectors';
-import { AddResource } from 'app/components/Modal/ResourceModal/AddResource';
+import AddReviewModal from 'app/components/Modal/ResourceModal/AddResource';
 import { Resource } from 'app/components/Resource';
 import Review from 'app/components/Review';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { EditResource } from 'app/components/Modal/ResourceModal/EditResource';
 import { Context } from 'app/globalContext/GlobalContext';
+import { NavLink } from 'react-router-dom';
 
 const iniUserResource: ENTITIES.UserResource = {
   id: '',
@@ -48,8 +49,11 @@ export const Locker = () => {
   } = useSelector(lockerSelector);
 
   // const { userProfile } = useSelector(userSelector);
-  const { state: { user:userProfile } } = useContext(Context);
+  const {
+    state: { user: userProfile },
+  } = useContext(Context);
   const [addResourceModal, setAddResourceModal] = useState<boolean>(false);
+  const [modalVisibility, setModalVisibility] = useState(false);
   const [editResourceModal, setEditResourceModal] = useState<boolean>(false);
   const [resourceState, setResourceState] = useState<ENTITIES.UserResource>(
     iniUserResource,
@@ -121,19 +125,21 @@ export const Locker = () => {
   };
   return (
     <Fragment>
-      <AddResource
-        isShow={addResourceModal}
-        onHide={() => setAddResourceModal(false)}
-        addNewUserResource={userResource => {
-          dispatch(
-            actions.addUserResourceAction({
-              email: userProfile.email,
-              userResource,
-            }),
-          );
-        }}
-        allUserResources={allUserResources}
-      />
+      {modalVisibility && (
+        <AddReviewModal
+          //isShow={addResourceModal}
+          onClose={() => setModalVisibility(false)}
+          // addNewUserResource={userResource => {
+          //   dispatch(
+          //     actions.addUserResourceAction({
+          //       email: userProfile.email,
+          //       userResource,
+          //     }),
+          //   );
+          // }}
+          // allUserResources={allUserResources}
+        />
+      )}
       <EditResource
         isShow={editResourceModal}
         onHide={() => setEditResourceModal(false)}
@@ -163,7 +169,7 @@ export const Locker = () => {
             <div className="locker-col">
               <div className="main-title">
                 <h2>Locker</h2>
-                <a
+                {/* <a
                   href="#"
                   onClick={e => {
                     e.preventDefault();
@@ -171,7 +177,7 @@ export const Locker = () => {
                   }}
                 >
                   <FontAwesomeIcon icon={faPlusCircle} />
-                </a>
+                </a> */}
               </div>
             </div>
             <div className="locker-col">
@@ -217,11 +223,11 @@ export const Locker = () => {
               </div>
             </div>
             <div className="locker-col">
-              <div className="visual-learner">
+              {/* <div className="visual-learner">
                 <a href="#" className="btn btn-learner">
                   Visual Learner
                 </a>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="locker-panel">
@@ -263,9 +269,9 @@ export const Locker = () => {
                             </div>
                           </div>
                           <div className="locker-button">
-                            <a href="#" className="btn btn-marketplace">
+                            <NavLink to="/marketplace">
                               Go to Marketplace
-                            </a>
+                            </NavLink>
                           </div>
                         </div>
                       </div>
@@ -301,7 +307,15 @@ export const Locker = () => {
                         <div className="locker-empty text-center">
                           <p>There is no review available</p>
                           <button className="btn-start-review">
-                            Start a review
+                            <a
+                              href="#"
+                              onClick={e => {
+                                e.preventDefault();
+                                setModalVisibility(true);
+                              }}
+                            >
+                              Start a review
+                            </a>
                           </button>
                         </div>
                       </div>

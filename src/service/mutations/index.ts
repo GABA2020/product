@@ -63,46 +63,52 @@ export const UPDATE_USER_VALIDATION = gql`
 
 export const CREATE_REVIEW = gql`
   mutation CreateReview(
-    $comment: String!,
-    $myRating: Int!,
-    $resourceId: String!,
-    $specialties: [String]!,
-    $subjects: [String]!,
-    $title: String!,
-    $usedInTests: [String]!,
-    $used_end: String!,
-    $used_start: String!,
+    $comment: String!
+    $myRating: Int!
+    $resourceId: String!
+    $specialties: [String]!
+    $subjects: [String]!
+    $title: String!
+    $usedInTests: [String]!
+    $used_end: String!
+    $used_start: String!
     $userId: String!
+    $username: String
   ) {
-    createReviewComment(reviewtData: {
-      comment: $comment,
-      myRating: $myRating,
-      resourceId: $resourceId,
-      specialties: $specialties,
-      subjects: $subjects,
-      title: $title,
-      usedInTests: $usedInTests,
-      used_end: $used_end,
-      used_start: $used_start,
-      userId: $userId
-    }) {
+    createReviewComment(
+      reviewtData: {
+        comment: $comment
+        myRating: $myRating
+        resourceId: $resourceId
+        specialties: $specialties
+        subjects: $subjects
+        title: $title
+        usedInTests: $usedInTests
+        used_end: $used_end
+        used_start: $used_start
+        userId: $userId
+        username: $username
+      }
+    ) {
       resource_review_id
     }
   }
-`
+`;
 
 export const REPLY_COMMENT = gql`
   mutation ReplyComment(
-    $comment: String!,
-    $commentId: String!,
-    $docId: String!,
+    $comment: String!
+    $commentId: String!
+    $docId: String!
     $username: String!
   ) {
-    replyResourceComment(replyData: { 
-      comment: $comment,
-      commentId: $commentId,
-      docId: $docId,
-      username: $username
-    })
+    replyResourceComment(
+      replyData: {
+        comment: $comment
+        commentId: $commentId
+        docId: $docId
+        username: $username
+      }
+    )
   }
-`
+`;

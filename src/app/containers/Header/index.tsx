@@ -138,7 +138,7 @@ export const Header = () => {
             {isAuth && (
               <Fragment>
                 <Link
-                  to={`/${userProfile.username}`}
+                  to={`/home/${userProfile.username}`}
                   className="account-toggle"
                 >
                   <img className="icons" src={img_account} alt="" />

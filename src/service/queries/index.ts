@@ -144,9 +144,6 @@ export const RESOURCES = gql`
   }
 `;
 
-    
-
-
 export const ADD_USER_SUBCOLLECTION = gql`
   mutation(
     $email: String!
@@ -247,7 +244,6 @@ export const EDIT_USER_SUBCOLLECTION = gql`
     $document_name: String
     $document_type: String
     $receive_date: String
-    
   ) {
     editUserSubCollection(
       email: $email
@@ -455,6 +451,14 @@ export const GET_HELPFUL_REVIEWS = gql`
       where: { resource_id: { _eq: $resourceId }, user_id: { _eq: $userId } }
     ) {
       resource_review_id
+    }
+  }
+`;
+
+export const GET_DISCIPLINES = gql`
+  query GetDisciplines {
+    medical_diciplines {
+      dicipline_name
     }
   }
 `;

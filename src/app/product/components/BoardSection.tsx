@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { img_board } from '../../../assets/images';
 import Stars from '../../genericComponents/Stars';
 
 const Button = styled.button`
@@ -16,14 +15,19 @@ const Button = styled.button`
   outline: none;
   border: none;
   margin-top: 5px;
-`
+`;
 
 const BoardsReview = styled.div`
-margin-top: 5px;
+  margin-top: 5px;
   a {
     color: ${props => props.theme.color.darkBlue} !important;
   }
-`
+`;
+
+const Image = styled.img`
+  object-fit: contain;
+  height: 250px;
+`;
 
 interface BoardSectionProps {
   title: string;
@@ -33,6 +37,7 @@ interface BoardSectionProps {
   onLockerButtonPress: Function;
   handleCreateReview: () => void;
   reviewsCount: number | string;
+  imageUrl: string;
 }
 
 const BoardSection = (props: BoardSectionProps) => (
@@ -40,7 +45,7 @@ const BoardSection = (props: BoardSectionProps) => (
     <div className="container">
       <div className="media-boards">
         <div className="boards-images">
-          <img alt="image" src={img_board} width={520} height={323} />
+          <Image alt="image" src={props.imageUrl} width={520} height={323} />
         </div>
         <div className="media-body">
           <h3 className="boards-title">{props.title}</h3>
@@ -48,20 +53,19 @@ const BoardSection = (props: BoardSectionProps) => (
             <div className="boards-rating">
               <div className="vote-rating">
                 <ul className="vote-rating-list">
-                  <Stars color='yellow' numberOfStars={props.rating}/>
+                  <Stars color="yellow" numberOfStars={props.rating} />
                 </ul>
               </div>
             </div>
             <BoardsReview className="boards-review">
               <a href="#">
-                <span className="review-num">{props.reviewsCount || 0}</span> Reviews
+                <span className="review-num">{props.reviewsCount || 0}</span>{' '}
+                Reviews
               </a>
             </BoardsReview>
           </div>
           <div className="boards-caption">
-            <p className="board-paragraph">
-              {props.description}
-            </p>
+            <p className="board-paragraph">{props.description}</p>
             <ul className="member-check">
               <li>
                 <div className="checkbox__styled">
@@ -87,13 +91,18 @@ const BoardSection = (props: BoardSectionProps) => (
           <div className="boards-action">
             <ul className="action-button">
               <li>
-                <Button onClick={() => props.onLockerButtonPress(props.onLocker)}>
+                <Button
+                  onClick={() => props.onLockerButtonPress(props.onLocker)}
+                >
                   {props.onLocker ? 'Remove from locker' : 'Add to locker'}
                 </Button>
               </li>
               <li>
                 <Button>
-                  <span className="icons-target" style={{color: 'yellow'}}>&nbsp;</span> Buy from 
+                  <span className="icons-target" style={{ color: 'yellow' }}>
+                    &nbsp;
+                  </span>{' '}
+                  Buy from
                 </Button>
               </li>
               <li>
@@ -107,6 +116,6 @@ const BoardSection = (props: BoardSectionProps) => (
       </div>
     </div>
   </section>
-)
+);
 
 export default BoardSection;

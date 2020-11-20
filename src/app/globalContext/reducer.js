@@ -27,6 +27,7 @@ export const reducer = state => {
         isAuth:false,
       })
     },
+    setUser: (data) => ({user:data}),
     changeShowMenu: (data) => ({showMenu:data}),
     setUserWorwks: (data) => ({userWorks:data}),
     setUserVolunteers: (data) => ({userVolunteers:data}),

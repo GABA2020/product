@@ -95,14 +95,14 @@ export function App() {
             variables: { email: user.email },
           })
           .then(r => (userAccount = r?.data?.user_account[0]))
-          .catch(e => console.log(e));
+          .catch(e => console.log('GET_USER_ACCOUNT',e));
         await graphQLClient
           .query({
             query: GET_USER_DATA,
             variables: { email: user.email },
           })
           .then(r => (userDataHasura = r.data?.user))
-          .catch(e => console.log(e));
+          .catch(e => console.log('GET_USER_DATA',e));
         console.log('user', userFirestore, userAccount, userDataHasura);
         login({ userFirestore, userAccount, userDataHasura });
         setInitialized(true);

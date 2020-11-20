@@ -295,61 +295,6 @@ export const DELETE_USER_SUBCOLLECTION = gql`
   }
 `;
 
-export const ADD_USER_RESEARCH = gql`
-  mutation(
-    $author: String!
-    $email: String!
-    $event_date: String!
-    $event_name: String!
-    $journal: String!
-    $link: String!
-    $primary_investigator: String!
-    $research_type: String!
-    $show_link: Boolean!
-    $work_title: String!
-  ) {
-    addUserResearch(
-      userResearchData: {
-        author: $author
-        email: $email
-        event_date: $event_date
-        event_name: $event_name
-        jurnal: $journal
-        link: $link
-        primary_investigator: $primary_investigator
-        research_type: $research_type
-        show_link: $show_link
-        work_title: $work_title
-      }
-    )
-  }
-`;
-
-export const ADD_USER_VOLUNTEER = gql`
-  mutation(
-    $city: String!
-    $description: String!
-    $email: String!
-    $end_date: String!
-    $job_title: String!
-    $nbr_hours_served: Int!
-    $organization_name: String!
-    $start_date: String!
-  ) {
-    addUserVolunteer(
-      userVolunteerData: {
-        city: $city
-        description: $description
-        email: $email
-        end_date: $end_date
-        job_title: $job_title
-        nbr_hours_served: $nbr_hours_served
-        organization_name: $organization_name
-        start_date: $start_date
-      }
-    )
-  }
-`;
 
 export const RESOURCE_DETAIL = gql`
   query Resource($id: String!) {

@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { bag } from 'assets/images';
 import { useInjectSaga } from 'utils/redux-injectors';
 import { actions, sliceKey } from 'redux/Locker/slice';
@@ -9,8 +9,20 @@ import { userSelector } from 'redux/User/selectors';
 import { useStorage } from 'hook/useStorage';
 import { GuestResource } from 'app/components/GuestResource';
 import Review from 'app/components/Review';
+import { useQuery } from '@apollo/client';
+import { GET_REVIEWS_BY_USER } from 'service/queries';
+import { Context } from 'app/globalContext/GlobalContext';
 
 export const GuestUserLocker = () => {
+  const {
+    state: { user },
+  } = useContext(Context);
+  const {
+    loading: loadingReviews,
+    data: reviewsResponse,
+    error: reviewsError,
+    refetch: fetchReviews,
+  } = useQuery(GET_REVIEWS_BY_USER, { variables: { userId: user.email } });
   useInjectSaga({ key: sliceKey, saga: LockerSaga });
   const dispatch = useDispatch();
   const {
@@ -24,6 +36,7 @@ export const GuestUserLocker = () => {
   const { userSearchProfile } = useSelector(userSelector);
   const [tabState, setTabState] = useState(0); // 0 => resource, 1 => review
 
+
   useEffect(() => {
     if (userSearchProfile.email !== '') {
       dispatch(
@@ -34,7 +47,8 @@ export const GuestUserLocker = () => {
     }
   }, [userSearchProfile.email]);
 
-  const renderReviews = (reviews: ENTITIES.UserResource[]) => {
+
+  const renderReviews = (reviews: ENTITIES.UserReviewLocker[]) => {
     return (
       <ul className="review-list">
         {reviews.map((item, index) => {
@@ -174,11 +188,11 @@ export const GuestUserLocker = () => {
               )}
               {tabState === 1 && (
                 <div role="tabpanel" className="tab-pane active" id="frame-2">
-                  {!loading &&
-                    (reviews.length > 0 ? (
+                  {!loadingReviews &&
+                    (reviewsResponse.users_reviews.length > 0 ? (
                       <div className="locker-review">
-                        {renderReviews(reviews)}
-                        {reviews.length > 0 && reviews.length < reviewLength ? (
+                        {renderReviews(reviewsResponse.users_reviews)}
+                        {reviewsResponse.users_reviews.length > 0 && reviewsResponse.users_reviews.length < reviewLength ? (
                           <div className="review-btn-wrap">
                             <button
                               onClick={() => {

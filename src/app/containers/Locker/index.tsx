@@ -15,10 +15,20 @@ import { EditResource } from 'app/components/Modal/ResourceModal/EditResource';
 import { Context } from 'app/globalContext/GlobalContext';
 import { NavLink } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
-import { CONNECTED_USERS } from 'service/queries';
+import { GET_REVIEWS_BY_USER } from 'service/queries';
 
-
-
+const iniUserReview: ENTITIES.UserReviewLocker = {
+  resource_id: '',
+  userReviewResource: {
+    name: '',
+    picture_name: '',
+  },
+  ReviewComment: {
+    title: '',
+    comment: '',
+    rating: 0,
+  },
+};
 const iniUserResource: ENTITIES.UserResource = {
   id: '',
   resource_id: '',
@@ -40,19 +50,22 @@ const iniUserResource: ENTITIES.UserResource = {
 };
 
 export const Locker = () => {
-
-  // const {
-  //   loading: loadingConnect,
-  //   data: connectResponse,
-  //   error: connectError,
-  //   refetch: fetchConnect,
-  // } = useQuery(CONNECTED_USERS, { variables: { email: emailSender } });
+  const {
+    state: { user },
+  } = useContext(Context);
+  console.log(user.email);
+  const {
+    loading: loadingReviews,
+    data: reviewsResponse,
+    error: reviewsError,
+    refetch: fetchReviews,
+  } = useQuery(GET_REVIEWS_BY_USER, { variables: { userId: user.email } });
 
   useInjectSaga({ key: sliceKey, saga: LockerSaga });
   const dispatch = useDispatch();
   const {
     reviews,
-    userResources,
+    //userResources,
     reviewLength,
     userResourceLength,
     lastQuery,
@@ -61,9 +74,7 @@ export const Locker = () => {
   } = useSelector(lockerSelector);
 
   // const { userProfile } = useSelector(userSelector);
-  const {
-    state: { user: userProfile },
-  } = useContext(Context);
+
   const [addResourceModal, setAddResourceModal] = useState<boolean>(false);
   const [modalVisibility, setModalVisibility] = useState(false);
   const [editResourceModal, setEditResourceModal] = useState<boolean>(false);
@@ -85,17 +96,15 @@ export const Locker = () => {
     //     }),
     //   );
     // }
+  }, [user.email]);
 
-
-  }, [userProfile.email]);
-
-  const renderReviews = (reviews: ENTITIES.UserResource[]) => {
+  const renderReviews = (reviews: ENTITIES.UserReviewLocker[]) => {
     return (
       <ul className="review-list">
         {reviews.map((item, index) => {
           return (
             <li key={index} className="review-item">
-              <Review review={item} profile={userProfile} />
+              <Review review={item} profile={user} />
             </li>
           );
         })}
@@ -124,19 +133,20 @@ export const Locker = () => {
         {resources.map((item, index) => {
           return (
             <li key={index} className="locker-item">
-              <Resource
-                openManageResource={userResources => {
-                  setResourceState(userResources);
+              {/* <Resource
+                openManageResource={item => {
+                  setResourceState(item);
                   setEditResourceModal(true);
                 }}
                 userResources={item}
-              />
+              /> */}
             </li>
           );
         })}
       </ul>
     );
   };
+  //console.log(reviewsResponse, loadingReviews, reviewsError);
   return (
     <Fragment>
       {modalVisibility && (
@@ -154,7 +164,7 @@ export const Locker = () => {
           // allUserResources={allUserResources}
         />
       )}
-      <EditResource
+      {/* <EditResource
         isShow={editResourceModal}
         onHide={() => setEditResourceModal(false)}
         userResource={resourceState}
@@ -162,7 +172,7 @@ export const Locker = () => {
         editUserResource={newUserResource => {
           dispatch(
             actions.editUserResourceAction({
-              email: userProfile.email,
+              email: user.email,
               userResource: newUserResource,
             }),
           );
@@ -171,12 +181,12 @@ export const Locker = () => {
         deleteUserResource={userResource => {
           dispatch(
             actions.deleteUserResourceAction({
-              email: userProfile.email,
+              email: user.email,
               userResource,
             }),
           );
         }}
-      />
+      /> */}
       <section className="section-locker">
         <div className="container">
           <div className="locker-front">
@@ -204,7 +214,7 @@ export const Locker = () => {
                         setTabState(0);
                         dispatch(
                           actions.getUserResourcesAction({
-                            email: userProfile.email,
+                            email: user.email,
                           }),
                         );
                       }}
@@ -220,11 +230,11 @@ export const Locker = () => {
                       onClick={e => {
                         e.preventDefault();
                         setTabState(1);
-                        dispatch(
-                          actions.getReviewsAction({
-                            email: userProfile.email,
-                          }),
-                        );
+                        // dispatch(
+                        //   actions.getReviewsAction({
+                        //     email: user.email,
+                        //   }),
+                        // );
                       }}
                       href="#frame-2"
                       role="tab"
@@ -248,18 +258,19 @@ export const Locker = () => {
             <div className="tab-content">
               {tabState === 0 && (
                 <div role="tabpanel" className={`tab-pane active`} id="frame-1">
-                  {!loading &&
-                    (userResources.length > 0 ? (
+                  {!loadingReviews &&
+                    (reviewsResponse.users_reviews.length > 0 ? (
                       <div className="locker-category">
-                        {renderResource(userResources)}
-                        {userResources.length > 0 &&
-                          userResources.length < userResourceLength && (
+                        {renderResource(reviewsResponse.users_reviews)}
+                        {reviewsResponse.users_reviews.length > 0 &&
+                          reviewsResponse.users_reviews.length <
+                            userResourceLength && (
                             <div className="review-btn-wrap">
                               <button
                                 onClick={() => {
                                   dispatch(
                                     actions.getMoreUserResourcesAction({
-                                      email: userProfile.email,
+                                      email: user.email,
                                       lastQuery,
                                     }),
                                   );
@@ -294,17 +305,18 @@ export const Locker = () => {
               )}
               {tabState === 1 && (
                 <div role="tabpanel" className={`tab-pane active`} id="frame-2">
-                  {!loading &&
-                    (reviews.length > 0 ? (
+                  {!loadingReviews &&
+                    (reviewsResponse.users_reviews ? (
                       <div className="locker-review">
-                        {renderReviews(reviews)}
-                        {reviews.length > 0 && reviews.length < reviewLength ? (
+                        {renderReviews(reviewsResponse.users_reviews)}
+                        {reviewsResponse.users_reviews.length > 0 &&
+                        reviewsResponse.users_reviews.length < reviewLength ? (
                           <div className="review-btn-wrap">
                             <button
                               onClick={() => {
                                 dispatch(
                                   actions.getMoreReviewsAction({
-                                    email: userProfile.email,
+                                    email: user.email,
                                     lastQuery,
                                   }),
                                 );
@@ -315,6 +327,20 @@ export const Locker = () => {
                             </button>
                           </div>
                         ) : null}
+                         <div className="locker-empty text-center">
+                          <p>Review another resource</p>
+                          <button className="btn-start-review">
+                            <a
+                              href="#"
+                              onClick={e => {
+                                e.preventDefault();
+                                setModalVisibility(true);
+                              }}
+                            >
+                              Start a review
+                            </a>
+                          </button>
+                        </div>
                       </div>
                     ) : (
                       <div className="locker-review">

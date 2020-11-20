@@ -73,6 +73,7 @@ export const CREATE_REVIEW = gql`
     $used_end: String!
     $used_start: String!
     $userId: String!
+    $username: String
   ) {
     createReviewComment(
       reviewtData: {
@@ -86,6 +87,7 @@ export const CREATE_REVIEW = gql`
         used_end: $used_end
         used_start: $used_start
         userId: $userId
+        username: $username
       }
     ) {
       resource_review_id

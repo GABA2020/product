@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import DatePicker from 'react-datepicker';
 import { useMutation } from '@apollo/react-hooks';
@@ -10,6 +10,7 @@ import Checkbox from '../../genericComponents/Checkbox';
 import Stars from '../../genericComponents/Stars';
 import theme from '../../../theme';
 import { CREATE_REVIEW } from '../../../service/mutations';
+import { Context } from 'app/globalContext/GlobalContext';
 
 const inputFontStyle = `
   font-size: 16px;
@@ -163,9 +164,13 @@ const ReviewModal = ({ onClose }: { onClose: () => void }) => {
   const [comment, setComment] = useState('');
   let { id }: params = useParams();
   const email = useSelector((state: any) => state.auth.email);
+  
   const [createReview, { data }] = useMutation(CREATE_REVIEW, {
     onCompleted: () => onClose(),
   });
+  const {
+    state: { user },
+  } = useContext(Context);
 
   const handleCheckboxChange = exam =>
     setExams(prevExams => {
@@ -187,7 +192,8 @@ const ReviewModal = ({ onClose }: { onClose: () => void }) => {
         usedInTests: Object.keys(exams).filter(key => exams[key]),
         used_end: endDateValue,
         used_start: startDateValue,
-        userId: email,
+        userId: user.email,
+        username: user.username,
       },
     });
   };

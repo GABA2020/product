@@ -455,6 +455,23 @@ export const GET_HELPFUL_REVIEWS = gql`
   }
 `;
 
+export const GET_REVIEWS_BY_USER = gql`
+  query GetReviewsByUser($userId: String!) {
+    users_reviews(where: { user_id: { _eq: $userId } }) {
+      resource_id
+      userReviewResource {
+        name
+        picture_name
+      }
+      ReviewComment {
+        title
+        comment
+        rating
+      }
+    }
+  }
+`;
+
 export const GET_DISCIPLINES = gql`
   query GetDisciplines {
     medical_diciplines {

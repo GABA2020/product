@@ -15,7 +15,10 @@ import { EditResource } from 'app/components/Modal/ResourceModal/EditResource';
 import { Context } from 'app/globalContext/GlobalContext';
 import { NavLink } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
-import { GET_REVIEWS_BY_USER } from 'service/queries';
+import {
+  GET_LOCKER_RESOURCES_BY_USER,
+  GET_REVIEWS_BY_USER,
+} from 'service/queries';
 
 const iniUserReview: ENTITIES.UserReviewLocker = {
   resource_id: '',
@@ -53,13 +56,23 @@ export const Locker = () => {
   const {
     state: { user },
   } = useContext(Context);
-  console.log(user.email);
+
+  //console.log(user.email);
   const {
     loading: loadingReviews,
     data: reviewsResponse,
     error: reviewsError,
     refetch: fetchReviews,
   } = useQuery(GET_REVIEWS_BY_USER, { variables: { userId: user.email } });
+
+  const {
+    loading: loadingResources,
+    data: resourcesResponse,
+    error: resourcesError,
+    refetch: fetchResources,
+  } = useQuery(GET_LOCKER_RESOURCES_BY_USER, {
+    variables: { userId: user.email },
+  });
 
   useInjectSaga({ key: sliceKey, saga: LockerSaga });
   const dispatch = useDispatch();
@@ -104,7 +117,7 @@ export const Locker = () => {
         {reviews.map((item, index) => {
           return (
             <li key={index} className="review-item">
-              <Review review={item} profile={user} />
+              <Review review={item} profile={user}  />
             </li>
           );
         })}
@@ -112,7 +125,7 @@ export const Locker = () => {
     );
   };
 
-  const renderResource = (resources: ENTITIES.UserResource[]) => {
+  const renderResource = (resources: ENTITIES.UserResourceLocker[] ) => {
     return (
       <ul className="locker-list">
         <li className="locker-item">
@@ -125,21 +138,13 @@ export const Locker = () => {
             </div>
           </div>
           <div className="locker-button">
-            <a href="#" className="btn btn-marketplace">
-              Go to Marketplace
-            </a>
+            <NavLink to="/marketplace">Go to Marketplace</NavLink>
           </div>
         </li>
         {resources.map((item, index) => {
           return (
             <li key={index} className="locker-item">
-              {/* <Resource
-                openManageResource={item => {
-                  setResourceState(item);
-                  setEditResourceModal(true);
-                }}
-                userResources={item}
-              /> */}
+              <Resource userResources={item} refetch={fetchResources} />
             </li>
           );
         })}
@@ -212,11 +217,6 @@ export const Locker = () => {
                       onClick={e => {
                         e.preventDefault();
                         setTabState(0);
-                        dispatch(
-                          actions.getUserResourcesAction({
-                            email: user.email,
-                          }),
-                        );
                       }}
                       href="#frame-1"
                       role="tab"
@@ -246,37 +246,21 @@ export const Locker = () => {
                 </ul>
               </div>
             </div>
-            <div className="locker-col">
-              {/* <div className="visual-learner">
-                <a href="#" className="btn btn-learner">
-                  Visual Learner
-                </a>
-              </div> */}
-            </div>
+            <div className="locker-col"></div>
           </div>
           <div className="locker-panel">
             <div className="tab-content">
               {tabState === 0 && (
                 <div role="tabpanel" className={`tab-pane active`} id="frame-1">
-                  {!loadingReviews &&
-                    (reviewsResponse.users_reviews.length > 0 ? (
+                  {!loadingResources &&
+                    (resourcesResponse.resources_locker.length > 0 ? (
                       <div className="locker-category">
-                        {renderResource(reviewsResponse.users_reviews)}
-                        {reviewsResponse.users_reviews.length > 0 &&
-                          reviewsResponse.users_reviews.length <
+                        {renderResource(resourcesResponse.resources_locker)}
+                        {resourcesResponse.resources_locker.length > 0 &&
+                          resourcesResponse.resources_locker.length <
                             userResourceLength && (
                             <div className="review-btn-wrap">
-                              <button
-                                onClick={() => {
-                                  dispatch(
-                                    actions.getMoreUserResourcesAction({
-                                      email: user.email,
-                                      lastQuery,
-                                    }),
-                                  );
-                                }}
-                                className="load-more"
-                              >
+                              <button onClick={() => {}} className="load-more">
                                 Load More Resources
                               </button>
                             </div>
@@ -312,22 +296,12 @@ export const Locker = () => {
                         {reviewsResponse.users_reviews.length > 0 &&
                         reviewsResponse.users_reviews.length < reviewLength ? (
                           <div className="review-btn-wrap">
-                            <button
-                              onClick={() => {
-                                dispatch(
-                                  actions.getMoreReviewsAction({
-                                    email: user.email,
-                                    lastQuery,
-                                  }),
-                                );
-                              }}
-                              className="load-more"
-                            >
+                            <button onClick={() => {}} className="load-more">
                               Load More Reviews
                             </button>
                           </div>
                         ) : null}
-                         <div className="locker-empty text-center">
+                        <div className="locker-empty text-center">
                           <p>Review another resource</p>
                           <button className="btn-start-review">
                             <a

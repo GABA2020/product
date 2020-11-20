@@ -3,6 +3,7 @@ import Rate from 'antd/lib/rate';
 import { verified_check, oval, img_user } from 'assets/images';
 import { useStorage } from 'hook/useStorage';
 import { useResource } from 'hook/useResource';
+import { NavLink } from 'react-router-dom';
 
 interface IReview {
   review: ENTITIES.UserReviewLocker;
@@ -19,7 +20,9 @@ const Review: FC<IReview> = props => {
     <Fragment>
       <div className="review-item-media">
         <h4 className="review-title">
-          <a href="#">{resource && resource.name}</a>
+          <NavLink to={`/product-page/${review.resource_id}`}>
+            {resource && resource.name}
+          </NavLink>
         </h4>
         <div className="review-match">
           {review && review.ReviewComment.rating > 0 ? (
@@ -34,7 +37,7 @@ const Review: FC<IReview> = props => {
             <Rate disabled value={0}></Rate>
           )}
         </div>
-        <p className="title-comment">{review.ReviewComment.title}</p>
+        <p className="title-comment">{review.ReviewComment.title} </p>
         <div className="comment">{review.ReviewComment.comment}</div>
         {/* <div className="user-information">
           <div className="profile-image">

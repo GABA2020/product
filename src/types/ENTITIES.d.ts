@@ -200,6 +200,15 @@ declare namespace ENTITIES {
     updated_at: ITime;
     rating: number;
   }
+  interface UserResourceLocker {
+    resource_id: string;
+    resource_locker: LockerResource;
+  }
+  interface LockerResource {
+    picture_name: string;
+    name: string;
+    rating: number;
+  }
   interface UserReviewComment {
     title: string;
     comment: string;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Segment } from 'semantic-ui-react';
 import styled from 'styled-components';
 import { useQuery, useMutation } from '@apollo/client';
@@ -13,6 +13,7 @@ import {
   DELETE_FROM_LOCKER,
 } from '../../../service/mutations';
 import { GApageView } from 'app';
+import { Context } from 'app/globalContext/GlobalContext';
 
 const MarketPlaceContainer = styled(Segment.Group)`
   margin: 0 !important;
@@ -24,8 +25,10 @@ const MarketPlaceScreen = () => {
   const [resources, setResources] = useState([]);
   const [activeCategory, setActiveCategory] = useState('');
   const [offset, setOffset] = useState(0);
-  const email = useSelector((state: any) => state.auth.email);
-
+  const {
+    state: { user },
+  } = useContext(Context);
+  const email = user.email;
   // gql
   const {
     loading: loadingLocker,
@@ -71,6 +74,7 @@ const MarketPlaceScreen = () => {
           },
         });
       }
+      //console.log("refresh")
       refecthLocker();
     } catch (err) {
       console.log('Error: ', err);

@@ -295,7 +295,6 @@ export const DELETE_USER_SUBCOLLECTION = gql`
   }
 `;
 
-
 export const RESOURCE_DETAIL = gql`
   query Resource($id: String!) {
     resource(id: $id) {
@@ -411,6 +410,18 @@ export const GET_REVIEWS_BY_USER = gql`
       ReviewComment {
         title
         comment
+        rating
+      }
+    }
+  }
+`;
+export const GET_LOCKER_RESOURCES_BY_USER = gql`
+  query GetLockerResourceByUser($userId: String!) {
+    resources_locker(where: { user_id: { _eq: $userId } }) {
+      resource_id
+      resource_locker {
+        picture_name
+        name
         rating
       }
     }

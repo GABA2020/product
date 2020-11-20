@@ -141,3 +141,38 @@ export const DELETE_HELPFUL_REVIEW = gql`
     }
   }
 `;
+
+export const EDIT_USER_PROFILE_FS = gql`
+  mutation(
+    $email: String!
+    $name: String!
+    $school_year: String!
+    $degrees: [String!]
+    $honors: [String!]
+    $specialties: [String!]
+    $avatar: String
+  ) {
+    editUserProfile(
+      userProfileData: {
+        email: $email
+        name: $name
+        school_year: $school_year
+        degrees: $degrees
+        honors: $honors
+        specialties: $specialties
+        avatar: $avatar
+      }
+    )
+  }
+`;
+
+export const EDIT_USER_PROFILE_PG = gql`
+  mutation($email: String!, $name: String!) {
+    update_user_account(
+      where: { email: { _eq: "" } }
+      _set: { last_name: "", name: "", school_year: "", medical_school: "" }
+    ) {
+      affected_rows
+    }
+  }
+`;

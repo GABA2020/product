@@ -21,7 +21,7 @@ import { programSelector } from 'redux/Program/selectors';
 import { ordinal_suffix_of, dataUrlFile } from 'helpers/Unity';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
-import { EditProfileModal } from 'app/components/Modal/EditProfileModal';
+// import { EditProfileModal } from 'app/components/Modal/EditProfileModal';
 import { Locker } from '../Locker';
 import { CVWork } from '../CVWork';
 import { useStorage } from 'hook/useStorage';
@@ -31,6 +31,7 @@ import { REF } from 'helpers/firebase.module';
 import Helmet from 'react-helmet';
 import { Context } from 'app/globalContext/GlobalContext';
 import { GApageView } from 'app';
+import { EditProfileModal } from 'app/profile/components/EditProfileModal';
 
 export const MyProfile = props => {
   useInjectSaga({ key: userSliceKey, saga: UserSaga });
@@ -99,7 +100,7 @@ export const MyProfile = props => {
         <meta charSet="utf-8" />
         <title>{userProfile.name}</title>
       </Helmet>
-      <EditProfileModal
+      {/* <EditProfileModal
         saveProfile={saveProfile}
         uploadAvatar={uploadAvatar}
         program={program}
@@ -108,7 +109,17 @@ export const MyProfile = props => {
         onHide={() => {
           setIsShowModalEditProfileState(false);
         }}
-      ></EditProfileModal>
+      ></EditProfileModal> */}
+      <EditProfileModal
+        saveProfile={saveProfile}
+        uploadAvatar={uploadAvatar}
+        program={program}
+        userProfile={userProfile}
+        isShow={isShowModalEditProfileState}
+        onHide={() => {
+          setIsShowModalEditProfileState(false);
+      }}
+      />
       {editModeState === true ? (
         <section className="section-profile-edit text-right">
           <a

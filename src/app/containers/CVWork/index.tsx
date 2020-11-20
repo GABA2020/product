@@ -22,7 +22,6 @@ import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { AboutModal } from 'app/components/Modal/AboutModal';
 import { Context } from 'app/globalContext/GlobalContext';
 import {
-  ADD_USER_VOLUNTEER,
   DELETE_USER_SUBCOLLECTION,
   EDIT_USER_SUBCOLLECTION,
   ADD_USER_SUBCOLLECTION,

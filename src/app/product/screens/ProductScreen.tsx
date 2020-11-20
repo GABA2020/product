@@ -8,6 +8,8 @@ import ReviewsSection from '../components/ReviewsSection/';
 import ResourcesSection from '../components/ResourcesSection/';
 import ReviewModal from '../components/ReviewModal';
 import ReplyModal from '../components/ReplyModal';
+import { storageFB } from '../../../helpers/firebase.module';
+import { img_board } from '../../../assets/images';
 import { GApageView } from 'app';
 
 import {
@@ -46,8 +48,10 @@ const Product = () => {
     description: '',
     rating: 0,
     reviewsCount: 0,
+    picture_name: '',
   });
   const [helpfulReviews, setHelpfulReviews] = useState([]);
+  const [imageUrl, setImageUrl] = useState(img_board);
 
   //gql
   const {
@@ -142,7 +146,7 @@ const Product = () => {
       );
       setOnLocker(index > -1);
     }
-  }, [lockerResponse]);
+  }, [lockerResponse, resourceDetail.picture_name]);
 
   useEffect(() => {
     fetchComments({ variables: { id, limit: 5, offset: 0 } });
@@ -183,6 +187,19 @@ const Product = () => {
   if (loadingResource || loadingLocker || loadingPercentage || loadingComments)
     return null;
 
+  storageFB
+    .ref('resources/')
+    .child(`${resourceDetail.picture_name}`)
+    .getDownloadURL()
+    .then(url => {
+      setImageUrl(url);
+    })
+    .catch(err => {
+      console.log({
+        err,
+      });
+    });
+
   return (
     <section id="page_content">
       <BoardSection
@@ -193,6 +210,7 @@ const Product = () => {
         onLocker={onLocker}
         onLockerButtonPress={handleLockerButtonPress}
         handleCreateReview={() => setModalVisibility(true)}
+        imageUrl={imageUrl}
       />
       <ReviewsSection
         loadMore={handleLoadMore}

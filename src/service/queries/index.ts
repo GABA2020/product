@@ -471,3 +471,11 @@ export const GET_REVIEWS_BY_USER = gql`
     }
   }
 `;
+
+export const GET_DISCIPLINES = gql`
+  query GetDisciplines {
+    medical_diciplines {
+      dicipline_name
+    }
+  }
+`;

@@ -63,7 +63,7 @@ const FiltersContainer = styled.div`
   display: flex;
 `;
 
-const FilterImage = styled.img`
+const FilterImage: any = styled.img`
   margin-left: 10px;
   height: 40px;
 `;
@@ -78,6 +78,8 @@ interface MarketPlaceFeaturedProps {
   onLockerButtonPress: Function;
   loading: boolean;
   handleLoadMore: Function;
+  handleFilterResourcesByPrice: Function;
+  handleFilterResourcesByName: Function;
 }
 
 const MarketPlaceFeatured = ({
@@ -85,6 +87,8 @@ const MarketPlaceFeatured = ({
   onLockerButtonPress,
   loading,
   handleLoadMore,
+  handleFilterResourcesByPrice,
+  handleFilterResourcesByName,
 }: MarketPlaceFeaturedProps) => {
   return (
     <FeaturedContainer>
@@ -106,8 +110,18 @@ const MarketPlaceFeatured = ({
             </Tab>
           </Tabs>
           <FiltersContainer>
-            <FilterImage src={FilterByNameIcon} />
-            <FilterImage src={FilterByPriceIcon} />
+            <FilterImage
+              src={FilterByNameIcon}
+              onClick={() => {
+                handleFilterResourcesByName();
+              }}
+            />
+            <FilterImage
+              src={FilterByPriceIcon}
+              onClick={() => {
+                handleFilterResourcesByPrice();
+              }}
+            />
           </FiltersContainer>
         </FeaturedHeader>
         <>

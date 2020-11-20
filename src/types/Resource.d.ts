@@ -25,5 +25,5 @@ export interface IComment {
     comment: String;
     username: String;
   }>;
-  isHelpful: boolean;
+  isHelpful?: boolean;
 }

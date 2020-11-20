@@ -28,7 +28,12 @@ export const CREATE_PROGRAM = gql`
 `;
 export const CONNECT_TO_USER = gql`
   mutation($reciver_email: String!, $sender_email: String!) {
-    createProgram(reciver_email: $reciver_email, sender_email: $sender_email)
+    connectUsers(reciver_email: $reciver_email, sender_email: $sender_email)
+  }
+`;
+export const DISCONNECT_TO_USER = gql`
+  mutation($reciver_email: String!, $sender_email: String!) {
+    disconnectUsers(reciver_email: $reciver_email, sender_email: $sender_email)
   }
 `;
 

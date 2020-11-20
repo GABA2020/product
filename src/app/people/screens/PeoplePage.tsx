@@ -12,7 +12,10 @@ import SideFilters from '../components/SideFilters';
 import { USERS_QUERY, CONNECTED_USERS } from '../../../service/queries';
 import { useSelector } from 'react-redux';
 
-import { CONNECT_TO_USER } from '../../../service/mutations';
+import {
+  CONNECT_TO_USER,
+  DISCONNECT_TO_USER,
+} from '../../../service/mutations';
 import { Context } from 'app/globalContext/GlobalContext';
 import { GApageView } from 'app';
 
@@ -33,31 +36,34 @@ const PeoplePageScreen = () => {
     error: connectError,
     refetch: fetchConnect,
   } = useQuery(CONNECTED_USERS, { variables: { email: emailSender } });
-  const { data: userResponse, loading: loadinUsers } = useQuery(USERS_QUERY);
+  const {
+    data: userResponse,
+    loading: loadinUsers,
+    error: userError,
+  } = useQuery(USERS_QUERY);
 
   const [connectToUser] = useMutation(CONNECT_TO_USER);
+  const [disconnectToUser] = useMutation(DISCONNECT_TO_USER);
 
   const [filteredData, setFilteredData] = useState([]);
   const [users, setUsers] = useState([]);
 
-  const getConnectedUsers = (users, connectedList) => {
-    return users.map(user => {
-      const index = connectedList.findIndex(
-        connectedContact => connectedContact === user.mail,
-      );
-      console.log('index', index);
-      if (index > -1) return { ...user, onConnect: true };
-      return user;
-    });
-  };
-
   const handleConnectButtonPress = async (
     email: string,
+    emailSender: string,
     onConnect: boolean,
   ) => {
     try {
       if (onConnect) {
+        //console.log('conectFunc', email, emailSender, onConnect);
+        await disconnectToUser({
+          variables: {
+            reciver_email: email,
+            sender_email: emailSender,
+          },
+        });
       } else {
+        //console.log('conectFunc', email, emailSender, onConnect);
         await connectToUser({
           variables: {
             reciver_email: email,
@@ -75,18 +81,24 @@ const PeoplePageScreen = () => {
     GApageView('People');
   }, []);
 
+  //console.log('errors', connectError, userError);
+  //console.log('connected', connectResponse);
+
   return (
     <GenericContainer justify="center">
       <SideFilters />
       <CardsContainer>
-        {loadinUsers && loadingConnect
+        {loadinUsers
           ? Array.from({ length: 4 }).map(() => <UserCardSkeleton />)
           : userResponse &&
+            !loadingConnect &&
             userResponse.users
               .filter(user => user.email !== emailSender)
               .map((user: any) => (
                 <UserCard
+                  email={user.email}
                   name={user.name}
+                  username={user.username}
                   school={user.medicalSchool || 'None'}
                   year={user.school_year || 0}
                   specialties={user.specialties || null}
@@ -94,7 +106,11 @@ const PeoplePageScreen = () => {
                   step_1={user.step_1 || '?'}
                   step_2={user.step_2 || '?'}
                   step_3={user.step_3 || '?'}
-                  onConnect={user.onConnect}
+                  onConnect={
+                    connectResponse.connectedUsers.filter(
+                      conusr => user.email === conusr.email,
+                    ).length > 0
+                  }
                   handleConnectButtonPress={handleConnectButtonPress}
                 />
               ))}

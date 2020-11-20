@@ -15,10 +15,10 @@ interface IResource {
   refetch: Function;
 }
 const ResourceImage: any = styled.img`
-  max-height: 100px;
+  max-height: 50px;
   max-width: 130px;
   width: auto;
-  vertical-align: middle;
+  object-fit: contain;
 `;
 
 export const Resource: FC<IResource> = props => {
@@ -41,10 +41,6 @@ export const Resource: FC<IResource> = props => {
           <ResourceImage
             src={imageResource ? imageResource : img_locker}
           ></ResourceImage>
-          <div className="image-caption">
-            {/* <Link to={RoutesTypes.PRODUCT}>Path</Link> */}
-            <Link to={RoutesTypes.PRODUCT}></Link>
-          </div>
         </div>
         <div className="locker-information">
           <div className="title">
@@ -80,7 +76,6 @@ export const Resource: FC<IResource> = props => {
               },
             });
             refetch();
-
           }}
           className="btn btn-resource"
         >

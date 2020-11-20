@@ -143,11 +143,11 @@ export const GuestUserLocker = () => {
               </div>
             </div>
             <div className="locker-col">
-              <div className="visual-learner">
+              {/* <div className="visual-learner">
                 <a href="#" className="btn btn-learner">
                   Visual Learner
                 </a>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="locker-panel">

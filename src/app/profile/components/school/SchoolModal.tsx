@@ -46,16 +46,22 @@ export function SchoolModal(props){
   const { isShow, onHide, addNewSchool, editSchool, deleteSchool, editValues } = props;
 
   function onSubmit(values) {
+    const newHonors:string[]=[];
+    newHonors.push(values.honors);
+    const newMajors:string[]=[];
+    newMajors.push(values.majors);
+    const newDegreeType:string[]=[];
+    newDegreeType.push(values.degree_type)
     const newSchool = {
       id: '',
       subcollectionId: '',
       city: values.city,
-      degree_type: values.degree_type,
+      degree_type: newDegreeType,
       end_date: `${ values.end_date.getMonth() + 1}/${values.end_date.getFullYear()}`,
       start_date: `${values.start_date.getMonth() + 1 }/${values.start_date.getFullYear()}`,
-      majors: values.majors,
+      majors: newMajors,
       school: values.school,
-      honors: values.honors,
+      honors:newHonors,
       is_present_date: values.is_present_date,
       subcollectionName: "schools"
     };
@@ -90,6 +96,9 @@ export function SchoolModal(props){
                     ...editValues,
                     end_date: new Date(moment( `20/${editValues.end_date}`, 'DD/MM/YYYY', ).format()),
                     start_date: new Date(moment(`20/${editValues.end_date}`,'DD/MM/YYYY',).format()),
+                    honors:editValues.honors[0],
+                    degree_type:editValues.degree_type[0],
+                    majors:editValues.majors[0],
                   }
                 : { ...initialValues }
             }

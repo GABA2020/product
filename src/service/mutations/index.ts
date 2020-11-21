@@ -167,10 +167,21 @@ export const EDIT_USER_PROFILE_FS = gql`
 `;
 
 export const EDIT_USER_PROFILE_PG = gql`
-  mutation($email: String!, $name: String!) {
+  mutation(
+    $email: String!
+    $name: String!
+    $last_name: String!
+    $school_year: String!
+    $medical_school: String!
+  ) {
     update_user_account(
-      where: { email: { _eq: "" } }
-      _set: { last_name: "", name: "", school_year: "", medical_school: "" }
+      where: { email: { _eq: $email } }
+      _set: {
+        last_name: $last_name
+        name: $name
+        school_year: $school_year
+        medical_school: $medical_school
+      }
     ) {
       affected_rows
     }

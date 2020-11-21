@@ -14,13 +14,14 @@ import { useStorage } from 'hook/useStorage';
 import { REF, storageFB } from 'helpers/firebase.module';
 import { Context } from 'app/globalContext/GlobalContext';
 import { dataUrlFile } from 'helpers/Unity';
-import { EDIT_USER_PROFILE_FS } from '../../../service/mutations';
+import { EDIT_USER_PROFILE_FS, EDIT_USER_PROFILE_PG } from '../../../service/mutations';
 
 interface IForm {
   name: string;
   last_name: string;
   specialties: string;
-  school_year: number;
+  school_year: string;
+  medical_school: string;
   degrees: string;
   avatar: string;
   honors: ENTITIES.ISelect[];
@@ -47,10 +48,11 @@ const initialValues: IForm = {
   name: '',
   last_name: '',
   specialties: '',
-  school_year: 0,
+  school_year: '',
   degrees: '',
   avatar: '',
   honors: [],
+  medical_school: ''
 };
 
 const initFile: ENTITIES.File = {
@@ -76,6 +78,7 @@ const schema = yup.object().shape({
     .max(200, 'Specialty must be at most 200 characters')
     .required('Specialty is a required field'),
   school_year: yup.string().required('Year in Program is a required field'),
+  medical_school: yup.string().required('Medical school is a required field'),
   degrees: yup.string().required('Name is a required field'),
   avatar: yup.string(),
   honors: yup.array(),
@@ -115,6 +118,7 @@ export function EditProfileModal(props) {
         degrees: user.degrees[0],
         honors: user.honors?.map(value => ({ label: value, value })),
         specialties: user.specialties[0],
+        medical_school: user.medical_school
       },
     },
     validationSchema: schema,
@@ -136,21 +140,31 @@ export function EditProfileModal(props) {
     values.honors.forEach(item => newHonors.push(item.value));
     const newSpecialties: string[] = [];
     newSpecialties.push(values.specialties);
-
-    const variables = {
+    const variablesFS = {
       avatar: values.avatar,
       email: user.email,
-      name: values.name,
-      last_name: values.last_name,
+      name: `${values.name} ${values.last_name}`,
       school_year: values.school_year.toString(),
       degrees: newDegrees,
       honors: newHonors,
       specialties: newSpecialties,
     };
+    const variablesPG = {
+      email: user.email,
+      name: values.name,
+      last_name: values.last_name,
+      school_year: values.school_year.toString(),
+      medical_school: values.medical_school,
+    };
+    let response1;
     await graphQLClient
-      .mutate({ mutation: EDIT_USER_PROFILE_FS, variables })
-      .then(r => setUser({ ...user, ...variables }))
-      .catch(r => console.log(r));
+      .mutate({ mutation: EDIT_USER_PROFILE_PG, variables:variablesPG })
+      .then(r =>  response1=r)
+      .catch(r => console.log('EDIT_USER_PROFILE_PG',r));
+    await graphQLClient
+      .mutate({ mutation: EDIT_USER_PROFILE_FS, variables:variablesFS })
+      .then(r => setUser({ ...user, ...variablesFS, ...variablesPG }))
+      .catch(r => console.log('EDIT_USER_PROFILE_FS',r));
     onHide();
   }
 
@@ -269,7 +283,7 @@ export function EditProfileModal(props) {
                   placeholder="Enter your last name"
                   onChange={handleChange}
                 />
-                {touched.name && errors.name && (
+                {touched.last_name && errors.last_name && (
                   <span className={'text-danger'}>{errors.last_name}</span>
                 )}
               </div>
@@ -323,6 +337,22 @@ export function EditProfileModal(props) {
                 />
                 {touched.honors && errors.honors && (
                   <span className={'text-danger'}>{errors.honors}</span>
+                )}
+              </div>
+              <div className="form-group">
+                <label htmlFor="exampleInputPassword1">
+                  Medical School <span className="text-danger">*</span>
+                </label>
+                <input
+                  name="medical_school"
+                  value={values.medical_school}
+                  type="text"
+                  className="form-control"
+                  placeholder="Medocal School"
+                  onChange={handleChange}
+                />
+                {touched.medical_school && errors.medical_school && (
+                  <span className={'text-danger'}>{errors.medical_school}</span>
                 )}
               </div>
               <div className="form-group">

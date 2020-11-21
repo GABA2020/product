@@ -65,7 +65,6 @@ export const GET_USER_DATA = gql`
       step_3
       student_status
       username
-      year_in_program
       works {
         id
         city

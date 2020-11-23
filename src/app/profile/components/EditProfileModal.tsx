@@ -160,7 +160,7 @@ const TextInput = styled.input`
 `;
 
 const CustomDropdown = styled(Dropdown)`
-  height: 40px;
+  min-height: 40px;
   border: 1px solid lightgray;
   border-radius: 5px;
   margin-right: 15px;
@@ -236,7 +236,7 @@ interface IForm {
   specialties: string;
   school_year: string;
   medical_school: string;
-  degrees: string;
+  degrees: string[];
   avatar: string;
   honors: ENTITIES.ISelect[];
 }
@@ -263,7 +263,7 @@ const initialValues: IForm = {
   last_name: '',
   specialties: '',
   school_year: '',
-  degrees: '',
+  degrees: [],
   avatar: '',
   honors: [],
   medical_school: '',
@@ -293,7 +293,7 @@ const schema = yup.object().shape({
     .required('Specialty is a required field'),
   school_year: yup.string().required('Year in Program is a required field'),
   medical_school: yup.string().required('Medical school is a required field'),
-  degrees: yup.string().required('Name is a required field'),
+  degrees: yup.array().required('Name is a required field'),
   avatar: yup.string(),
   honors: yup.array(),
 });
@@ -354,12 +354,12 @@ export function EditProfileModal(props) {
       ...initialValues,
       ...{
         avatar: user.avatar,
-        name: user.name.split(' '),
+        name: user.name,
         last_name: user.last_name,
         school_year: user.school_year,
-        degrees: user.degrees ? user.degrees[0] : '',
-        honors: user.honors?.map(value => ({ label: value, value })),
-        specialties: user.specialties ? user.specialties[0] : [],
+        degrees: user.degrees || [],
+        honors: user.honors || [],
+        specialties: user.specialties || [],
         medical_school: user.medical_school,
       },
     },
@@ -376,14 +376,12 @@ export function EditProfileModal(props) {
   const image_preview = useStorage(`${REF.avatars}/${values.avatar}`);
 
   async function submitHandle(values) {
-    const newDegrees: string[] = [];
-    newDegrees.push(values.degrees);
     const variablesFS = {
       avatar: values.avatar,
       email: user.email,
       name: `${values.name} ${values.last_name}`,
       school_year: values.school_year.toString(),
-      degrees: newDegrees,
+      degrees: values.degrees,
       honors: values.honors,
       specialties: values.specialties,
     };
@@ -441,6 +439,8 @@ export function EditProfileModal(props) {
   const onCropCancel = () => {
     setImageState(initFile);
   };
+
+  console.log({ user, values });
 
   return (
     <Fragment>
@@ -535,8 +535,10 @@ export function EditProfileModal(props) {
                   fluid
                   search
                   selection
+                  multiple
                   options={degreesOptions}
                   name="degrees"
+                  value={values.degrees}
                   onChange={(_, data) => {
                     setFieldValue('degrees', data.value);
                   }}

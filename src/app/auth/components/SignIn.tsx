@@ -17,6 +17,7 @@ import { Form, Input, Divider } from 'semantic-ui-react';
 import styled from 'styled-components';
 import { Context } from 'app/globalContext/GlobalContext';
 import { GET_USER_ACCOUNT, GET_USER_DATA } from 'service/queries';
+import { useFormik } from 'formik';
 
 const loginSchema = yup.object().shape({
   email: yup.string().required('Email is a required field'),
@@ -24,86 +25,107 @@ const loginSchema = yup.object().shape({
 });
 
 export const SignIn: React.FC = props => {
-  const [email, setEmail] = useState('');
-  const { register, handleSubmit, errors } = useForm({
-    resolver: yupResolver(loginSchema),
-  });
+  const [loading, setLoading] = useState(false)
   const {
     graphQLClient,
     dispatch: { login },
   } = useContext(Context);
 
   const onSubmit = async data => {
-    const response = await auth.signInWithEmailAndPassword(
-      data.email,
-      data.password,
-    );
-    if (response.user) {
-      const memberRef = await db
-        .collection('member_data')
-        .doc(data.email)
-        .get();
-      const userFirestore = memberRef.data();
-      let userAccount = {};
-      let userDataHasura = {};
-      await graphQLClient
-        .query({
-          query: GET_USER_ACCOUNT,
-          variables: { email: data.email },
-        })
-        .then(r => (userAccount = r?.data?.user_account[0]))
-        .catch(e => console.log(e));
-      await graphQLClient
-        .query({
-          query: GET_USER_DATA,
-          variables: { email: data.email },
-        })
-        .then(r => (userDataHasura = r.data?.user))
-        .catch(e => console.log(e));
-      login({ userFirestore, userAccount, userDataHasura });
-      toast.info('Welcome to GABA !');
-      history.push(`/home/${userFirestore?.username || ''}`);
-    } else {
+    try {
+      setLoading(true);
+      const response = await auth.signInWithEmailAndPassword(
+        data.email,
+        data.password,
+      );
+      if (response.user) {
+        const memberRef = await db
+          .collection('member_data')
+          .doc(data.email)
+          .get();
+        const userFirestore = memberRef.data();
+        let userAccount = {};
+        let userDataHasura = {};
+        await graphQLClient
+          .query({
+            query: GET_USER_ACCOUNT,
+            variables: { email: data.email },
+          })
+          .then(r => (userAccount = r?.data?.user_account[0]))
+          .catch(e => console.log(e));
+        await graphQLClient
+          .query({
+            query: GET_USER_DATA,
+            variables: { email: data.email },
+          })
+          .then(r => (userDataHasura = r.data?.user))
+          .catch(e => console.log(e));
+        login({ userFirestore, userAccount, userDataHasura });
+        toast.info('Welcome to GABA !');
+        history.push(`/home/${userFirestore?.username || ''}`);
+      } else {
+        toast.error('Unable to log in with provided credentials');
+        setLoading(false);
+      }
+    } catch (error) {
       toast.error('Unable to log in with provided credentials');
+      setLoading(false);
     }
+    
   };
 
+  const {
+    errors,
+    handleChange,
+    handleSubmit,
+    values,
+    touched,
+  } = useFormik({
+    initialValues: {
+      ...{
+        email: '',
+        password: '',
+      },
+    },
+    validationSchema: loginSchema,
+    onSubmit: onSubmit,
+  });
+
   return (
-    <FormWrapper onSubmit={handleSubmit(onSubmit)}>
+    <FormWrapper onSubmit={handleSubmit}>
       <h3>Sign in</h3>
       <Divider style={{ borderColor: '#eeaa35', marginBottom: 40 }} />
       <Form.Field required>
         <Label>Email Address </Label>
         <InputStyled
-          ref={register}
+          onChange={handleChange}
           name="email"
           type="text"
           id="inputEmail"
-          onChange={({ target }) => setEmail(target.value)}
           autoFocus
         />
-        {errors.email && (
-          <span className={'text-danger'}>{errors.email.message}</span>
+        {errors.email && touched.email &&(
+          <span className={'text-danger'}>{errors.email}</span>
         )}
       </Form.Field>
       <Form.Field required>
         <Label>Password</Label>
         <InputStyled
-          ref={register}
+          onChange={handleChange}
           name="password"
           type="password"
           id="inputPassword"
-          autoFocus
         />
-        {errors.password && (
-          <span className={'text-danger'}>{errors.password.message}</span>
+        {errors.password && touched.password &&(
+          <span className={'text-danger'}>{errors.password}</span>
         )}
       </Form.Field>
       <br />
       <Form.Button
         content="Join GABA"
-        primary
+        primary={values.email&&values.password&&true||false}
         fluid
+        loading={loading}
         size="huge"
         // disabled={loading}
       />
@@ -113,12 +135,14 @@ export const SignIn: React.FC = props => {
           onClick={e => {
             e.preventDefault();
             auth
-              .sendPasswordResetEmail(email)
+              .sendPasswordResetEmail(values.email)
               .then(() => {
-                console.log('reset password send');
+                toast.success('reset password send');
               })
               .catch(error => {
-                // An error happened.
+                // An error happened.\
+                console.log(error)
+                toast.error('An error ocurred');
               });
           }}
           className="mb-3"

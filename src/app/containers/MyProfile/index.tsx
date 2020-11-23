@@ -21,7 +21,6 @@ import { programSelector } from 'redux/Program/selectors';
 import { ordinal_suffix_of, dataUrlFile } from 'helpers/Unity';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
-// import { EditProfileModal } from 'app/components/Modal/EditProfileModal';
 import { Locker } from '../Locker';
 import { CVWork } from '../CVWork';
 import { useStorage } from 'hook/useStorage';
@@ -98,7 +97,7 @@ export const MyProfile = props => {
     <Fragment>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>{userProfile.name}</title>
+        <title>{`${userProfile.name} ${userProfile.last_name}`}</title>
       </Helmet>
       {/* <EditProfileModal
         saveProfile={saveProfile}
@@ -118,7 +117,7 @@ export const MyProfile = props => {
         isShow={isShowModalEditProfileState}
         onHide={() => {
           setIsShowModalEditProfileState(false);
-      }}
+        }}
       />
       {editModeState === true ? (
         <section className="section-profile-edit text-right">
@@ -159,9 +158,9 @@ export const MyProfile = props => {
               <div className="profile-body">
                 <div className="profile-user">
                   <p className="user-name">
-                    {userProfile.name}
+                    {`${userProfile.name} ${userProfile.last_name}`}
                     <sup>
-                      {userProfile.degrees}{' '}
+                      {userProfile.degrees.join(', ')}{' '}
                       {userProfile.verified ?? (
                         <img src={verified_check} alt="" />
                       )}
@@ -177,13 +176,12 @@ export const MyProfile = props => {
                 <ul className="profile-tag">
                   <li>
                     <a href="#" className="btn-profile-tag">
-                      {program?.specialty}
+                      {userProfile?.specialties.join(' ')}
                     </a>
                   </li>
                   <li>
                     <a href="#" className="btn-profile-tag">
-                      {ordinal_suffix_of(userProfile.year_in_program)} Year
-                      Student
+                      {userProfile.school_year} Student
                     </a>
                   </li>
                   {/* <li>

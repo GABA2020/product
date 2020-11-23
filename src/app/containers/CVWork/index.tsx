@@ -25,7 +25,7 @@ import {
   DELETE_USER_SUBCOLLECTION,
   EDIT_USER_SUBCOLLECTION,
   ADD_USER_SUBCOLLECTION,
-} from '../../../service/queries';
+} from '../../../service/mutations';
 import { School } from 'app/profile/components/school/School';
 const arrayWork = ['work', 'research', 'volunteer', 'school', 'letter'];
 

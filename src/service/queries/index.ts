@@ -407,11 +407,47 @@ export const GET_SPECIALITIES = gql`
     }
   }
 `;
+export const GET_REVIEWS_BY_USER = gql`
+  query GetReviewsByUser($userId: String!) {
+    users_reviews(where: { user_id: { _eq: $userId } }) {
+      resource_id
+      userReviewResource {
+        name
+        picture_name
+      }
+      ReviewComment {
+        title
+        comment
+        rating
+      }
+    }
+  }
+`;
+export const GET_LOCKER_RESOURCES_BY_USER = gql`
+  query GetLockerResourceByUser($userId: String!) {
+    resources_locker(where: { user_id: { _eq: $userId } }) {
+      resource_id
+      resource_locker {
+        picture_name
+        name
+        rating
+      }
+    }
+  }
+`;
 
 export const GET_SCHOOLS = gql`
   query GetSchools {
     school_programs {
       school_name
+    }
+  }
+`;
+
+export const GET_DISCIPLINES = gql`
+  query GetDisciplines {
+    medical_diciplines {
+      dicipline_name
     }
   }
 `;

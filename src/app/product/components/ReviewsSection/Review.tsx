@@ -125,7 +125,7 @@ const Review = (props: ReviewProps) => {
               <li>
                 <HelpfulButton
                   onClick={() =>
-                    props.markReviewAsHelpful(props.id, props.isHelpful)
+                    props.markReviewAsHelpful(props.id, !!props.isHelpful)
                   }
                   isHelpful={props.isHelpful}
                 >

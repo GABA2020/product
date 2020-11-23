@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Segment } from 'semantic-ui-react';
 import styled from 'styled-components';
 import { useQuery, useMutation } from '@apollo/client';
@@ -13,6 +13,7 @@ import {
   DELETE_FROM_LOCKER,
 } from '../../../service/mutations';
 import { GApageView } from 'app';
+import { Context } from 'app/globalContext/GlobalContext';
 
 const MarketPlaceContainer = styled(Segment.Group)`
   margin: 0 !important;
@@ -24,8 +25,10 @@ const MarketPlaceScreen = () => {
   const [resources, setResources] = useState([]);
   const [activeCategory, setActiveCategory] = useState('');
   const [offset, setOffset] = useState(0);
-  const email = useSelector((state: any) => state.auth.email);
-
+  const {
+    state: { user },
+  } = useContext(Context);
+  const email = user.email;
   // gql
   const {
     loading: loadingLocker,
@@ -35,8 +38,8 @@ const MarketPlaceScreen = () => {
   const {
     data: resourcesResponse,
     loading: loadingResources,
-    refetch: refetchResources
-  } = useQuery(RESOURCES, { variables: { limit: 10, offset: 0 }});
+    refetch: refetchResources,
+  } = useQuery(RESOURCES, { variables: { limit: 10, offset: 0 } });
   const [addToLocker] = useMutation(ADD_RESOURCE_TO_LOCKER);
   const [removeFromLocker] = useMutation(DELETE_FROM_LOCKER);
 
@@ -71,6 +74,7 @@ const MarketPlaceScreen = () => {
           },
         });
       }
+      //console.log("refresh")
       refecthLocker();
     } catch (err) {
       console.log('Error: ', err);
@@ -133,8 +137,32 @@ const MarketPlaceScreen = () => {
   }, []);
 
   useEffect(() => {
-    refetchResources({ limit: 10, offset })
-  }, [offset])
+    refetchResources({ limit: 10, offset });
+  }, [offset]);
+
+  const handleFilterResourcesByName = () =>
+    setResources(prevResources => {
+      const newR = prevResources
+        .slice() // Slice creates a coppy and helps react recognize that there's a change on this array.
+        .sort((a: any, b: any) => {
+          if (a.name < b.name) {
+            return -1;
+          }
+          if (a.name > b.name) {
+            return 1;
+          }
+          return 0;
+        });
+      return newR;
+    });
+
+  const handleFilterResourcesByPrice = () =>
+    setResources(prevResources => {
+      const newR = prevResources
+        .slice() // Slice creates a coppy and helps react recognize that there's a change on this array.
+        .sort((a: any, b: any) => Number(a.price_from) - Number(b.price_from));
+      return newR;
+    });
 
   return (
     <MarketPlaceContainer>
@@ -152,6 +180,8 @@ const MarketPlaceScreen = () => {
         resources={resources}
         loading={loadingResources || loadingLocker}
         handleLoadMore={() => setOffset(prevOffset => prevOffset + 10)}
+        handleFilterResourcesByPrice={handleFilterResourcesByPrice}
+        handleFilterResourcesByName={handleFilterResourcesByName}
       />
     </MarketPlaceContainer>
   );

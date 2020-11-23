@@ -1,8 +1,11 @@
-import React, { SetStateAction, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useQuery } from '@apollo/react-hooks';
+import { Dropdown } from 'semantic-ui-react';
 
 import Review from './Review';
 import { IComment } from '../../../../types/Resource';
+import { GET_DISCIPLINES } from '../../../../service/queries';
 
 const YellowStar = require('../../../../assets/images/front/YellowStar@2x.png');
 const YellowActiveStar = require('../../../../assets/images/front/YellowActiveStar@2x.png');
@@ -27,6 +30,25 @@ const judgeReviews = [
   {
     value: 1,
     stars: 1,
+  },
+];
+
+const exams = [
+  {
+    value: 'mcat',
+    name: 'MCAT',
+  },
+  {
+    value: 'step_1',
+    name: 'Step 1',
+  },
+  {
+    value: 'step_2',
+    name: 'Step 2',
+  },
+  {
+    value: 'step_3',
+    name: 'Step 3',
   },
 ];
 
@@ -68,12 +90,19 @@ interface ReviewSectionProps {
 
 const ReviewSection = (props: ReviewSectionProps) => {
   const [activeStar, setActiveStar]: any = useState(null);
+  const [disciplines, setDisciplines]: any = useState([]);
 
   const handleFilterReviews = (property, value) => {};
 
   const handleClearFilters = () => {
     setActiveStar(null);
   };
+
+  useQuery(GET_DISCIPLINES, {
+    onCompleted: data => {
+      setDisciplines(data.medical_diciplines);
+    },
+  });
 
   return (
     <section className="section-review">
@@ -136,19 +165,34 @@ const ReviewSection = (props: ReviewSectionProps) => {
                   }
                 >
                   <option value={0}>Select</option>
-                  <option value={1}>1</option>
-                  <option value={2}>2</option>
+                  {exams.map(exam => (
+                    <option key={exam.value} value={exam.value}>
+                      {exam.name}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
             <div className="portlet-filter">
               <h3 className="mention-title">Filter by discipline</h3>
               <div className="select-box">
-                <select className="form-control">
+                <Dropdown
+                  placeholder="Select Location"
+                  fluid
+                  search
+                  selection
+                  options={disciplines.map(discipline => ({
+                    value: discipline.dicipline_name,
+                    key: discipline.dicipline_name,
+                    text: discipline.dicipline_name,
+                  }))}
+                />
+                {/* <select className="form-control">
                   <option value={0}>Select</option>
-                  <option value={1}>1</option>
-                  <option value={2}>2</option>
-                </select>
+                  {disciplines.map(discipline => (
+                    <option value={1}>{discipline.dicipline_name}</option>
+                  ))}
+                </select> */}
               </div>
             </div>
             <div className="portlet-filter">

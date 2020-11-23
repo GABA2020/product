@@ -26,6 +26,7 @@ import { isUserConnected } from 'services';
 import { showConfirmMessage } from 'helpers/Swal.module';
 import { Message } from 'helpers/Message';
 import { Context } from 'app/globalContext/GlobalContext';
+import { useQuery } from '@apollo/client';
 
 export const GuestUserProfile = props => {
   useInjectSaga({ key: userSliceKey, saga: UserSaga });
@@ -37,6 +38,13 @@ export const GuestUserProfile = props => {
     userSearchProfile, 
     // userProfile 
   } = useSelector(userSelector);
+  
+  // const {
+  //   data: searchUserResponse,
+  //   loading: loadinUsers,
+  //   error: userError,
+  // } = useQuery(USER_QUERY_PG_BY);
+
   const { state: { user:userProfile } } = useContext(Context);
   const { program } = useSelector(programSelector);
   const { listLastMessage } = useSelector(ChatSelector);
@@ -146,7 +154,7 @@ export const GuestUserProfile = props => {
                   </li>
                   <li>
                     <a href="#" className="btn-profile-tag">
-                      {userSearchProfile.year_in_program} Year Student
+                      {userSearchProfile.student_status} Year Student
                     </a>
                   </li>
                   <li>

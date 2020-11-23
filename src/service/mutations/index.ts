@@ -158,6 +158,7 @@ export const EDIT_USER_PROFILE_FS = gql`
     $honors: [String!]
     $specialties: [String!]
     $avatar: String
+    $medical_school: String
   ) {
     editUserProfile(
       userProfileData: {
@@ -168,6 +169,7 @@ export const EDIT_USER_PROFILE_FS = gql`
         honors: $honors
         specialties: $specialties
         avatar: $avatar
+        medical_school: $medical_school
       }
     )
   }

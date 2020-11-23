@@ -31,7 +31,7 @@ const Container = styled.label`
     height: 25px;
     width: 25px;
     background-color: #eee;
-    border-radius: 5px;
+    border-radius: 50%;
   }
 
   /* On mouse-over, add a grey background color */
@@ -58,19 +58,20 @@ const Container = styled.label`
 
   /* Style the checkmark/indicator */
   .checkmark:after {
-    left: 9px;
-    top: 5px;
-    width: 8px;
+    left: 25%;
+    top: 5.9px;
+    width: 13px;
     height: 13px;
-    border: solid ${props => props.theme.color.darkGreen};
+    background-color: ${props => props.theme.color.darkGreen};
     border-width: 0 3px 3px 0;
     -webkit-transform: rotate(90deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
+    border-radius: 50%;
   }
 `;
 
-const Checkbox = ({
+const RadioButton = ({
   label,
   checked,
   onChange,
@@ -82,7 +83,7 @@ const Checkbox = ({
   <Container>
     {label}
     <input
-      type="checkbox"
+      type="radio"
       onChange={() => onChange && onChange()}
       checked={checked}
     />
@@ -90,4 +91,4 @@ const Checkbox = ({
   </Container>
 );
 
-export default Checkbox;
+export default RadioButton;

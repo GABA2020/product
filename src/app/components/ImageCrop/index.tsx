@@ -16,6 +16,7 @@ interface IImageCrop {
   imageSrc: IFIle;
   onCropDone: (imageBase64: string, name: string) => void;
   onCropCancel: () => void;
+  size?: number;
 }
 export const ImageCrop: FC<IImageCrop> = props => {
   const { imageSrc, onCropDone, onCropCancel } = props;
@@ -46,8 +47,8 @@ export const ImageCrop: FC<IImageCrop> = props => {
         borderRadius={220}
         scale={parseFloat(scaleState)}
         rotate={0}
-        width={250}
-        height={250}
+        width={props.size || 250}
+        height={props.size || 250}
         ref={setEditorRef}
       ></AvatarEditor>
       <div className="scale-range-wrapper">

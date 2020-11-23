@@ -247,3 +247,19 @@ export const GET_HELPFUL_REVIEWS = gql`
     }
   }
 `;
+
+export const GET_SCHOOLS = gql`
+  query GetSchools {
+    school_programs {
+      school_name
+    }
+  }
+`;
+
+export const EMAIL_USERNAME_VERIFICATION = gql`
+  query($email: String!, $username: String!){
+    user_account(where: {_or: [{email: {_eq:$email}},{username: {_eq:$username}}] }) {
+      uid
+    }
+  }
+`;

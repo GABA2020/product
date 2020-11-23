@@ -378,18 +378,14 @@ export function EditProfileModal(props) {
   async function submitHandle(values) {
     const newDegrees: string[] = [];
     newDegrees.push(values.degrees);
-    const newHonors: string[] = [];
-    values.honors.forEach(item => newHonors.push(item.value));
-    const newSpecialties: string[] = [];
-    newSpecialties.push(values.specialties);
     const variablesFS = {
       avatar: values.avatar,
       email: user.email,
       name: `${values.name} ${values.last_name}`,
       school_year: values.school_year.toString(),
       degrees: newDegrees,
-      honors: newHonors,
-      specialties: newSpecialties,
+      honors: values.honors,
+      specialties: values.specialties,
     };
     const variablesPG = {
       email: user.email,
@@ -633,7 +629,10 @@ export function EditProfileModal(props) {
             <Divider />
             <FormSection>
               <ButtonsContainer>
-                <ModalButton background={theme.color.softPurple}>
+                <ModalButton
+                  onClick={() => onHide()}
+                  background={theme.color.softPurple}
+                >
                   Cancel
                 </ModalButton>
                 <ModalButton

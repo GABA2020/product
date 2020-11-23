@@ -117,7 +117,7 @@ export const MyProfile = props => {
         isShow={isShowModalEditProfileState}
         onHide={() => {
           setIsShowModalEditProfileState(false);
-      }}
+        }}
       />
       {editModeState === true ? (
         <section className="section-profile-edit text-right">
@@ -160,7 +160,7 @@ export const MyProfile = props => {
                   <p className="user-name">
                     {`${userProfile.name} ${userProfile.last_name}`}
                     <sup>
-                      {userProfile.degrees}{' '}
+                      {userProfile.degrees.join(', ')}{' '}
                       {userProfile.verified ?? (
                         <img src={verified_check} alt="" />
                       )}
@@ -176,12 +176,12 @@ export const MyProfile = props => {
                 <ul className="profile-tag">
                   <li>
                     <a href="#" className="btn-profile-tag">
-                      {userProfile?.specialties}
+                      {userProfile?.specialties.join(' ')}
                     </a>
                   </li>
                   <li>
                     <a href="#" className="btn-profile-tag">
-                      Year Student {userProfile.school_year} 
+                      {userProfile.school_year} Student
                     </a>
                   </li>
                   {/* <li>

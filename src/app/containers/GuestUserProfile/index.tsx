@@ -146,8 +146,7 @@ export const GuestUserProfile = props => {
                   </li>
                   <li>
                     <a href="#" className="btn-profile-tag">
-                      {ordinal_suffix_of(userSearchProfile.year_in_program)}{' '}
-                      Year Student
+                      {userSearchProfile.year_in_program} Year Student
                     </a>
                   </li>
                   <li>

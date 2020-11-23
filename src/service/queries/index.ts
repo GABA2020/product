@@ -65,7 +65,6 @@ export const GET_USER_DATA = gql`
       step_3
       student_status
       username
-      year_in_program
       works {
         id
         city
@@ -444,6 +443,13 @@ export const GET_SCHOOLS = gql`
   }
 `;
 
+export const EMAIL_USERNAME_VERIFICATION = gql`
+  query($email: String!, $username: String!){
+    user_account(where: {_or: [{email: {_eq:$email}},{username: {_eq:$username}}] }) {
+      uid
+    }
+  }
+`;
 export const GET_DISCIPLINES = gql`
   query GetDisciplines {
     medical_diciplines {

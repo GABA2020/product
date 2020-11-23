@@ -144,9 +144,6 @@ export const RESOURCES = gql`
   }
 `;
 
-    
-
-
 export const ADD_USER_SUBCOLLECTION = gql`
   mutation(
     $email: String!
@@ -247,7 +244,6 @@ export const EDIT_USER_SUBCOLLECTION = gql`
     $document_name: String
     $document_type: String
     $receive_date: String
-    
   ) {
     editUserSubCollection(
       email: $email
@@ -298,7 +294,6 @@ export const DELETE_USER_SUBCOLLECTION = gql`
     )
   }
 `;
-
 
 export const RESOURCE_DETAIL = gql`
   query Resource($id: String!) {
@@ -400,6 +395,23 @@ export const GET_HELPFUL_REVIEWS = gql`
       where: { resource_id: { _eq: $resourceId }, user_id: { _eq: $userId } }
     ) {
       resource_review_id
+    }
+  }
+`;
+
+export const GET_SPECIALITIES = gql`
+  query GetSpecialities {
+    medical_specialties {
+      specialties_name
+      id
+    }
+  }
+`;
+
+export const GET_SCHOOLS = gql`
+  query GetSchools {
+    school_programs {
+      school_name
     }
   }
 `;

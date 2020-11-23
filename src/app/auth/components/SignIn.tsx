@@ -32,40 +32,46 @@ export const SignIn: React.FC = props => {
   } = useContext(Context);
 
   const onSubmit = async data => {
-    setLoading(true)
-    const response = await auth.signInWithEmailAndPassword(
-      data.email,
-      data.password,
-    );
-    if (response.user) {
-      const memberRef = await db
-        .collection('member_data')
-        .doc(data.email)
-        .get();
-      const userFirestore = memberRef.data();
-      let userAccount = {};
-      let userDataHasura = {};
-      await graphQLClient
-        .query({
-          query: GET_USER_ACCOUNT,
-          variables: { email: data.email },
-        })
-        .then(r => (userAccount = r?.data?.user_account[0]))
-        .catch(e => console.log(e));
-      await graphQLClient
-        .query({
-          query: GET_USER_DATA,
-          variables: { email: data.email },
-        })
-        .then(r => (userDataHasura = r.data?.user))
-        .catch(e => console.log(e));
-      login({ userFirestore, userAccount, userDataHasura });
-      toast.info('Welcome to GABA !');
-      history.push(`/home/${userFirestore?.username || ''}`);
-    } else {
+    try {
+      setLoading(true);
+      const response = await auth.signInWithEmailAndPassword(
+        data.email,
+        data.password,
+      );
+      if (response.user) {
+        const memberRef = await db
+          .collection('member_data')
+          .doc(data.email)
+          .get();
+        const userFirestore = memberRef.data();
+        let userAccount = {};
+        let userDataHasura = {};
+        await graphQLClient
+          .query({
+            query: GET_USER_ACCOUNT,
+            variables: { email: data.email },
+          })
+          .then(r => (userAccount = r?.data?.user_account[0]))
+          .catch(e => console.log(e));
+        await graphQLClient
+          .query({
+            query: GET_USER_DATA,
+            variables: { email: data.email },
+          })
+          .then(r => (userDataHasura = r.data?.user))
+          .catch(e => console.log(e));
+        login({ userFirestore, userAccount, userDataHasura });
+        toast.info('Welcome to GABA !');
+        history.push(`/home/${userFirestore?.username || ''}`);
+      } else {
+        toast.error('Unable to log in with provided credentials');
+        setLoading(false);
+      }
+    } catch (error) {
       toast.error('Unable to log in with provided credentials');
-      setLoading(false)
+      setLoading(false);
     }
+    
   };
 
   const {

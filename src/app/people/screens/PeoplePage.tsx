@@ -9,7 +9,7 @@ import {
 import UserCard from '../components/UserCard';
 import UserCardSkeleton from '../components/UserCardSkeleton';
 import SideFilters from '../components/SideFilters';
-import { USERS_QUERY, CONNECTED_USERS } from '../../../service/queries';
+import { USERS_QUERY_PG, CONNECTED_USERS } from '../../../service/queries';
 import { useSelector } from 'react-redux';
 
 import {
@@ -40,7 +40,7 @@ const PeoplePageScreen = () => {
     data: userResponse,
     loading: loadinUsers,
     error: userError,
-  } = useQuery(USERS_QUERY);
+  } = useQuery(USERS_QUERY_PG);
 
   const [connectToUser] = useMutation(CONNECT_TO_USER);
   const [disconnectToUser] = useMutation(DISCONNECT_TO_USER);
@@ -82,7 +82,7 @@ const PeoplePageScreen = () => {
   }, []);
 
   //console.log('errors', connectError, userError);
-  //console.log('connected', connectResponse);
+  console.log('connected', userResponse, userError);
 
   return (
     <GenericContainer justify="center">
@@ -92,20 +92,22 @@ const PeoplePageScreen = () => {
           ? Array.from({ length: 4 }).map(() => <UserCardSkeleton />)
           : userResponse &&
             !loadingConnect &&
-            userResponse.users
-              .filter(user => user.email !== emailSender)
+            userResponse.user_account
+              .filter(
+                user => user.email !== emailSender && user.verified !== false,
+              )
               .map((user: any) => (
                 <UserCard
                   email={user.email}
-                  name={user.name}
+                  name={user.FSdata.name}
                   username={user.username}
-                  school={user.medicalSchool || 'None'}
-                  year={user.school_year || 0}
-                  specialties={user.specialties || null}
-                  mcat={user.mcat || 0}
-                  step_1={user.step_1 || '?'}
-                  step_2={user.step_2 || '?'}
-                  step_3={user.step_3 || '?'}
+                  school={user.FSdata.medicalSchool || 'None'}
+                  year={user.FSdata.school_year || 0}
+                  specialties={user.FSdata.specialties || null}
+                  mcat={user.FSdata.mcat || 0}
+                  step_1={user.FSdata.step_1 || '?'}
+                  step_2={user.FSdata.step_2 || '?'}
+                  step_3={user.FSdata.step_3 || '?'}
                   onConnect={
                     connectResponse.connectedUsers.filter(
                       conusr => user.email === conusr.email,

@@ -184,11 +184,11 @@ export const MyProfile = props => {
                       Year Student {userProfile.school_year} 
                     </a>
                   </li>
-                  <li>
+                  {/* <li>
                     <a href="#" className="btn-profile-tag">
                       Visual Learner
                     </a>
-                  </li>
+                  </li> */}
                   {userProfile.honors.length > 0 &&
                     userProfile.honors.map((item, index) => {
                       return (

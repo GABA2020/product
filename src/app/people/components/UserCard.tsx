@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { Image } from 'semantic-ui-react';
 
 import { Column, Row } from '../../genericComponents/Layout';
 import Button from '../../genericComponents/Button';
+import { Context } from 'app/globalContext/GlobalContext';
 
 const GlyphIcon = require('../../../assets/images/sprites/mcat-icon.svg');
 const DotCircleIcon = require('../../../assets/images/sprites/step-one-icon.svg');
@@ -124,7 +125,9 @@ const ConnectButton = styled(Button)`
 `;
 
 interface UserCardProps {
+  email: string;
   name: string;
+  username: string;
   school?: string;
   year?: number | string;
   specialties?: string[];
@@ -138,7 +141,9 @@ interface UserCardProps {
 
 const UserCard = (props: UserCardProps) => {
   const {
+    email,
     name,
+    username,
     school,
     year,
     specialties,
@@ -149,6 +154,12 @@ const UserCard = (props: UserCardProps) => {
     onConnect,
     handleConnectButtonPress,
   } = props;
+  //console.log('conect', onConnect);
+  const {
+    state: { user },
+  } = useContext(Context);
+  const emailSender = user.email;
+
   return (
     <CardContainer>
       <Avatar
@@ -157,7 +168,7 @@ const UserCard = (props: UserCardProps) => {
         circular
       />
       <InfoContainer>
-        <UserName>{name}</UserName>
+        <UserName>{username}</UserName>
         <UserSchool>{school}</UserSchool>
         <TagsContainer>
           {specialties ? (
@@ -180,11 +191,14 @@ const UserCard = (props: UserCardProps) => {
         </CategoriesRow>
       </InfoContainer>
       <Location>San Francisco</Location>
-      {onConnect ? (
-        <ConnectButton>Disconnect</ConnectButton>
-      ) : (
-        <ConnectButton>Connect</ConnectButton>
-      )}
+
+      <ConnectButton
+        onClick={() => {
+          handleConnectButtonPress(email, emailSender, onConnect);
+        }}
+      >
+        {onConnect ? 'Disconect' : 'Connect'}
+      </ConnectButton>
     </CardContainer>
   );
 };

@@ -14,7 +14,221 @@ import { useStorage } from 'hook/useStorage';
 import { REF, storageFB } from 'helpers/firebase.module';
 import { Context } from 'app/globalContext/GlobalContext';
 import { dataUrlFile } from 'helpers/Unity';
-import { EDIT_USER_PROFILE_FS, EDIT_USER_PROFILE_PG } from '../../../service/mutations';
+import {
+  EDIT_USER_PROFILE_FS,
+  EDIT_USER_PROFILE_PG,
+} from '../../../service/mutations';
+import styled from 'styled-components';
+import { Dropdown } from 'semantic-ui-react';
+import { Row, Column } from '../../genericComponents/Layout';
+import Checkbox from '../../genericComponents/Checkbox';
+import Radio from '../../genericComponents/RadioButton';
+import theme from '../../../theme';
+import { useQuery } from '@apollo/react-hooks';
+import { GET_SPECIALITIES, GET_SCHOOLS } from '../../../service/queries';
+
+const BlueHero = require('../../../assets/images/sprites/blueHero.jpg');
+
+const radioOptions = [
+  'Pre-Med',
+  'Third Year',
+  'First Year',
+  'Fourth Year',
+  'Second Year',
+];
+
+const CustomModal: any = styled(Modal)`
+  .modal-content {
+    width: 1111px;
+    position: absolute;
+    left: -250px;
+    padding: 0 250px;
+
+    background: url('${BlueHero}');
+    background-size: 100% 250px;
+    background-repeat: no-repeat;
+    background-color: white;
+  }
+`;
+
+const inputFontStyle = `
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.1px;
+`;
+
+const ModalHeader = styled.div`
+  padding: 41px 200px 26px 200px;
+  background-color: white;
+  border-bottom: 1px solid ${props => props.theme.color.softGray};
+`;
+
+const HeaderTitle = styled.h3`
+  width: 100%;
+  border-bottom: 2px solid ${props => props.theme.color.gabaYellow};
+  padding-bottom: 20px;
+`;
+
+const ModalContent = styled(Modal.Body)`
+  padding: 26px 50px 41px 50px;
+  width: 100%;
+`;
+
+const Divider: any = styled.div`
+  width: 100%;
+  border-bottom: 1px solid lightgray;
+  margin: 25px 0;
+
+  ${(props: any) =>
+    props.header
+      ? `border-bottom: 1px solid ${props.theme.color.gabaYellow};`
+      : ''}
+`;
+
+const FormSection = styled(Row)`
+  flex-wrap: wrap;
+  label {
+    margin-right: 25px;
+    margin-top: 10px;
+  }
+
+  .react-datepicker-wrapper input {
+    height: 40px;
+    width: 136px;
+    border: 1px solid lightgray;
+    text-align: center;
+    border-radius: 5px;
+    margin-right: 15px;
+  }
+
+  .custom-date {
+    width: 170px;
+  }
+`;
+
+const Subtitle: any = styled.p`
+  width: 100%;
+  color: rgb(17, 23, 65);
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0px;
+  margin-bottom: 30px;
+  padding-left: 10px;
+  position: relative;
+
+  ${(props: any) =>
+    !props.header
+      ? `
+  &::before {
+    display: inline-block;
+    content: '*';
+    color: red;
+    width: 8px;
+    height: 8px;
+    font-size: 30px;
+    position: absolute;
+    left: -7px;
+  }
+  `
+      : 'color: white;'}
+`;
+
+const NotRequiredSubtitle: any = styled.p`
+  width: 100%;
+  color: rgb(17, 23, 65);
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0px;
+  margin-bottom: 30px;
+  padding-left: 10px;
+  position: relative;
+}
+`;
+
+const CheckboxContainer = styled.div`
+  width: 50%;
+`;
+
+const TextInput = styled.input`
+  height: 40px;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  margin-right: 15px;
+  padding-left: 10px;
+  width: 100%;
+  ${inputFontStyle}
+`;
+
+const CustomDropdown = styled(Dropdown)`
+  height: 40px;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  margin-right: 15px;
+  padding-left: 10px;
+  width: 100%;
+  ${inputFontStyle}
+`;
+
+const TextArea = styled.textarea`
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  margin-right: 15px;
+  padding-left: 10px;
+  width: 100%;
+  padding-top: 10px;
+  ${inputFontStyle}
+`;
+
+const ModalButton = styled.button`
+  background: ${(props: { background: string }) => props.background};
+  border-radius: 6px;
+  height: 48px;
+  color: ${props => props.theme.color.darkBlue};
+  font-size: 16px;
+  font-weight: 500;
+  text-align: center;
+  width: 48%;
+  border: none;
+`;
+
+const ButtonsContainer = styled(Row)`
+  justify-content: space-between;
+  width: 100%;
+`;
+
+const CustomTitle = styled.p`
+  color: white;
+`;
+
+const UserInfo = styled(Column)`
+  margin-left: 20px;
+`;
+
+const Name: any = styled.h3`
+  color: rgb(249, 249, 249);
+  font-family: EksellDisplayMedium;
+  font-size: 24px;
+  letter-spacing: -0.3px;
+  position: relative;
+
+  &::after {
+    display: inline-block;
+    content: '${(props: any) => props.degree}';
+    color: white;
+    height: 8px;
+    font-size: 15px;
+    position: absolute;
+    right: -30px;
+  }
+`;
+
+const Info = styled.p`
+  color: white;
+`;
+
+const ErrorMsg = styled.span.attrs({ className: 'text-danger' })`
+  margin-bottom: -20px;
+`;
 
 interface IForm {
   name: string;
@@ -28,20 +242,20 @@ interface IForm {
 }
 
 const degreesOptions = [
-  { value: 'MD', label: 'MD' },
-  { value: 'DO', label: 'DO' },
-  { value: 'MBA', label: 'MBA' },
-  { value: 'PhD', label: 'PhD' },
-  { value: 'JD', label: 'JD' },
-  { value: 'MS', label: 'MS' },
-  { value: 'Masters', label: 'Masters' },
-  { value: 'MPH', label: 'MPH' },
-  { value: 'MBBS', label: 'MBBS' },
-  { value: 'Other', label: 'Other' },
-  { value: 'US IMG', label: 'US IMG' },
-  { value: 'IMG', label: 'IMG' },
-  { value: 'Canad-IMG', label: 'Canad-IMG' },
-  { value: 'Pre-Med', label: 'Pre-Med' },
+  { text: 'MD', key: 'MD', value: 'MD' },
+  { text: 'DO', key: 'DO', value: 'DO' },
+  { text: 'MBA', key: 'MBA', value: 'MBA' },
+  { text: 'PhD', key: 'PhD', value: 'PhD' },
+  { text: 'JD', key: 'JD', value: 'JD' },
+  { text: 'MS', key: 'MS', value: 'MS' },
+  { text: 'Masters', key: 'Masters', value: 'Masters' },
+  { text: 'MPH', key: 'MPH', value: 'MPH' },
+  { text: 'MBBS', key: 'MBBS', value: 'MBBS' },
+  { text: 'Other', key: 'Other', value: 'Other' },
+  { text: 'US IMG', key: 'US IMG', value: 'US IMG' },
+  { text: 'IMG', key: 'IMG', value: 'IMG' },
+  { text: 'Canad-IMG', key: 'Canad-IMG', value: 'Canad-IMG' },
+  { text: 'Pre-Med', key: 'Pre-Med', value: 'Pre-Med' },
 ];
 
 const initialValues: IForm = {
@@ -52,7 +266,7 @@ const initialValues: IForm = {
   degrees: '',
   avatar: '',
   honors: [],
-  medical_school: ''
+  medical_school: '',
 };
 
 const initFile: ENTITIES.File = {
@@ -85,12 +299,39 @@ const schema = yup.object().shape({
 });
 
 const honorsOptions = [
-  { value: 'AOA', label: 'AOA' },
-  { value: 'GHHS', label: 'GHHS' },
+  { value: 'Alpha Omega Alpha', label: 'Alpha Omega Alpha' },
+  {
+    value: 'Gold Humanism Honor Society',
+    label: 'Gold Humanism Honor Society',
+  },
 ];
 
 export function EditProfileModal(props) {
   const { isShow, onHide } = props;
+  const [specialities, setSpecialities]: any = useState([]);
+  const [schools, setSchools]: any = useState([]);
+
+  useQuery(GET_SPECIALITIES, {
+    onCompleted: data =>
+      setSpecialities(
+        data.medical_specialties.map(speciality => ({
+          text: speciality.specialties_name,
+          key: speciality.id,
+          value: speciality.specialties_name,
+        })),
+      ),
+  });
+
+  useQuery(GET_SCHOOLS, {
+    onCompleted: data =>
+      setSchools(
+        data.school_programs.map((school, index) => ({
+          text: school.school_name,
+          key: school.index,
+          value: school.school_name,
+        })),
+      ),
+  });
 
   const {
     graphQLClient,
@@ -107,18 +348,19 @@ export function EditProfileModal(props) {
     setFieldValue,
     touched,
     resetForm,
+    setFieldTouched,
   } = useFormik({
     initialValues: {
       ...initialValues,
       ...{
         avatar: user.avatar,
-        name: user.name,
+        name: user.name.split(' '),
         last_name: user.last_name,
         school_year: user.school_year,
-        degrees: user.degrees[0],
+        degrees: user.degrees ? user.degrees[0] : '',
         honors: user.honors?.map(value => ({ label: value, value })),
-        specialties: user.specialties[0],
-        medical_school: user.medical_school
+        specialties: user.specialties ? user.specialties[0] : [],
+        medical_school: user.medical_school,
       },
     },
     validationSchema: schema,
@@ -126,10 +368,10 @@ export function EditProfileModal(props) {
   });
 
   useEffect(() => {
-    if(!isShow){
+    if (!isShow) {
       resetForm();
     }
-  }, [isShow])
+  }, [isShow]);
 
   const image_preview = useStorage(`${REF.avatars}/${values.avatar}`);
 
@@ -157,14 +399,18 @@ export function EditProfileModal(props) {
       medical_school: values.medical_school,
     };
     let response1;
-    await graphQLClient
-      .mutate({ mutation: EDIT_USER_PROFILE_PG, variables:variablesPG })
-      .then(r =>  response1=r)
-      .catch(r => console.log('EDIT_USER_PROFILE_PG',r));
-    await graphQLClient
-      .mutate({ mutation: EDIT_USER_PROFILE_FS, variables:variablesFS })
-      .then(r => setUser({ ...user, ...variablesFS, ...variablesPG }))
-      .catch(r => console.log('EDIT_USER_PROFILE_FS',r));
+    try {
+      await graphQLClient
+        .mutate({ mutation: EDIT_USER_PROFILE_PG, variables: variablesPG })
+        .then(r => (response1 = r))
+        .catch(r => console.log('EDIT_USER_PROFILE_PG', r));
+      await graphQLClient
+        .mutate({ mutation: EDIT_USER_PROFILE_FS, variables: variablesFS })
+        .then(r => setUser({ ...user, ...variablesFS, ...variablesPG }))
+        .catch(r => console.log('EDIT_USER_PROFILE_FS', r));
+    } catch (err) {
+      console.log(err);
+    }
     onHide();
   }
 
@@ -202,8 +448,8 @@ export function EditProfileModal(props) {
 
   return (
     <Fragment>
-      <div className="modal-edit-profile">
-        <Modal
+      <form className="modal-edit-profile">
+        <CustomModal
           backdrop="static"
           size="lg"
           show={isShow}
@@ -211,178 +457,199 @@ export function EditProfileModal(props) {
             onHide();
           }}
         >
-          <Modal.Header closeButton>
-            <Modal.Title>Edit Profile</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <form onSubmit={handleSubmit}>
-              <div className="form-group">
-                <div className="profile-images-wrapper text-center">
-                  {image_preview !== '' ? (
-                    <img
-                      className="profile-image"
-                      alt="image preview"
-                      src={image_preview}
-                      width={140}
-                      height={140}
-                    />
-                  ) : (
-                    <img
-                      className="profile-image"
-                      alt="image preview"
-                      src={img_user}
-                      width={140}
-                      height={140}
-                    />
-                  )}
-
-                  <input
-                    type="file"
-                    onChange={onHandleChangeAvatar}
-                    className="upload-image"
+          <ModalContent>
+            <FormSection>
+              <Subtitle header>Edit Profile</Subtitle>
+            </FormSection>
+            <Divider header />
+            <FormSection style={{ marginBottom: 35 }}>
+              <div className="profile-images-wrapper text-center">
+                {imageState.name !== '' ? (
+                  <ImageCrop
+                    onCropCancel={onCropCancel}
+                    onCropDone={onCropDone}
+                    imageSrc={imageState}
+                    size={120}
+                  ></ImageCrop>
+                ) : image_preview !== '' ? (
+                  <img
+                    className="profile-image"
+                    alt="image preview"
+                    src={image_preview}
+                    width={140}
+                    height={140}
                   />
-                  <div className="upload-image-icon">
-                    <FontAwesomeIcon icon={faEdit}></FontAwesomeIcon>
-                  </div>
-                </div>
-                <div className="upload-image-crop text-center">
-                  {imageState.name !== '' ? (
-                    <ImageCrop
-                      onCropCancel={onCropCancel}
-                      onCropDone={onCropDone}
-                      imageSrc={imageState}
-                    ></ImageCrop>
-                  ) : null}
-                </div>
-              </div>
-              <div className="form-group">
-                <label htmlFor="exampleInputEmail1">
-                  Name <span className="text-danger">*</span>
-                </label>
-                <input
-                  name="name"
-                  value={values.name}
-                  type="text"
-                  className="form-control"
-                  placeholder="Enter your name"
-                  onChange={handleChange}
-                />
-                {touched.name && errors.name && (
-                  <span className={'text-danger'}>{errors.name}</span>
+                ) : (
+                  <img
+                    className="profile-image"
+                    alt="image preview"
+                    src={img_user}
+                    width={140}
+                    height={140}
+                  />
                 )}
-              </div>
-              <div className="form-group">
-                <label htmlFor="exampleInputEmail1">
-                  Last Name <span className="text-danger">*</span>
-                </label>
                 <input
+                  type="file"
+                  onChange={onHandleChangeAvatar}
+                  className="upload-image"
+                />
+                <div className="upload-image-icon">
+                  <FontAwesomeIcon icon={faEdit}></FontAwesomeIcon>
+                </div>
+              </div>
+              <UserInfo>
+                <Name degree="MD">{user.name}</Name>
+                <Info>{user.username}</Info>
+                <Info>{user.medicalSchool}</Info>
+              </UserInfo>
+            </FormSection>
+            <FormSection>
+              <Subtitle>First Name</Subtitle>
+              <TextInput
+                value={values.name}
+                name="name"
+                placeholder="Enter your name"
+                onChange={handleChange}
+                onBlur={() => setFieldTouched('name', true)}
+              />
+              {touched.name && errors.name && (
+                <ErrorMsg>{errors.name}</ErrorMsg>
+              )}
+            </FormSection>
+            <Divider />
+            <FormSection style={{ justifyContent: 'space-between' }}>
+              <FormSection style={{ width: '57%' }}>
+                <Subtitle>Last Name</Subtitle>
+                <TextInput
                   name="last_name"
                   value={values.last_name}
                   type="text"
-                  className="form-control"
                   placeholder="Enter your last name"
                   onChange={handleChange}
+                  onBlur={() => setFieldTouched('last_name', true)}
                 />
                 {touched.last_name && errors.last_name && (
-                  <span className={'text-danger'}>{errors.last_name}</span>
+                  <ErrorMsg>{errors.last_name}</ErrorMsg>
                 )}
-              </div>
-              <div className="form-group">
-                <label htmlFor="exampleInputPassword1">
-                  Specialty <span className="text-danger">*</span>
-                </label>
-                <input
-                  name="specialties"
-                  value={values.specialties}
-                  type="text"
-                  className="form-control"
-                  placeholder="Specialty"
-                  onChange={handleChange}
-                />
-                {touched.specialties && errors.specialties && (
-                  <span className={'text-danger'}>{errors.specialties}</span>
-                )}
-              </div>
-              <div className="form-group">
-                <label htmlFor="exampleInputPassword1">
-                  Degrees <span className="text-danger">*</span>
-                </label>
-                <Select
-                  name="degrees"
-                  isMulti={false}
-                  value={degreesOptions.find(
-                    option => option.value === values.degrees,
-                  )}
-                  onChange={(opt, e) => {
-                    setFieldValue('degrees', opt.value);
-                  }}
+              </FormSection>
+              <FormSection style={{ width: '43%' }}>
+                <Subtitle>Degree</Subtitle>
+                <CustomDropdown
+                  placeholder="Select Degree"
+                  fluid
+                  search
+                  selection
                   options={degreesOptions}
-                />
-                {touched.degrees && errors.degrees && (
-                  <span className={'text-danger'}>{errors.degrees}</span>
-                )}
-              </div>
-              <div className="form-group">
-                <label htmlFor="exampleInputPassword1">Honors</label>
-                <Select
-                  name="honors"
-                  isMulti={true}
-                  value={values.honors}
-                  onChange={(opt, e) => {
-                    if (opt !== null) {
-                      setFieldValue('honors', opt);
-                    }
+                  name="degrees"
+                  onChange={(_, data) => {
+                    setFieldValue('degrees', data.value);
                   }}
-                  options={honorsOptions}
+                  onBlur={() => setFieldTouched('degrees', true)}
                 />
-                {touched.honors && errors.honors && (
-                  <span className={'text-danger'}>{errors.honors}</span>
+                {errors.degrees && touched.degrees && (
+                  <ErrorMsg>{errors.degrees}</ErrorMsg>
                 )}
-              </div>
-              <div className="form-group">
-                <label htmlFor="exampleInputPassword1">
-                  Medical School <span className="text-danger">*</span>
-                </label>
-                <input
-                  name="medical_school"
-                  value={values.medical_school}
-                  type="text"
-                  className="form-control"
-                  placeholder="Medocal School"
-                  onChange={handleChange}
-                />
-                {touched.medical_school && errors.medical_school && (
-                  <span className={'text-danger'}>{errors.medical_school}</span>
-                )}
-              </div>
-              <div className="form-group">
-                <label htmlFor="exampleInputPassword1">
-                  Year of School <span className="text-danger">*</span>
-                </label>
-                <input
-                  name="school_year"
-                  value={values.school_year}
-                  type="text"
-                  className="form-control"
-                  placeholder="Year of School"
-                  onChange={handleChange}
-                />
-                {touched.school_year && errors.school_year && (
-                  <span className={'text-danger'}>{errors.school_year}</span>
-                )}
-              </div>
-              <div className="text-right mt-2">
-                <button
-                  type="submit"
-                  className="btn btn-success btn-save-profile"
+              </FormSection>
+            </FormSection>
+            <Divider />
+            <FormSection>
+              <Subtitle>Medical School</Subtitle>
+              <CustomDropdown
+                placeholder="Select School"
+                fluid
+                search
+                selection
+                options={schools}
+                onChange={(_, data) =>
+                  setFieldValue('medical_school', data.value)
+                }
+                onBlur={() => setFieldTouched('medica_school', true)}
+                value={values.medical_school}
+              />
+            </FormSection>
+            {errors.medical_school && touched.medical_school && (
+              <ErrorMsg>{errors.medical_school}</ErrorMsg>
+            )}
+            <Divider />
+            <FormSection>
+              <Subtitle>Medical Speciality</Subtitle>
+              <CustomDropdown
+                placeholder="Select Speciality"
+                fluid
+                search
+                selection
+                multiple
+                options={specialities}
+                onChange={(_, data) => setFieldValue('specialties', data.value)}
+                onBlur={() => setFieldTouched('specialties', true)}
+                value={values.specialties}
+              />
+            </FormSection>
+            {errors.specialties && touched.specialties && (
+              <ErrorMsg>{errors.medical_school}</ErrorMsg>
+            )}
+            <Divider />
+            <FormSection>
+              <Subtitle>School Year</Subtitle>
+              {radioOptions.map(value => (
+                <CheckboxContainer key={value}>
+                  <Radio
+                    onChange={() => setFieldValue('school_year', value)}
+                    label={value}
+                    checked={values.school_year === value}
+                  />
+                </CheckboxContainer>
+              ))}
+            </FormSection>
+            <Divider />
+            <FormSection>
+              <NotRequiredSubtitle>Honors Society</NotRequiredSubtitle>
+              {honorsOptions.map(option => (
+                <CheckboxContainer>
+                  <Checkbox
+                    label={option.label}
+                    checked={
+                      !!values.honors.filter(e => e === option.value).length
+                    }
+                    onChange={() => {
+                      const isChecked = !!values.honors.filter(
+                        e => e === option.value,
+                      ).length;
+                      if (!isChecked)
+                        setFieldValue('honors', [
+                          ...values.honors,
+                          option.value,
+                        ]);
+                      else
+                        setFieldValue(
+                          'honors',
+                          values.honors.filter(e => e !== option.value),
+                        );
+                    }}
+                  />
+                </CheckboxContainer>
+              ))}
+            </FormSection>
+            <Divider />
+            <FormSection>
+              <ButtonsContainer>
+                <ModalButton background={theme.color.softPurple}>
+                  Cancel
+                </ModalButton>
+                <ModalButton
+                  onClick={() => {
+                    handleSubmit();
+                  }}
+                  background={theme.color.gabaYellow}
+                  type="button"
                 >
-                  Save
-                </button>
-              </div>
-            </form>
-          </Modal.Body>
-        </Modal>
-      </div>
+                  Update Profile
+                </ModalButton>
+              </ButtonsContainer>
+            </FormSection>
+          </ModalContent>
+        </CustomModal>
+      </form>
     </Fragment>
   );
 }

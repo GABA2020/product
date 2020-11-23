@@ -143,6 +143,156 @@ export const RESOURCES = gql`
   }
 `;
 
+export const ADD_USER_SUBCOLLECTION = gql`
+  mutation(
+    $email: String!
+    $subcollectionName: SubcollectionName!
+    $city: String
+    $company: String
+    $description: String
+    $end_date: String
+    $start_date: String
+    $title: String
+    $author: String
+    $event_date: String
+    $event_name: String
+    $journal: String
+    $link: String
+    $primary_investigator: String
+    $research_type: String
+    $show_link: Boolean
+    $work_title: String
+    $job_title: String
+    $nbr_hours_served: Int
+    $organization_name: String
+    $degree_type: String
+    $honors: String
+    $majors: String
+    $school: String
+    $is_present_date: Boolean
+    $document_name: String
+    $document_type: String
+    $receive_date: String
+  ) {
+    addUserSubCollection(
+      email: $email
+      subcollectionName: $subcollectionName
+      createSCData: {
+        title: $title
+        company: $company
+        city: $city
+        start_date: $start_date
+        end_date: $end_date
+        description: $description
+        author: $author
+        event_date: $event_date
+        event_name: $event_name
+        journal: $journal
+        link: $link
+        primary_investigator: $primary_investigator
+        research_type: $research_type
+        show_link: $show_link
+        work_title: $work_title
+        job_title: $job_title
+        nbr_hours_served: $nbr_hours_served
+        organization_name: $organization_name
+        degree_type: $degree_type
+        honors: $honors
+        majors: $majors
+        school: $school
+        is_present_date: $is_present_date
+        document_name: $document_name
+        document_type: $document_type
+        receive_date: $receive_date
+      }
+    ) {
+      id
+      error
+    }
+  }
+`;
+
+export const EDIT_USER_SUBCOLLECTION = gql`
+  mutation(
+    $email: String!
+    $subcollectionName: SubcollectionName!
+    $subcollectionId: String!
+    $city: String
+    $company: String
+    $description: String
+    $end_date: String
+    $start_date: String
+    $title: String
+    $author: String
+    $event_date: String
+    $event_name: String
+    $journal: String
+    $link: String
+    $primary_investigator: String
+    $research_type: String
+    $show_link: Boolean
+    $work_title: String
+    $job_title: String
+    $nbr_hours_served: Int
+    $organization_name: String
+    $degree_type: String
+    $honors: String
+    $majors: String
+    $school: String
+    $is_present_date: Boolean
+    $document_name: String
+    $document_type: String
+    $receive_date: String
+  ) {
+    editUserSubCollection(
+      email: $email
+      subcollectionName: $subcollectionName
+      subcollectionId: $subcollectionId
+      updateSCData: {
+        title: $title
+        company: $company
+        city: $city
+        start_date: $start_date
+        end_date: $end_date
+        description: $description
+        event_date: $event_date
+        author: $author
+        event_name: $event_name
+        journal: $journal
+        link: $link
+        primary_investigator: $primary_investigator
+        research_type: $research_type
+        show_link: $show_link
+        work_title: $work_title
+        job_title: $job_title
+        nbr_hours_served: $nbr_hours_served
+        organization_name: $organization_name
+        degree_type: $degree_type
+        honors: $honors
+        majors: $majors
+        school: $school
+        is_present_date: $is_present_date
+        document_name: $document_name
+        document_type: $document_type
+        receive_date: $receive_date
+      }
+    )
+  }
+`;
+
+export const DELETE_USER_SUBCOLLECTION = gql`
+  mutation(
+    $email: String!
+    $subcollectionName: SubcollectionName!
+    $subcollectionId: String!
+  ) {
+    deleteUserSubcollection(
+      email: $email
+      subcollectionName: $subcollectionName
+      subcollectionId: $subcollectionId
+    )
+  }
+`;
 
 export const RESOURCE_DETAIL = gql`
   query Resource($id: String!) {
@@ -248,6 +398,43 @@ export const GET_HELPFUL_REVIEWS = gql`
   }
 `;
 
+export const GET_SPECIALITIES = gql`
+  query GetSpecialities {
+    medical_specialties {
+      specialties_name
+      id
+    }
+  }
+`;
+export const GET_REVIEWS_BY_USER = gql`
+  query GetReviewsByUser($userId: String!) {
+    users_reviews(where: { user_id: { _eq: $userId } }) {
+      resource_id
+      userReviewResource {
+        name
+        picture_name
+      }
+      ReviewComment {
+        title
+        comment
+        rating
+      }
+    }
+  }
+`;
+export const GET_LOCKER_RESOURCES_BY_USER = gql`
+  query GetLockerResourceByUser($userId: String!) {
+    resources_locker(where: { user_id: { _eq: $userId } }) {
+      resource_id
+      resource_locker {
+        picture_name
+        name
+        rating
+      }
+    }
+  }
+`;
+
 export const GET_SCHOOLS = gql`
   query GetSchools {
     school_programs {
@@ -260,6 +447,13 @@ export const EMAIL_USERNAME_VERIFICATION = gql`
   query($email: String!, $username: String!){
     user_account(where: {_or: [{email: {_eq:$email}},{username: {_eq:$username}}] }) {
       uid
+    }
+  }
+`;
+export const GET_DISCIPLINES = gql`
+  query GetDisciplines {
+    medical_diciplines {
+      dicipline_name
     }
   }
 `;

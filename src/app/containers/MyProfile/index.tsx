@@ -97,7 +97,7 @@ export const MyProfile = props => {
     <Fragment>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>{userProfile.name}</title>
+        <title>{`${userProfile.name} ${userProfile.last_name}`}</title>
       </Helmet>
       {/* <EditProfileModal
         saveProfile={saveProfile}
@@ -158,7 +158,7 @@ export const MyProfile = props => {
               <div className="profile-body">
                 <div className="profile-user">
                   <p className="user-name">
-                    {userProfile.name}
+                    {`${userProfile.name} ${userProfile.last_name}`}
                     <sup>
                       {userProfile.degrees}{' '}
                       {userProfile.verified ?? (

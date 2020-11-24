@@ -50,6 +50,7 @@ const SignupSchema = yup.object().shape({
 });
 
 const schoolYearOptions = [
+  { key: 'Pre-Med', text: 'Pre-Med', value: 'Pre-Med' },
   { key: 'MS1', text: 'MS1', value: 'MS1' },
   { key: 'MS2', text: 'MS2', value: 'MS2' },
   { key: 'MS3', text: 'MS3', value: 'MS3' },

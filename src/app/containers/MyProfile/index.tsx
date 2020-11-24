@@ -37,7 +37,7 @@ export const MyProfile = props => {
   useInjectSaga({ key: programSliceKey, saga: ProgramSaga });
   useInjectSaga({ key: storageSliceKey, saga: StorageSaga });
   const dispatch = useDispatch();
-  const { educations } = useSelector(userSelector);
+  //const { educations } = useSelector(userSelector);
   const {
     state: { user: userProfile },
   } = useContext(Context);
@@ -156,9 +156,9 @@ export const MyProfile = props => {
                       )}
                     </sup>
                   </p>
-                  {educations.length > 0 && (
+                  {userProfile.medical_school.length > 0 && (
                     <p className="morehouse-des">
-                      {educations[0].school} • {educations[0].school_address}
+                      {userProfile.medical_school} 
                     </p>
                   )}
                 </div>

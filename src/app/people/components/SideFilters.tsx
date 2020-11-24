@@ -5,6 +5,8 @@ import { Dropdown } from 'semantic-ui-react';
 
 import { Column } from '../../genericComponents/Layout';
 import theme from '../../../theme';
+import { useQuery } from '@apollo/react-hooks';
+import { GET_SPECIALITIES, GET_SCHOOLS } from '../../../service/queries';
 
 const judgeReviews = [
   {
@@ -140,6 +142,30 @@ const ReviewSection = () => {
     discipline: '',
   };
   const [filters, setFilters]: any = useState(defaultFiltersState);
+  const [schools, setSchools]: any = useState([]);
+  const [specialities, setSpecialities]: any = useState([]);
+
+  useQuery(GET_SCHOOLS, {
+    onCompleted: data =>
+      setSchools(
+        data.school_programs.map((school, index) => ({
+          text: school.school_name,
+          key: school.index,
+          value: school.school_name,
+        })),
+      ),
+  });
+
+  useQuery(GET_SPECIALITIES, {
+    onCompleted: data =>
+      setSpecialities(
+        data.medical_specialties.map(speciality => ({
+          text: speciality.specialties_name,
+          key: speciality.id,
+          value: speciality.specialties_name,
+        })),
+      ),
+  });
 
   function handleSetFilter(filterName, value) {
     setFilters({
@@ -159,7 +185,7 @@ const ReviewSection = () => {
         <h3 className="mention-title">Filter by exam score</h3>
         <div className="mention-list">
           <p>
-            MCA: {filters.MCAScore[0]} - {filters.MCAScore[1]}
+            MCAT: {filters.MCAScore[0]} - {filters.MCAScore[1]}
           </p>
           <Range
             onChange={([min, max]) =>
@@ -218,7 +244,7 @@ const ReviewSection = () => {
           />
         </div>
       </div>
-      <div className="portlet-filter">
+      {/* <div className="portlet-filter">
         <h3 className="mention-title">Filter by location</h3>
         <div>
           <Dropdown
@@ -229,7 +255,7 @@ const ReviewSection = () => {
             options={countryOptions}
           />
         </div>
-      </div>
+      </div> */}
       <div className="portlet-filter">
         <h3 className="mention-title">Filter by years</h3>
         <div>
@@ -279,38 +305,8 @@ const ReviewSection = () => {
             placeholder="Select Medical School"
             fluid
             selection
-            options={[
-              {
-                key: '1',
-                value: '1',
-                text: '1',
-              },
-              {
-                key: '2',
-                value: '2',
-                text: '2',
-              },
-              {
-                key: '3',
-                value: '3',
-                text: '3',
-              },
-              {
-                key: '4',
-                value: '4',
-                text: '4',
-              },
-              {
-                key: '5',
-                value: '5',
-                text: '5',
-              },
-              {
-                key: '6',
-                value: '6',
-                text: '6',
-              },
-            ]}
+            search
+            options={schools}
           />
         </div>
       </div>
@@ -321,40 +317,18 @@ const ReviewSection = () => {
             placeholder="Select Speciality"
             fluid
             selection
-            options={[
-              {
-                key: '1',
-                value: '1',
-                text: '1',
-              },
-              {
-                key: '2',
-                value: '2',
-                text: '2',
-              },
-              {
-                key: '3',
-                value: '3',
-                text: '3',
-              },
-              {
-                key: '4',
-                value: '4',
-                text: '4',
-              },
-              {
-                key: '5',
-                value: '5',
-                text: '5',
-              },
-              {
-                key: '6',
-                value: '6',
-                text: '6',
-              },
-            ]}
+            search
+            options={specialities}
           />
         </div>
+      </div>
+      <div className="portlet-filter">
+        <Button
+          onClick={() => setFilters(defaultFiltersState)}
+          style={{ marginBottom: 20, color:"blue" }}
+        >
+          Filter
+        </Button>
       </div>
       <div className="portlet-filter">
         <Button

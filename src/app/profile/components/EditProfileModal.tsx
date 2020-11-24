@@ -31,10 +31,12 @@ const BlueHero = require('../../../assets/images/sprites/blueHero.jpg');
 
 const radioOptions = [
   'Pre-Med',
-  'Third Year',
-  'First Year',
-  'Fourth Year',
-  'Second Year',
+  'MS4',
+  'MS1',
+  'Fellow',
+  'MS2',
+  'Resident',
+  'MS3',
 ];
 
 const CustomModal: any = styled(Modal)`
@@ -385,6 +387,7 @@ export function EditProfileModal(props) {
       degrees: values.degrees,
       honors: values.honors,
       specialties: values.specialties,
+      medical_school: values.medical_school,
     };
     const variablesPG = {
       email: user.email,
@@ -495,7 +498,7 @@ export function EditProfileModal(props) {
                 </div>
               </div>
               <UserInfo>
-                <Name degree={user.degrees.join(' , ')}>
+                <Name degree={user.degrees.join(', ')}>
                   {user.name} {user.last_name}
                 </Name>
                 <Info>{user.username}</Info>

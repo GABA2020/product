@@ -444,8 +444,12 @@ export const GET_SCHOOLS = gql`
 `;
 
 export const EMAIL_USERNAME_VERIFICATION = gql`
-  query($email: String!, $username: String!){
-    user_account(where: {_or: [{email: {_eq:$email}},{username: {_eq:$username}}] }) {
+  query($email: String!, $username: String!) {
+    user_account(
+      where: {
+        _or: [{ email: { _eq: $email } }, { username: { _eq: $username } }]
+      }
+    ) {
       uid
     }
   }

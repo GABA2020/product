@@ -122,7 +122,7 @@ export const SignIn: React.FC = props => {
       </Form.Field>
       <br />
       <Form.Button
-        content="Join GABA"
+        content="Sign In GABA"
         primary={values.email&&values.password&&true||false}
         fluid
         loading={loading}

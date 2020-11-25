@@ -61,6 +61,7 @@ export const SignIn: React.FC = props => {
           .then(r => (userDataHasura = r.data?.user))
           .catch(e => console.log(e));
         login({ userFirestore, userAccount, userDataHasura });
+        (window as any).$crisp.push(["set", "user:email", [data.email]]);
         toast.info('Welcome to GABA !');
         history.push(`/home/${userFirestore?.username || ''}`);
       } else {

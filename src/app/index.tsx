@@ -76,6 +76,17 @@ export function App() {
   const [initialized, setInitialized] = React.useState(false);
 
   React.useEffect(() => {
+    (window as any).$crisp = [];
+    (window as any).CRISP_WEBSITE_ID = '8a0ef439-8fa0-4840-bd83-5a280d873944';
+    (function () {
+      var d = document;
+      var s = d.createElement('script');
+
+      s.src = 'https://client.crisp.chat/l.js';
+      s.async = true;
+      d.getElementsByTagName('head')[0].appendChild(s);
+    })();
+
     initGA();
 
     auth().onAuthStateChanged(async user => {
@@ -87,24 +98,26 @@ export function App() {
           .doc(user.email || '')
           .get();
         const userFirestore = memberRef.data();
-        let userAccount = {};
-        let userDataHasura = {};
+        let userAccount: any = {};
+        let userDataHasura: any = {};
         await graphQLClient
           .query({
             query: GET_USER_ACCOUNT,
             variables: { email: user.email },
           })
           .then(r => (userAccount = r?.data?.user_account[0]))
-          .catch(e => console.log('GET_USER_ACCOUNT',e));
+          .catch(e => console.log('GET_USER_ACCOUNT', e));
         await graphQLClient
           .query({
             query: GET_USER_DATA,
             variables: { email: user.email },
           })
           .then(r => (userDataHasura = r.data?.user))
-          .catch(e => console.log('GET_USER_DATA',e));
+          .catch(e => console.log('GET_USER_DATA', e));
         console.log('user', userFirestore, userAccount, userDataHasura);
         login({ userFirestore, userAccount, userDataHasura });
+        (window as any).$crisp.push(["set", "user:email", [user.email]]);
+        (window as any).$crisp.push(["set", "user:nickname", [`${userAccount.name} ${userAccount.last_name}`]])
         setInitialized(true);
       }
     });

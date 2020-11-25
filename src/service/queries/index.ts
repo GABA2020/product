@@ -351,6 +351,26 @@ export const USERS_QUERY = gql`
     }
   }
 `;
+export const USERS_QUERY_PG = gql`
+  query UsersPG {
+    user_account {
+        username
+        verified
+        email
+        FSdata{
+          name
+          step_1
+          step_2
+          step_3
+          mcat
+          medicalSchool
+          school_year
+          specialties
+          degrees
+       }
+     }
+    }
+     `;
 
 export const GET_LOCKER = gql`
   query GetLocker($email: String!) {

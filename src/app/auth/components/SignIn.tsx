@@ -61,6 +61,7 @@ export const SignIn: React.FC = props => {
           .then(r => (userDataHasura = r.data?.user))
           .catch(e => console.log(e));
         login({ userFirestore, userAccount, userDataHasura });
+        (window as any).$crisp.push(["set", "user:email", [data.email]]);
         toast.info('Welcome to GABA !');
         history.push(`/home/${userFirestore?.username || ''}`);
       } else {
@@ -122,7 +123,7 @@ export const SignIn: React.FC = props => {
       </Form.Field>
       <br />
       <Form.Button
-        content="Join GABA"
+        content="Sign In GABA"
         primary={values.email&&values.password&&true||false}
         fluid
         loading={loading}

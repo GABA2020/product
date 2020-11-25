@@ -153,9 +153,16 @@ const Review = (props: ReviewProps) => {
                 </Button>
               </li>
               <li>
-                <a href="#" className="btn-report">
+              <Button
+                  onClick={() =>{
+                    (window as any).$crisp.push(["do", "chat:open"]);
+                    (window as any).$crisp.push(["do", "message:send", ["text", "Hello I would like to report an abuse"]])
+                  }}
+                >
                   <span className="icons-report">&nbsp;</span> Report abuse
-                </a>
+                </Button>
+                
+                
               </li>
             </ul>
           </div>
@@ -177,14 +184,14 @@ const Review = (props: ReviewProps) => {
                 ))}
               </ul>
             </div>
-            <div className="author-image">
+            {/* <div className="author-image">
               <img
                 alt="image"
                 src="app/images/photos/img-author-1.jpg"
                 width={50}
                 height={50}
               />
-            </div>
+            </div> */}
           </div>
           <ReviewRepliesContainer reviewsVisibility={reviewsVisibility}>
             {props.replies && !!props.replies.length && (

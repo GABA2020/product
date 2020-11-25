@@ -123,6 +123,13 @@ const ConnectButton = styled(Button)`
   background: ${props => props.theme.color.darkBlue};
   color: ${props => props.theme.color.white};
 `;
+const DisconnectButton = styled(Button)`
+  position: absolute;
+  right: 20px;
+  top: 60px;
+  background: ${props => props.theme.color.softPurple};
+  color: ${props => props.theme.color.black};
+`;
 
 interface UserCardProps {
   email: string;
@@ -190,15 +197,25 @@ const UserCard = (props: UserCardProps) => {
           ))}
         </CategoriesRow>
       </InfoContainer>
-      <Location>San Francisco</Location>
+      {/* <Location>San Francisco</Location> */}
 
-      <ConnectButton
-        onClick={() => {
-          handleConnectButtonPress(email, emailSender, onConnect);
-        }}
-      >
-        {onConnect ? 'Disconect' : 'Connect'}
-      </ConnectButton>
+      {onConnect ? (
+        <DisconnectButton
+          onClick={() => {
+            handleConnectButtonPress(email, emailSender, onConnect);
+          }}
+        >
+          Disconect
+        </DisconnectButton>
+      ) : (
+        <ConnectButton
+          onClick={() => {
+            handleConnectButtonPress(email, emailSender, onConnect);
+          }}
+        >
+          Connect
+        </ConnectButton>
+      )}
     </CardContainer>
   );
 };

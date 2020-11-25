@@ -223,7 +223,7 @@ const Product = () => {
         handleReply={setReplyModal}
         markReviewAsHelpful={markReviewAsHelpful}
       />
-      <ResourcesSection />
+      {/* <ResourcesSection /> */}
       {modalVisibility && (
         <ReviewModal onClose={() => setModalVisibility(false)} />
       )}

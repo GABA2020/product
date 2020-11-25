@@ -94,7 +94,7 @@ const BoardSection = (props: BoardSectionProps) => (
                 <Button
                   onClick={() => props.onLockerButtonPress(props.onLocker)}
                 >
-                  {props.onLocker ? 'Remove from locker' : 'Add to locker'}
+                  {props.onLocker ? 'On Locker' : 'Add to locker'}
                 </Button>
               </li>
               <li>

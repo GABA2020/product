@@ -332,12 +332,10 @@
 //   );
 // };
 
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import DatePicker from 'react-datepicker';
 import { useMutation } from '@apollo/react-hooks';
-import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
 
 import { Column, Row } from '../../../../genericComponents/Layout';
 import Checkbox from '../../../../genericComponents/Checkbox';
@@ -576,6 +574,10 @@ const AddReviewModal = ({ onClose }: { onClose: () => void }) => {
         });
     });
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  })
 
   return (
     <ModalContainer>

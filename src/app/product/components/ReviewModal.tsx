@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import DatePicker from 'react-datepicker';
 import { useMutation } from '@apollo/react-hooks';
@@ -164,7 +164,7 @@ const ReviewModal = ({ onClose }: { onClose: () => void }) => {
   const [comment, setComment] = useState('');
   let { id }: params = useParams();
   const email = useSelector((state: any) => state.auth.email);
-  
+
   const [createReview, { data }] = useMutation(CREATE_REVIEW, {
     onCompleted: () => onClose(),
   });
@@ -197,6 +197,10 @@ const ReviewModal = ({ onClose }: { onClose: () => void }) => {
       },
     });
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  });
 
   return (
     <ModalContainer>

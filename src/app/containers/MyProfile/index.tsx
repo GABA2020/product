@@ -99,16 +99,6 @@ export const MyProfile = props => {
         <meta charSet="utf-8" />
         <title>{`${userProfile.name} ${userProfile.last_name}`}</title>
       </Helmet>
-      {/* <EditProfileModal
-        saveProfile={saveProfile}
-        uploadAvatar={uploadAvatar}
-        program={program}
-        userProfile={userProfile}
-        isShow={isShowModalEditProfileState}
-        onHide={() => {
-          setIsShowModalEditProfileState(false);
-        }}
-      ></EditProfileModal> */}
       <EditProfileModal
         saveProfile={saveProfile}
         uploadAvatar={uploadAvatar}

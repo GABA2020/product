@@ -220,7 +220,8 @@ const Name: any = styled.h3`
     height: 8px;
     font-size: 15px;
     position: absolute;
-    right: -30px;
+    left: 100%;
+    min-width: 200px;
   }
 `;
 
@@ -497,7 +498,9 @@ export function EditProfileModal(props) {
                 </div>
               </div>
               <UserInfo>
-                <Name degree={user.degrees.join(', ')}>{user.name}</Name>
+                <Name degree={user.degrees.join(', ')}>
+                  {user.name} {user.last_name}
+                </Name>
                 <Info>{user.username}</Info>
                 <Info>{user.medical_school}</Info>
               </UserInfo>

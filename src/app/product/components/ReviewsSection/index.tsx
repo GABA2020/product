@@ -64,7 +64,7 @@ const Button = styled.button`
   margin-top: -20px;
   outline: none;
   border: none;
-  margin-bottom: 5px;
+  margin-bottom: 30px;
 `;
 
 const ProgressBarContainer = styled.div`
@@ -91,11 +91,25 @@ interface ReviewSectionProps {
 const ReviewSection = (props: ReviewSectionProps) => {
   const [activeStar, setActiveStar]: any = useState(null);
   const [disciplines, setDisciplines]: any = useState([]);
+  const [filteredComments, setFilteredComments]: any = useState([]);
 
-  const handleFilterReviews = (property, value) => {};
+  const handleFilterReviews = (property, value) => {
+    setFilteredComments(prevComments => {
+      if (property !== 'discipline')
+        return (prevComments.length ? prevComments : props.comments).filter(
+          comment => comment[property] === value,
+        );
+
+      return (prevComments.length
+        ? prevComments
+        : props.comments
+      ).filter(comment => comment.specialties.includes(value));
+    });
+  };
 
   const handleClearFilters = () => {
     setActiveStar(null);
+    setFilteredComments([]);
   };
 
   useQuery(GET_DISCIPLINES, {
@@ -125,7 +139,7 @@ const ReviewSection = (props: ReviewSectionProps) => {
                         alt=""
                         onClick={() => {
                           setActiveStar(rev.stars);
-                          handleFilterReviews('numberOfStars', rev.stars);
+                          handleFilterReviews('rating', rev.stars);
                         }}
                         width={20}
                         src={
@@ -181,6 +195,9 @@ const ReviewSection = (props: ReviewSectionProps) => {
                   fluid
                   search
                   selection
+                  onChange={(_, { value }) => {
+                    handleFilterReviews('discipline', value);
+                  }}
                   options={disciplines.map(discipline => ({
                     value: discipline.dicipline_name,
                     key: discipline.dicipline_name,
@@ -204,7 +221,10 @@ const ReviewSection = (props: ReviewSectionProps) => {
           <div className="review-main">
             <div className="review-content">
               <div className="portlet-message">
-                {props.comments.map(rev => (
+                {(filteredComments.length
+                  ? filteredComments
+                  : props.comments
+                ).map(rev => (
                   <Review
                     markReviewAsHelpful={props.markReviewAsHelpful}
                     handleReply={props.handleReply}

@@ -109,6 +109,39 @@ const countryOptions = [
   { value: 'Wyoming', key: 'Wyoming', text: 'Wyoming' },
 ];
 
+const school_year = [
+  {
+    key: '1',
+    value: 'MS1',
+    text: 'MS1',
+  },
+  {
+    key: '2',
+    value: 'MS2',
+    text: 'MS2',
+  },
+  {
+    key: '3',
+    value: 'MS3',
+    text: 'MS3',
+  },
+  {
+    key: '4',
+    value: 'MS4',
+    text: 'MS4',
+  },
+  {
+    key: '5',
+    value: 'Resident',
+    text: 'Resident',
+  },
+  {
+    key: '6',
+    value: 'Fellow',
+    text: 'Fellow',
+  },
+];
+
 const Button = styled.button`
   color: ${props => props.theme.color.darkBlue};
   font-size: 1.6rem;
@@ -130,16 +163,16 @@ const FiltersContainer = styled(Column)`
   display: flex;
 `;
 
-const ReviewSection = () => {
+const ReviewSection = ({onPressFilter}) => {
   const defaultFiltersState = {
-    years: 0,
+    school_year: '',
     location: '',
-    MCAScore: [0, 100],
-    stepOneScore: [0, 100],
-    stepTwoScore: [0, 100],
-    stepThreeScore: [0, 100],
-    school: '',
-    discipline: '',
+    MCAScore: [0, 1000],
+    stepOneScore: [0, 1000],
+    stepTwoScore: [0, 1000],
+    stepThreeScore: [0, 1000],
+    medical_school: '',
+    specialty: '',
   };
   const [filters, setFilters]: any = useState(defaultFiltersState);
   const [schools, setSchools]: any = useState([]);
@@ -188,9 +221,10 @@ const ReviewSection = () => {
             MCAT: {filters.MCAScore[0]} - {filters.MCAScore[1]}
           </p>
           <Range
-            onChange={([min, max]) =>
-              handleSetFilter('MCAScore', [min * 10, max * 10])
-            }
+            onChange={([min, max]) => handleSetFilter('MCAScore', [min, max])}
+            max={1000}
+            step={10}
+            value={filters.MCAScore}
             trackStyle={{ backgroundColor: theme.color.darkBlue }}
             handleStyle={{
               borderColor: theme.color.gabaYellow,
@@ -204,8 +238,11 @@ const ReviewSection = () => {
           </p>
           <Range
             onChange={([min, max]) =>
-              handleSetFilter('stepOneScore', [min * 10, max * 10])
+              handleSetFilter('stepOneScore', [min, max])
             }
+            max={1000}
+            step={10}
+            value={filters.stepOneScore}
             trackStyle={{ backgroundColor: theme.color.darkBlue }}
             handleStyle={{
               borderColor: theme.color.gabaYellow,
@@ -219,8 +256,11 @@ const ReviewSection = () => {
           </p>
           <Range
             onChange={([min, max]) =>
-              handleSetFilter('stepTwoScore', [min * 10, max * 10])
+              handleSetFilter('stepTwoScore', [min, max])
             }
+            max={1000}
+            step={10}
+            value={filters.stepTwoScore}
             trackStyle={{ backgroundColor: theme.color.darkBlue }}
             handleStyle={{
               borderColor: theme.color.gabaYellow,
@@ -230,12 +270,16 @@ const ReviewSection = () => {
         </div>
         <div className="mention-list">
           <p>
-            Step Three: {filters.stepThreeScore[0]} - {filters.stepThreeScore[1]}
+            Step Three: {filters.stepThreeScore[0]} -{' '}
+            {filters.stepThreeScore[1]}
           </p>
           <Range
             onChange={([min, max]) =>
-              handleSetFilter('stepThreeScore', [min * 10, max * 10])
+              handleSetFilter('stepThreeScore', [min, max])
             }
+            max={1000}
+            step={10}
+            value={filters.stepThreeScore}
             trackStyle={{ backgroundColor: theme.color.darkBlue }}
             handleStyle={{
               borderColor: theme.color.gabaYellow,
@@ -263,38 +307,9 @@ const ReviewSection = () => {
             placeholder="Select Year"
             fluid
             selection
-            options={[
-              {
-                key: '1',
-                value: 'MS1',
-                text: 'MS1',
-              },
-              {
-                key: '2',
-                value: 'MS2',
-                text: 'MS2',
-              },
-              {
-                key: '3',
-                value: 'MS3',
-                text: 'MS3',
-              },
-              {
-                key: '4',
-                value: 'MS4',
-                text: 'MS4',
-              },
-              {
-                key: '5',
-                value: 'Resident',
-                text: 'Resident',
-              },
-              {
-                key: '6',
-                value: 'Fellow',
-                text: 'Fellow',
-              },
-            ]}
+            value={filters.school_year}
+            onChange={(_, r) => handleSetFilter('school_year', r.value)}
+            options={school_year}
           />
         </div>
       </div>
@@ -306,6 +321,8 @@ const ReviewSection = () => {
             fluid
             selection
             search
+            value={filters.medical_school}
+            onChange={(_, r) => handleSetFilter('medical_school', r.value)}
             options={schools}
           />
         </div>
@@ -318,21 +335,26 @@ const ReviewSection = () => {
             fluid
             selection
             search
+            value={filters.specialty}
+            onChange={(_, r) => handleSetFilter('specialty', r.value)}
             options={specialties}
           />
         </div>
       </div>
       <div className="portlet-filter">
         <Button
-          onClick={() => setFilters(defaultFiltersState)}
-          style={{ marginBottom: 20, color:"blue" }}
+          onClick={() => onPressFilter(filters)}
+          style={{ marginBottom: 20, color: 'blue' }}
         >
           Filter
         </Button>
       </div>
       <div className="portlet-filter">
         <Button
-          onClick={() => setFilters(defaultFiltersState)}
+          onClick={() => {
+            setFilters(defaultFiltersState);
+            onPressFilter(defaultFiltersState);
+          }}
           style={{ marginBottom: 20 }}
         >
           Clear Filters

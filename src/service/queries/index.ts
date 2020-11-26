@@ -371,6 +371,15 @@ export const USERS_QUERY_PG = gql`
     }
   }
 `;
+export const USERS_QUERY_PG_USERNAME = gql`
+  query UsersPGUsername($like: String!) {
+    user_account(
+      where: { username: { _similar: $like }, verified: { _eq: true } }
+    ) {
+      username
+    }
+  }
+`;
 
 export const GET_LOCKER = gql`
   query GetLocker($email: String!) {

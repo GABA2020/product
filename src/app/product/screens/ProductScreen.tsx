@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { useLazyQuery, useQuery, useMutation } from '@apollo/client';
 import { useSelector } from 'react-redux';
@@ -11,6 +11,7 @@ import ReplyModal from '../components/ReplyModal';
 import { storageFB } from '../../../helpers/firebase.module';
 import { img_board } from '../../../assets/images';
 import { GApageView } from 'app';
+import { Context } from 'app/globalContext/GlobalContext';
 
 import {
   RESOURCE_DETAIL,
@@ -34,7 +35,10 @@ const Product = () => {
   let { id }: params = useParams();
   GApageView(`Product ${id}`);
 
-  const email = useSelector((state: any) => state.auth.email);
+  const {
+    state: { user },
+  } = useContext(Context);
+  const email = user.email;
   const [onLocker, setOnLocker] = useState(false);
   const [comments, setComments] = useState<any>([]);
   const [offset, setOffset] = useState(0);

@@ -9,6 +9,7 @@ export interface Resource {
   price_to?: null | string;
   reviewsCount?: null | number;
   tags?: string[];
+  link: string;
 }
 
 export interface IComment {

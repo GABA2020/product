@@ -25,7 +25,7 @@ import Checkbox from '../../genericComponents/Checkbox';
 import Radio from '../../genericComponents/RadioButton';
 import theme from '../../../theme';
 import { useQuery } from '@apollo/react-hooks';
-import { GET_SPECIALITIES, GET_SCHOOLS } from '../../../service/queries';
+import { GET_SPECIALTIES, GET_SCHOOLS } from '../../../service/queries';
 
 const BlueHero = require('../../../assets/images/sprites/blueHero.jpg');
 
@@ -314,7 +314,7 @@ export function EditProfileModal(props) {
   const [specialities, setSpecialities]: any = useState([]);
   const [schools, setSchools]: any = useState([]);
 
-  useQuery(GET_SPECIALITIES, {
+  useQuery(GET_SPECIALTIES, {
     onCompleted: data =>
       setSpecialities(
         data.medical_specialties.map(speciality => ({

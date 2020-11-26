@@ -1,9 +1,10 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import DatePicker from 'react-datepicker';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { Dropdown } from 'semantic-ui-react';
 
 import { Column, Row } from '../../genericComponents/Layout';
 import Checkbox from '../../genericComponents/Checkbox';
@@ -11,6 +12,30 @@ import Stars from '../../genericComponents/Stars';
 import theme from '../../../theme';
 import { CREATE_REVIEW } from '../../../service/mutations';
 import { Context } from 'app/globalContext/GlobalContext';
+import { GET_SPECIALTIES } from '../../../service/queries';
+
+const options = [
+  {
+    value: 'MCAT',
+    key: 'mcat',
+    text: 'MCAT',
+  },
+  {
+    value: 'Step 1',
+    key: 'step_1',
+    text: 'Step 1',
+  },
+  {
+    value: 'Step 2',
+    key: 'step_2',
+    text: 'Step 2',
+  },
+  {
+    value: 'Step 3',
+    key: 'step_3',
+    text: 'Step 3',
+  },
+];
 
 const inputFontStyle = `
   font-size: 16px;
@@ -145,6 +170,10 @@ const ButtonsContainer = styled(Row)`
   width: 100%;
 `;
 
+const DropdownContainer = styled(Row)`
+  width: 100%;
+`;
+
 interface params {
   id: string;
 }
@@ -152,19 +181,27 @@ interface params {
 const ReviewModal = ({ onClose }: { onClose: () => void }) => {
   const [startDateValue, setStartDateValue] = useState(new Date());
   const [endDateValue, setEndDateValue] = useState(new Date());
-  const [exams, setExams] = useState({
-    'Subject One': false,
-    'Exam Title One': false,
-    'Subject Two': false,
-    'Exam Title Two': false,
-  });
+  const [exams, setExams]: any = useState([]);
   const [examDate, setExamDate] = useState(new Date());
   const [stars, setStars] = useState(0);
   const [title, setTitle] = useState('');
   const [comment, setComment] = useState('');
+  const [specialties, setSpecialties]: any = useState([]);
+  const [specialtiesValue, setSpecialtiesValue]: any = useState([]);
+
   let { id }: params = useParams();
   const email = useSelector((state: any) => state.auth.email);
-  
+  useQuery(GET_SPECIALTIES, {
+    onCompleted: data =>
+      setSpecialties(
+        data.medical_specialties.map(speciality => ({
+          text: speciality.specialties_name,
+          key: speciality.id,
+          value: speciality.specialties_name,
+        })),
+      ),
+  });
+
   const [createReview, { data }] = useMutation(CREATE_REVIEW, {
     onCompleted: () => onClose(),
   });
@@ -172,24 +209,16 @@ const ReviewModal = ({ onClose }: { onClose: () => void }) => {
     state: { user },
   } = useContext(Context);
 
-  const handleCheckboxChange = exam =>
-    setExams(prevExams => {
-      return {
-        ...prevExams,
-        [exam]: !prevExams[exam],
-      };
-    });
-
   const handleSave = () => {
     createReview({
       variables: {
         comment,
         myRating: stars,
         resourceId: id,
-        specialties: [],
+        specialties: specialtiesValue,
         subjects: [],
         title,
-        usedInTests: Object.keys(exams).filter(key => exams[key]),
+        usedInTests: exams,
         used_end: endDateValue,
         used_start: startDateValue,
         userId: user.email,
@@ -197,6 +226,10 @@ const ReviewModal = ({ onClose }: { onClose: () => void }) => {
       },
     });
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <ModalContainer>
@@ -228,35 +261,37 @@ const ReviewModal = ({ onClose }: { onClose: () => void }) => {
           </FormSection>
           <Divider />
           <FormSection>
-            <Subtitle>When did you use this resource for?</Subtitle>
-            <CheckboxContainer>
-              <Checkbox
-                onChange={() => handleCheckboxChange('Subject One')}
-                label="Subject One"
-                checked={exams['Subject One']}
+            <Subtitle>What test did you use this resource for?</Subtitle>
+            <DropdownContainer>
+              <Dropdown
+                placeholder="Select tests"
+                value={exams}
+                onChange={(_, data) => setExams(data.value)}
+                fluid
+                multiple
+                search
+                selection
+                options={options}
               />
-            </CheckboxContainer>
-            <CheckboxContainer>
-              <Checkbox
-                onChange={() => handleCheckboxChange('Exam Title One')}
-                label="Exam Title One"
-                checked={exams['Exam Title One']}
+            </DropdownContainer>
+          </FormSection>
+          <Divider />
+          <FormSection>
+            <Subtitle>
+              Which disciplines did you use this resource for?
+            </Subtitle>
+            <DropdownContainer>
+              <Dropdown
+                placeholder="Select disciplines"
+                value={specialtiesValue}
+                onChange={(_, data) => setSpecialtiesValue(data.value)}
+                fluid
+                multiple
+                search
+                selection
+                options={specialties}
               />
-            </CheckboxContainer>
-            <CheckboxContainer>
-              <Checkbox
-                onChange={() => handleCheckboxChange('Subject Two')}
-                label="Subject Two"
-                checked={exams['Subject Two']}
-              />
-            </CheckboxContainer>
-            <CheckboxContainer>
-              <Checkbox
-                onChange={() => handleCheckboxChange('Exam Title Two')}
-                label="Exam Title Two"
-                checked={exams['Exam Title Two']}
-              />
-            </CheckboxContainer>
+            </DropdownContainer>
           </FormSection>
           <Divider />
           <FormSection>

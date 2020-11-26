@@ -49,6 +49,7 @@ const Product = () => {
     rating: 0,
     reviewsCount: 0,
     picture_name: '',
+    link: '',
   });
   const [helpfulReviews, setHelpfulReviews] = useState([]);
   const [imageUrl, setImageUrl] = useState(img_board);
@@ -211,6 +212,7 @@ const Product = () => {
         onLockerButtonPress={handleLockerButtonPress}
         handleCreateReview={() => setModalVisibility(true)}
         imageUrl={imageUrl}
+        link={resourceDetail.link}
       />
       <ReviewsSection
         loadMore={handleLoadMore}

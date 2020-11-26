@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useMutation } from '@apollo/react-hooks';
 import { useSelector } from 'react-redux';
@@ -163,6 +163,10 @@ const ReplyModal = ({
       },
     });
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <ModalContainer>

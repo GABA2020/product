@@ -38,6 +38,7 @@ interface BoardSectionProps {
   handleCreateReview: () => void;
   reviewsCount: number | string;
   imageUrl: string;
+  link: string;
 }
 
 const BoardSection = (props: BoardSectionProps) => (
@@ -98,12 +99,14 @@ const BoardSection = (props: BoardSectionProps) => (
                 </Button>
               </li>
               <li>
-                <Button>
-                  <span className="icons-target" style={{ color: 'yellow' }}>
-                    &nbsp;
-                  </span>{' '}
-                  Buy from
-                </Button>
+                <a rel="noopener noreferrer" target="_blank" href={props.link}>
+                  <Button>
+                    <span className="icons-target" style={{ color: 'yellow' }}>
+                      &nbsp;
+                    </span>{' '}
+                    Buy from
+                  </Button>
+                </a>
               </li>
               <li>
                 <Button onClick={props.handleCreateReview}>

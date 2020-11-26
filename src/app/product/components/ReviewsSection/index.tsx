@@ -92,23 +92,23 @@ const ReviewSection = (props: ReviewSectionProps) => {
   const [activeStar, setActiveStar]: any = useState(null);
   const [disciplines, setDisciplines]: any = useState([]);
   const [filteredComments, setFilteredComments]: any = useState([]);
+  const [activeFilters, setActiveFilters] = useState(false);
 
   const handleFilterReviews = (property, value) => {
     setFilteredComments(prevComments => {
-      if (property !== 'discipline')
+      setActiveFilters(true);
+      if (property === 'rating')
         return (prevComments.length ? prevComments : props.comments).filter(
           comment => comment[property] === value,
         );
 
-      return (prevComments.length
-        ? prevComments
-        : props.comments
-      ).filter(comment => comment.specialties.includes(value));
+      return prevComments.filter(comment => comment[property].includes(value));
     });
   };
 
   const handleClearFilters = () => {
     setActiveStar(null);
+    setActiveFilters(false);
     setFilteredComments([]);
   };
 
@@ -175,7 +175,7 @@ const ReviewSection = (props: ReviewSectionProps) => {
                 <select
                   className="form-control"
                   onChange={({ target: { value } }) =>
-                    handleFilterReviews('exam', value)
+                    handleFilterReviews('usedInTests', value)
                   }
                 >
                   <option value={0}>Select</option>
@@ -221,16 +221,15 @@ const ReviewSection = (props: ReviewSectionProps) => {
           <div className="review-main">
             <div className="review-content">
               <div className="portlet-message">
-                {(filteredComments.length
-                  ? filteredComments
-                  : props.comments
-                ).map(rev => (
-                  <Review
-                    markReviewAsHelpful={props.markReviewAsHelpful}
-                    handleReply={props.handleReply}
-                    {...rev}
-                  />
-                ))}
+                {(activeFilters ? filteredComments : props.comments).map(
+                  rev => (
+                    <Review
+                      markReviewAsHelpful={props.markReviewAsHelpful}
+                      handleReply={props.handleReply}
+                      {...rev}
+                    />
+                  ),
+                )}
               </div>
               <div className="load-more">
                 <Button onClick={() => props.loadMore()}>

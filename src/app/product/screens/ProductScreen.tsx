@@ -47,9 +47,14 @@ const Product = () => {
     name: '',
     description: '',
     rating: 0,
-    reviewsCount: 0,
+    reviewsCount: 1,
     picture_name: '',
     link: '',
+    stars_1: 0,
+    stars_2: 0,
+    stars_3: 0,
+    stars_4: 0,
+    stars_5: 0,
   });
   const [helpfulReviews, setHelpfulReviews] = useState([]);
   const [imageUrl, setImageUrl] = useState(img_board);
@@ -106,6 +111,7 @@ const Product = () => {
     {
       variables: { id },
       onCompleted: data => {
+        console.log('Data here: ', data);
         setResourceDetail(data.resource);
       },
       onError: err => console.log(err),
@@ -201,6 +207,14 @@ const Product = () => {
       });
     });
 
+  const stars = {
+    stars_1: resourceDetail.stars_1,
+    stars_2: resourceDetail.stars_2,
+    stars_3: resourceDetail.stars_3,
+    stars_4: resourceDetail.stars_4,
+    stars_5: resourceDetail.stars_5,
+  };
+
   return (
     <section id="page_content">
       <BoardSection
@@ -224,6 +238,8 @@ const Product = () => {
         })}
         handleReply={setReplyModal}
         markReviewAsHelpful={markReviewAsHelpful}
+        stars={stars}
+        reviewsCount={resourceDetail.reviewsCount}
       />
       {/* <ResourcesSection /> */}
       {modalVisibility && (

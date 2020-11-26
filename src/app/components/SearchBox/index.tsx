@@ -1,19 +1,19 @@
+import { useQuery } from '@apollo/client';
 import React, { Fragment, FC, useState, useEffect, useRef } from 'react';
 import { DebounceInput } from 'react-debounce-input';
+import { USERS_QUERY_PG_USERNAME } from 'service/queries';
 import { history } from 'utils/history';
 
 interface SearchBoxProps {
-  onchangeSearchText(text: string): void;
-  searchResults: ENTITIES.UserProfile[];
+  
 }
 
 export const SearchBox: FC<SearchBoxProps> = props => {
-  const { searchResults, onchangeSearchText } = props;
+ 
+  const wrapperRef = useRef(null);
   const [searchResultsState, setSearchResultsState] = useState<
     ENTITIES.UserProfile[]
   >([]);
-  const wrapperRef = useRef(null);
-
   const useOutsideAlerter = ref => {
     useEffect(() => {
       /**
@@ -32,10 +32,19 @@ export const SearchBox: FC<SearchBoxProps> = props => {
       };
     }, [ref]);
   };
+  const [searchUsers, setSearchUsers] = useState('');
+  const {
+    data: userResponse,
+    loading: loadinUsers,
+    error: userError,
+    refetch: fetchSearchUser,
+  } = useQuery(USERS_QUERY_PG_USERNAME, { variables: { like: `%${searchUsers}%` } });
 
+
+ //console.log(userError, userResponse)
   const renderSearchResults = () => {
-    return searchResultsState.length > 0
-      ? searchResultsState.map((item, index) => (
+    return searchUsers&&userResponse? 
+       userResponse.user_account.map((item, index) => (
           <div key={index} className="search-result-item">
             <span
               onClick={() => {
@@ -47,12 +56,12 @@ export const SearchBox: FC<SearchBoxProps> = props => {
             </span>
           </div>
         ))
-      : null;
+      :null;
   };
-
-  useEffect(() => {
-    setSearchResultsState(searchResults);
-  }, [searchResults]);
+  
+  // useEffect(() => {
+  //   setSearchResultsState(userResponse.user_account);
+  // }, [userResponse.user_account]);
   useOutsideAlerter(wrapperRef);
   return (
     <Fragment>
@@ -62,11 +71,15 @@ export const SearchBox: FC<SearchBoxProps> = props => {
             <div className="input-group">
               <DebounceInput
                 debounceTimeout={300}
-                onChange={e => {
-                  onchangeSearchText(e.target.value);
+                onChange={async e => {
+                  setSearchUsers(e.target.value);
+                  await fetchSearchUser();
+                  setSearchResultsState(userResponse.user_account)
                 }}
-                onFocus={e => {
-                  onchangeSearchText(e.target.value);
+                onFocus={async e => {
+                  setSearchUsers(e.target.value);
+                  await fetchSearchUser();
+                  setSearchResultsState(userResponse.user_account)
                 }}
                 type="text"
                 className="form-control"

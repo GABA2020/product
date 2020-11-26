@@ -29,6 +29,7 @@ import 'styles/scss/header.scss';
 import { ChatSelector } from 'redux/Chat/selectors';
 import { Context } from 'app/globalContext/GlobalContext';
 
+
 export const Header = () => {
   useInjectSaga({ key: userSlice, saga: UserSaga });
   useInjectSaga({ key: authSlice, saga: AuthSaga });
@@ -48,6 +49,8 @@ export const Header = () => {
 
   const [chatModal, setChatModal] = useState(false);
   const [notificationCount, setNotificationCount] = useState(0);
+
+  
 
   useEffect(() => {
     if (isAuth) {
@@ -107,8 +110,8 @@ export const Header = () => {
           </div>
         </div>
         <SearchBox
-          searchResults={userSearchResults}
-          onchangeSearchText={onchangeSearchText}
+          //searchResults={userSearchResults}
+          //onchangeSearchText={onchangeSearchText}
         ></SearchBox>
         {adminList.includes(email as any) && (
           <>
@@ -142,13 +145,13 @@ export const Header = () => {
                   className="account-toggle"
                 >
                   <img className="icons" src={img_account} alt="" />
-                  <span className="account-name">{userProfile.name}</span>
+                  <span className="account-name">{`${userProfile.name} ${userProfile.last_name}`}</span>
                 </Link>
               </Fragment>
             )}
             <div className="dropdown-content">
               {/* <Link to={RoutesTypes.CV_PREVIEW}>Download CV</Link> */}
-              <a
+              {/* <a
                 onClick={e => {
                   e.preventDefault();
                   window.open(RoutesTypes.CV_PREVIEW);
@@ -156,7 +159,7 @@ export const Header = () => {
                 href="#"
               >
                 Download CV
-              </a>
+              </a> */}
               <a onClick={() => signOut()} href="#">
                 Sign out
               </a>

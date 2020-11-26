@@ -254,6 +254,7 @@ const ReviewModal = ({ onClose }: { onClose: () => void }) => {
     setFieldValue,
     touched,
     resetForm,
+    isSubmitting,
   } = useFormik({
     initialValues: {
       ...initialValues,
@@ -442,7 +443,12 @@ const ReviewModal = ({ onClose }: { onClose: () => void }) => {
                 >
                   Cancel
                 </ModalButton>
-                <ModalButton background={theme.color.darkGray} type="submit">
+                <ModalButton
+                  background={
+                    isSubmitting ? theme.color.darkGray : theme.color.gabaYellow
+                  }
+                  type="submit"
+                >
                   Save To Locker
                 </ModalButton>
               </ButtonsContainer>

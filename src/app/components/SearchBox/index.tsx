@@ -4,16 +4,11 @@ import { DebounceInput } from 'react-debounce-input';
 import { USERS_QUERY_PG_USERNAME } from 'service/queries';
 import { history } from 'utils/history';
 
-interface SearchBoxProps {
-  
-}
+interface SearchBoxProps {}
 
 export const SearchBox: FC<SearchBoxProps> = props => {
- 
   const wrapperRef = useRef(null);
-  const [searchResultsState, setSearchResultsState] = useState<
-    ENTITIES.UserProfile[]
-  >([]);
+
   const useOutsideAlerter = ref => {
     useEffect(() => {
       /**
@@ -21,7 +16,7 @@ export const SearchBox: FC<SearchBoxProps> = props => {
        */
       function handleClickOutside(event) {
         if (ref.current && !ref.current.contains(event.target)) {
-          setSearchResultsState([]);
+          //ref.current.value='';
         }
       }
       // Bind the event listener
@@ -38,27 +33,28 @@ export const SearchBox: FC<SearchBoxProps> = props => {
     loading: loadinUsers,
     error: userError,
     refetch: fetchSearchUser,
-  } = useQuery(USERS_QUERY_PG_USERNAME, { variables: { like: `%${searchUsers}%` } });
+  } = useQuery(USERS_QUERY_PG_USERNAME, {
+    variables: { like: `%${searchUsers}%` },
+  });
 
-
- //console.log(userError, userResponse)
+  //console.log(userError, userResponse)
   const renderSearchResults = () => {
-    return searchUsers&&userResponse? 
-       userResponse.user_account.map((item, index) => (
+    return searchUsers && userResponse
+      ? userResponse.user_account.map((item, index) => (
           <div key={index} className="search-result-item">
             <span
               onClick={() => {
+                setSearchUsers('');
                 history.push(`/home/${item.username}`);
-                setSearchResultsState([]);
               }}
             >
               {item.username}
             </span>
           </div>
         ))
-      :null;
+      : null;
   };
-  
+
   // useEffect(() => {
   //   setSearchResultsState(userResponse.user_account);
   // }, [userResponse.user_account]);
@@ -74,12 +70,9 @@ export const SearchBox: FC<SearchBoxProps> = props => {
                 onChange={async e => {
                   setSearchUsers(e.target.value);
                   await fetchSearchUser();
-                  setSearchResultsState(userResponse.user_account)
                 }}
                 onFocus={async e => {
-                  setSearchUsers(e.target.value);
-                  await fetchSearchUser();
-                  setSearchResultsState(userResponse.user_account)
+                  setSearchUsers('');
                 }}
                 type="text"
                 className="form-control"

@@ -56,7 +56,7 @@ export const GET_USER_DATA = gql`
       gender
       last_login
       mcat
-      medicalSchool
+      medical_school
       name
       school_year
       step_1
@@ -337,7 +337,7 @@ export const USERS_QUERY = gql`
       creationDate
       degrees
       email
-      medicalSchool
+      medical_school
       name
       student_status
       username
@@ -363,7 +363,7 @@ export const USERS_QUERY_PG = gql`
         step_2
         step_3
         mcat
-        medicalSchool
+        medical_school
         school_year
         specialties
         degrees

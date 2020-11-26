@@ -29,7 +29,6 @@ import 'styles/scss/header.scss';
 import { ChatSelector } from 'redux/Chat/selectors';
 import { Context } from 'app/globalContext/GlobalContext';
 
-
 export const Header = () => {
   useInjectSaga({ key: userSlice, saga: UserSaga });
   useInjectSaga({ key: authSlice, saga: AuthSaga });
@@ -38,19 +37,21 @@ export const Header = () => {
   // const {dispatch:{ changeShowMenu } } = useContext(Context);
 
   // const { isAuth, email } = useSelector(authSelector);
-  const { state: { isAuth, user }, dispatch:{ changeShowMenu, logout } } = React.useContext(Context);
+  const {
+    state: { isAuth, user },
+    dispatch: { changeShowMenu, logout },
+  } = React.useContext(Context);
   const email = user?.email;
 
-  const { userSearchResults } = useSelector(userSelector);
-  const { state: { user:userProfile } } = useContext(Context);
+  const {
+    state: { user: userProfile },
+  } = useContext(Context);
 
   const { listLastMessage } = useSelector(ChatSelector);
   const dispatch = useDispatch();
 
   const [chatModal, setChatModal] = useState(false);
   const [notificationCount, setNotificationCount] = useState(0);
-
-  
 
   useEffect(() => {
     if (isAuth) {
@@ -72,23 +73,16 @@ export const Header = () => {
     setNotificationCount(count);
   }, [listLastMessage, userProfile]);
 
-  const onchangeSearchText = (text: string) => {
-    if (text.trim() !== '') {
-      dispatch(userActions.searchUsersAction({ text }));
-    }
-  };
-
   const signOut = () => {
     // dispatch(authActions.logoutAction());
-    logout()
+    logout();
   };
 
   const adminList = ['candice.blacknall@gogaba.co'];
 
   function handleShowMenu() {
-    changeShowMenu(true)
+    changeShowMenu(true);
   }
-
 
   return (
     <Fragment>
@@ -101,7 +95,7 @@ export const Header = () => {
       <header id="header">
         <div className="brand">
           <div className="nav-action">
-            <a className="nav-open" onClick={handleShowMenu} >
+            <a className="nav-open" onClick={handleShowMenu}>
               <img src={nav_icon} alt="logo" />
             </a>
           </div>
@@ -109,10 +103,8 @@ export const Header = () => {
             <img src={gaba} alt="logo" />
           </div>
         </div>
-        <SearchBox
-          //searchResults={userSearchResults}
-          //onchangeSearchText={onchangeSearchText}
-        ></SearchBox>
+        <SearchBox />
+
         {adminList.includes(email as any) && (
           <>
             <Link to={RoutesTypes.ADMIN_CONSOLE}>

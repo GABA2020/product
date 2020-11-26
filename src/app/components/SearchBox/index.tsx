@@ -16,6 +16,7 @@ export const SearchBox: FC<SearchBoxProps> = props => {
        */
       function handleClickOutside(event) {
         if (ref.current && !ref.current.contains(event.target)) {
+          setSearchUsers('');
           //ref.current.value='';
         }
       }
@@ -30,14 +31,12 @@ export const SearchBox: FC<SearchBoxProps> = props => {
   const [searchUsers, setSearchUsers] = useState('');
   const {
     data: userResponse,
-    loading: loadinUsers,
-    error: userError,
+
     refetch: fetchSearchUser,
   } = useQuery(USERS_QUERY_PG_USERNAME, {
     variables: { like: `%${searchUsers}%` },
   });
 
-  //console.log(userError, userResponse)
   const renderSearchResults = () => {
     return searchUsers && userResponse
       ? userResponse.user_account.map((item, index) => (
@@ -55,9 +54,6 @@ export const SearchBox: FC<SearchBoxProps> = props => {
       : null;
   };
 
-  // useEffect(() => {
-  //   setSearchResultsState(userResponse.user_account);
-  // }, [userResponse.user_account]);
   useOutsideAlerter(wrapperRef);
   return (
     <Fragment>
@@ -72,8 +68,9 @@ export const SearchBox: FC<SearchBoxProps> = props => {
                   await fetchSearchUser();
                 }}
                 onFocus={async e => {
-                  setSearchUsers('');
+                  setSearchUsers(e.target.value);
                 }}
+                value={searchUsers}
                 type="text"
                 className="form-control"
                 placeholder="Search"

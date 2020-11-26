@@ -215,7 +215,7 @@ const ReviewModal = ({ onClose }: { onClose: () => void }) => {
         comment,
         myRating: stars,
         resourceId: id,
-        specialties: [],
+        specialties: specialtiesValue,
         subjects: [],
         title,
         usedInTests: exams,

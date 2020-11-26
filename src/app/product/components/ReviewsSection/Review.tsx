@@ -119,9 +119,6 @@ const Review = (props: ReviewProps) => {
               {moment(Number(props.createdAt)).format('MMMM d, YYYY')}
             </span>
           </div>
-          <div className="message-type">
-            <span>Step One</span>
-          </div>
         </div>
         <MessageDescription className="message-description">
           <h4 className="message-heading">{props.title || 'No title'}</h4>

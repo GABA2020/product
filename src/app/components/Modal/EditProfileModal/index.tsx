@@ -1,9 +1,8 @@
 import React, { Fragment, useEffect, useState, FC } from 'react';
 import { Modal } from 'react-bootstrap';
-import { Formik, useFormik } from 'formik';
+import { useFormik } from 'formik';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
-import { Modal as ModalAnt, message } from 'antd';
 import { ImageCrop } from 'app/components/ImageCrop';
 import Select from 'react-select';
 import * as yup from 'yup';

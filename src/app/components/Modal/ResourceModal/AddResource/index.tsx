@@ -3,6 +3,9 @@ import styled from 'styled-components';
 import DatePicker from 'react-datepicker';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { Dropdown } from 'semantic-ui-react';
+import * as yup from 'yup';
+import { useFormik } from 'formik';
+import moment from 'moment';
 
 import { Column, Row } from '../../../../genericComponents/Layout';
 import Checkbox from '../../../../genericComponents/Checkbox';
@@ -35,7 +38,7 @@ const options = [
     key: 'step_3',
     text: 'Step 3',
   },
-]
+];
 
 const initResourceSelected: ENTITIES.IResourceSelected = {
   label: 'Resource name',
@@ -185,6 +188,45 @@ const DropdownContainer = styled(Row)`
   width: 100%;
 `;
 
+const ErrorMessage = styled.span.attrs({
+  className: 'text-danger',
+})`
+  width: 100%;
+`;
+
+const schema = yup.object().shape({
+  title: yup
+    .string()
+    .max(70, 'Name must be at most 70 characters')
+    .required('Title is a required field'),
+  comment: yup
+    .string()
+    .max(200, 'Review must be at most 200 characters')
+    .required('Review is a required field'),
+  stars: yup
+    .number()
+    .min(1, 'You must provide your rating for this resource')
+    .required('Year in Program is a required field'),
+  specialtiesValue: yup
+    .array()
+    .of(yup.string())
+    .min(1, 'You must select at least one specialty')
+    .required('You must select at least one specialty'),
+  exams: yup
+    .array()
+    .of(yup.string())
+    .min(1, 'You must select at least one exam')
+    .required('You must select at least one exam'),
+});
+
+const initialValues = {
+  title: '',
+  comment: '',
+  stars: 0,
+  specialtiesValue: [],
+  exams: [],
+};
+
 interface params {
   id: string;
 }
@@ -192,17 +234,12 @@ interface params {
 const AddReviewModal = ({ onClose }: { onClose: () => void }) => {
   const [startDateValue, setStartDateValue] = useState(new Date());
   const [endDateValue, setEndDateValue] = useState(new Date());
-  const [exams, setExams]: any = useState([]);
   const [examDate, setExamDate] = useState(new Date());
-  const [stars, setStars] = useState(0);
-  const [title, setTitle] = useState('');
-  const [comment, setComment] = useState('');
   const [id, setId] = useState('');
   const [titleHeader, setTitleHeadet] = useState('Choose a resource:');
   const [specialties, setSpecialties]: any = useState([]);
-  const [specialtiesValue, setSpecialtiesValue]: any = useState([]);
-  //let { id }: params = useParams();
-  //const email = useSelector((state: any) => state.auth.email);
+  const [dateRangeError, setDateRangeError] = useState('');
+  const [examDateError, setExamDateError] = useState('');
   const {
     state: { user },
   } = useContext(Context);
@@ -224,31 +261,37 @@ const AddReviewModal = ({ onClose }: { onClose: () => void }) => {
     ENTITIES.IResourceSelected
   >(initResourceSelected);
 
-  const handleCheckboxChange = exam =>
-    setExams(prevExams => {
-      return {
-        ...prevExams,
-        [exam]: !prevExams[exam],
-      };
-    });
-
-  const handleSave = () => {
-    createReview({
-      variables: {
-        comment,
-        myRating: stars,
-        resourceId: id,
-        specialties: specialtiesValue,
-        subjects: [],
-        title,
-        usedInTests: exams,
-        used_end: endDateValue,
-        used_start: startDateValue,
-        userId: user.email,
-        username: user.username,
-      },
-    });
-  };
+  const {
+    errors,
+    handleChange,
+    handleSubmit,
+    values,
+    setFieldValue,
+    touched,
+    resetForm,
+  } = useFormik({
+    initialValues: {
+      ...initialValues,
+    },
+    validationSchema: schema,
+    onSubmit: values => {
+      createReview({
+        variables: {
+          comment: values.comment,
+          myRating: values.stars,
+          resourceId: id,
+          specialties: values.specialtiesValue,
+          subjects: [],
+          title: values.title,
+          usedInTests: values.exams,
+          used_end: endDateValue,
+          used_start: startDateValue,
+          userId: user.email,
+          username: user.username,
+        },
+      });
+    },
+  });
 
   const getAsyncOptions = (input: string) => {
     const resourceOptions: ENTITIES.IResourceSelected[] = [];
@@ -283,138 +326,184 @@ const AddReviewModal = ({ onClose }: { onClose: () => void }) => {
 
   return (
     <ModalContainer>
-      <Modal>
-        <ModalHeader>
-          <HeaderTitle>{titleHeader}</HeaderTitle>
-          <AsyncSelect
-            cacheOptions
-            value={resourceSelectedState}
-            onChange={select => {
-              setResourceSelectedState(select);
-              setId(select.value.id);
-              setTitleHeadet(select.label);
-              // setFieldValue('name', select.label);
-            }}
-            defaultOptions
-            loadOptions={getAsyncOptions}
-          ></AsyncSelect>
-        </ModalHeader>
-        <ModalContent>
-          <FormSection>
-            <Subtitle>When did you start?</Subtitle>
-            <Row>
-              <label>Start: </label>
-              <DatePicker
-                selected={startDateValue}
-                onChange={date => setStartDateValue(date)}
-                dateFormat="MM / yyyy"
-                showMonthYearPicker
+      <form
+        onSubmit={e => {
+          e.preventDefault();
+          const now = moment.now();
+          const startDate = moment(startDateValue).format();
+          const endDate = moment(endDateValue).format();
+          const momentExamDate = moment(examDate).format();
+          const rangeError =
+            moment(startDate).isAfter(endDate) ||
+            moment(startDate).isAfter(now);
+          const dateError = moment(momentExamDate).isAfter(now);
+
+          if (rangeError) {
+            setDateRangeError('You must select a valid date');
+          } else {
+            setDateRangeError('');
+          }
+
+          if (dateError) {
+            setExamDateError('You must select a valid date');
+          } else {
+            setExamDateError('');
+          }
+
+          if (!rangeError && !dateError) handleSubmit();
+        }}
+      >
+        <Modal>
+          <ModalHeader>
+            <HeaderTitle>{titleHeader}</HeaderTitle>
+            <AsyncSelect
+              cacheOptions
+              value={resourceSelectedState}
+              onChange={select => {
+                setResourceSelectedState(select);
+                setId(select.value.id);
+                setTitleHeadet(select.label);
+                // setFieldValue('name', select.label);
+              }}
+              defaultOptions
+              loadOptions={getAsyncOptions}
+            ></AsyncSelect>
+          </ModalHeader>
+          <ModalContent>
+            <FormSection>
+              <Subtitle>When did you start?</Subtitle>
+              <Row>
+                <label>Start: </label>
+                <DatePicker
+                  selected={startDateValue}
+                  onChange={date => setStartDateValue(date)}
+                  dateFormat="MM / yyyy"
+                  showMonthYearPicker
+                />
+              </Row>
+              <Row>
+                <label>End: </label>
+                <DatePicker
+                  selected={endDateValue}
+                  onChange={date => setEndDateValue(date)}
+                  dateFormat="MM / yyyy"
+                  showMonthYearPicker
+                />
+              </Row>
+              {dateRangeError && <ErrorMessage>{dateRangeError}</ErrorMessage>}
+            </FormSection>
+            <Divider />
+            <FormSection>
+              <Subtitle>What test did you use this resource for?</Subtitle>
+              <DropdownContainer>
+                <Dropdown
+                  placeholder="Select tests"
+                  value={values.exams}
+                  onChange={(_, data) => setFieldValue('exams', data.value)}
+                  fluid
+                  multiple
+                  search
+                  selection
+                  options={options}
+                />
+              </DropdownContainer>
+              {touched.exams && errors.exams && (
+                <ErrorMessage>{errors.specialtiesValue}</ErrorMessage>
+              )}
+            </FormSection>
+            <Divider />
+            <FormSection>
+              <Subtitle>
+                Which disciplines did you use this resource for?
+              </Subtitle>
+              <DropdownContainer>
+                <Dropdown
+                  placeholder="Select disciplines"
+                  value={values.specialtiesValue}
+                  onChange={(_, data) =>
+                    setFieldValue('specialtiesValue', data.value)
+                  }
+                  fluid
+                  multiple
+                  search
+                  selection
+                  options={specialties}
+                />
+              </DropdownContainer>
+              {touched.specialtiesValue && errors.specialtiesValue && (
+                <ErrorMessage>{errors.specialtiesValue}</ErrorMessage>
+              )}
+            </FormSection>
+            <Divider />
+            <FormSection>
+              <Subtitle>When did you take the exam?</Subtitle>
+              <Row>
+                <label>Date: </label>
+                <DatePicker
+                  selected={examDate}
+                  onChange={date => setExamDate(date)}
+                  dateFormat="MM / dd / yyyy"
+                  calendarClassName="custom-date"
+                />
+              </Row>
+              {examDateError && <ErrorMessage>{examDateError}</ErrorMessage>}
+            </FormSection>
+            <Divider />
+            <FormSection>
+              <Subtitle>Star Rating</Subtitle>
+              <Row>
+                <Stars
+                  onChange={numOfStars => setFieldValue('stars', numOfStars)}
+                  numberOfStars={values.stars}
+                  color="yellow"
+                />
+              </Row>
+              {touched.stars && errors.stars && (
+                <ErrorMessage>{errors.stars}</ErrorMessage>
+              )}
+            </FormSection>
+            <Divider />
+            <FormSection>
+              <Subtitle>Review Title</Subtitle>
+              <TextInput
+                value={values.title}
+                onChange={handleChange}
+                name="title"
               />
-            </Row>
-            <Row>
-              <label>End: </label>
-              <DatePicker
-                selected={endDateValue}
-                onChange={date => setEndDateValue(date)}
-                dateFormat="MM / yyyy"
-                showMonthYearPicker
+              {touched.title && errors.title && (
+                <ErrorMessage>{errors.title}</ErrorMessage>
+              )}
+            </FormSection>
+            <Divider />
+            <FormSection>
+              <Subtitle>Review</Subtitle>
+              <TextArea
+                rows={6}
+                value={values.comment}
+                onChange={handleChange}
+                name="comment"
               />
-            </Row>
-          </FormSection>
-          <Divider />
-          <FormSection>
-            <Subtitle>What test did you use this resource for?</Subtitle>
-            <DropdownContainer>
-              <Dropdown
-                placeholder="Select tests"
-                value={exams}
-                onChange={(_, data) => setExams(data.value)}
-                fluid
-                multiple
-                search
-                selection
-                options={options}
-              />
-            </DropdownContainer>
-          </FormSection>
-          <Divider />
-          <FormSection>
-            <Subtitle>
-              Which disciplines did you use this resource for?
-            </Subtitle>
-            <DropdownContainer>
-              <Dropdown
-                placeholder="Select disciplines"
-                value={specialtiesValue}
-                onChange={(_, data) => setSpecialtiesValue(data.value)}
-                fluid
-                multiple
-                search
-                selection
-                options={specialties}
-              />
-            </DropdownContainer>
-          </FormSection>
-          <Divider />
-          <FormSection>
-            <Subtitle>When did you take the exam?</Subtitle>
-            <Row>
-              <label>Date: </label>
-              <DatePicker
-                selected={examDate}
-                onChange={date => setExamDate(date)}
-                dateFormat="MM / dd / yyyy"
-                calendarClassName="custom-date"
-              />
-            </Row>
-          </FormSection>
-          <Divider />
-          <FormSection>
-            <Subtitle>Star Rating</Subtitle>
-            <Row>
-              <Stars
-                onChange={numOfStars => setStars(numOfStars)}
-                numberOfStars={stars}
-                color="yellow"
-              />
-            </Row>
-          </FormSection>
-          <Divider />
-          <FormSection>
-            <Subtitle>Review Title</Subtitle>
-            <TextInput
-              value={title}
-              onChange={({ target: { value } }) => setTitle(value)}
-            />
-          </FormSection>
-          <Divider />
-          <FormSection>
-            <Subtitle>Review</Subtitle>
-            <TextArea
-              rows={6}
-              value={comment}
-              onChange={({ target: { value } }) => setComment(value)}
-            />
-          </FormSection>
-          <Divider />
-          <FormSection>
-            <ButtonsContainer>
-              <ModalButton
-                onClick={onClose}
-                background={theme.color.softPurple}
-              >
-                Cancel
-              </ModalButton>
-              <ModalButton
-                onClick={handleSave}
-                background={theme.color.darkGray}
-              >
-                Save To Locker
-              </ModalButton>
-            </ButtonsContainer>
-          </FormSection>
-        </ModalContent>
-      </Modal>
+              {touched.comment && errors.comment && (
+                <ErrorMessage>{errors.comment}</ErrorMessage>
+              )}
+            </FormSection>
+            <Divider />
+            <FormSection>
+              <ButtonsContainer>
+                <ModalButton
+                  onClick={onClose}
+                  background={theme.color.softPurple}
+                >
+                  Cancel
+                </ModalButton>
+                <ModalButton background={theme.color.darkGray} type="submit">
+                  Save To Locker
+                </ModalButton>
+              </ButtonsContainer>
+            </FormSection>
+          </ModalContent>
+        </Modal>
+      </form>
     </ModalContainer>
   );
 };

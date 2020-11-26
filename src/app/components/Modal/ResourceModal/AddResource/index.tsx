@@ -576,8 +576,8 @@ const AddReviewModal = ({ onClose }: { onClose: () => void }) => {
   };
 
   useEffect(() => {
-    window.scrollTo(0, 0)
-  })
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <ModalContainer>
@@ -621,7 +621,7 @@ const AddReviewModal = ({ onClose }: { onClose: () => void }) => {
           </FormSection>
           <Divider />
           <FormSection>
-            <Subtitle>When did you use this resource for?</Subtitle>
+            <Subtitle>What test did you use this resource for?</Subtitle>
             <CheckboxContainer>
               <Checkbox
                 onChange={() => handleCheckboxChange('Subject One')}

@@ -354,23 +354,23 @@ export const USERS_QUERY = gql`
 export const USERS_QUERY_PG = gql`
   query UsersPG {
     user_account {
-        username
-        verified
-        email
-        FSdata{
-          name
-          step_1
-          step_2
-          step_3
-          mcat
-          medicalSchool
-          school_year
-          specialties
-          degrees
-       }
-     }
+      username
+      verified
+      email
+      FSdata {
+        name
+        step_1
+        step_2
+        step_3
+        mcat
+        medicalSchool
+        school_year
+        specialties
+        degrees
+      }
     }
-     `;
+  }
+`;
 
 export const GET_LOCKER = gql`
   query GetLocker($email: String!) {
@@ -418,14 +418,15 @@ export const GET_HELPFUL_REVIEWS = gql`
   }
 `;
 
-export const GET_SPECIALITIES = gql`
-  query GetSpecialities {
+export const GET_SPECIALTIES = gql`
+  query GetSpecialties {
     medical_specialties {
       specialties_name
       id
     }
   }
 `;
+
 export const GET_REVIEWS_BY_USER = gql`
   query GetReviewsByUser($userId: String!) {
     users_reviews(where: { user_id: { _eq: $userId } }) {
@@ -442,6 +443,7 @@ export const GET_REVIEWS_BY_USER = gql`
     }
   }
 `;
+
 export const GET_LOCKER_RESOURCES_BY_USER = gql`
   query GetLockerResourceByUser($userId: String!) {
     resources_locker(where: { user_id: { _eq: $userId } }) {

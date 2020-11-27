@@ -39,7 +39,7 @@ interface BoardSectionProps {
   reviewsCount: number | string;
   imageUrl: string;
   link: string;
-}
+};
 
 const BoardSection = (props: BoardSectionProps) => (
   <section className="section-boards">

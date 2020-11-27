@@ -306,6 +306,11 @@ export const RESOURCE_DETAIL = gql`
       rating
       tags
       reviewsCount
+      stars_1
+      stars_2
+      stars_3
+      stars_4
+      stars_5
     }
   }
 `;
@@ -485,6 +490,7 @@ export const EMAIL_USERNAME_VERIFICATION = gql`
     }
   }
 `;
+
 export const GET_DISCIPLINES = gql`
   query GetDisciplines {
     medical_diciplines {

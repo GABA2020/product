@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { useLazyQuery, useQuery, useMutation } from '@apollo/client';
 import { useSelector } from 'react-redux';
@@ -11,6 +11,7 @@ import ReplyModal from '../components/ReplyModal';
 import { storageFB } from '../../../helpers/firebase.module';
 import { img_board } from '../../../assets/images';
 import { GApageView } from 'app';
+import { Context } from 'app/globalContext/GlobalContext';
 
 import {
   RESOURCE_DETAIL,
@@ -34,7 +35,10 @@ const Product = () => {
   let { id }: params = useParams();
   GApageView(`Product ${id}`);
 
-  const email = useSelector((state: any) => state.auth.email);
+  const {
+    state: { user },
+  } = useContext(Context);
+  const email = user.email;
   const [onLocker, setOnLocker] = useState(false);
   const [comments, setComments] = useState<any>([]);
   const [offset, setOffset] = useState(0);
@@ -47,9 +51,14 @@ const Product = () => {
     name: '',
     description: '',
     rating: 0,
-    reviewsCount: 0,
+    reviewsCount: 1,
     picture_name: '',
     link: '',
+    stars_1: 0,
+    stars_2: 0,
+    stars_3: 0,
+    stars_4: 0,
+    stars_5: 0,
   });
   const [helpfulReviews, setHelpfulReviews] = useState([]);
   const [imageUrl, setImageUrl] = useState(img_board);
@@ -106,6 +115,7 @@ const Product = () => {
     {
       variables: { id },
       onCompleted: data => {
+        console.log('Data here: ', data);
         setResourceDetail(data.resource);
       },
       onError: err => console.log(err),
@@ -201,6 +211,14 @@ const Product = () => {
       });
     });
 
+  const stars = {
+    stars_1: resourceDetail.stars_1,
+    stars_2: resourceDetail.stars_2,
+    stars_3: resourceDetail.stars_3,
+    stars_4: resourceDetail.stars_4,
+    stars_5: resourceDetail.stars_5,
+  };
+
   return (
     <section id="page_content">
       <BoardSection
@@ -224,6 +242,8 @@ const Product = () => {
         })}
         handleReply={setReplyModal}
         markReviewAsHelpful={markReviewAsHelpful}
+        stars={stars}
+        reviewsCount={resourceDetail.reviewsCount}
       />
       {/* <ResourcesSection /> */}
       {modalVisibility && (

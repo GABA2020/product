@@ -5,7 +5,7 @@ import FeaturedItem from './FeaturedItem';
 import { Resource } from '../../../../types/Resource';
 import FeaturedItemSkeleton from './FeaturedItemSkeleton';
 import Button from 'app/genericComponents/Button';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const FilterByNameIcon = require('../../../../assets/images/sprites/FilterByName@2x.png');
 const FilterByPriceIcon = require('../../../../assets/images/sprites/FilterByPrice@2x.png');
@@ -98,15 +98,12 @@ const MarketPlaceFeatured = ({
           <Tabs>
             <Tab active={true}>Resouces</Tab>
             <Tab>
-              <Link
-                to={{
-                  pathname: 'https://airtable.com/shruwb1Qwbpcjt03g',
-                }}
-                target="_blank"
+              <NavLink
+                to={'/schools'}
               >
                 {' '}
                 Schools{' '}
-              </Link>
+              </NavLink>
             </Tab>
           </Tabs>
           <FiltersContainer>

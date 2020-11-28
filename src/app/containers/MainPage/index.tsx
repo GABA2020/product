@@ -14,7 +14,8 @@ import { SearchUser } from '../SearchUser';
 import MarketPlacePage from '../../marketplace/screens/MarketPlaceScreen';
 import { Context } from 'app/globalContext/GlobalContext';
 import PeoplePage from '../../people/screens/PeoplePage';
-
+import Schools from '../../schools/index';
+import AplicantDatabase from 'app/aplicantDatabase';
 // Auth Route
 const AuthRoute = ({ component: Component, ...rest }) => {
   const { isAuth } = rest;
@@ -63,6 +64,18 @@ export const MainPage = () => {
               exact
               path={RoutesTypes.PRODUCT}
               component={ProductPage}
+            />
+            <AuthRoute
+              isAuth={isAuth}
+              exact
+              path={RoutesTypes.SCHOOLS}
+              component={Schools}
+            />
+            <AuthRoute
+              isAuth={isAuth}
+              exact
+              path={RoutesTypes.APLICANTDB}
+              component={AplicantDatabase}
             />
             <AuthRoute
               isAuth={isAuth}

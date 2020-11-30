@@ -36,6 +36,11 @@ const MessageBox = styled.div`
   }
 `;
 
+const MessageDescriptionContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
 const MessageDescription = styled.div`
   h4.message-heading {
     color: ${props => props.theme.color.darkBlue} !important;
@@ -96,6 +101,26 @@ const ToggleReviewsArrow: any = styled.div`
   transition: transform 0.4s linear;
 `;
 
+const TagsContainer = styled.div`
+  display: flex;
+  max-width: 300px;
+  flex-wrap: wrap;
+`;
+
+const Tag = styled.div`
+  color: ${props => props.theme.color.darkBlue};
+  font-size: 12px;
+  font-weight: bold;
+  height: 32px;
+  letter-spacing: -0.1px;
+  margin-bottom: 15px;
+  background-color: ${props => props.theme.color.softPurple};
+  padding: 5px 10px;
+  text-align: center;
+  border-radius: 5px;
+  margin-right: 10px;
+`;
+
 const testsTranslate = {
   step_1: 'Step 1',
   step_2: 'Step 2',
@@ -139,15 +164,20 @@ const Review = (props: ReviewProps) => {
             <Stars color="yellow" numberOfStars={props.rating} />
           </div>
           <div className="message-date">
-            <span>
-              {moment(Number(props.createdAt)).format('MMMM d, YYYY')}
-            </span>
+            <span>{String(props.createdAt).split(' ')[0]}</span>
           </div>
         </div>
-        <MessageDescription className="message-description">
-          <h4 className="message-heading">{props.title || 'No title'}</h4>
-          <p className="message-paragraph">{props.comment}</p>
-        </MessageDescription>
+        <MessageDescriptionContainer>
+          <MessageDescription className="message-description">
+            <h4 className="message-heading">{props.title || 'No title'}</h4>
+            <p className="message-paragraph">{props.comment}</p>
+          </MessageDescription>
+          <TagsContainer>
+            {props.specialties.map((tagitem, index) => (
+              <Tag>{tagitem}</Tag>
+            ))}
+          </TagsContainer>
+        </MessageDescriptionContainer>
         <div className="message-bellow">
           <div className="message-action">
             <ul className="action-enter">
@@ -157,7 +187,6 @@ const Review = (props: ReviewProps) => {
                     props.markReviewAsHelpful(props.id, !!props.isHelpful)
                   }
                   isHelpful={props.isHelpful}
-                  title="Etv"
                 >
                   {props.isHelpful ? 'Not Helpful' : 'Helpful'}{' '}
                   {`(${helpfulCount})`}
@@ -209,14 +238,6 @@ const Review = (props: ReviewProps) => {
                 ))}
               </ul>
             </div>
-            {/* <div className="author-image">
-              <img
-                alt="image"
-                src="app/images/photos/img-author-1.jpg"
-                width={50}
-                height={50}
-              />
-            </div> */}
           </div>
           <ReviewRepliesContainer reviewsVisibility={reviewsVisibility}>
             {props.replies && !!props.replies.length && (

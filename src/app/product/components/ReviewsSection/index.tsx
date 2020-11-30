@@ -131,8 +131,6 @@ const ReviewSection = (props: ReviewSectionProps) => {
     ? filteredComments
     : props.comments;
 
-  console.log({commentsToDisplay})
-
   return (
     <section className="section-review">
       <div className="container">

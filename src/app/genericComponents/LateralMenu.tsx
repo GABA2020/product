@@ -38,16 +38,20 @@ export function LateralMenu({ children }) {
         >
           People
         </Menu.Item>
-        <Link
+        <Menu.Item
           onClick={() => changeShowMenu(false)}
-          to={{
-            pathname: 'https://airtable.com/shrKweFzBEkoWqzTp',
-          }}
-          target="_blank"
+          as={NavLink}
+          to="/schools"
         >
-          {' '}
-          Applicant Database{' '}
-        </Link>
+          Schools
+        </Menu.Item>
+        <Menu.Item
+          onClick={() => changeShowMenu(false)}
+          as={NavLink}
+          to="/applicant-database"
+        >
+          Applicant Database
+        </Menu.Item>
       </Sidebar>
       <Sidebar.Pusher dimmed={showMenu}>{children}</Sidebar.Pusher>
     </Sidebar.Pushable>

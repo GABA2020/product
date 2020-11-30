@@ -166,6 +166,18 @@ export function App() {
             path={RoutesTypes.PEOPLE}
             component={MainPage}
           />
+          <AuthRoute
+            isAuth={isAuth}
+            exact
+            path={RoutesTypes.SCHOOLS}
+            component={MainPage}
+          />
+          <AuthRoute
+            isAuth={isAuth}
+            exact
+            path={RoutesTypes.APLICANTDB}
+            component={MainPage}
+          />
         </Switch>
       </Router>
     </React.Fragment>

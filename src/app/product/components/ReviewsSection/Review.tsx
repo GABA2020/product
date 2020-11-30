@@ -24,6 +24,14 @@ const MessageBox = styled.div`
   div.message-bellow a {
     color: ${props => props.theme.color.darkBlue};
   }
+
+  ul.author-link p {
+    color: ${props => props.theme.color.darkBlue};
+  }
+
+  ul.author-link li {
+    color: ${props => props.theme.color.darkBlue};
+  }
 `;
 
 const MessageDescription = styled.div`
@@ -111,9 +119,6 @@ const Review = (props: ReviewProps) => {
               {moment(Number(props.createdAt)).format('MMMM d, YYYY')}
             </span>
           </div>
-          <div className="message-type">
-            <span>Step One</span>
-          </div>
         </div>
         <MessageDescription className="message-description">
           <h4 className="message-heading">{props.title || 'No title'}</h4>
@@ -161,15 +166,15 @@ const Review = (props: ReviewProps) => {
           <div className="message-author">
             <div className="author-descript">
               <h4 className="author-title">
-                <a href="#">
+                <p>
                   <span>{props.username || 'No user'}</span>
-                </a>
+                </p>
               </h4>
               <ul className="author-link">
                 {props.usedInTests.map(test => (
                   <React.Fragment key={test}>
                     <li>
-                      <a href="#">{test}</a>
+                      <p>{test}</p>
                     </li>
                     <li>|</li>
                   </React.Fragment>

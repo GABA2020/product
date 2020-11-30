@@ -122,7 +122,7 @@ const PeoplePageScreen = () => {
       return false;
     if (
       filteredData?.specialty &&
-      filteredData?.specialty !== user.FSdata?.specialties
+      !user.FSdata?.specialties.includes(filteredData?.specialty)
     )
       return false;
     if (

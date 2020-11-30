@@ -37,11 +37,15 @@ export const Header = () => {
   // const {dispatch:{ changeShowMenu } } = useContext(Context);
 
   // const { isAuth, email } = useSelector(authSelector);
-  const { state: { isAuth, user }, dispatch:{ changeShowMenu, logout } } = React.useContext(Context);
+  const {
+    state: { isAuth, user },
+    dispatch: { changeShowMenu, logout },
+  } = React.useContext(Context);
   const email = user?.email;
 
-  const { userSearchResults } = useSelector(userSelector);
-  const { state: { user:userProfile } } = useContext(Context);
+  const {
+    state: { user: userProfile },
+  } = useContext(Context);
 
   const { listLastMessage } = useSelector(ChatSelector);
   const dispatch = useDispatch();
@@ -69,23 +73,16 @@ export const Header = () => {
     setNotificationCount(count);
   }, [listLastMessage, userProfile]);
 
-  const onchangeSearchText = (text: string) => {
-    if (text.trim() !== '') {
-      dispatch(userActions.searchUsersAction({ text }));
-    }
-  };
-
   const signOut = () => {
     // dispatch(authActions.logoutAction());
-    logout()
+    logout();
   };
 
   const adminList = ['candice.blacknall@gogaba.co'];
 
   function handleShowMenu() {
-    changeShowMenu(true)
+    changeShowMenu(true);
   }
-
 
   return (
     <Fragment>
@@ -98,7 +95,7 @@ export const Header = () => {
       <header id="header">
         <div className="brand">
           <div className="nav-action">
-            <a className="nav-open" onClick={handleShowMenu} >
+            <a className="nav-open" onClick={handleShowMenu}>
               <img src={nav_icon} alt="logo" />
             </a>
           </div>
@@ -106,10 +103,8 @@ export const Header = () => {
             <img src={gaba} alt="logo" />
           </div>
         </div>
-        <SearchBox
-          searchResults={userSearchResults}
-          onchangeSearchText={onchangeSearchText}
-        ></SearchBox>
+        <SearchBox />
+
         {adminList.includes(email as any) && (
           <>
             <Link to={RoutesTypes.ADMIN_CONSOLE}>
@@ -142,13 +137,13 @@ export const Header = () => {
                   className="account-toggle"
                 >
                   <img className="icons" src={img_account} alt="" />
-                  <span className="account-name">{userProfile.name}</span>
+                  <span className="account-name">{`${userProfile.name} ${userProfile.last_name}`}</span>
                 </Link>
               </Fragment>
             )}
             <div className="dropdown-content">
               {/* <Link to={RoutesTypes.CV_PREVIEW}>Download CV</Link> */}
-              <a
+              {/* <a
                 onClick={e => {
                   e.preventDefault();
                   window.open(RoutesTypes.CV_PREVIEW);
@@ -156,7 +151,7 @@ export const Header = () => {
                 href="#"
               >
                 Download CV
-              </a>
+              </a> */}
               <a onClick={() => signOut()} href="#">
                 Sign out
               </a>

@@ -6,7 +6,7 @@ import { Dropdown } from 'semantic-ui-react';
 import { Column } from '../../genericComponents/Layout';
 import theme from '../../../theme';
 import { useQuery } from '@apollo/react-hooks';
-import { GET_SPECIALITIES, GET_SCHOOLS } from '../../../service/queries';
+import { GET_SPECIALTIES, GET_SCHOOLS } from '../../../service/queries';
 
 const judgeReviews = [
   {
@@ -176,7 +176,7 @@ const ReviewSection = ({onPressFilter}) => {
   };
   const [filters, setFilters]: any = useState(defaultFiltersState);
   const [schools, setSchools]: any = useState([]);
-  const [specialities, setSpecialities]: any = useState([]);
+  const [specialties, setSpecialties]: any = useState([]);
 
   useQuery(GET_SCHOOLS, {
     onCompleted: data =>
@@ -189,9 +189,9 @@ const ReviewSection = ({onPressFilter}) => {
       ),
   });
 
-  useQuery(GET_SPECIALITIES, {
+  useQuery(GET_SPECIALTIES, {
     onCompleted: data =>
-      setSpecialities(
+      setSpecialties(
         data.medical_specialties.map(speciality => ({
           text: speciality.specialties_name,
           key: speciality.id,
@@ -337,7 +337,7 @@ const ReviewSection = ({onPressFilter}) => {
             search
             value={filters.specialty}
             onChange={(_, r) => handleSetFilter('specialty', r.value)}
-            options={specialities}
+            options={specialties}
           />
         </div>
       </div>

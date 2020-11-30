@@ -10,29 +10,6 @@ import { GET_DISCIPLINES } from '../../../../service/queries';
 const YellowStar = require('../../../../assets/images/front/YellowStar@2x.png');
 const YellowActiveStar = require('../../../../assets/images/front/YellowActiveStar@2x.png');
 
-const judgeReviews = [
-  {
-    value: 85,
-    stars: 5,
-  },
-  {
-    value: 9,
-    stars: 4,
-  },
-  {
-    value: 4,
-    stars: 3,
-  },
-  {
-    value: 1,
-    stars: 2,
-  },
-  {
-    value: 1,
-    stars: 1,
-  },
-];
-
 const exams = [
   {
     value: 'mcat',
@@ -86,29 +63,37 @@ interface ReviewSectionProps {
   loadMore: () => void;
   handleReply: any;
   markReviewAsHelpful: (commentId: string, isHelpful: boolean) => void;
+  stars: {
+    stars_1: number;
+    stars_2: number;
+    stars_3: number;
+    stars_4: number;
+    stars_5: number;
+  };
+  reviewsCount: number;
 }
 
 const ReviewSection = (props: ReviewSectionProps) => {
   const [activeStar, setActiveStar]: any = useState(null);
   const [disciplines, setDisciplines]: any = useState([]);
   const [filteredComments, setFilteredComments]: any = useState([]);
+  const [activeFilters, setActiveFilters] = useState(false);
 
   const handleFilterReviews = (property, value) => {
     setFilteredComments(prevComments => {
-      if (property !== 'discipline')
+      setActiveFilters(true);
+      if (property === 'rating')
         return (prevComments.length ? prevComments : props.comments).filter(
           comment => comment[property] === value,
         );
 
-      return (prevComments.length
-        ? prevComments
-        : props.comments
-      ).filter(comment => comment.specialties.includes(value));
+      return prevComments.filter(comment => comment[property].includes(value));
     });
   };
 
   const handleClearFilters = () => {
     setActiveStar(null);
+    setActiveFilters(false);
     setFilteredComments([]);
   };
 
@@ -125,25 +110,25 @@ const ReviewSection = (props: ReviewSectionProps) => {
           <div className="review-slidebar">
             <div className="portlet-review">
               <div className="review-heading">
-                Reviews 2<h2 className="review-judge-title">Reviews</h2>
+                <h2 className="review-judge-title">Reviews</h2>
                 <div className="judge-sum">
                   <p>4.5 out of 5 stars</p>
                 </div>
               </div>
               <div className="judge-category">
-                {judgeReviews.map(rev => (
+                {Object.values(props.stars).map((value, index) => (
                   <div className="judge-item">
                     <StarContainer className="judge-num-star">
-                      <span className="judge-num">{rev.stars}</span>
+                      <span className="judge-num">{index + 1}</span>
                       <img
                         alt=""
                         onClick={() => {
-                          setActiveStar(rev.stars);
-                          handleFilterReviews('rating', rev.stars);
+                          setActiveStar(index + 1);
+                          handleFilterReviews('rating', index + 1);
                         }}
                         width={20}
                         src={
-                          activeStar === rev.stars
+                          activeStar === index + 1
                             ? YellowActiveStar
                             : YellowStar
                         }
@@ -155,15 +140,21 @@ const ReviewSection = (props: ReviewSectionProps) => {
                         <div
                           className="progress-bar"
                           role="progressbar"
-                          aria-valuenow={rev.value}
+                          aria-valuenow={index + 1}
                           aria-valuemin={0}
                           aria-valuemax={100}
-                          style={{ width: `${rev.value}%` }}
+                          style={{
+                            width: `${Number(
+                              (value / props.reviewsCount) * 100,
+                            ).toFixed()}%`,
+                          }}
                         />
                       </div>
                     </ProgressBarContainer>
                     <div className="judge-percent">
-                      <span>{rev.value}%</span>
+                      <span>
+                        {Number((value / props.reviewsCount) * 100).toFixed()}%
+                      </span>
                     </div>
                   </div>
                 ))}
@@ -175,7 +166,7 @@ const ReviewSection = (props: ReviewSectionProps) => {
                 <select
                   className="form-control"
                   onChange={({ target: { value } }) =>
-                    handleFilterReviews('exam', value)
+                    handleFilterReviews('usedInTests', value)
                   }
                 >
                   <option value={0}>Select</option>
@@ -221,16 +212,15 @@ const ReviewSection = (props: ReviewSectionProps) => {
           <div className="review-main">
             <div className="review-content">
               <div className="portlet-message">
-                {(filteredComments.length
-                  ? filteredComments
-                  : props.comments
-                ).map(rev => (
-                  <Review
-                    markReviewAsHelpful={props.markReviewAsHelpful}
-                    handleReply={props.handleReply}
-                    {...rev}
-                  />
-                ))}
+                {(activeFilters ? filteredComments : props.comments).map(
+                  rev => (
+                    <Review
+                      markReviewAsHelpful={props.markReviewAsHelpful}
+                      handleReply={props.handleReply}
+                      {...rev}
+                    />
+                  ),
+                )}
               </div>
               <div className="load-more">
                 <Button onClick={() => props.loadMore()}>

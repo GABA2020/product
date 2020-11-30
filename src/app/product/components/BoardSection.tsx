@@ -80,14 +80,14 @@ const BoardSection = (props: BoardSectionProps) => (
                     name="checkbox"
                     checked={true}
                   />
-                  <label
+                  {/* <label
                     className="checkbox__styled__label"
                     htmlFor="members-1"
                   >
                     <span className="size-label">
                       95% of GABA members use this resource
                     </span>
-                  </label>
+                  </label> */}
                 </div>
               </li>
             </ul>

@@ -12,6 +12,7 @@ enum RoutesTypes {
   MARKET_PLACE = '/marketplace',
   PEOPLE = '/people',
   APLICANTDB = '/applicant-database',
+  SCHOOLS = '/schools',
 }
 
 export default RoutesTypes;

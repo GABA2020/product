@@ -13,6 +13,7 @@ import { Context } from 'app/globalContext/GlobalContext';
 interface IResource {
   userResources: ENTITIES.UserResourceLocker;
   refetch: Function;
+  owner: Boolean;
 }
 const ResourceImage: any = styled.img`
   max-height: 50px;
@@ -63,6 +64,7 @@ export const Resource: FC<IResource> = props => {
           </div>
         </div>
       </div>
+      {props.owner&&
       <div className="locker-button">
         <a
           href="#"
@@ -82,6 +84,7 @@ export const Resource: FC<IResource> = props => {
           Remove from Locker
         </a>
       </div>
-    </Fragment>
+      }
+      </Fragment>
   );
 };

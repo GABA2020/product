@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import DatePicker from 'react-datepicker';
 import { useMutation, useQuery } from '@apollo/react-hooks';
-import { Dropdown } from 'semantic-ui-react';
+import { Dropdown, Button } from 'semantic-ui-react';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import moment from 'moment';
@@ -167,7 +167,7 @@ const TextArea = styled.textarea`
   ${inputFontStyle}
 `;
 
-const ModalButton = styled.button`
+const ModalButton = styled(Button)`
   background: ${(props: { background: string }) => props.background};
   border-radius: 6px;
   height: 48px;
@@ -502,8 +502,9 @@ const AddReviewModal = ({ onClose }: { onClose: () => void }) => {
                     isSubmitting ? theme.color.darkGray : theme.color.gabaYellow
                   }
                   type="submit"
+                  loading={isSubmitting}
                 >
-                  Save To Locker
+                  {isSubmitting ? '' : 'Submit Review'}
                 </ModalButton>
               </ButtonsContainer>
             </FormSection>

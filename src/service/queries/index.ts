@@ -498,3 +498,13 @@ export const GET_DISCIPLINES = gql`
     }
   }
 `;
+
+export const GET_HELPFUL_COUNT = gql`
+  query GetHelpfulReview($resource_review_id: String!) {
+    helpful_review(
+      where: { resource_review_id: { _eq: $resource_review_id }, user_id: {} }
+    ) {
+      user_id
+    }
+  }
+`;

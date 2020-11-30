@@ -6,6 +6,7 @@ import { Dropdown } from 'semantic-ui-react';
 import Review from './Review';
 import { IComment } from '../../../../types/Resource';
 import { GET_DISCIPLINES } from '../../../../service/queries';
+import { Column } from 'app/genericComponents/Layout';
 
 const YellowStar = require('../../../../assets/images/front/YellowStar@2x.png');
 const YellowActiveStar = require('../../../../assets/images/front/YellowActiveStar@2x.png');
@@ -58,6 +59,12 @@ const StarContainer = styled.div`
   margin-right: -2px;
 `;
 
+const NoItemsContainer = styled(Column)`
+  width: 100%;
+  align-items: center;
+  margin-bottom: 30px;
+`;
+
 interface ReviewSectionProps {
   comments: Array<IComment>;
   loadMore: () => void;
@@ -71,30 +78,47 @@ interface ReviewSectionProps {
     stars_5: number;
   };
   reviewsCount: number;
+  rating: number;
+  handleCreateReview: () => void;
 }
 
 const ReviewSection = (props: ReviewSectionProps) => {
   const [activeStar, setActiveStar]: any = useState(null);
   const [disciplines, setDisciplines]: any = useState([]);
   const [filteredComments, setFilteredComments]: any = useState([]);
-  const [activeFilters, setActiveFilters] = useState(false);
+  const [activeFilters, setActiveFilters]: any = useState({});
+  const [displayFilteredComments, setDisplayFilteredComments] = useState(false);
 
-  const handleFilterReviews = (property, value) => {
-    setFilteredComments(prevComments => {
-      setActiveFilters(true);
-      if (property === 'rating')
-        return (prevComments.length ? prevComments : props.comments).filter(
-          comment => comment[property] === value,
-        );
+  const handleSetActiveFilter = (property, value) => {
+    setActiveFilters(prevFilters => ({
+      ...prevFilters,
+      [property]: value,
+    }));
+  };
 
-      return prevComments.filter(comment => comment[property].includes(value));
+  const handleFilter = () => {
+    setFilteredComments(() => {
+      let commentsCopy = props.comments.slice();
+      Object.keys(activeFilters).forEach(key => {
+        if (key === 'rating')
+          commentsCopy = commentsCopy.filter(
+            comment => comment[key] === activeFilters[key],
+          );
+        else
+          commentsCopy = commentsCopy.filter(comment =>
+            comment[key].includes(activeFilters[key]),
+          );
+      });
+      return commentsCopy;
     });
+    setDisplayFilteredComments(true);
   };
 
   const handleClearFilters = () => {
     setActiveStar(null);
-    setActiveFilters(false);
+    setActiveFilters({});
     setFilteredComments([]);
+    setDisplayFilteredComments(false);
   };
 
   useQuery(GET_DISCIPLINES, {
@@ -102,6 +126,10 @@ const ReviewSection = (props: ReviewSectionProps) => {
       setDisciplines(data.medical_diciplines);
     },
   });
+
+  const commentsToDisplay = displayFilteredComments
+    ? filteredComments
+    : props.comments;
 
   return (
     <section className="section-review">
@@ -112,7 +140,7 @@ const ReviewSection = (props: ReviewSectionProps) => {
               <div className="review-heading">
                 <h2 className="review-judge-title">Reviews</h2>
                 <div className="judge-sum">
-                  <p>4.5 out of 5 stars</p>
+                  <p>{props.rating} out of 5 stars</p>
                 </div>
               </div>
               <div className="judge-category">
@@ -124,7 +152,7 @@ const ReviewSection = (props: ReviewSectionProps) => {
                         alt=""
                         onClick={() => {
                           setActiveStar(index + 1);
-                          handleFilterReviews('rating', index + 1);
+                          handleSetActiveFilter('rating', index + 1);
                         }}
                         width={20}
                         src={
@@ -146,7 +174,7 @@ const ReviewSection = (props: ReviewSectionProps) => {
                           style={{
                             width: `${Number(
                               (value / props.reviewsCount) * 100,
-                            ).toFixed()}%`,
+                            ).toFixed(1)}%`,
                           }}
                         />
                       </div>
@@ -166,7 +194,7 @@ const ReviewSection = (props: ReviewSectionProps) => {
                 <select
                   className="form-control"
                   onChange={({ target: { value } }) =>
-                    handleFilterReviews('usedInTests', value)
+                    handleSetActiveFilter('usedInTests', value)
                   }
                 >
                   <option value={0}>Select</option>
@@ -187,7 +215,7 @@ const ReviewSection = (props: ReviewSectionProps) => {
                   search
                   selection
                   onChange={(_, { value }) => {
-                    handleFilterReviews('discipline', value);
+                    handleSetActiveFilter('specialties', value);
                   }}
                   options={disciplines.map(discipline => ({
                     value: discipline.dicipline_name,
@@ -204,28 +232,47 @@ const ReviewSection = (props: ReviewSectionProps) => {
               </div>
             </div>
             <div className="portlet-filter">
-              <Button onClick={handleClearFilters} style={{ marginBottom: 20 }}>
+              <Button onClick={handleClearFilters} style={{ marginRight: 20 }}>
                 Clear Filters
+              </Button>
+              <Button onClick={handleFilter} style={{ marginBottom: 20 }}>
+                Filter
               </Button>
             </div>
           </div>
           <div className="review-main">
             <div className="review-content">
               <div className="portlet-message">
-                {(activeFilters ? filteredComments : props.comments).map(
-                  rev => (
+                {commentsToDisplay.length ? (
+                  commentsToDisplay.map(rev => (
                     <Review
                       markReviewAsHelpful={props.markReviewAsHelpful}
                       handleReply={props.handleReply}
                       {...rev}
                     />
-                  ),
+                  ))
+                ) : (
+                  <NoItemsContainer>
+                    {displayFilteredComments
+                      ? 'No Results'
+                      : 'Be the first to review this resource'}
+                    {!displayFilteredComments && (
+                      <Button
+                        style={{ marginTop: 30 }}
+                        onClick={() => props.handleCreateReview()}
+                      >
+                        Write a Review
+                      </Button>
+                    )}
+                  </NoItemsContainer>
                 )}
               </div>
               <div className="load-more">
-                <Button onClick={() => props.loadMore()}>
-                  Load More Reviews
-                </Button>
+                {!!commentsToDisplay.length && !displayFilteredComments && (
+                  <Button onClick={() => props.loadMore()}>
+                    Load More Reviews
+                  </Button>
+                )}
               </div>
             </div>
           </div>

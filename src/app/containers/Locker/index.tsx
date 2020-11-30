@@ -1,37 +1,32 @@
 import React, { Fragment, useState, useEffect, useContext } from 'react';
+import { NavLink } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useQuery } from '@apollo/client';
+import styled from 'styled-components';
+
 import { bag } from 'assets/images';
 import { useInjectSaga } from 'utils/redux-injectors';
-import { actions, sliceKey } from 'redux/Locker/slice';
+import { sliceKey } from 'redux/Locker/slice';
 import { LockerSaga } from 'redux/Locker/saga';
-import { useDispatch, useSelector } from 'react-redux';
 import { lockerSelector } from 'redux/Locker/selectors';
-import { userSelector } from 'redux/User/selectors';
 import AddReviewModal from 'app/components/Modal/ResourceModal/AddResource';
 import { Resource } from 'app/components/Resource';
 import Review from 'app/components/Review';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
-import { EditResource } from 'app/components/Modal/ResourceModal/EditResource';
 import { Context } from 'app/globalContext/GlobalContext';
-import { NavLink } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
 import {
   GET_LOCKER_RESOURCES_BY_USER,
   GET_REVIEWS_BY_USER,
 } from 'service/queries';
 
-const iniUserReview: ENTITIES.UserReviewLocker = {
-  resource_id: '',
-  userReviewResource: {
-    name: '',
-    picture_name: '',
-  },
-  ReviewComment: {
-    title: '',
-    comment: '',
-    rating: 0,
-  },
-};
+const CustomButton = styled.button`
+  width: 168px;
+  height: 36px;
+  border-radius: 6px;
+  border: solid 1px ${props => props.theme.color.gabaGreen};
+  background-color: ${props => props.theme.color.gabaGreen};
+  color: #ffffff;
+`;
+
 const iniUserResource: ENTITIES.UserResource = {
   id: '',
   resource_id: '',
@@ -77,23 +72,14 @@ export const Locker = () => {
   useInjectSaga({ key: sliceKey, saga: LockerSaga });
   const dispatch = useDispatch();
   const {
-    reviews,
     //userResources,
     reviewLength,
     userResourceLength,
-    lastQuery,
-    loading,
-    allUserResources,
   } = useSelector(lockerSelector);
 
   // const { userProfile } = useSelector(userSelector);
 
-  const [addResourceModal, setAddResourceModal] = useState<boolean>(false);
   const [modalVisibility, setModalVisibility] = useState(false);
-  const [editResourceModal, setEditResourceModal] = useState<boolean>(false);
-  const [resourceState, setResourceState] = useState<ENTITIES.UserResource>(
-    iniUserResource,
-  );
   const [tabState, setTabState] = useState(0); // 0 => resource, 1 => review
 
   useEffect(() => {
@@ -114,10 +100,23 @@ export const Locker = () => {
   const renderReviews = (reviews: ENTITIES.UserReviewLocker[]) => {
     return (
       <ul className="review-list">
+        <li className="review-item">
+          <CustomButton>
+            <a
+              href="#"
+              onClick={e => {
+                e.preventDefault();
+                setModalVisibility(true);
+              }}
+            >
+              Start a review
+            </a>
+          </CustomButton>
+        </li>
         {reviews.map((item, index) => {
           return (
             <li key={index} className="review-item">
-              <Review review={item} profile={user}  />
+              <Review review={item} profile={user} />
             </li>
           );
         })}
@@ -125,7 +124,7 @@ export const Locker = () => {
     );
   };
 
-  const renderResource = (resources: ENTITIES.UserResourceLocker[] ) => {
+  const renderResource = (resources: ENTITIES.UserResourceLocker[]) => {
     return (
       <ul className="locker-list">
         <li className="locker-item">

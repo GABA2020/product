@@ -4,7 +4,7 @@ import DatePicker from 'react-datepicker';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { Dropdown } from 'semantic-ui-react';
+import { Dropdown, Button } from 'semantic-ui-react';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import moment from 'moment';
@@ -14,7 +14,7 @@ import Stars from '../../genericComponents/Stars';
 import theme from '../../../theme';
 import { CREATE_REVIEW } from '../../../service/mutations';
 import { Context } from 'app/globalContext/GlobalContext';
-import { GET_SPECIALTIES } from '../../../service/queries';
+import { GET_DISCIPLINES } from '../../../service/queries';
 
 const options = [
   {
@@ -155,7 +155,7 @@ const TextArea = styled.textarea`
   ${inputFontStyle}
 `;
 
-const ModalButton = styled.button`
+const ModalButton = styled(Button)`
   background: ${(props: { background: string }) => props.background};
   border-radius: 6px;
   height: 48px;
@@ -165,6 +165,7 @@ const ModalButton = styled.button`
   text-align: center;
   width: 48%;
   border: none;
+  position: relative;
 `;
 
 const ButtonsContainer = styled(Row)`
@@ -227,13 +228,13 @@ const ReviewModal = ({ onClose }: { onClose: () => void }) => {
   const [dateRangeError, setDateRangeError] = useState('');
   const [examDateError, setExamDateError] = useState('');
   let { id }: params = useParams();
-  useQuery(GET_SPECIALTIES, {
+  useQuery(GET_DISCIPLINES, {
     onCompleted: data =>
       setSpecialties(
-        data.medical_specialties.map(speciality => ({
-          text: speciality.specialties_name,
-          key: speciality.id,
-          value: speciality.specialties_name,
+        data.medical_diciplines.map(discipline => ({
+          value: discipline.dicipline_name,
+          key: discipline.dicipline_name,
+          text: discipline.dicipline_name,
         })),
       ),
   });
@@ -448,8 +449,9 @@ const ReviewModal = ({ onClose }: { onClose: () => void }) => {
                     isSubmitting ? theme.color.darkGray : theme.color.gabaYellow
                   }
                   type="submit"
+                  loading={isSubmitting}
                 >
-                  Save To Locker
+                  {isSubmitting ? '' : 'Submit Review'}
                 </ModalButton>
               </ButtonsContainer>
             </FormSection>

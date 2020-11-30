@@ -80,7 +80,7 @@ const Image = styled.img`
   right: -350px;
   top: 10px;
   height: 210px;
-  max-width: 310px;
+  width: 310px;
   object-fit: contain;
 `;
 

@@ -244,6 +244,8 @@ const Product = () => {
         markReviewAsHelpful={markReviewAsHelpful}
         stars={stars}
         reviewsCount={resourceDetail.reviewsCount}
+        rating={resourceDetail.rating}
+        handleCreateReview={() => setModalVisibility(true)}
       />
       {/* <ResourcesSection /> */}
       {modalVisibility && (

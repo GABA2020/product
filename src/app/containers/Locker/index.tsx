@@ -52,7 +52,7 @@ const iniUserResource: ENTITIES.UserResource = {
   rating: 0,
 };
 
-export const Locker = () => {
+export const Locker = ({email}) => {
   const {
     state: { user },
   } = useContext(Context);
@@ -63,7 +63,7 @@ export const Locker = () => {
     data: reviewsResponse,
     error: reviewsError,
     refetch: fetchReviews,
-  } = useQuery(GET_REVIEWS_BY_USER, { variables: { userId: user.email } });
+  } = useQuery(GET_REVIEWS_BY_USER, { variables: { userId: email||'' } });
 
   const {
     loading: loadingResources,
@@ -71,7 +71,7 @@ export const Locker = () => {
     error: resourcesError,
     refetch: fetchResources,
   } = useQuery(GET_LOCKER_RESOURCES_BY_USER, {
-    variables: { userId: user.email },
+    variables: { userId: email||'' },
   });
 
   useInjectSaga({ key: sliceKey, saga: LockerSaga });
@@ -96,7 +96,7 @@ export const Locker = () => {
   );
   const [tabState, setTabState] = useState(0); // 0 => resource, 1 => review
 
-  useEffect(() => {
+  // useEffect(() => {
     // if (userProfile.email !== '') {
     //   dispatch(
     //     actions.getAllUserResourceAction({
@@ -109,7 +109,7 @@ export const Locker = () => {
     //     }),
     //   );
     // }
-  }, [user.email]);
+  // }, [user.email]);
 
   const renderReviews = (reviews: ENTITIES.UserReviewLocker[]) => {
     return (

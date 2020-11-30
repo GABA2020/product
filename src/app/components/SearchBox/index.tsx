@@ -40,6 +40,7 @@ export const SearchBox: FC<SearchBoxProps> = props => {
             <span
               onClick={() => {
                 history.push(`/home/${item.username}`);
+                onchangeSearchText('');
                 setSearchResultsState([]);
               }}
             >

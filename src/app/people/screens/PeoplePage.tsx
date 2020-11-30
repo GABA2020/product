@@ -117,7 +117,7 @@ const PeoplePageScreen = () => {
       return false;
     if (
       filteredData?.medical_school &&
-      filteredData?.medical_school !== user.FSdata?.medicalSchool
+      filteredData?.medical_school !== user.FSdata?.medical_school
     )
       return false;
     if (
@@ -169,7 +169,7 @@ const PeoplePageScreen = () => {
               email={user.email}
               name={user.FSdata.name}
               username={user.username}
-              school={user.FSdata.medicalSchool || 'None'}
+              school={user.FSdata.medical_school || 'None'}
               year={user.FSdata.school_year || 0}
               specialties={user.FSdata.specialties || null}
               mcat={user.FSdata.mcat || 0}

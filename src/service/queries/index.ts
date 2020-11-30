@@ -29,8 +29,8 @@ export const CREATE_USER = gql`
 `;
 
 export const GET_USER_ACCOUNT = gql`
-  query($email: String!) {
-    user_account(where: { email: { _eq: $email } }) {
+  query($email: String, $username: String) {
+    user_account(where: {_or: [{email: {_eq: $email}},{username: {_eq: $username}}]}) {
       creation_date
       email
       last_name
@@ -56,7 +56,7 @@ export const GET_USER_DATA = gql`
       gender
       last_login
       mcat
-      medicalSchool
+      medical_school
       name
       school_year
       step_1
@@ -337,7 +337,7 @@ export const USERS_QUERY = gql`
       creationDate
       degrees
       email
-      medicalSchool
+      medical_school
       name
       student_status
       username
@@ -354,23 +354,23 @@ export const USERS_QUERY = gql`
 export const USERS_QUERY_PG = gql`
   query UsersPG {
     user_account {
-        username
-        verified
-        email
-        FSdata{
-          name
-          step_1
-          step_2
-          step_3
-          mcat
-          medicalSchool
-          school_year
-          specialties
-          degrees
-       }
-     }
+      username
+      verified
+      email
+      FSdata {
+        name
+        step_1
+        step_2
+        step_3
+        mcat
+        medical_school
+        school_year
+        specialties
+        degrees
+      }
     }
-     `;
+  }
+`;
 
 export const GET_LOCKER = gql`
   query GetLocker($email: String!) {

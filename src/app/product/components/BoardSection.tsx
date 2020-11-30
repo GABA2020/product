@@ -29,6 +29,11 @@ const Image = styled.img`
   height: 250px;
 `;
 
+const ButtonsContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
 interface BoardSectionProps {
   title: string;
   description: string;
@@ -39,14 +44,14 @@ interface BoardSectionProps {
   reviewsCount: number | string;
   imageUrl: string;
   link: string;
-};
+}
 
 const BoardSection = (props: BoardSectionProps) => (
   <section className="section-boards">
     <div className="container">
       <div className="media-boards">
         <div className="boards-images">
-          <Image alt="image" src={props.imageUrl} width={520} height={323} />
+          <Image alt="image" src={props.imageUrl} width={520} />
         </div>
         <div className="media-body">
           <h3 className="boards-title">{props.title}</h3>
@@ -59,10 +64,8 @@ const BoardSection = (props: BoardSectionProps) => (
               </div>
             </div>
             <BoardsReview className="boards-review">
-              <a href="#">
-                <span className="review-num">{props.reviewsCount || 0}</span>{' '}
-                Reviews
-              </a>
+              <span className="review-num">{props.reviewsCount || 0}</span>{' '}
+              Reviews
             </BoardsReview>
           </div>
           <div className="boards-caption">
@@ -90,30 +93,22 @@ const BoardSection = (props: BoardSectionProps) => (
             </ul>
           </div>
           <div className="boards-action">
-            <ul className="action-button">
-              <li>
-                <Button
-                  onClick={() => props.onLockerButtonPress(props.onLocker)}
-                >
-                  {props.onLocker ? 'On Locker' : 'Add to locker'}
+            <ButtonsContainer>
+              <Button onClick={() => props.onLockerButtonPress(props.onLocker)}>
+                {props.onLocker ? 'Remove from locker' : 'Add to locker'}
+              </Button>
+
+              <a rel="noopener noreferrer" target="_blank" href={props.link}>
+                <Button>
+                  <span className="icons-target" style={{ color: 'yellow' }}>
+                    &nbsp;
+                  </span>{' '}
+                  Buy from
                 </Button>
-              </li>
-              <li>
-                <a rel="noopener noreferrer" target="_blank" href={props.link}>
-                  <Button>
-                    <span className="icons-target" style={{ color: 'yellow' }}>
-                      &nbsp;
-                    </span>{' '}
-                    Buy from
-                  </Button>
-                </a>
-              </li>
-              <li>
-                <Button onClick={props.handleCreateReview}>
-                  Write a Review
-                </Button>
-              </li>
-            </ul>
+              </a>
+
+              <Button onClick={props.handleCreateReview}>Write a Review</Button>
+            </ButtonsContainer>
           </div>
         </div>
       </div>

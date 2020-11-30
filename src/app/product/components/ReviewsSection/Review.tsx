@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { IComment } from '../../../../types/Resource';
 import moment from 'moment';
+import { useQuery } from '@apollo/react-hooks';
 
+import { IComment } from '../../../../types/Resource';
 import Stars from '../../../genericComponents/Stars';
 import { Column, Row } from '../../../genericComponents/Layout';
+import { GET_HELPFUL_COUNT } from '../../../../service/queries';
 
 const MessageBox = styled.div`
   background-color: ${props => props.theme.color.softYellow};
@@ -106,6 +108,21 @@ interface ReviewProps extends IComment {
 
 const Review = (props: ReviewProps) => {
   const [reviewsVisibility, setReviewsVisibility] = useState(false);
+  const [helpfulCount, setHelpfulCount] = useState(0);
+
+  const { loading, refetch } = useQuery(GET_HELPFUL_COUNT, {
+    variables: {
+      resource_review_id: props.id,
+    },
+    onCompleted: data => {
+      setHelpfulCount(data.helpful_review.length);
+    },
+    notifyOnNetworkStatusChange: true,
+  });
+
+  useEffect(() => {
+    if (!loading) refetch();
+  }, [props.isHelpful]);
 
   return (
     <div className="message-item">
@@ -133,8 +150,10 @@ const Review = (props: ReviewProps) => {
                     props.markReviewAsHelpful(props.id, !!props.isHelpful)
                   }
                   isHelpful={props.isHelpful}
+                  title="Etv"
                 >
-                  {props.isHelpful ? 'Not Helpful' : 'Helpful'}
+                  {props.isHelpful ? 'Not Helpful' : 'Helpful'}{' '}
+                  {`(${helpfulCount})`}
                 </HelpfulButton>
               </li>
               <li>
@@ -150,16 +169,18 @@ const Review = (props: ReviewProps) => {
                 </Button>
               </li>
               <li>
-              <Button
-                  onClick={() =>{
-                    (window as any).$crisp.push(["do", "chat:open"]);
-                    (window as any).$crisp.push(["do", "message:send", ["text", "Hello I would like to report an abuse"]])
+                <Button
+                  onClick={() => {
+                    (window as any).$crisp.push(['do', 'chat:open']);
+                    (window as any).$crisp.push([
+                      'do',
+                      'message:send',
+                      ['text', 'Hello I would like to report an abuse'],
+                    ]);
                   }}
                 >
                   <span className="icons-report">&nbsp;</span> Report abuse
                 </Button>
-                
-                
               </li>
             </ul>
           </div>

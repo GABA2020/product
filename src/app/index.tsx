@@ -14,6 +14,7 @@ import 'styles/scss/LoadingPage.scss';
 import 'styles/scss/LockerReview.scss';
 import 'styles/scss/PageContent.scss';
 import 'styles/scss/SectionFooter.scss';
+
 import { Slide, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 // import { HomePage } from './containers/HomePage/Loadable';

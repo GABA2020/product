@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import Button from '../genericComponents/Button';
 import { Grid } from 'semantic-ui-react';
+import ModalVideo from 'react-modal-video';
 
 const BlueHero = require('../../assets/images/sprites/blueHero.jpg');
 const HeaderContainer = styled.div`
@@ -22,6 +23,9 @@ const ContentContainer = styled.div`
   width: 100%;
   height: 150px;
   color: white;
+  .modal-video-body {
+    margin-top: -300px;
+  }
 
   ${props => props.theme.rules.narrowWidth}
 `;
@@ -58,6 +62,7 @@ function Iframe(props) {
 }
 
 const AplicantDatabase = () => {
+  const [isOpen, setOpen] = useState(false);
   return (
     <div>
       <HeaderContainer>
@@ -74,9 +79,18 @@ const AplicantDatabase = () => {
                 strategize for success!
               </p>
             </Title>
+            <ModalVideo
+              channel="youtube"
+              autoplay
+              isOpen={isOpen}
+              videoId="IeeZiIwz8xc"
+              onClose={() => setOpen(false)}
+            />
           </Grid.Column>
           <Grid.Column>
-            <TutorialButton>Tutorial Video</TutorialButton>
+            <TutorialButton onClick={() => setOpen(true)}>
+              Tutorial Video
+            </TutorialButton>
           </Grid.Column>
         </ContentContainer>
       </HeaderContainer>

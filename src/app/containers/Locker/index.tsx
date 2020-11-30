@@ -47,7 +47,7 @@ const iniUserResource: ENTITIES.UserResource = {
   rating: 0,
 };
 
-export const Locker = ({email}) => {
+export const Locker = ({ email, owner }) => {
   const {
     state: { user },
   } = useContext(Context);
@@ -58,7 +58,7 @@ export const Locker = ({email}) => {
     data: reviewsResponse,
     error: reviewsError,
     refetch: fetchReviews,
-  } = useQuery(GET_REVIEWS_BY_USER, { variables: { userId: email||'' } });
+  } = useQuery(GET_REVIEWS_BY_USER, { variables: { userId: email || '' } });
 
   const {
     loading: loadingResources,
@@ -66,7 +66,7 @@ export const Locker = ({email}) => {
     error: resourcesError,
     refetch: fetchResources,
   } = useQuery(GET_LOCKER_RESOURCES_BY_USER, {
-    variables: { userId: email||'' },
+    variables: { userId: email || '' },
   });
 
   useInjectSaga({ key: sliceKey, saga: LockerSaga });
@@ -83,36 +83,38 @@ export const Locker = ({email}) => {
   const [tabState, setTabState] = useState(0); // 0 => resource, 1 => review
 
   // useEffect(() => {
-    // if (userProfile.email !== '') {
-    //   dispatch(
-    //     actions.getAllUserResourceAction({
-    //       email: userProfile.email,
-    //     }),
-    //   );
-    //   dispatch(
-    //     actions.getUserResourcesAction({
-    //       email: userProfile.email,
-    //     }),
-    //   );
-    // }
+  // if (userProfile.email !== '') {
+  //   dispatch(
+  //     actions.getAllUserResourceAction({
+  //       email: userProfile.email,
+  //     }),
+  //   );
+  //   dispatch(
+  //     actions.getUserResourcesAction({
+  //       email: userProfile.email,
+  //     }),
+  //   );
+  // }
   // }, [user.email]);
 
   const renderReviews = (reviews: ENTITIES.UserReviewLocker[]) => {
     return (
       <ul className="review-list">
-        <li className="review-item">
-          <CustomButton>
-            <a
-              href="#"
-              onClick={e => {
-                e.preventDefault();
-                setModalVisibility(true);
-              }}
-            >
-              Start a review
-            </a>
-          </CustomButton>
-        </li>
+        {owner && (
+          <li className="review-item">
+            <CustomButton>
+              <a
+                href="#"
+                onClick={e => {
+                  e.preventDefault();
+                  setModalVisibility(true);
+                }}
+              >
+                Start a review
+              </a>
+            </CustomButton>
+          </li>
+        )}
         {reviews.map((item, index) => {
           return (
             <li key={index} className="review-item">
@@ -143,7 +145,11 @@ export const Locker = ({email}) => {
         {resources.map((item, index) => {
           return (
             <li key={index} className="locker-item">
-              <Resource userResources={item} refetch={fetchResources} />
+              <Resource
+                userResources={item}
+                refetch={fetchResources}
+                owner={owner}
+              />
             </li>
           );
         })}
@@ -300,36 +306,40 @@ export const Locker = ({email}) => {
                             </button>
                           </div>
                         ) : null}
-                        <div className="locker-empty text-center">
-                          <p>Review another resource</p>
-                          <button className="btn-start-review">
-                            <a
-                              href="#"
-                              onClick={e => {
-                                e.preventDefault();
-                                setModalVisibility(true);
-                              }}
-                            >
-                              Start a review
-                            </a>
-                          </button>
-                        </div>
+                        {owner && (
+                          <div className="locker-empty text-center">
+                            <p>Review another resource</p>
+                            <button className="btn-start-review">
+                              <a
+                                href="#"
+                                onClick={e => {
+                                  e.preventDefault();
+                                  setModalVisibility(true);
+                                }}
+                              >
+                                Start a review
+                              </a>
+                            </button>
+                          </div>
+                        )}
                       </div>
                     ) : (
                       <div className="locker-review">
                         <div className="locker-empty text-center">
                           <p>There is no review available</p>
-                          <button className="btn-start-review">
-                            <a
-                              href="#"
-                              onClick={e => {
-                                e.preventDefault();
-                                setModalVisibility(true);
-                              }}
-                            >
-                              Start a review
-                            </a>
-                          </button>
+                          {owner && (
+                            <button className="btn-start-review">
+                              <a
+                                href="#"
+                                onClick={e => {
+                                  e.preventDefault();
+                                  setModalVisibility(true);
+                                }}
+                              >
+                                Start a review
+                              </a>
+                            </button>
+                          )}
                         </div>
                       </div>
                     ))}

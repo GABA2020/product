@@ -68,7 +68,7 @@ export function Profile({ owner, userSearchProfile }) {
       {/* owner profile will use userProfile */}
       {owner && <Score />}
       {/* locker */}
-      <Locker email={userSearchProfile?.email}/>
+      <Locker email={userSearchProfile?.email} owner={owner}/>
       {/* CV work */}
       {owner && <CVWork editMode={editModeState} />}
       <section className="section-milestones"></section>

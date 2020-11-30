@@ -1,29 +1,64 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Helmet from 'react-helmet';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { img_user, verified_check } from 'assets/images';
-import { sortArrayAlphabetString } from 'helpers/Unity';
-import { isUserConnected } from 'services';
+
 import { useSelector, useDispatch } from 'react-redux';
 import { ChatSelector } from 'redux/Chat/selectors';
 import { useInjectSaga } from 'utils/redux-injectors';
 import { ChatSaga } from 'redux/Chat/saga';
 import { Chat } from 'app/containers/Chat';
-import { showConfirmMessage } from 'helpers/Swal.module';
-import { Message } from 'helpers/Message';
+
 import {
   actions as chatActions,
   sliceKey as chatSliceKey,
 } from 'redux/Chat/slice';
 import { Context } from 'app/globalContext/GlobalContext';
+import styled from 'styled-components';
+import Button from '../../genericComponents/Button';
+import { useMutation, useQuery } from '@apollo/client';
+import { CONNECT_TO_USER, DISCONNECT_TO_USER } from 'service/mutations';
+import { CONNECTED_USERS } from 'service/queries';
 
+const ConnectButton = styled(Button)`
+  background-color: #eeaa35;
+  color: ${props => props.theme.color.goodNightColor};
+  padding: 15px 14px 14px;
+  border-radius: 6px;
+
+  font-size: 16px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: 0.1px;
+  text-align: center;
+  color: $goodNightColor;
+  min-width: 120px;
+`;
+const DisconnectButton = styled(Button)`
+  padding: 15px 14px 14px;
+  border-radius: 6px;
+
+  font-size: 16px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: 0.1px;
+  text-align: center;
+  color: $goodNightColor;
+  min-width: 120px;
+  background: ${props => props.theme.color.softPurple};
+  color: ${props => props.theme.color.black};
+`;
 
 export function ProfileInfo({
   image,
   setIsShowModalEditProfileState,
   owner,
-  userSearchProfile
+  userSearchProfile,
 }) {
   useInjectSaga({ key: chatSliceKey, saga: ChatSaga });
   const dispatch = useDispatch();
@@ -33,43 +68,57 @@ export function ProfileInfo({
     state: { user: userProfile },
   } = useContext(Context);
 
-  const connectUser = async () => {
-    if (userSearchProfile.email !== '' && userProfile.email !== '') {
-      const user_email_array = sortArrayAlphabetString([
-        userSearchProfile.email,
-        userProfile.email,
-      ]);
+  const {
+    loading: loadingConnect,
+    data: connectResponse,
+    error: connectError,
+    refetch: fetchConnect,
+  } = useQuery(CONNECTED_USERS, { variables: { email: userProfile.email } });
 
-      const isConnected = await isUserConnected(user_email_array.join(':'));
+  const [connectToUser] = useMutation(CONNECT_TO_USER);
+  const [disconnectToUser] = useMutation(DISCONNECT_TO_USER);
 
-      if (isConnected) {
-        const index = listLastMessage.findIndex(
-          item => item.users.join(':') === user_email_array.join(':'),
-        );
-        dispatch(chatActions.setCurrentUserKey(user_email_array.join(':')));
-        setChatModal(true);
+  const [onConnect, setOnConnect] = useState(false);
+
+  useEffect(() => {
+    if (connectResponse) {
+      let connectresponseans =
+        connectResponse.connectedUsers.filter(
+          conusr => userSearchProfile.email === conusr.email,
+        ).length > 0;
+
+      setOnConnect(connectresponseans);
+    }
+  }, [connectResponse]);
+
+  const handleConnectButtonPress = async (
+    email: string,
+    emailSender: string,
+    onConnect: boolean,
+  ) => {
+    try {
+      if (onConnect) {
+        //console.log('conectFunc', email, emailSender, onConnect);
+        await disconnectToUser({
+          variables: {
+            reciver_email: email,
+            sender_email: emailSender,
+          },
+        });
       } else {
-        const isConfirm = await showConfirmMessage(
-          Message.Connect_Question,
-          '',
-          'question',
-        );
-        if (isConfirm.value) {
-          // dispatch(
-          //   chatActions.setCurrentUserKey(user_email_array.join(':')),
-          // );
-          dispatch(
-            chatActions.connectUserAction({
-              users_mail_key: user_email_array.join(':'),
-              senderEmail: userProfile.email,
-            }),
-          );
-          setChatModal(true);
-        }
+        //console.log('conectFunc', email, emailSender, onConnect);
+        await connectToUser({
+          variables: {
+            reciver_email: email,
+            sender_email: emailSender,
+          },
+        });
       }
+      fetchConnect();
+    } catch (err) {
+      console.log('Error: ', err);
     }
   };
-
 
   return (
     <>
@@ -77,12 +126,14 @@ export function ProfileInfo({
         <meta charSet="utf-8" />
         <title>{`${userSearchProfile.name} ${userSearchProfile.last_name}`}</title>
       </Helmet>
-      {!owner&&<Chat
-        isShow={chatModal}
-        onHide={() => {
-          setChatModal(false);
-        }}
-      />}
+      {!owner && (
+        <Chat
+          isShow={chatModal}
+          onHide={() => {
+            setChatModal(false);
+          }}
+        />
+      )}
       {owner && (
         <section className="section-profile-edit text-right">
           <a
@@ -167,16 +218,31 @@ export function ProfileInfo({
               </div>
               {!owner && (
                 <div className="profile-connect">
-                  <a
-                    onClick={e => {
-                      e.preventDefault();
-                      connectUser();
-                    }}
-                    href="#"
-                    className="btn btn-connect"
-                  >
-                    Connect
-                  </a>
+                  {onConnect ? (
+                    <DisconnectButton
+                      onClick={() => {
+                        handleConnectButtonPress(
+                          userSearchProfile.email,
+                          userProfile.email,
+                          onConnect,
+                        );
+                      }}
+                    >
+                      Disconect
+                    </DisconnectButton>
+                  ) : (
+                    <ConnectButton
+                      onClick={() => {
+                        handleConnectButtonPress(
+                          userSearchProfile.email,
+                          userProfile.email,
+                          onConnect,
+                        );
+                      }}
+                    >
+                      Connect
+                    </ConnectButton>
+                  )}
                 </div>
               )}
               {/* owner profile will use userProfile */}

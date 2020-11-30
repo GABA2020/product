@@ -174,7 +174,7 @@ export const GuestUserProfile = props => {
                     })}
                 </ul>
               </div>
-              <div className="profile-connect">
+              {/* <div className="profile-connect">
                 <a
                   onClick={e => {
                     e.preventDefault();
@@ -185,7 +185,7 @@ export const GuestUserProfile = props => {
                 >
                   Connect
                 </a>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

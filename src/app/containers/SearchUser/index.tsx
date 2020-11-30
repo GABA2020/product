@@ -1,4 +1,4 @@
-import React, { FC, Fragment, useContext, useEffect } from 'react';
+import React, { FC, Fragment, useContext, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useInjectSaga } from 'utils/redux-injectors';
 import {
@@ -14,10 +14,10 @@ import Helmet from 'react-helmet';
 import 'styles/scss/SearchUser.scss';
 import 'styles/scss/ModalEditProfile.scss';
 import 'styles/scss/SectionProfile.scss';
-import { MyProfile } from '../MyProfile';
-import { GuestUserProfile } from '../GuestUserProfile';
 import { NavLink } from 'react-router-dom';
 import { Context } from 'app/globalContext/GlobalContext';
+import { Profile } from 'app/profile/components/Profile';
+import { getUser } from 'app/auth/services';
 
 interface IProfile {
   match: {
@@ -32,21 +32,43 @@ export const SearchUser: FC<IProfile> = props => {
   useInjectSaga({ key: userSliceKey, saga: UserSaga });
   useInjectSaga({ key: chatSliceKey, saga: ChatSaga });
   const dispatch = useDispatch();
+  // const {
+  //   userProfile,
+  //   loadingUserSearchProfile,
+  // } = useSelector(userSelector);
+  const [loadingUserSearchProfile, setLoadingUserSearchProfile] = useState(
+    true,
+  );
+  const [userSearchProfile, setUserSearchProfile] = useState<any>({});
   const {
-    // userProfile,
-    userSearchProfile,
-    loadingUserSearchProfile,
-  } = useSelector(userSelector);
+    graphQLClient,
+    state: { user: userProfile },
+  } = useContext(Context);
 
-  const { state: { user:userProfile } } = useContext(Context);
-  
   useEffect(() => {
-    dispatch(
-      userActions.getUserSearchProfileAction({
-        username: match.params.username,
-      }),
-    );
-  }, [match.params.username, dispatch]);
+    setLoadingUserSearchProfile(true);
+    if (match.params.username !== userProfile.username) {
+      getUserSearchProfile(match.params.username);
+    } else {
+      setUserSearchProfile(userProfile);
+      setLoadingUserSearchProfile(false);
+    }
+    // dispatch(
+    //   userActions.getUserSearchProfileAction({
+    //     username: match.params.username,
+    //   }),
+    // );
+  }, [match.params.username, userProfile]);
+
+  async function getUserSearchProfile(username) {
+    console.log(username);
+    const userData = await getUser(graphQLClient, '', username);
+    setUserSearchProfile({
+      ...userData?.userFirestore,
+      ...userData?.userAccount,
+    });
+    setLoadingUserSearchProfile(false);
+  }
 
   return (
     <Fragment>
@@ -59,7 +81,7 @@ export const SearchUser: FC<IProfile> = props => {
           <section className="page-loading"></section>
         ) : (
           <section id="page_content">
-            {userSearchProfile.username === '' ? (
+            {!userSearchProfile.username ? (
               <NotFoundPage />
             ) : (
               <Fragment>
@@ -77,12 +99,15 @@ export const SearchUser: FC<IProfile> = props => {
                     </ul>
                   </div>
                 </section>
+                <Profile
+                  owner={userProfile.username === userSearchProfile.username}
+                  userSearchProfile={userSearchProfile}
+                />
 
-                {userProfile.username === userSearchProfile.username ? (
-                  <MyProfile></MyProfile>
-                ) : (
-                  <GuestUserProfile></GuestUserProfile>
-                )}
+                {/* {userProfile.username === userSearchProfile.username ? ( */}
+                {/* ) : ( */}
+                {/* <GuestUserProfile></GuestUserProfile> */}
+                {/* )} */}
               </Fragment>
             )}
           </section>

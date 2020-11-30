@@ -29,8 +29,8 @@ export const CREATE_USER = gql`
 `;
 
 export const GET_USER_ACCOUNT = gql`
-  query($email: String!) {
-    user_account(where: { email: { _eq: $email } }) {
+  query($email: String, $username: String) {
+    user_account(where: {_or: [{email: {_eq: $email}},{username: {_eq: $username}}]}) {
       creation_date
       email
       last_name

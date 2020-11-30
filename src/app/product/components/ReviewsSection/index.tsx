@@ -175,7 +175,9 @@ const ReviewSection = (props: ReviewSectionProps) => {
                           aria-valuemax={100}
                           style={{
                             width: `${Number(
-                              (value / props.reviewsCount) * 100,
+                              (value / props.reviewsCount
+                                ? value / props.reviewsCount
+                                : 0) * 100,
                             ).toFixed(1)}%`,
                           }}
                         />
@@ -183,7 +185,12 @@ const ReviewSection = (props: ReviewSectionProps) => {
                     </ProgressBarContainer>
                     <div className="judge-percent">
                       <span>
-                        {Number((value / props.reviewsCount) * 100).toFixed()}%
+                        {Number(
+                          (value / props.reviewsCount
+                            ? value / props.reviewsCount
+                            : 0) * 100,
+                        ).toFixed()}
+                        %
                       </span>
                     </div>
                   </div>

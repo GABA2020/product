@@ -37,6 +37,7 @@ import PeoplePage from './people/screens/PeoplePage';
 import { db } from '../helpers/firebase.module';
 import { GET_USER_ACCOUNT, GET_USER_DATA } from 'service/queries';
 import ReactGA from 'react-ga';
+import { getUser } from './auth/services';
 
 export const initGA = () => {
   ReactGA.initialize('UA-183349067-1'); // put your tracking id here
@@ -93,31 +94,10 @@ export function App() {
       if (!user) {
         setInitialized(true);
       } else {
-        const memberRef = await db
-          .collection('member_data')
-          .doc(user.email || '')
-          .get();
-        const userFirestore = memberRef.data();
-        let userAccount: any = {};
-        let userDataHasura: any = {};
-        await graphQLClient
-          .query({
-            query: GET_USER_ACCOUNT,
-            variables: { email: user.email },
-          })
-          .then(r => (userAccount = r?.data?.user_account[0]))
-          .catch(e => console.log('GET_USER_ACCOUNT', e));
-        await graphQLClient
-          .query({
-            query: GET_USER_DATA,
-            variables: { email: user.email },
-          })
-          .then(r => (userDataHasura = r.data?.user))
-          .catch(e => console.log('GET_USER_DATA', e));
-        console.log('user', userFirestore, userAccount, userDataHasura);
-        login({ userFirestore, userAccount, userDataHasura });
+        const userData = await getUser(graphQLClient,user.email||"")
+        login(userData);
         (window as any).$crisp.push(["set", "user:email", [user.email]]);
-        (window as any).$crisp.push(["set", "user:nickname", [`${userAccount.name} ${userAccount.last_name}`]])
+        (window as any).$crisp.push(["set", "user:nickname", [`${userData.name} ${userData.last_name}`]])
         setInitialized(true);
       }
     });

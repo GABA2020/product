@@ -224,7 +224,7 @@ export const MyProfile = props => {
       {/* owner profile will use userProfile */}
       <Score />
       {/* locker */}
-      <Locker />
+      {/* <Locker email={''}/> */}
       {/* CV work */}
       <CVWork editMode={editModeState} />
       <section className="section-milestones"></section>

@@ -444,8 +444,6 @@ export function EditProfileModal(props) {
     setImageState(initFile);
   };
 
-  console.log({ user, values });
-
   return (
     <Fragment>
       <form className="modal-edit-profile">

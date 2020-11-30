@@ -18,22 +18,22 @@ import { GET_DISCIPLINES } from '../../../service/queries';
 
 const options = [
   {
-    value: 'MCAT',
+    value: 'mcat',
     key: 'mcat',
     text: 'MCAT',
   },
   {
-    value: 'Step 1',
+    value: 'step_1',
     key: 'step_1',
     text: 'Step 1',
   },
   {
-    value: 'Step 2',
+    value: 'step_2',
     key: 'step_2',
     text: 'Step 2',
   },
   {
-    value: 'Step 3',
+    value: 'step_3',
     key: 'step_3',
     text: 'Step 3',
   },

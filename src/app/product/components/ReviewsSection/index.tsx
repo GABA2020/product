@@ -131,6 +131,8 @@ const ReviewSection = (props: ReviewSectionProps) => {
     ? filteredComments
     : props.comments;
 
+  console.log({commentsToDisplay})
+
   return (
     <section className="section-review">
       <div className="container">
@@ -197,7 +199,7 @@ const ReviewSection = (props: ReviewSectionProps) => {
                     handleSetActiveFilter('usedInTests', value)
                   }
                 >
-                  <option value={0}>Select</option>
+                  <option value={''}>Select</option>
                   {exams.map(exam => (
                     <option key={exam.value} value={exam.value}>
                       {exam.name}
@@ -215,6 +217,7 @@ const ReviewSection = (props: ReviewSectionProps) => {
                   search
                   selection
                   onChange={(_, { value }) => {
+                    console.log({ value });
                     handleSetActiveFilter('specialties', value);
                   }}
                   options={disciplines.map(discipline => ({

@@ -96,6 +96,13 @@ const ToggleReviewsArrow: any = styled.div`
   transition: transform 0.4s linear;
 `;
 
+const testsTranslate = {
+  step_1: 'Step 1',
+  step_2: 'Step 2',
+  step_3: 'Step 3',
+  mcat: 'MCAT',
+};
+
 const HelpfulButton: any = styled(Button)`
   ${(props: any) =>
     props.isHelpful ? `background-color: ${props.theme.color.gabaYellow}` : ''}
@@ -195,7 +202,7 @@ const Review = (props: ReviewProps) => {
                 {props.usedInTests.map(test => (
                   <React.Fragment key={test}>
                     <li>
-                      <p>{test}</p>
+                      <p>{testsTranslate[test]}</p>
                     </li>
                     <li>|</li>
                   </React.Fragment>

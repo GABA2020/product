@@ -27,7 +27,20 @@ import {
   ADD_USER_SUBCOLLECTION,
 } from '../../../service/mutations';
 import { School } from 'app/profile/components/school/School';
+import styled from 'styled-components';
 const arrayWork = ['work', 'research', 'volunteer', 'school', 'letter'];
+
+const HeaderTitle = styled.h2`
+  font-size: 32px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.19;
+  letter-spacing: -0.4px;
+  color: #111741;
+  margin: 0px 15px 10px 0px;
+  font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+`;
 
 interface ICVWork {
   editMode: boolean;
@@ -131,43 +144,43 @@ export const CVWork: FC<ICVWork> = props => {
     });
   }
   function editWorkExperience(workExperience) {
-    editUserSubcollection(workExperience).then(r=>{
+    editUserSubcollection(workExperience).then(r => {
       const newUserWork = userWorks.slice();
-      const index = newUserWork.findIndex(i=>i.id===workExperience.id)
-      newUserWork.splice(index, 1, workExperience)
-      setUserWorwks(newUserWork)
+      const index = newUserWork.findIndex(i => i.id === workExperience.id);
+      newUserWork.splice(index, 1, workExperience);
+      setUserWorwks(newUserWork);
     });
   }
   function editResearch(research) {
-    editUserSubcollection(research).then(r=>{
+    editUserSubcollection(research).then(r => {
       const newUserResearch = userResearchs.slice();
-      const index = newUserResearch.findIndex(i=>i.id===research.id)
-      newUserResearch.splice(index, 1, research)
-      setUserResearchs(newUserResearch)
+      const index = newUserResearch.findIndex(i => i.id === research.id);
+      newUserResearch.splice(index, 1, research);
+      setUserResearchs(newUserResearch);
     });
   }
   function editVolunteer(volunteer) {
-    editUserSubcollection(volunteer).then(r=>{
+    editUserSubcollection(volunteer).then(r => {
       const newUserVolunteer = userVolunteers.slice();
-      const index = newUserVolunteer.findIndex(i=>i.id===volunteer.id)
-      newUserVolunteer.splice(index, 1, volunteer)
-      setUserVolunteers(newUserVolunteer)
+      const index = newUserVolunteer.findIndex(i => i.id === volunteer.id);
+      newUserVolunteer.splice(index, 1, volunteer);
+      setUserVolunteers(newUserVolunteer);
     });
   }
   function editSchool(school) {
-    editUserSubcollection(school).then(r=>{
+    editUserSubcollection(school).then(r => {
       const newUserSchool = userSchools.slice();
-      const index = newUserSchool.findIndex(i=>i.id===school.id)
-      newUserSchool.splice(index, 1, school)
-      setUserSchools(newUserSchool)
+      const index = newUserSchool.findIndex(i => i.id === school.id);
+      newUserSchool.splice(index, 1, school);
+      setUserSchools(newUserSchool);
     });
   }
   function editLetter(letter) {
-    editUserSubcollection(letter).then(r=>{
+    editUserSubcollection(letter).then(r => {
       const newUserLetter = userLetters.slice();
-      const index = newUserLetter.findIndex(i=>i.id===letter.id)
-      newUserLetter.splice(index, 1, letter)
-      setUserLetters(newUserLetter)
+      const index = newUserLetter.findIndex(i => i.id === letter.id);
+      newUserLetter.splice(index, 1, letter);
+      setUserLetters(newUserLetter);
     });
   }
   // ---------------------deleteUserSubcollection------------------------------
@@ -304,6 +317,7 @@ export const CVWork: FC<ICVWork> = props => {
       />
       <section className="section-experiences">
         <div className="container">
+          <HeaderTitle>Experiences</HeaderTitle>
           <div className="wrap-layout">
             <div className="wrap-content">
               <div className="experiences-slidebar">

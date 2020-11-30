@@ -13,6 +13,7 @@ import { Context } from 'app/globalContext/GlobalContext';
 interface IResource {
   userResources: ENTITIES.UserResourceLocker;
   refetch: Function;
+  owner: Boolean;
 }
 const ResourceImage: any = styled.img`
   max-height: 50px;
@@ -25,7 +26,7 @@ export const Resource: FC<IResource> = props => {
   const {
     state: { user },
   } = useContext(Context);
-  const { userResources, refetch } = props;
+  const { userResources, refetch, owner } = props;
   const [removeFromLocker] = useMutation(DELETE_FROM_LOCKER);
   const resource = useResource(userResources.resource_id);
   const imageResource = useStorage(
@@ -63,25 +64,27 @@ export const Resource: FC<IResource> = props => {
           </div>
         </div>
       </div>
-      <div className="locker-button">
-        <a
-          href="#"
-          onClick={async e => {
-            e.preventDefault();
+      {owner && (
+        <div className="locker-button">
+          <a
+            href="#"
+            onClick={async e => {
+              e.preventDefault();
 
-            await removeFromLocker({
-              variables: {
-                user_id: user.email,
-                resource_id: userResources.resource_id,
-              },
-            });
-            refetch();
-          }}
-          className="btn btn-resource"
-        >
-          Remove from Locker
-        </a>
-      </div>
+              await removeFromLocker({
+                variables: {
+                  user_id: user.email,
+                  resource_id: userResources.resource_id,
+                },
+              });
+              refetch();
+            }}
+            className="btn btn-resource"
+          >
+            Remove from Locker
+          </a>
+        </div>
+      )}
     </Fragment>
   );
 };

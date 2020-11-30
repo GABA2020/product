@@ -21,6 +21,8 @@ import { Context } from 'app/globalContext/GlobalContext';
 import { AdminResourcesTab } from './AdminResourcesTab';
 import { AdminProgramsTab } from './AdminProgramsTab';
 import { UNVALIDATE_USERS } from '../../../service/queries';
+import { useStorage } from 'hook/useStorage';
+import { VerificationImage } from './VerificationImage';
 
 const GET_RESOURCES = gql`
   query Resources($limit: Int, $offset: Int, $categories: [String]) {
@@ -78,7 +80,7 @@ export const AdminConsole = () => {
 
   const adminList = [
     'candice.blacknall@gogaba.co',
-    'snmunoz@gmail.com',
+    'snmunoz@uc.cl',
     'aleoo7100+1@gmail.com',
   ];
 
@@ -93,10 +95,23 @@ export const AdminConsole = () => {
         activeItem={activeMenuItem}
         onItemClicked={onMenuItemClicked}
       />
-      {adminList.includes(email as any) && activeMenuItem === AdminMenuItems.RESOURCES && <AdminResourcesTab />}
-      {adminList.includes(email as any) && activeMenuItem === AdminMenuItems.PROGRAMS && <AdminProgramsTab />}
+      {adminList.includes(email as any) &&
+        activeMenuItem === AdminMenuItems.RESOURCES && <AdminResourcesTab />}
+      {adminList.includes(email as any) &&
+        activeMenuItem === AdminMenuItems.PROGRAMS && <AdminProgramsTab />}
       <section className="container">
         <section className="row">
+        <section className="col">
+            {selectedImg && (
+              <AdminVerifyProfileModal
+                selectedImg={selectedImg}
+                setSelectedImg={setSelectedImg}
+                name={name}
+                email={emails}
+                refetch={fetchUnvalidated}
+              />
+            )}
+          </section>
           <section className="col">
             {unvalidatedResponse &&
               adminList.includes(email as any) &&
@@ -131,6 +146,11 @@ export const AdminConsole = () => {
                     <p className="card-text">
                       MCAT Document: {doc.mcat_document_name}
                     </p>
+                    <VerificationImage
+                      test="MCAT"
+                      filename={doc.mcat_document_name}
+                      email={doc.email}
+                    />
                     <button
                       onClick={() => {
                         db.collection('member_data').doc(doc.id).set(
@@ -156,6 +176,11 @@ export const AdminConsole = () => {
                     <p>Name : {doc.name}</p>
                     <p>Email: {doc.email}</p>
                     <p>Step 1 Document: {doc.step_1_document_name}</p>
+                    <VerificationImage
+                      test="Step1"
+                      filename={doc.step_1_document_name}
+                      email={doc.email}
+                    />
                   </div>
                   <button
                     onClick={() => {
@@ -181,6 +206,11 @@ export const AdminConsole = () => {
                     <p>Name : {doc.name}</p>
                     <p>Email: {doc.email}</p>
                     <p>Step 2 Document: {doc.step_2_document_name}</p>
+                    <VerificationImage
+                      test="Step2"
+                      filename={doc.step_2_document_name}
+                      email={doc.email}
+                    />
                     <button
                       onClick={() => {
                         db.collection('member_data').doc(doc.id).set(
@@ -206,6 +236,11 @@ export const AdminConsole = () => {
                     <p>Name : {doc.name}</p>
                     <p>Email: {doc.email}</p>
                     <p>Step 3 Document: {doc.step_3_document_name}</p>
+                    <VerificationImage
+                      test="Step3"
+                      filename={doc.step_3_document_name}
+                      email={doc.email}
+                    />
                     <button
                       onClick={() => {
                         db.collection('member_data').doc(doc.id).set(
@@ -224,17 +259,7 @@ export const AdminConsole = () => {
                 </>
               ))}
           </section>
-          <section className="col">
-            {selectedImg && (
-              <AdminVerifyProfileModal
-                selectedImg={selectedImg}
-                setSelectedImg={setSelectedImg}
-                name={name}
-                email={emails}
-                refetch={fetchUnvalidated}
-              />
-            )}
-          </section>
+         
         </section>
       </section>
     </>

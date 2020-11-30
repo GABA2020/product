@@ -4,6 +4,7 @@ import { db } from '../../../../helpers/firebase.module';
 import { useMutation } from '@apollo/client';
 import { UPDATE_USER_VALIDATION } from '../../../../service/mutations';
 import { useStorage } from 'hook/useStorage';
+import { Label } from 'semantic-ui-react';
 
 export const AdminVerifyProfileModal = ({
   selectedImg,
@@ -55,28 +56,31 @@ export const AdminVerifyProfileModal = ({
     refetch();
   };
   return (
-    <div className="backdrop" onClick={handleClick}>
-      <a href={url} target="_blank" rel="noopener noreferrer">
-        <img
-          className="img-fluid img-thumbnail"
-          style={{
-            maxWidth: '60%',
-            maxHeight: '80%',
-            display: 'block',
-            margin: 'auto',
-          }}
-          src={url}
-          alt="Click here to open PDF in another tab."
-        />
-      </a>
+    <>
+    <label>Verify: {name}, {email}</label>
+      <div className="backdrop" onClick={handleClick}>
+        <a href={url} target="_blank" rel="noopener noreferrer">
+          <img
+            className="img-fluid img-thumbnail"
+            style={{
+              maxWidth: '60%',
+              maxHeight: '80%',
+              display: 'block',
+              margin: 'auto',
+            }}
+            src={url}
+            alt="Click here to open PDF in another tab."
+          />
+        </a>
 
-      <button
-        className="button is-success has-text-centered"
-        style={{ display: 'block', margin: 'auto' }}
-        onClick={() => handleVerify()}
-      >
-        Verify
-      </button>
-    </div>
+        <button
+          className="button is-success has-text-centered"
+          style={{ display: 'block', margin: 'auto' }}
+          onClick={() => handleVerify()}
+        >
+          Verify
+        </button>
+      </div>
+    </>
   );
 };

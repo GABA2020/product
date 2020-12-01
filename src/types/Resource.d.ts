@@ -14,7 +14,7 @@ export interface Resource {
 
 export interface IComment {
   comment: string;
-  createdAt: string | number;
+  createdAt: string;
   id: string;
   rating: number;
   specialties: array | null;

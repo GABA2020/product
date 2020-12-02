@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import Stars from '../../../genericComponents/Stars';
+import { Stars, Button } from '../../../genericComponents';
 import { Resource } from '../../../../types/Resource';
 import { NavLink } from 'react-router-dom';
 import { Column } from '../../../genericComponents/Layout';
-import Button from '../../../genericComponents/Button';
+
 import theme from '../../../../theme';
 import { useStorage } from 'hook/useStorage';
 

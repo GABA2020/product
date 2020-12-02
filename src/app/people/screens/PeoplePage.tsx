@@ -18,7 +18,7 @@ import {
 } from '../../../service/mutations';
 import { Context } from 'app/globalContext/GlobalContext';
 import { GApageView } from 'app';
-import Button from 'app/genericComponents/Button';
+import { Button } from 'app/genericComponents';
 
 const CardsContainer = styled(Column)`
   align-items: center;
@@ -185,10 +185,10 @@ const PeoplePageScreen = () => {
             />
           ))
         ) : (
-          <CardContainer>
-            Nothing here
-          </CardContainer>
-        )}
+              <CardContainer>
+                Nothing here
+              </CardContainer>
+            )}
         {!loadingConnect && limitPosible > limit && (
           <LoadMoreButton onClick={() => setLimit(l => l + 5)}>
             Load More

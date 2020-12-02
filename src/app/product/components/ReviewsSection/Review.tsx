@@ -4,7 +4,7 @@ import moment from 'moment';
 import { useQuery } from '@apollo/react-hooks';
 
 import { IComment } from '../../../../types/Resource';
-import Stars from '../../../genericComponents/Stars';
+import { Stars } from '../../../genericComponents';
 import { Column, Row } from '../../../genericComponents/Layout';
 import { GET_HELPFUL_COUNT } from '../../../../service/queries';
 

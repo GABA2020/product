@@ -3,11 +3,14 @@ import { useParams } from 'react-router-dom';
 import { useLazyQuery, useQuery, useMutation } from '@apollo/client';
 import { useSelector } from 'react-redux';
 
-import BoardSection from '../components/BoardSection';
-import ReviewsSection from '../components/ReviewsSection/';
-import ResourcesSection from '../components/ResourcesSection/';
-import ReviewModal from '../components/ReviewModal';
-import ReplyModal from '../components/ReplyModal';
+import {
+  ReviewModal,
+  ReplyModal,
+  ReviewsSection,
+  BoardSection
+} from '../components';
+
+import { LoaderModal } from '../../genericComponents'
 import { storageFB } from '../../../helpers/firebase.module';
 import { img_board } from '../../../assets/images';
 import { GApageView } from 'app';
@@ -195,8 +198,6 @@ const Product = () => {
     }
   };
 
-  if (loadingResource || loadingLocker || loadingPercentage || loadingComments)
-    return null;
 
   storageFB
     .ref('resources/')
@@ -219,7 +220,10 @@ const Product = () => {
     stars_5: resourceDetail.stars_5,
   };
 
-  return (
+
+
+
+  return (loadingResource || loadingLocker || loadingPercentage || loadingComments) ? (<LoaderModal />) : (
     <section id="page_content">
       <BoardSection
         title={resourceDetail.name}

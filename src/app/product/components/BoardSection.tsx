@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import Stars from '../../genericComponents/Stars';
+import { Stars } from '../../genericComponents';
 
 const Button = styled.button`
   font-size: 1.6rem;

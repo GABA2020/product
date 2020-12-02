@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import FeaturedItem from './FeaturedItem';
 import { Resource } from '../../../../types/Resource';
 import FeaturedItemSkeleton from './FeaturedItemSkeleton';
-import Button from 'app/genericComponents/Button';
+import { Button } from 'app/genericComponents';
 import { NavLink } from 'react-router-dom';
 
 const FilterByNameIcon = require('../../../../assets/images/sprites/FilterByName@2x.png');
@@ -51,7 +51,7 @@ const Tabs = styled.div`
   justify-content: space-between;
 `;
 
-const Tab = styled('div')<{ active?: Boolean }>`
+const Tab = styled('div') <{ active?: Boolean }>`
   height: 30px;
   width: 80px;
   text-align: center;
@@ -125,12 +125,12 @@ const MarketPlaceFeatured = ({
           {loading
             ? Array.from({ length: 4 }).map(() => <FeaturedItemSkeleton />)
             : resources.map((item, index) => (
-                <FeaturedItem
-                  item={item}
-                  key={index}
-                  onLockerButtonPress={onLockerButtonPress}
-                />
-              ))}
+              <FeaturedItem
+                item={item}
+                key={index}
+                onLockerButtonPress={onLockerButtonPress}
+              />
+            ))}
         </>
       </ContentContainer>
       {!loading && (

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Image } from 'semantic-ui-react';
 
 import { Column, Row } from '../../genericComponents/Layout';
-import Button from '../../genericComponents/Button';
+import { Button } from '../../genericComponents';
 import { Context } from 'app/globalContext/GlobalContext';
 
 const GlyphIcon = require('../../../assets/images/sprites/mcat-icon.svg');
@@ -181,8 +181,8 @@ const UserCard = (props: UserCardProps) => {
           {specialties ? (
             specialties.map((tagitem, index) => <Tag>{tagitem}</Tag>)
           ) : (
-            <Tag>No Specialty</Tag>
-          )}
+              <Tag>No Specialty</Tag>
+            )}
           <Tag>{year} Student</Tag>
         </TagsContainer>
         <CategoriesRow>
@@ -208,14 +208,14 @@ const UserCard = (props: UserCardProps) => {
           Disconect
         </DisconnectButton>
       ) : (
-        <ConnectButton
-          onClick={() => {
-            handleConnectButtonPress(email, emailSender, onConnect);
-          }}
-        >
-          Connect
-        </ConnectButton>
-      )}
+          <ConnectButton
+            onClick={() => {
+              handleConnectButtonPress(email, emailSender, onConnect);
+            }}
+          >
+            Connect
+          </ConnectButton>
+        )}
     </CardContainer>
   );
 };

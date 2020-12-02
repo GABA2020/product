@@ -30,7 +30,7 @@ import { REF } from 'helpers/firebase.module';
 import Helmet from 'react-helmet';
 import { Context } from 'app/globalContext/GlobalContext';
 import { GApageView } from 'app';
-import { EditProfileModal } from 'app/profile/components/EditProfileModal';
+import { EditProfileModal } from '../../profile/components/profile';
 
 export const MyProfile = props => {
   useInjectSaga({ key: userSliceKey, saga: UserSaga });

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
-import Button from '../genericComponents/Button';
+import { Button } from '../genericComponents';
 import { Grid } from 'semantic-ui-react';
 import ModalVideo from 'react-modal-video';
 

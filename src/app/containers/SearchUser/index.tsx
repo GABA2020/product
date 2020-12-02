@@ -16,7 +16,7 @@ import 'styles/scss/ModalEditProfile.scss';
 import 'styles/scss/SectionProfile.scss';
 import { NavLink } from 'react-router-dom';
 import { Context } from 'app/globalContext/GlobalContext';
-import { Profile } from 'app/profile/components/Profile';
+import ProfileScreen from 'app/profile/screens/ProfileScreen';
 import { getUser } from 'app/auth/services';
 
 interface IProfile {
@@ -61,7 +61,6 @@ export const SearchUser: FC<IProfile> = props => {
   }, [match.params.username, userProfile]);
 
   async function getUserSearchProfile(username) {
-    console.log(username);
     const userData = await getUser(graphQLClient, '', username);
     setUserSearchProfile({
       ...userData?.userFirestore,
@@ -80,38 +79,38 @@ export const SearchUser: FC<IProfile> = props => {
         {loadingUserSearchProfile ? (
           <section className="page-loading"></section>
         ) : (
-          <section id="page_content">
-            {!userSearchProfile.username ? (
-              <NotFoundPage />
-            ) : (
-              <Fragment>
-                <section className="section-breadcrumb">
-                  <div className="container">
-                    <ul className="breadcrumb">
-                      <li>
-                        <NavLink to="/">Home</NavLink>
-                      </li>
-                      <li className="active">
-                        {userProfile.username === userSearchProfile.username
-                          ? userSearchProfile.name
-                          : userSearchProfile.username}
-                      </li>
-                    </ul>
-                  </div>
-                </section>
-                <Profile
-                  owner={userProfile.username === userSearchProfile.username}
-                  userSearchProfile={userSearchProfile}
-                />
+            <section id="page_content">
+              {!userSearchProfile.username ? (
+                <NotFoundPage />
+              ) : (
+                  <Fragment>
+                    <section className="section-breadcrumb">
+                      <div className="container">
+                        <ul className="breadcrumb">
+                          <li>
+                            <NavLink to="/">Home</NavLink>
+                          </li>
+                          <li className="active">
+                            {userProfile.username === userSearchProfile.username
+                              ? userSearchProfile.name
+                              : userSearchProfile.username}
+                          </li>
+                        </ul>
+                      </div>
+                    </section>
+                    <ProfileScreen
+                      owner={userProfile.username === userSearchProfile.username}
+                      userSearchProfile={userSearchProfile}
+                    />
 
-                {/* {userProfile.username === userSearchProfile.username ? ( */}
-                {/* ) : ( */}
-                {/* <GuestUserProfile></GuestUserProfile> */}
-                {/* )} */}
-              </Fragment>
-            )}
-          </section>
-        )}
+                    {/* {userProfile.username === userSearchProfile.username ? ( */}
+                    {/* ) : ( */}
+                    {/* <GuestUserProfile></GuestUserProfile> */}
+                    {/* )} */}
+                  </Fragment>
+                )}
+            </section>
+          )}
       </Fragment>
     </Fragment>
   );

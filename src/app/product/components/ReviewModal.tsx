@@ -10,7 +10,7 @@ import { useFormik } from 'formik';
 import moment from 'moment';
 
 import { Column, Row } from '../../genericComponents/Layout';
-import Stars from '../../genericComponents/Stars';
+import { Stars } from '../../genericComponents';
 import theme from '../../../theme';
 import { CREATE_REVIEW } from '../../../service/mutations';
 import { Context } from 'app/globalContext/GlobalContext';

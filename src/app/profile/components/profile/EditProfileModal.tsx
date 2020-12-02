@@ -17,17 +17,16 @@ import { dataUrlFile } from 'helpers/Unity';
 import {
   EDIT_USER_PROFILE_FS,
   EDIT_USER_PROFILE_PG,
-} from '../../../service/mutations';
+} from '../../../../service/mutations';
 import styled from 'styled-components';
 import { Dropdown } from 'semantic-ui-react';
-import { Row, Column } from '../../genericComponents/Layout';
-import Checkbox from '../../genericComponents/Checkbox';
-import Radio from '../../genericComponents/RadioButton';
-import theme from '../../../theme';
+import { Row, Column } from '../../../genericComponents/Layout';
+import { Checkbox, RadioButton } from '../../../genericComponents';
+import theme from '../../../../theme';
 import { useQuery } from '@apollo/react-hooks';
-import { GET_SPECIALTIES, GET_SCHOOLS } from '../../../service/queries';
+import { GET_SPECIALTIES, GET_SCHOOLS } from '../../../../service/queries';
 
-const BlueHero = require('../../../assets/images/sprites/blueHero.jpg');
+const BlueHero = require('../../../../assets/images/sprites/blueHero.jpg');
 
 const radioOptions = [
   'Pre-Med',
@@ -309,7 +308,7 @@ const honorsOptions = [
   },
 ];
 
-export function EditProfileModal(props) {
+export default function EditProfileModal(props) {
   const { isShow, onHide } = props;
   const [specialities, setSpecialities]: any = useState([]);
   const [schools, setSchools]: any = useState([]);
@@ -478,14 +477,14 @@ export function EditProfileModal(props) {
                     height={140}
                   />
                 ) : (
-                  <img
-                    className="profile-image"
-                    alt="image preview"
-                    src={img_user}
-                    width={140}
-                    height={140}
-                  />
-                )}
+                      <img
+                        className="profile-image"
+                        alt="image preview"
+                        src={img_user}
+                        width={140}
+                        height={140}
+                      />
+                    )}
                 <input
                   type="file"
                   onChange={onHandleChangeAvatar}
@@ -595,7 +594,7 @@ export function EditProfileModal(props) {
               <Subtitle>School Year</Subtitle>
               {radioOptions.map(value => (
                 <CheckboxContainer key={value}>
-                  <Radio
+                  <RadioButton
                     onChange={() => setFieldValue('school_year', value)}
                     label={value}
                     checked={values.school_year === value}

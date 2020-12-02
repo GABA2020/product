@@ -16,7 +16,7 @@ import {
 } from 'redux/Chat/slice';
 import { Context } from 'app/globalContext/GlobalContext';
 import styled from 'styled-components';
-import Button from '../../genericComponents/Button';
+import { Button } from '../../../genericComponents';
 import { useMutation, useQuery } from '@apollo/client';
 import { CONNECT_TO_USER, DISCONNECT_TO_USER } from 'service/mutations';
 import { CONNECTED_USERS } from 'service/queries';
@@ -54,7 +54,7 @@ const DisconnectButton = styled(Button)`
   color: ${props => props.theme.color.black};
 `;
 
-export function ProfileInfo({
+export default function ProfileInfo({
   image,
   setIsShowModalEditProfileState,
   owner,
@@ -160,13 +160,13 @@ export function ProfileInfo({
                     height={140}
                   />
                 ) : (
-                  <img
-                    alt="user image"
-                    src={img_user}
-                    width={140}
-                    height={140}
-                  />
-                )}
+                    <img
+                      alt="user image"
+                      src={img_user}
+                      width={140}
+                      height={140}
+                    />
+                  )}
               </a>
             </div>
             <div className="media-body">
@@ -189,11 +189,12 @@ export function ProfileInfo({
                 </div>
                 {/* owner profile will use userProfile */}
                 <ul className="profile-tag">
-                  <li>
-                    <a href="#" className="btn-profile-tag">
-                      {userSearchProfile?.specialties.join(' ')}
-                    </a>
-                  </li>
+                  {(userSearchProfile?.specialties.length > 0) ? (
+                    <li>
+                      <a href="#" className="btn-profile-tag">
+                        {userSearchProfile?.specialties.join(' ')}
+                      </a>
+                    </li>) : ''}
                   <li>
                     <a href="#" className="btn-profile-tag">
                       {userSearchProfile.school_year} Student
@@ -231,18 +232,18 @@ export function ProfileInfo({
                       Disconect
                     </DisconnectButton>
                   ) : (
-                    <ConnectButton
-                      onClick={() => {
-                        handleConnectButtonPress(
-                          userSearchProfile.email,
-                          userProfile.email,
-                          onConnect,
-                        );
-                      }}
-                    >
-                      Connect
-                    </ConnectButton>
-                  )}
+                      <ConnectButton
+                        onClick={() => {
+                          handleConnectButtonPress(
+                            userSearchProfile.email,
+                            userProfile.email,
+                            onConnect,
+                          );
+                        }}
+                      >
+                        Connect
+                      </ConnectButton>
+                    )}
                 </div>
               )}
               {/* owner profile will use userProfile */}

@@ -2,7 +2,7 @@ import Dragger from 'antd/lib/upload/Dragger';
 import React, { useEffect, useState } from 'react';
 import { Modal } from 'react-bootstrap';
 import styled from 'styled-components';
-import headerBackground from '../../assets/images/headerBackgroundYellow.png';
+import headerBackground from '../../../assets/images/headerBackgroundYellow.png';
 import { db } from 'helpers/firebase.module';
 import { showWarningMessage, showConfirmMessage } from 'helpers/Swal.module';
 import { toast } from 'react-toastify';
@@ -148,7 +148,7 @@ export default function ScoreModal({
           <CloseButton onClick={onHide}>X</CloseButton>
           <Text fontSize="1.4em">{type} Score</Text>
           <IconButton color={'#FF0000'}>
-            <img src={require('../../assets/images/icons/trash.png')} />
+            <img src={require('../../../assets/images/icons/trash.png')} />
             Remove
           </IconButton>
         </Head1>
@@ -198,7 +198,7 @@ export default function ScoreModal({
         <UploadBox beforeUpload={beforeUpload} showUploadList={false}>
           {scoreReportFile ? (
             <>
-              <img src={require('../../assets/images/icons/fileGreen.png')} />
+              <img src={require('../../../assets/images/icons/fileGreen.png')} />
               <br />
               <Text fontSize="1.2em">We got it, thanks!</Text>
               <br />
@@ -206,7 +206,7 @@ export default function ScoreModal({
             </>
           ) : (
             <>
-              <img src={require('../../assets/images/icons/upload.png')} />
+              <img src={require('../../../assets/images/icons/upload.png')} />
               <br />
               <Text fontSize="1.2em">Drop your file here or Browse</Text>
               <br />
@@ -220,12 +220,12 @@ export default function ScoreModal({
           onClick={() => setScoreReportFile('')}
           color={'#aaa'}
         >
-          <img src={require('../../assets/images/icons/trashGrey.png')} />
+          <img src={require('../../../assets/images/icons/trashGrey.png')} />
           Remove File
         </IconButton>
         {/* <RowContainerSpaceBeetwen>
           <IconButton color={"#aaa"}>
-            <img src={require('../../assets/images/icons/fileImportGrey.png')} />
+            <img src={require('../../../assets/images/icons/fileImportGrey.png')} />
             Replace File
           </IconButton>
         </RowContainerSpaceBeetwen> */}

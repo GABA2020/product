@@ -24,7 +24,7 @@ import { MCATModal } from 'app/components/Modal/MCATModal';
 import { Step1Modal } from 'app/components/Modal/Step1Modal';
 import { Step2Modal } from 'app/components/Modal/Step2Modal';
 import { Step3Modal } from 'app/components/Modal/Step3Modal';
-import ScoreModal from 'app/profile/components/ScoreModal';
+import { ScoreModal } from 'app/profile/components/profile';
 import { Context } from 'app/globalContext/GlobalContext';
 
 export const Score = () => {
@@ -32,7 +32,7 @@ export const Score = () => {
   useInjectSaga({ key: storageSliceKey, saga: StorageSaga });
   const dispatch = useDispatch();
   // const { userProfile } = useSelector(userSelector);
-  const { state: { user:userProfile } } = useContext(Context);
+  const { state: { user: userProfile } } = useContext(Context);
   const [mcatModal, setMCATModal] = useState<boolean>(false);
   const [step1Modal, setStep1Modal] = useState<boolean>(false);
   const [step2Modal, setStep2Modal] = useState<boolean>(false);
@@ -117,62 +117,62 @@ export const Score = () => {
               </div>
               <div className="card-body">
                 {userProfile.mcat_review_requested === false &&
-                userProfile.is_passed_mcat === false &&
-                userProfile.mcat === 0 &&
-                userProfile.mcat_document_name === '' ? (
-                  <div className="no-score">
-                    <p>No score available</p>
-                  </div>
-                ) : userProfile.mcat_review_requested === true ? (
-                  <div className="score-waiting">
-                    <p>Once we verify your scores, you will see them here.</p>
-                  </div>
-                ) : (
-                  <div className="score-pass">
-                    <p className="score">
-                      {userProfile.mcat}{' '}
-                      {userProfile.is_passed_mcat && (
-                        <span className="score-gross">/ Pass</span>
-                      )}
-                    </p>
-                  </div>
-                )}
+                  userProfile.is_passed_mcat === false &&
+                  userProfile.mcat === 0 &&
+                  userProfile.mcat_document_name === '' ? (
+                    <div className="no-score">
+                      <p>No score available</p>
+                    </div>
+                  ) : userProfile.mcat_review_requested === true ? (
+                    <div className="score-waiting">
+                      <p>Once we verify your scores, you will see them here.</p>
+                    </div>
+                  ) : (
+                      <div className="score-pass">
+                        <p className="score">
+                          {userProfile.mcat}{' '}
+                          {userProfile.is_passed_mcat && (
+                            <span className="score-gross">/ Pass</span>
+                          )}
+                        </p>
+                      </div>
+                    )}
               </div>
               <div className="card-footer">
                 <div className="score-btn-wrapper">
                   {userProfile.mcat_review_requested === false &&
-                  userProfile.is_passed_mcat === false &&
-                  userProfile.mcat === 0 &&
-                  userProfile.mcat_document_name === '' ? (
-                    <div className="add-score">
-                      <a
-                        onClick={e => {
-                          e.preventDefault();
-                          setMCATModal(true);
-                        }}
-                        href="#"
-                      >
-                        Submit score{' '}
-                      </a>{' '}
-                    </div>
-                  ) : userProfile.mcat_review_requested === true ? (
-                    <div className="waiting-score">
-                      <p>Waiting for review</p>
-                    </div>
-                  ) : (
-                    <div className="add-score">
-                      <a
-                        onClick={e => {
-                          e.preventDefault();
-                          setMCATModal(true);
-                        }}
-                        href="#"
-                      >
-                        Add score{' '}
-                      </a>{' '}
-                      <img src={right_arrow_black} alt="image" />
-                    </div>
-                  )}
+                    userProfile.is_passed_mcat === false &&
+                    userProfile.mcat === 0 &&
+                    userProfile.mcat_document_name === '' ? (
+                      <div className="add-score">
+                        <a
+                          onClick={e => {
+                            e.preventDefault();
+                            setMCATModal(true);
+                          }}
+                          href="#"
+                        >
+                          Submit score{' '}
+                        </a>{' '}
+                      </div>
+                    ) : userProfile.mcat_review_requested === true ? (
+                      <div className="waiting-score">
+                        <p>Waiting for review</p>
+                      </div>
+                    ) : (
+                        <div className="add-score">
+                          <a
+                            onClick={e => {
+                              e.preventDefault();
+                              setMCATModal(true);
+                            }}
+                            href="#"
+                          >
+                            Add score{' '}
+                          </a>{' '}
+                          <img src={right_arrow_black} alt="image" />
+                        </div>
+                      )}
                   {/* <div className="add-score">
                       <a href="#">Manage score </a>{' '}
                       <img src={right_arrow_black} alt="image" />
@@ -191,62 +191,62 @@ export const Score = () => {
               </div>
               <div className="card-body">
                 {userProfile.step_1_review_requested === false &&
-                userProfile.is_passed_step1 === false &&
-                userProfile.step_1 === 0 &&
-                userProfile.step_1_document_name === '' ? (
-                  <div className="no-score">
-                    <p>No score available</p>
-                  </div>
-                ) : userProfile.step_1_review_requested === true ? (
-                  <div className="score-waiting">
-                    <p>Once we verify your scores, you will see them here.</p>
-                  </div>
-                ) : (
-                  <div className="score-pass">
-                    <p className="score">
-                      {userProfile.step_1}{' '}
-                      {userProfile.is_passed_step1 && (
-                        <span className="score-gross">/ Pass</span>
-                      )}
-                    </p>
-                  </div>
-                )}
+                  userProfile.is_passed_step1 === false &&
+                  userProfile.step_1 === 0 &&
+                  userProfile.step_1_document_name === '' ? (
+                    <div className="no-score">
+                      <p>No score available</p>
+                    </div>
+                  ) : userProfile.step_1_review_requested === true ? (
+                    <div className="score-waiting">
+                      <p>Once we verify your scores, you will see them here.</p>
+                    </div>
+                  ) : (
+                      <div className="score-pass">
+                        <p className="score">
+                          {userProfile.step_1}{' '}
+                          {userProfile.is_passed_step1 && (
+                            <span className="score-gross">/ Pass</span>
+                          )}
+                        </p>
+                      </div>
+                    )}
               </div>
               <div className="card-footer">
                 <div className="score-btn-wrapper">
                   {userProfile.step_1_review_requested === false &&
-                  userProfile.is_passed_step1 === false &&
-                  userProfile.step_1 === 0 &&
-                  userProfile.step_1_document_name === '' ? (
-                    <div className="add-score">
-                      <a
-                        onClick={e => {
-                          e.preventDefault();
-                          setStep1Modal(true);
-                        }}
-                        href="#"
-                      >
-                        Submit score{' '}
-                      </a>{' '}
-                    </div>
-                  ) : userProfile.step_1_review_requested === true ? (
-                    <div className="waiting-score">
-                      <p>Waiting for review</p>
-                    </div>
-                  ) : (
-                    <div className="add-score">
-                      <a
-                        onClick={e => {
-                          e.preventDefault();
-                          setStep1Modal(true);
-                        }}
-                        href="#"
-                      >
-                        Add score{' '}
-                      </a>{' '}
-                      <img src={right_arrow_black} alt="image" />
-                    </div>
-                  )}
+                    userProfile.is_passed_step1 === false &&
+                    userProfile.step_1 === 0 &&
+                    userProfile.step_1_document_name === '' ? (
+                      <div className="add-score">
+                        <a
+                          onClick={e => {
+                            e.preventDefault();
+                            setStep1Modal(true);
+                          }}
+                          href="#"
+                        >
+                          Submit score{' '}
+                        </a>{' '}
+                      </div>
+                    ) : userProfile.step_1_review_requested === true ? (
+                      <div className="waiting-score">
+                        <p>Waiting for review</p>
+                      </div>
+                    ) : (
+                        <div className="add-score">
+                          <a
+                            onClick={e => {
+                              e.preventDefault();
+                              setStep1Modal(true);
+                            }}
+                            href="#"
+                          >
+                            Add score{' '}
+                          </a>{' '}
+                          <img src={right_arrow_black} alt="image" />
+                        </div>
+                      )}
                   {/* <div className="add-score">
                       <a href="#">Manage score </a>{' '}
                       <img src={right_arrow_black} alt="image" />
@@ -265,62 +265,62 @@ export const Score = () => {
               </div>
               <div className="card-body">
                 {userProfile.step_2_review_requested === false &&
-                userProfile.is_passed_step2 === false &&
-                userProfile.step_2 === 0 &&
-                userProfile.step_2_document_name === '' ? (
-                  <div className="no-score">
-                    <p>No score available</p>
-                  </div>
-                ) : userProfile.step_2_review_requested === true ? (
-                  <div className="score-waiting">
-                    <p>Once we verify your scores, you will see them here.</p>
-                  </div>
-                ) : (
-                  <div className="score-pass">
-                    <p className="score">
-                      {userProfile.step_2}{' '}
-                      {userProfile.is_passed_step2 && (
-                        <span className="score-gross">/ Pass</span>
-                      )}
-                    </p>
-                  </div>
-                )}
+                  userProfile.is_passed_step2 === false &&
+                  userProfile.step_2 === 0 &&
+                  userProfile.step_2_document_name === '' ? (
+                    <div className="no-score">
+                      <p>No score available</p>
+                    </div>
+                  ) : userProfile.step_2_review_requested === true ? (
+                    <div className="score-waiting">
+                      <p>Once we verify your scores, you will see them here.</p>
+                    </div>
+                  ) : (
+                      <div className="score-pass">
+                        <p className="score">
+                          {userProfile.step_2}{' '}
+                          {userProfile.is_passed_step2 && (
+                            <span className="score-gross">/ Pass</span>
+                          )}
+                        </p>
+                      </div>
+                    )}
               </div>
               <div className="card-footer">
                 <div className="score-btn-wrapper">
                   {userProfile.step_2_review_requested === false &&
-                  userProfile.is_passed_step2 === false &&
-                  userProfile.step_2 === 0 &&
-                  userProfile.step_2_document_name === '' ? (
-                    <div className="add-score">
-                      <a
-                        onClick={e => {
-                          e.preventDefault();
-                          setStep2Modal(true);
-                        }}
-                        href="#"
-                      >
-                        Submit score{' '}
-                      </a>{' '}
-                    </div>
-                  ) : userProfile.step_2_review_requested === true ? (
-                    <div className="waiting-score">
-                      <p>Waiting for review</p>
-                    </div>
-                  ) : (
-                    <div className="add-score">
-                      <a
-                        onClick={e => {
-                          e.preventDefault();
-                          setStep2Modal(true);
-                        }}
-                        href="#"
-                      >
-                        Add score{' '}
-                      </a>{' '}
-                      <img src={right_arrow_black} alt="image" />
-                    </div>
-                  )}
+                    userProfile.is_passed_step2 === false &&
+                    userProfile.step_2 === 0 &&
+                    userProfile.step_2_document_name === '' ? (
+                      <div className="add-score">
+                        <a
+                          onClick={e => {
+                            e.preventDefault();
+                            setStep2Modal(true);
+                          }}
+                          href="#"
+                        >
+                          Submit score{' '}
+                        </a>{' '}
+                      </div>
+                    ) : userProfile.step_2_review_requested === true ? (
+                      <div className="waiting-score">
+                        <p>Waiting for review</p>
+                      </div>
+                    ) : (
+                        <div className="add-score">
+                          <a
+                            onClick={e => {
+                              e.preventDefault();
+                              setStep2Modal(true);
+                            }}
+                            href="#"
+                          >
+                            Add score{' '}
+                          </a>{' '}
+                          <img src={right_arrow_black} alt="image" />
+                        </div>
+                      )}
                   {/* <div className="add-score">
                       <a href="#">Manage score </a>{' '}
                       <img src={right_arrow_black} alt="image" />
@@ -339,62 +339,62 @@ export const Score = () => {
               </div>
               <div className="card-body">
                 {userProfile.step_3_review_requested === false &&
-                userProfile.is_passed_step3 === false &&
-                userProfile.step_3 === 0 &&
-                userProfile.step_3_document_name === '' ? (
-                  <div className="no-score">
-                    <p>No score available</p>
-                  </div>
-                ) : userProfile.step_3_review_requested === true ? (
-                  <div className="score-waiting">
-                    <p>Once we verify your scores, you will see them here.</p>
-                  </div>
-                ) : (
-                  <div className="score-pass">
-                    <p className="score">
-                      {userProfile.step_3}{' '}
-                      {userProfile.is_passed_step3 && (
-                        <span className="score-gross">/ Pass</span>
-                      )}
-                    </p>
-                  </div>
-                )}
+                  userProfile.is_passed_step3 === false &&
+                  userProfile.step_3 === 0 &&
+                  userProfile.step_3_document_name === '' ? (
+                    <div className="no-score">
+                      <p>No score available</p>
+                    </div>
+                  ) : userProfile.step_3_review_requested === true ? (
+                    <div className="score-waiting">
+                      <p>Once we verify your scores, you will see them here.</p>
+                    </div>
+                  ) : (
+                      <div className="score-pass">
+                        <p className="score">
+                          {userProfile.step_3}{' '}
+                          {userProfile.is_passed_step3 && (
+                            <span className="score-gross">/ Pass</span>
+                          )}
+                        </p>
+                      </div>
+                    )}
               </div>
               <div className="card-footer">
                 <div className="score-btn-wrapper">
                   {userProfile.step_3_review_requested === false &&
-                  userProfile.is_passed_step3 === false &&
-                  userProfile.step_3 === 0 &&
-                  userProfile.step_3_document_name === '' ? (
-                    <div className="add-score">
-                      <a
-                        onClick={e => {
-                          e.preventDefault();
-                          setStep3Modal(true);
-                        }}
-                        href="#"
-                      >
-                        Submit score{' '}
-                      </a>{' '}
-                    </div>
-                  ) : userProfile.step_3_review_requested === true ? (
-                    <div className="waiting-score">
-                      <p>Waiting for review</p>
-                    </div>
-                  ) : (
-                    <div className="add-score">
-                      <a
-                        onClick={e => {
-                          e.preventDefault();
-                          setStep3Modal(true);
-                        }}
-                        href="#"
-                      >
-                        Add score{' '}
-                      </a>{' '}
-                      <img src={right_arrow_black} alt="image" />
-                    </div>
-                  )}
+                    userProfile.is_passed_step3 === false &&
+                    userProfile.step_3 === 0 &&
+                    userProfile.step_3_document_name === '' ? (
+                      <div className="add-score">
+                        <a
+                          onClick={e => {
+                            e.preventDefault();
+                            setStep3Modal(true);
+                          }}
+                          href="#"
+                        >
+                          Submit score{' '}
+                        </a>{' '}
+                      </div>
+                    ) : userProfile.step_3_review_requested === true ? (
+                      <div className="waiting-score">
+                        <p>Waiting for review</p>
+                      </div>
+                    ) : (
+                        <div className="add-score">
+                          <a
+                            onClick={e => {
+                              e.preventDefault();
+                              setStep3Modal(true);
+                            }}
+                            href="#"
+                          >
+                            Add score{' '}
+                          </a>{' '}
+                          <img src={right_arrow_black} alt="image" />
+                        </div>
+                      )}
                   {/* <div className="add-score">
                       <a href="#">Manage score </a>{' '}
                       <img src={right_arrow_black} alt="image" />

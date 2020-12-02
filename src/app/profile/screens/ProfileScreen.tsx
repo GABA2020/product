@@ -1,5 +1,5 @@
-import React, { Fragment, useContext, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { Fragment, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useInjectSaga } from 'utils/redux-injectors';
 import {
   actions as userActions,
@@ -22,8 +22,8 @@ import { useStorage } from 'hook/useStorage';
 import { Score } from '../../containers/Score';
 import { REF } from 'helpers/firebase.module';
 import { GApageView } from 'app';
-import { EditProfileModal } from 'app/profile/components/EditProfileModal';
-import { ProfileInfo } from './ProfileInfo';
+import { ProfileInfo, EditProfileModal } from '../components/profile';
+import { LoaderModal } from '../../genericComponents';
 
 export function Profile({ owner, userSearchProfile }) {
   useInjectSaga({ key: userSliceKey, saga: UserSaga });
@@ -32,6 +32,7 @@ export function Profile({ owner, userSearchProfile }) {
   const dispatch = useDispatch();
 
   const [editModeState, setEditModeState] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const [
     isShowModalEditProfileState,
@@ -39,39 +40,41 @@ export function Profile({ owner, userSearchProfile }) {
   ] = useState<boolean>(false);
 
   const image = useStorage(`${REF.avatars}/${userSearchProfile.avatar}`);
-
   useEffect(() => {
+    setLoading(true)
     GApageView('Home');
+
   }, []);
 
   useEffect(() => {
+
     dispatch(
       programActions.getProgramReviewAction({ email: userSearchProfile.email }),
     );
     dispatch(userActions.getEducationsAction({ email: userSearchProfile.email }));
+    setLoading(false)
   }, [userSearchProfile.email]);
 
-  return (
-    <Fragment>
-      <EditProfileModal
-        isShow={isShowModalEditProfileState}
-        onHide={() => {
-          setIsShowModalEditProfileState(false);
-        }}
-      />
-      <ProfileInfo
-        userSearchProfile={userSearchProfile}
-        image={image}
-        owner={owner}
-        setIsShowModalEditProfileState={setIsShowModalEditProfileState}
-      />
-      {/* owner profile will use userProfile */}
-      {owner && <Score />}
-      {/* locker */}
-      <Locker email={userSearchProfile?.email} owner={owner}/>
-      {/* CV work */}
-      {owner && <CVWork editMode={editModeState} />}
-      <section className="section-milestones"></section>
-    </Fragment>
-  );
+  return loading ? (<LoaderModal />) : (<Fragment>
+
+    <EditProfileModal
+      isShow={isShowModalEditProfileState}
+      onHide={() => {
+        setIsShowModalEditProfileState(false);
+      }}
+    />
+    <ProfileInfo
+      userSearchProfile={userSearchProfile}
+      image={image}
+      owner={owner}
+      setIsShowModalEditProfileState={setIsShowModalEditProfileState}
+    />
+    {/* owner profile will use userProfile */}
+    {owner && <Score />}
+    {/* locker */}
+    <Locker email={userSearchProfile?.email} owner={owner} />
+    {/* CV work */}
+    {owner && <CVWork editMode={editModeState} />}
+    <section className="section-milestones"></section>
+  </Fragment>);
 }

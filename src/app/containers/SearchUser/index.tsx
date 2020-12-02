@@ -16,7 +16,7 @@ import 'styles/scss/ModalEditProfile.scss';
 import 'styles/scss/SectionProfile.scss';
 import { NavLink } from 'react-router-dom';
 import { Context } from 'app/globalContext/GlobalContext';
-import { Profile } from 'app/profile/screens/ProfileScreen';
+import ProfileScreen from 'app/profile/screens/ProfileScreen';
 import { getUser } from 'app/auth/services';
 
 interface IProfile {
@@ -61,7 +61,6 @@ export const SearchUser: FC<IProfile> = props => {
   }, [match.params.username, userProfile]);
 
   async function getUserSearchProfile(username) {
-    console.log(username);
     const userData = await getUser(graphQLClient, '', username);
     setUserSearchProfile({
       ...userData?.userFirestore,
@@ -99,7 +98,7 @@ export const SearchUser: FC<IProfile> = props => {
                         </ul>
                       </div>
                     </section>
-                    <Profile
+                    <ProfileScreen
                       owner={userProfile.username === userSearchProfile.username}
                       userSearchProfile={userSearchProfile}
                     />

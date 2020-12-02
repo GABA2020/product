@@ -605,9 +605,9 @@ export default function EditProfileModal(props) {
             <Divider />
             <FormSection>
               <NotRequiredSubtitle>Honors Society</NotRequiredSubtitle>
-              {honorsOptions.map(option => (
+              {honorsOptions.map((option,index) => (
                 <CheckboxContainer>
-                  <Checkbox
+                  <Checkbox key={index}
                     label={option.label}
                     checked={
                       !!values.honors.filter(e => e === option.value).length

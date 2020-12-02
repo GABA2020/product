@@ -25,7 +25,7 @@ import { GApageView } from 'app';
 import { ProfileInfo, EditProfileModal } from '../components/profile';
 import { LoaderModal } from '../../genericComponents';
 
-export function Profile({ owner, userSearchProfile }) {
+export default function ProfileScreen({ owner, userSearchProfile }) {
   useInjectSaga({ key: userSliceKey, saga: UserSaga });
   useInjectSaga({ key: programSliceKey, saga: ProgramSaga });
   useInjectSaga({ key: storageSliceKey, saga: StorageSaga });

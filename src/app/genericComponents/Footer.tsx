@@ -1,7 +1,7 @@
 import React from 'react';
 import { gabaMidnight, twitter, In, icon_send_mail } from 'assets/images';
 
-export function Footer () {
+export default function Footer () {
   return (
     <footer id="footer">
       <div className="footer-top">

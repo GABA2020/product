@@ -3,7 +3,7 @@ import { SignUp } from '../components/SignUp';
 import { SignIn } from '../components/SignIn';
 import { Container, Grid, Button, Tab } from 'semantic-ui-react';
 import styled, { createGlobalStyle } from 'styled-components';
-import { Footer } from '../../genericComponents/Footer';
+import { Footer } from '../../genericComponents';
 import { Header } from '../components/Header';
 import Helmet from 'react-helmet';
 

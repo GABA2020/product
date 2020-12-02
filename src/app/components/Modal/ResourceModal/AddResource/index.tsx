@@ -8,8 +8,8 @@ import { useFormik } from 'formik';
 import moment from 'moment';
 
 import { Column, Row } from '../../../../genericComponents/Layout';
-import Checkbox from '../../../../genericComponents/Checkbox';
-import Stars from '../../../../genericComponents/Stars';
+import { Checkbox, Stars } from '../../../../genericComponents';
+
 import theme from '../../../../../theme';
 import { CREATE_REVIEW } from '../../../../../service/mutations';
 import AsyncSelect from 'react-select/async';

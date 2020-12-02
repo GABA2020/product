@@ -32,7 +32,7 @@ import { CVPage } from './containers/CVPage';
 import { AuthScreen } from './auth/screens/AuthScreen';
 import { AdminConsole } from './containers/AdminConsole';
 import { PaymentPage } from './containers/PaymentPage';
-import { LateralMenu } from './genericComponents/LateralMenu';
+import { LateralMenu } from './genericComponents';
 import { Context } from './globalContext/GlobalContext';
 import PeoplePage from './people/screens/PeoplePage';
 import { db } from '../helpers/firebase.module';

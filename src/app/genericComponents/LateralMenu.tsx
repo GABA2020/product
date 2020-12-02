@@ -3,7 +3,7 @@ import { Menu, Sidebar } from 'semantic-ui-react';
 import { Context } from 'app/globalContext/GlobalContext';
 import { NavLink, Link } from 'react-router-dom';
 
-export function LateralMenu({ children }) {
+export default function LateralMenu({ children }) {
   const {
     state: { showMenu },
     dispatch: { changeShowMenu },

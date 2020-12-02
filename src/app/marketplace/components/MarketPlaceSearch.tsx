@@ -1,4 +1,4 @@
-import Button from 'app/genericComponents/Button';
+import { Button } from 'app/genericComponents';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -12,19 +12,19 @@ const categories = [{
   name: 'Free',
   id: 'free',
   icon: GlyphIcon
-},{
+}, {
   name: 'Pre-Med',
   id: 'pre-med',
   icon: SquareIcon
-},{
+}, {
   name: 'Step One',
   id: 'step-one',
   icon: DotCircleIcon
-},{
+}, {
   name: 'Step Two',
   id: 'step-two',
   icon: ShapesIcon
-},{
+}, {
   name: 'Step Three',
   id: 'step-three',
   icon: HalfCircleIcon
@@ -195,13 +195,13 @@ const MarketPlaceSearch = (props: MarketPlaceSearchProps) => {
         <Search>
           <SearchTitle>Search for Resources</SearchTitle>
           <InputContainer>
-            <SearchInput onChange={({ target: { value }}) => setSearchField(value)} value={searchField} type="text"/>
+            <SearchInput onChange={({ target: { value } }) => setSearchField(value)} value={searchField} type="text" />
             <SearchButton onClick={() => handleSearch()}> Search </SearchButton>
           </InputContainer>
         </Search>
         <DividerContainer>
           <VerticalDivider />
-            <DividerLabel>OR</DividerLabel>
+          <DividerLabel>OR</DividerLabel>
           <VerticalDivider />
         </DividerContainer>
         <CategoriesContainer>
@@ -210,7 +210,7 @@ const MarketPlaceSearch = (props: MarketPlaceSearchProps) => {
             {
               categories.map(category => (
                 <Category onClick={() => handleFilterByCategory(category.id)}>
-                  <CategoryThumbnail active={activeCategory === category.id} width="25" src={category.icon}/>
+                  <CategoryThumbnail active={activeCategory === category.id} width="25" src={category.icon} />
                   <CategoryLabel>{category.name}</CategoryLabel>
                 </Category>
               ))
@@ -222,6 +222,7 @@ const MarketPlaceSearch = (props: MarketPlaceSearchProps) => {
         </ClearFiltersButton>
       </ContentContainer>
     </Container>
-)}
+  )
+}
 
 export default MarketPlaceSearch;

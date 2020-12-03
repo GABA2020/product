@@ -32,7 +32,6 @@
     ) {
       var ofs_appointment = $(this).find('.diagram-unit').offset();
       var data_type = $(this).find('.diagram-unit').attr('data-type');
-      console.log(ofs_appointment);
       $(this)
         .find('.diagram-unit')
         .hover(

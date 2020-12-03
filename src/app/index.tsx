@@ -17,26 +17,17 @@ import 'styles/scss/SectionFooter.scss';
 
 import { Slide, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-// import { HomePage } from './containers/HomePage/Loadable';
-// import { NotFoundPage } from './containers/NotFoundPage/Loadable';
 import { Redirect, Route, Router, Switch } from 'react-router-dom';
 import RoutesTypes from '../types/Routes';
-import { authSelector } from 'redux/Auth/selectors';
-import { useDispatch, useSelector } from 'react-redux';
 import { auth } from 'firebase';
 import { history } from 'utils/history';
-import { actions as authActions } from 'redux/Auth/slice';
 import { MainPage } from './containers/MainPage';
-import { Login } from './containers/Auth/Login';
 import { CVPage } from './containers/CVPage';
 import { AuthScreen } from './auth/screens/AuthScreen';
 import { AdminConsole } from './containers/AdminConsole';
 import { PaymentPage } from './containers/PaymentPage';
 import { LateralMenu } from './genericComponents';
 import { Context } from './globalContext/GlobalContext';
-import PeoplePage from './people/screens/PeoplePage';
-import { db } from '../helpers/firebase.module';
-import { GET_USER_ACCOUNT, GET_USER_DATA } from 'service/queries';
 import ReactGA from 'react-ga';
 import { getUser } from './auth/services';
 
@@ -69,10 +60,10 @@ const AuthRoute = ({ component: Component, ...rest }) => {
 };
 
 export function App() {
-  // const { isAuth } = useSelector(authSelector);
+  
   const {
     graphQLClient,
-    state: { isAuth, userWorks },
+    state: { isAuth },
     dispatch: { login },
   } = React.useContext(Context);
   const [initialized, setInitialized] = React.useState(false);

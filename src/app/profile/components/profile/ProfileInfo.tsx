@@ -4,14 +4,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { img_user, verified_check } from 'assets/images';
 
-import { useSelector, useDispatch } from 'react-redux';
-import { ChatSelector } from 'redux/Chat/selectors';
 import { useInjectSaga } from 'utils/redux-injectors';
 import { ChatSaga } from 'redux/Chat/saga';
 import { Chat } from 'app/containers/Chat';
 
 import {
-  actions as chatActions,
   sliceKey as chatSliceKey,
 } from 'redux/Chat/slice';
 import { Context } from 'app/globalContext/GlobalContext';
@@ -61,17 +58,14 @@ export default function ProfileInfo({
   userSearchProfile,
 }) {
   useInjectSaga({ key: chatSliceKey, saga: ChatSaga });
-  const dispatch = useDispatch();
-  const { listLastMessage } = useSelector(ChatSelector);
+
   const [chatModal, setChatModal] = useState(false);
   const {
     state: { user: userProfile },
   } = useContext(Context);
 
   const {
-    loading: loadingConnect,
     data: connectResponse,
-    error: connectError,
     refetch: fetchConnect,
   } = useQuery(CONNECTED_USERS, { variables: { email: userProfile.email } });
 
@@ -154,14 +148,14 @@ export default function ProfileInfo({
               <a href="#">
                 {image !== '' ? (
                   <img
-                    alt="user image"
+                    alt="user"
                     src={image ?? ''}
                     width={140}
                     height={140}
                   />
                 ) : (
                     <img
-                      alt="user image"
+                      alt="user"
                       src={img_user}
                       width={140}
                       height={140}

@@ -38,7 +38,7 @@ export const AdminProgramsTab = () => {
 
   const itemsPerPage = 10;
 
-  var { loading, error, data, fetchMore } = useQuery(GET_PROGRAMS, {
+  var { fetchMore } = useQuery(GET_PROGRAMS, {
     fetchPolicy: 'network-only',
     onCompleted: data => {
       setPrograms([...data.programs]);

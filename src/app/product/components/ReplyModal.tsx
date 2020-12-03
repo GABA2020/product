@@ -153,7 +153,6 @@ const ReplyModal = ({
   });
 
   const handleSave = () => {
-    console.log({ comment, username, commentId });
     replyComment({
       variables: {
         comment,

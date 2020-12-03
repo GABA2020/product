@@ -1,11 +1,9 @@
-import React, { Fragment, useEffect, useState, FC, useContext } from 'react';
+import React, { Fragment, useEffect, useState, useContext } from 'react';
 import { Modal } from 'react-bootstrap';
-import { Formik, useFormik } from 'formik';
+import { useFormik } from 'formik';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
-import { Modal as ModalAnt, message } from 'antd';
 import { ImageCrop } from 'app/components/ImageCrop';
-import Select from 'react-select';
 import * as yup from 'yup';
 import { img_user } from 'assets/images';
 import { showWarningMessage } from 'helpers/Swal.module';
@@ -56,18 +54,6 @@ const inputFontStyle = `
   font-size: 16px;
   font-weight: 500;
   letter-spacing: 0.1px;
-`;
-
-const ModalHeader = styled.div`
-  padding: 41px 200px 26px 200px;
-  background-color: white;
-  border-bottom: 1px solid ${props => props.theme.color.softGray};
-`;
-
-const HeaderTitle = styled.h3`
-  width: 100%;
-  border-bottom: 2px solid ${props => props.theme.color.gabaYellow};
-  padding-bottom: 20px;
 `;
 
 const ModalContent = styled(Modal.Body)`
@@ -170,16 +156,6 @@ const CustomDropdown = styled(Dropdown)`
   ${inputFontStyle}
 `;
 
-const TextArea = styled.textarea`
-  border: 1px solid lightgray;
-  border-radius: 5px;
-  margin-right: 15px;
-  padding-left: 10px;
-  width: 100%;
-  padding-top: 10px;
-  ${inputFontStyle}
-`;
-
 const ModalButton = styled.button`
   background: ${(props: { background: string }) => props.background};
   border-radius: 6px;
@@ -195,10 +171,6 @@ const ModalButton = styled.button`
 const ButtonsContainer = styled(Row)`
   justify-content: space-between;
   width: 100%;
-`;
-
-const CustomTitle = styled.p`
-  color: white;
 `;
 
 const UserInfo = styled(Column)`
@@ -395,16 +367,13 @@ export default function EditProfileModal(props) {
       school_year: values.school_year.toString(),
       medical_school: values.medical_school,
     };
-    let response1;
     try {
       await graphQLClient
         .mutate({ mutation: EDIT_USER_PROFILE_PG, variables: variablesPG })
-        .then(r => (response1 = r))
-        .catch(r => console.log('EDIT_USER_PROFILE_PG', r));
+
       await graphQLClient
         .mutate({ mutation: EDIT_USER_PROFILE_FS, variables: variablesFS })
-        .then(r => setUser({ ...user, ...variablesFS, ...variablesPG }))
-        .catch(r => console.log('EDIT_USER_PROFILE_FS', r));
+      setUser({ ...user, ...variablesFS, ...variablesPG })
     } catch (err) {
       console.log(err);
     }
@@ -471,7 +440,7 @@ export default function EditProfileModal(props) {
                 ) : image_preview !== '' ? (
                   <img
                     className="profile-image"
-                    alt="image preview"
+                    alt="preview"
                     src={image_preview}
                     width={140}
                     height={140}
@@ -479,7 +448,7 @@ export default function EditProfileModal(props) {
                 ) : (
                       <img
                         className="profile-image"
-                        alt="image preview"
+                        alt="preview"
                         src={img_user}
                         width={140}
                         height={140}
@@ -605,9 +574,9 @@ export default function EditProfileModal(props) {
             <Divider />
             <FormSection>
               <NotRequiredSubtitle>Honors Society</NotRequiredSubtitle>
-              {honorsOptions.map((option,index) => (
-                <CheckboxContainer>
-                  <Checkbox key={index}
+              {honorsOptions.map((option, index) => (
+                <CheckboxContainer key={index}>
+                  <Checkbox
                     label={option.label}
                     checked={
                       !!values.honors.filter(e => e === option.value).length

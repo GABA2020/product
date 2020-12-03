@@ -58,7 +58,7 @@ export default function ScoreModal({
   }
 
   async function updateMcatScore() {
-    const userRef = await db
+    await db
       .collection('member_data')
       .doc(userProfile.email)
       .set({
@@ -72,7 +72,7 @@ export default function ScoreModal({
     window.location.reload(false);
   }
   async function updateStepOneScore() {
-    const userRef = await db
+    await db
       .collection('member_data')
       .doc(userProfile.email)
       .set({
@@ -86,7 +86,7 @@ export default function ScoreModal({
     window.location.reload(false);
   }
   async function updateStepTwoScore() {
-    const userRef = await db
+    await db
       .collection('member_data')
       .doc(userProfile.email)
       .set({
@@ -100,7 +100,7 @@ export default function ScoreModal({
     window.location.reload(false);
   }
   async function updateStepThreeScore() {
-    const userRef = await db
+    await db
       .collection('member_data')
       .doc(userProfile.email)
       .set({
@@ -148,7 +148,7 @@ export default function ScoreModal({
           <CloseButton onClick={onHide}>X</CloseButton>
           <Text fontSize="1.4em">{type} Score</Text>
           <IconButton color={'#FF0000'}>
-            <img src={require('../../../assets/images/icons/trash.png')} />
+            <img src={require('../../../assets/images/icons/trash.png')} alt='' />
             Remove
           </IconButton>
         </Head1>
@@ -198,7 +198,7 @@ export default function ScoreModal({
         <UploadBox beforeUpload={beforeUpload} showUploadList={false}>
           {scoreReportFile ? (
             <>
-              <img src={require('../../../assets/images/icons/fileGreen.png')} />
+              <img src={require('../../../assets/images/icons/fileGreen.png')}  alt=''/>
               <br />
               <Text fontSize="1.2em">We got it, thanks!</Text>
               <br />
@@ -206,7 +206,7 @@ export default function ScoreModal({
             </>
           ) : (
             <>
-              <img src={require('../../../assets/images/icons/upload.png')} />
+              <img src={require('../../../assets/images/icons/upload.png')} alt='' />
               <br />
               <Text fontSize="1.2em">Drop your file here or Browse</Text>
               <br />
@@ -220,12 +220,12 @@ export default function ScoreModal({
           onClick={() => setScoreReportFile('')}
           color={'#aaa'}
         >
-          <img src={require('../../../assets/images/icons/trashGrey.png')} />
+          <img src={require('../../../assets/images/icons/trashGrey.png')} alt='' />
           Remove File
         </IconButton>
         {/* <RowContainerSpaceBeetwen>
           <IconButton color={"#aaa"}>
-            <img src={require('../../../assets/images/icons/fileImportGrey.png')} />
+            <img src={require('../../../assets/images/icons/fileImportGrey.png')} alt=''/>
             Replace File
           </IconButton>
         </RowContainerSpaceBeetwen> */}

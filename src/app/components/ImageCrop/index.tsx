@@ -2,8 +2,7 @@ import React, { Fragment, useRef, useState, FC, useEffect } from 'react';
 import AvatarEditor from 'react-avatar-editor';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faWindowClose } from '@fortawesome/free-solid-svg-icons';
-import { img_user } from 'assets/images';
-import { generateNewNameImage, dataUrlFile } from 'helpers/Unity';
+import { generateNewNameImage } from 'helpers/Unity';
 interface IFIle {
   lastModified: number;
   lastModifiedDate: string;

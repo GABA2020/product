@@ -22,7 +22,6 @@
     closeBtn: '.close_btn', //閉じるボタン
     addClass: 'spmenu_open', //bodyに付与するクラス(不要の場合空にする)
     // callBack: function(){
-    //   console.log("Dao");
     //   $('#btn-nav-sp a').on('click', function(e){
     //     if ($('#btn-nav-sp a.sma_menu_open').hasClass('active')){
     //       $('#btn-nav-sp a.sma_menu_open .menu_text').html('Close');

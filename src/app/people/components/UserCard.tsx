@@ -105,11 +105,6 @@ const Tag = styled.div`
   margin-right: 10px;
 `;
 
-const Location = styled.p`
-  position: absolute;
-  right: 30px;
-`;
-
 const TagsContainer = styled(Row)``;
 
 const Avatar = styled(Image)`
@@ -149,15 +144,10 @@ interface UserCardProps {
 const UserCard = (props: UserCardProps) => {
   const {
     email,
-    name,
     username,
     school,
     year,
     specialties,
-    mcat,
-    step_1,
-    step_2,
-    step_3,
     onConnect,
     handleConnectButtonPress,
   } = props;
@@ -179,16 +169,16 @@ const UserCard = (props: UserCardProps) => {
         <UserSchool>{school}</UserSchool>
         <TagsContainer>
           {specialties ? (
-            specialties.map((tagitem, index) => <Tag>{tagitem}</Tag>)
+            specialties.map((tagitem, index) => <Tag key={index}>{tagitem}</Tag>)
           ) : (
               <Tag>No Specialty</Tag>
             )}
           <Tag>{year} Student</Tag>
         </TagsContainer>
         <CategoriesRow>
-          {categories.map(category => (
-            <Category>
-              <img width="15" src={category.icon} />
+          {categories.map((category,index) => (
+            <Category key={index}>
+              <img width="15" src={category.icon} alt="" />
               <CategoryLabel>
                 {category.name} Score:{' '}
                 <b>{props[category.id] ? props[category.id] : '?'}</b>

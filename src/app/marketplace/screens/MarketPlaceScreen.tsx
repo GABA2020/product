@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Segment } from 'semantic-ui-react';
 import styled from 'styled-components';
 import { useQuery, useMutation } from '@apollo/client';
-import { useSelector } from 'react-redux';
 
 import MarketPlaceHeader from '../components/MarketPlaceHeader';
 import MarketPlaceSearch from '../components/MarketPlaceSearch';

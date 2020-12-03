@@ -12,7 +12,6 @@ const isUserPayment = (
   membership_type: string,
   payment_complete: boolean,
 ) => {
-  console.log('moment', moment().diff(last_login, 'days'));
   if (
     membership_type === 'GABASilver' &&
     payment_complete === false &&

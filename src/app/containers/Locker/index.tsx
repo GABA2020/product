@@ -1,6 +1,6 @@
-import React, { Fragment, useState, useEffect, useContext } from 'react';
+import React, { Fragment, useState, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useQuery } from '@apollo/client';
 import styled from 'styled-components';
 
@@ -27,75 +27,33 @@ const CustomButton = styled.button`
   color: #ffffff;
 `;
 
-const iniUserResource: ENTITIES.UserResource = {
-  id: '',
-  resource_id: '',
-  match_score: 0,
-  date: {
-    seconds: 0,
-  },
-  actual_exam: '',
-  actual_exam_score: 0,
-  subject: '',
-  review_body: '',
-  created_at: {
-    seconds: 0,
-  },
-  updated_at: {
-    seconds: 0,
-  },
-  rating: 0,
-};
 
 export const Locker = ({ email, owner }) => {
   const {
     state: { user },
   } = useContext(Context);
 
-  //console.log(user.email);
   const {
     loading: loadingReviews,
-    data: reviewsResponse,
-    error: reviewsError,
-    refetch: fetchReviews,
+    data: reviewsResponse
   } = useQuery(GET_REVIEWS_BY_USER, { variables: { userId: email || '' } });
 
   const {
     loading: loadingResources,
     data: resourcesResponse,
-    error: resourcesError,
     refetch: fetchResources,
   } = useQuery(GET_LOCKER_RESOURCES_BY_USER, {
     variables: { userId: email || '' },
   });
 
   useInjectSaga({ key: sliceKey, saga: LockerSaga });
-  const dispatch = useDispatch();
   const {
-    //userResources,
     reviewLength,
     userResourceLength,
   } = useSelector(lockerSelector);
 
-  // const { userProfile } = useSelector(userSelector);
-
   const [modalVisibility, setModalVisibility] = useState(false);
   const [tabState, setTabState] = useState(0); // 0 => resource, 1 => review
-
-  // useEffect(() => {
-  // if (userProfile.email !== '') {
-  //   dispatch(
-  //     actions.getAllUserResourceAction({
-  //       email: userProfile.email,
-  //     }),
-  //   );
-  //   dispatch(
-  //     actions.getUserResourcesAction({
-  //       email: userProfile.email,
-  //     }),
-  //   );
-  // }
-  // }, [user.email]);
 
   const renderReviews = (reviews: ENTITIES.UserReviewLocker[]) => {
     return (
@@ -156,22 +114,11 @@ export const Locker = ({ email, owner }) => {
       </ul>
     );
   };
-  //console.log(reviewsResponse, loadingReviews, reviewsError);
   return (
     <Fragment>
       {modalVisibility && (
         <AddReviewModal
-          //isShow={addResourceModal}
           onClose={() => setModalVisibility(false)}
-          // addNewUserResource={userResource => {
-          //   dispatch(
-          //     actions.addUserResourceAction({
-          //       email: userProfile.email,
-          //       userResource,
-          //     }),
-          //   );
-          // }}
-          // allUserResources={allUserResources}
         />
       )}
       {/* <EditResource
@@ -235,11 +182,6 @@ export const Locker = ({ email, owner }) => {
                       onClick={e => {
                         e.preventDefault();
                         setTabState(1);
-                        // dispatch(
-                        //   actions.getReviewsAction({
-                        //     email: user.email,
-                        //   }),
-                        // );
                       }}
                       href="#frame-2"
                       role="tab"

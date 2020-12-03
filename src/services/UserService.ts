@@ -23,7 +23,7 @@ const searchUsers = async (payload: DTO.User.SearchUsersRequest) => {
     .collection('member_data')
     .where('username', '>=', payload.text)
     .get();
-  const userCollection = userRef.forEach(doc => {
+  userRef.forEach(doc => {
     listUser.push({ email: doc.id, ...doc.data() } as ENTITIES.UserProfile);
   });
   return { listUser: listUser };
@@ -33,7 +33,7 @@ const getUserSearchProfile = async (
   payload: DTO.User.GetUserSearchProfileRequest,
 ) => {
   let profileUser;
-  const userRef = await db
+  await db
     .collection('member_data')
     .where('username', '==', payload.username)
     .get()

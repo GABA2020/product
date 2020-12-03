@@ -1,12 +1,11 @@
-import Dragger from 'antd/lib/upload/Dragger';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Modal } from 'react-bootstrap';
 import styled from 'styled-components';
 
 import loaderVector from '../../assets/images/front/loader.svg';
 
 
-export default function LoaderModal({ }) {
+export default function LoaderModal(props) {
 
   return (
     <ModalCont
@@ -16,7 +15,7 @@ export default function LoaderModal({ }) {
       size="lg"
     >
       <ModalBody>
-        <img src={loaderVector} />
+        <img src={loaderVector} alt="" />
       </ModalBody>
 
     </ModalCont >)

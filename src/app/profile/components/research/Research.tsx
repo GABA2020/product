@@ -1,8 +1,7 @@
-import React, { FC, Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { right_arrow, down_arrow } from 'assets/images';
-import moment from 'moment';
 import { ResearchModal } from '../research/ResearchModal';
 import { windowOpen } from 'helpers/Unity';
 export function Research(props){
@@ -105,7 +104,7 @@ export function Research(props){
                           <img
                             className="right-arrow"
                             src={right_arrow}
-                            alt="image"
+                            alt=""
                           />
                         </a>
                       </div>
@@ -130,7 +129,7 @@ export function Research(props){
               getMoreResearches();
             }}
           >
-            Load More Experiences <img src={down_arrow} alt="img" />
+            Load More Experiences <img src={down_arrow} alt="" />
           </a>
         </div>
       ) : null}

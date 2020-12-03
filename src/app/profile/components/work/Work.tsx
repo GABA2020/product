@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, FC, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { faEdit, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { down_arrow } from '../../../../assets/images';

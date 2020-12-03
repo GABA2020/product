@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { useLazyQuery, useQuery, useMutation } from '@apollo/client';
-import { useSelector } from 'react-redux';
 
 import {
   ReviewModal,
@@ -113,12 +112,11 @@ const Product = () => {
     },
   });
 
-  const { data: resourceDetailResponse, loading: loadingResource } = useQuery(
+  const { loading: loadingResource } = useQuery(
     RESOURCE_DETAIL,
     {
       variables: { id },
       onCompleted: data => {
-        console.log('Data here: ', data);
         setResourceDetail(data.resource);
       },
       onError: err => console.log(err),
@@ -126,7 +124,7 @@ const Product = () => {
   );
 
   const {
-    data: resourcePercentageResponse,
+    data,
     loading: loadingPercentage,
   } = useQuery(GET_RESOURCE_PERCENTAGE, { variables: { resourceId: id } });
 

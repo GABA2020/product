@@ -10,7 +10,6 @@ import {
   sliceKey as programSliceKey,
 } from 'redux/Program/slice';
 import {
-  actions as storageActions,
   sliceKey as storageSliceKey,
 } from 'redux/Storage/slice';
 import { UserSaga } from 'redux/User/saga';

@@ -1,7 +1,5 @@
 import React, { Fragment, FC, memo } from 'react';
 import Rate from 'antd/lib/rate';
-import { verified_check, oval, img_user } from 'assets/images';
-import { useStorage } from 'hook/useStorage';
 import { useResource } from 'hook/useResource';
 import { NavLink } from 'react-router-dom';
 
@@ -11,11 +9,9 @@ interface IReview {
 }
 
 const Review: FC<IReview> = props => {
-  const { review, profile } = props;
+  const { review } = props;
 
-  const avatarUser = useStorage(`avatars/${profile.avatar}`);
-  const resource = useResource(review.resource_id);
-  console.log('Rev', review);
+    const resource = useResource(review.resource_id);
   return (
     <Fragment>
       <div className="review-item-media">

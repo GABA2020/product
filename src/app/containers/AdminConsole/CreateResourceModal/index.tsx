@@ -238,7 +238,7 @@ export const CreateResourceModal = (props: CreateResourceModalProps) => {
           </label>
           {pictureName && (
             <p>
-              <img src={`${pictureURL}`} />
+              <img src={`${pictureURL}`} alt=""/>
             </p>
           )}
           <label>Change Picture:</label>

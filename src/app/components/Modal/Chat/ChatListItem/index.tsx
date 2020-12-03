@@ -2,8 +2,6 @@ import React, { Fragment, FC, useContext } from 'react';
 import { img_user } from 'assets/images';
 import moment from 'moment';
 import { useUser } from 'hook/useUser';
-import { userSelector } from 'redux/User/selectors';
-import { useSelector } from 'react-redux';
 import { useStorage } from 'hook/useStorage';
 import { Context } from 'app/globalContext/GlobalContext';
 interface IChatListItem {

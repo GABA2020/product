@@ -1,14 +1,11 @@
 import React, { FC, Fragment, useContext, useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { useInjectSaga } from 'utils/redux-injectors';
 import {
   sliceKey as userSliceKey,
-  actions as userActions,
 } from 'redux/User/slice';
 import { sliceKey as chatSliceKey } from 'redux/Chat/slice';
 import { UserSaga } from 'redux/User/saga';
 import { ChatSaga } from 'redux/Chat/saga';
-import { userSelector } from 'redux/User/selectors';
 import { NotFoundPage } from '../NotFoundPage/Loadable';
 import Helmet from 'react-helmet';
 import 'styles/scss/SearchUser.scss';
@@ -31,7 +28,6 @@ export const SearchUser: FC<IProfile> = props => {
   const { match } = props;
   useInjectSaga({ key: userSliceKey, saga: UserSaga });
   useInjectSaga({ key: chatSliceKey, saga: ChatSaga });
-  const dispatch = useDispatch();
   // const {
   //   userProfile,
   //   loadingUserSearchProfile,

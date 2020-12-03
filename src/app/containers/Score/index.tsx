@@ -7,7 +7,6 @@ import {
   step_three,
 } from 'assets/images';
 import {
-  actions as userActions,
   sliceKey as userSliceKey,
 } from 'redux/User/slice';
 import { StorageSaga } from 'redux/Storage/saga';
@@ -16,14 +15,9 @@ import {
   sliceKey as storageSliceKey,
 } from 'redux/Storage/slice';
 import { useInjectSaga } from 'utils/redux-injectors';
-import { userSelector } from 'redux/User/selectors';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { UserSaga } from 'redux/User/saga';
 import 'styles/scss/SectionScore.scss';
-import { MCATModal } from 'app/components/Modal/MCATModal';
-import { Step1Modal } from 'app/components/Modal/Step1Modal';
-import { Step2Modal } from 'app/components/Modal/Step2Modal';
-import { Step3Modal } from 'app/components/Modal/Step3Modal';
 import { ScoreModal } from 'app/profile/components/profile';
 import { Context } from 'app/globalContext/GlobalContext';
 
@@ -31,7 +25,7 @@ export const Score = () => {
   useInjectSaga({ key: userSliceKey, saga: UserSaga });
   useInjectSaga({ key: storageSliceKey, saga: StorageSaga });
   const dispatch = useDispatch();
-  // const { userProfile } = useSelector(userSelector);
+  
   const { state: { user: userProfile } } = useContext(Context);
   const [mcatModal, setMCATModal] = useState<boolean>(false);
   const [step1Modal, setStep1Modal] = useState<boolean>(false);
@@ -110,7 +104,7 @@ export const Score = () => {
               <div className="card-header">
                 <div className="title">
                   <div className="image-score">
-                    <img src={mcat} alt="img" />
+                    <img src={mcat} alt="" />
                   </div>
                   <p>MCAT</p>
                 </div>
@@ -170,12 +164,12 @@ export const Score = () => {
                           >
                             Add score{' '}
                           </a>{' '}
-                          <img src={right_arrow_black} alt="image" />
+                          <img src={right_arrow_black} alt="" />
                         </div>
                       )}
                   {/* <div className="add-score">
                       <a href="#">Manage score </a>{' '}
-                      <img src={right_arrow_black} alt="image" />
+                      <img src={right_arrow_black} alt="" />
                     </div> */}
                 </div>
               </div>
@@ -184,7 +178,7 @@ export const Score = () => {
               <div className="card-header">
                 <div className="title">
                   <div className="image-score">
-                    <img src={step_one} alt="img" />
+                    <img src={step_one} alt="" />
                   </div>
                   <p>Step One</p>
                 </div>
@@ -244,12 +238,12 @@ export const Score = () => {
                           >
                             Add score{' '}
                           </a>{' '}
-                          <img src={right_arrow_black} alt="image" />
+                          <img src={right_arrow_black} alt="" />
                         </div>
                       )}
                   {/* <div className="add-score">
                       <a href="#">Manage score </a>{' '}
-                      <img src={right_arrow_black} alt="image" />
+                      <img src={right_arrow_black} alt="" />
                     </div> */}
                 </div>
               </div>
@@ -258,7 +252,7 @@ export const Score = () => {
               <div className="card-header">
                 <div className="title">
                   <div className="image-score">
-                    <img src={step_two} alt="img" />
+                    <img src={step_two} alt="" />
                   </div>
                   <p>Step Two CK / CS</p>
                 </div>
@@ -318,12 +312,12 @@ export const Score = () => {
                           >
                             Add score{' '}
                           </a>{' '}
-                          <img src={right_arrow_black} alt="image" />
+                          <img src={right_arrow_black} alt="" />
                         </div>
                       )}
                   {/* <div className="add-score">
                       <a href="#">Manage score </a>{' '}
-                      <img src={right_arrow_black} alt="image" />
+                      <img src={right_arrow_black} alt="" />
                     </div> */}
                 </div>
               </div>
@@ -332,7 +326,7 @@ export const Score = () => {
               <div className="card-header">
                 <div className="title">
                   <div className="image-score">
-                    <img src={step_three} alt="img" />
+                    <img src={step_three} alt="" />
                   </div>
                   <p>Step Three</p>
                 </div>
@@ -392,12 +386,12 @@ export const Score = () => {
                           >
                             Add score{' '}
                           </a>{' '}
-                          <img src={right_arrow_black} alt="image" />
+                          <img src={right_arrow_black} alt="" />
                         </div>
                       )}
                   {/* <div className="add-score">
                       <a href="#">Manage score </a>{' '}
-                      <img src={right_arrow_black} alt="image" />
+                      <img src={right_arrow_black} alt="" />
                     </div> */}
                 </div>
               </div>

@@ -1,11 +1,8 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import PropTypes from 'prop-types';
-import { Form, Input, Divider, Select, Dropdown } from 'semantic-ui-react';
+import React, { useContext, useState } from 'react';
+import { Form, Divider, Select, Dropdown } from 'semantic-ui-react';
 import styled from 'styled-components';
 import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers';
-import { useForm } from 'react-hook-form';
-import { Formik, useFormik } from 'formik';
+import { useFormik } from 'formik';
 import {
   auth,
   db,
@@ -127,7 +124,6 @@ export function SignUp() {
     values,
     setFieldValue,
     touched,
-    resetForm,
     setFieldTouched,
   } = useFormik({
     initialValues: {
@@ -185,7 +181,6 @@ export function SignUp() {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      console.log(error);
       toast.error('Unable to sign in with provided data');
     }
   }

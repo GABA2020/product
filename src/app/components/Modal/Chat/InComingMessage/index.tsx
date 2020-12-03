@@ -3,7 +3,6 @@ import { img_user } from 'assets/images';
 import { useUser } from 'hook/useUser';
 import { useStorage } from 'hook/useStorage';
 import moment from 'moment';
-import { history } from 'utils/history';
 
 interface Message {
   message: ENTITIES.Message;

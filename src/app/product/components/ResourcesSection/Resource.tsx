@@ -45,7 +45,7 @@ const Resource = (props: ResourceProps) => {
       <div className="media media-locker">
         <div className="locker-images">
           <img
-            alt="image"
+            alt=""
             src="app/assets/images/photos/img-locker.jpg"
             width={125}
             height={100}

@@ -1,19 +1,10 @@
-import React, { Fragment, useContext, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { useInjectSaga } from 'utils/redux-injectors';
-import { sliceKey, actions } from 'redux/Auth/slice';
-import { authSelector } from 'redux/Auth/selectors';
-import { AuthSaga } from 'redux/Auth/saga';
-import { useForm } from 'react-hook-form';
+import React, { useContext, useState } from 'react';
 import { auth, db } from '../../../helpers/firebase.module';
-import { Link } from 'react-router-dom';
 import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers';
 import 'styles/scss/login.scss';
-import { DTO } from '../../../types/DTO';
 import { toast } from 'react-toastify';
 import { history } from 'utils/history';
-import { Form, Input, Divider } from 'semantic-ui-react';
+import { Form, Divider } from 'semantic-ui-react';
 import styled from 'styled-components';
 import { Context } from 'app/globalContext/GlobalContext';
 import { GET_USER_ACCOUNT, GET_USER_DATA } from 'service/queries';
@@ -24,7 +15,7 @@ const loginSchema = yup.object().shape({
   password: yup.string().required('Password is a required field'),
 });
 
-export const SignIn: React.FC = props => {
+export const SignIn: React.FC = (props) => {
   const [loading, setLoading] = useState(false)
   const {
     graphQLClient,
@@ -72,7 +63,7 @@ export const SignIn: React.FC = props => {
       toast.error('Unable to log in with provided credentials');
       setLoading(false);
     }
-    
+
   };
 
   const {
@@ -105,7 +96,7 @@ export const SignIn: React.FC = props => {
           id="inputEmail"
           autoFocus
         />
-        {errors.email && touched.email &&(
+        {errors.email && touched.email && (
           <span className={'text-danger'}>{errors.email}</span>
         )}
       </Form.Field>
@@ -117,18 +108,17 @@ export const SignIn: React.FC = props => {
           type="password"
           id="inputPassword"
         />
-        {errors.password && touched.password &&(
+        {errors.password && touched.password && (
           <span className={'text-danger'}>{errors.password}</span>
         )}
       </Form.Field>
       <br />
       <Form.Button
         content="Sign In GABA"
-        primary={values.email&&values.password&&true||false}
+        primary={values.email && values.password && true || false}
         fluid
         loading={loading}
         size="huge"
-        // disabled={loading}
       />
 
       <div className="text-center form-group">
@@ -166,8 +156,5 @@ const FormWrapper = styled(Form)`
 `;
 const Label = styled.label`
   font-size: 1.34em !important;
-`;
-const ExtraLabel = styled.label`
-  font-size: 0.8em !important;
 `;
 const InputStyled = styled.input``;

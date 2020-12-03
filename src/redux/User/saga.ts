@@ -90,7 +90,7 @@ export function* getUserSearchProfileSaga({ payload }) {
 function* updateUserProfileSaga({ payload }) {
   yield delay(500);
   try {
-    const response = yield call(updateUserProfile, payload);
+    yield call(updateUserProfile, payload);
     yield put(actions.updateUserProfileActionSuccess());
   } catch (e) {
     yield put(actions.getUserProfileActionFailed());
@@ -139,7 +139,7 @@ export function* getMoreWorkExperiencesSaga({ payload }) {
 export function* addNewWorkExperienceSaga({ payload }) {
   yield delay(500);
   try {
-    const response = yield call(addNewWorkExperience, payload);
+    yield call(addNewWorkExperience, payload);
     yield put(actions.getWorkExperiencesAction({ email: payload.email }));
     yield put(actions.addNewWorkExperienceActionSuccess());
   } catch (e) {
@@ -149,7 +149,7 @@ export function* addNewWorkExperienceSaga({ payload }) {
 export function* editWorkExperienceSaga({ payload }) {
   yield delay(500);
   try {
-    const response = yield call(editWorkExperience, payload);
+    yield call(editWorkExperience, payload);
     yield put(actions.getWorkExperiencesAction({ email: payload.email }));
     yield put(actions.editWorkExperienceActionSuccess());
   } catch (e) {
@@ -160,7 +160,7 @@ export function* editWorkExperienceSaga({ payload }) {
 export function* deleteWorkExperienceSaga({ payload }) {
   yield delay(500);
   try {
-    const response = yield call(deleteWorkExperience, payload);
+    yield call(deleteWorkExperience, payload);
     yield put(actions.deleteWorkExperienceActionSuccess());
   } catch (e) {
     yield put(actions.deleteWorkExperienceActionFailed());
@@ -208,7 +208,7 @@ export function* getMoreEducationsSaga({ payload }) {
 export function* addNewEducationsSaga({ payload }) {
   yield delay(500);
   try {
-    const response = yield call(addNewEducation, payload);
+    yield call(addNewEducation, payload);
     yield put(actions.addNewEducationActionSuccess());
     yield put(actions.getEducationsAction({ email: payload.email }));
   } catch (e) {
@@ -219,7 +219,7 @@ export function* addNewEducationsSaga({ payload }) {
 export function* editEducationsSaga({ payload }) {
   yield delay(500);
   try {
-    const response = yield call(editEducation, payload);
+    yield call(editEducation, payload);
     yield put(actions.editEducationActionSuccess());
     yield put(actions.getEducationsAction({ email: payload.email }));
   } catch (e) {
@@ -230,7 +230,7 @@ export function* editEducationsSaga({ payload }) {
 export function* deleteEducationsSaga({ payload }) {
   yield delay(500);
   try {
-    const response = yield call(deleteEducation, payload);
+    yield call(deleteEducation, payload);
     yield put(actions.deleteEducationActionSuccess());
   } catch (e) {
     yield put(actions.deleteEducationActionFailed());
@@ -279,7 +279,7 @@ export function* getMoreVolunteersSaga({ payload }) {
 export function* addVolunteerSaga({ payload }) {
   yield delay(500);
   try {
-    const response = yield call(addNewVolunteer, payload);
+    yield call(addNewVolunteer, payload);
     yield put(actions.addNewVolunteerActionSuccess());
     yield put(actions.getVolunteersAction({ email: payload.email }));
   } catch (e) {
@@ -290,7 +290,7 @@ export function* addVolunteerSaga({ payload }) {
 export function* editVolunteerSaga({ payload }) {
   yield delay(500);
   try {
-    const response = yield call(editVolunteer, payload);
+    yield call(editVolunteer, payload);
     yield put(actions.editVolunteerActionSuccess());
     yield put(actions.getVolunteersAction({ email: payload.email }));
   } catch (e) {
@@ -301,7 +301,7 @@ export function* editVolunteerSaga({ payload }) {
 export function* deleteVolunteerSaga({ payload }) {
   yield delay(500);
   try {
-    const response = yield call(deleteVolunteer, payload);
+    yield call(deleteVolunteer, payload);
     yield put(actions.deleteVolunteerActionSuccess());
   } catch (e) {
     yield put(actions.deleteVolunteerActionFailed());
@@ -350,7 +350,7 @@ export function* getMoreResearchesSaga({ payload }) {
 export function* addResearchSaga({ payload }) {
   yield delay(500);
   try {
-    const response = yield call(addNewResearch, payload);
+    yield call(addNewResearch, payload);
     yield put(actions.addNewResearchActionSuccess());
     yield put(actions.getResearchesAction({ email: payload.email }));
   } catch (e) {
@@ -361,7 +361,7 @@ export function* addResearchSaga({ payload }) {
 export function* editResearchSaga({ payload }) {
   yield delay(500);
   try {
-    const response = yield call(editResearch, payload);
+    yield call(editResearch, payload);
     yield put(actions.editResearchActionSuccess());
     yield put(actions.getResearchesAction({ email: payload.email }));
   } catch (e) {
@@ -372,7 +372,7 @@ export function* editResearchSaga({ payload }) {
 export function* deleteResearchSaga({ payload }) {
   yield delay(500);
   try {
-    const response = yield call(deleteResearch, payload);
+    yield call(deleteResearch, payload);
     yield put(actions.deleteResearchActionSuccess());
   } catch (e) {
     yield put(actions.deleteResearchActionFailed());
@@ -408,7 +408,7 @@ export function* getMoreLettersSaga({ payload }) {
 export function* addLetterSaga({ payload }) {
   yield delay(500);
   try {
-    const response = yield call(addNewLetter, payload);
+    yield call(addNewLetter, payload);
     yield put(actions.addNewLetterActionSuccess());
     yield put(actions.getLettersAction({ email: payload.email }));
   } catch (e) {
@@ -419,7 +419,7 @@ export function* addLetterSaga({ payload }) {
 export function* editLetterSaga({ payload }) {
   yield delay(500);
   try {
-    const response = yield call(editLetter, payload);
+    yield call(editLetter, payload);
     yield put(actions.editLetterActionSuccess());
     yield put(actions.getLettersAction({ email: payload.email }));
   } catch (e) {
@@ -430,7 +430,7 @@ export function* editLetterSaga({ payload }) {
 export function* deleteLetterSaga({ payload }) {
   yield delay(500);
   try {
-    const response = yield call(deleteLetter, payload);
+    yield call(deleteLetter, payload);
     yield put(actions.deleteLetterActionSuccess());
   } catch (e) {
     yield put(actions.deleteLetterActionFailed());

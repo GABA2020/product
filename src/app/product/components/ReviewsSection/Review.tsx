@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import moment from 'moment';
 import { useQuery } from '@apollo/react-hooks';
 
 import { IComment } from '../../../../types/Resource';

@@ -61,16 +61,18 @@ const StarR = styled.div`
 `;
 
 const HeaderContainer = styled.div`
-  padding: 110px 0 30px 0;
+  padding: 110px 0 70px 0;
   display: flex;
   flex-direction: column;
   padding-left: 175px;
+  min-height: 600;
 `;
 
 const ContentContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-self: center;
+  min-height: 600;
   ${props => props.theme.rules.narrowWidth}
 `;
 
@@ -90,10 +92,12 @@ const MarketPlaceHeader = () => (
         <HeaderTitle>Refer your friends for 50% off Osmosis</HeaderTitle>
        
         <HeaderParagraph>
-          Osmosis provides you with the right study techniques to help you
+          <p>Osmosis provides you with the right study techniques to help you
           retain, understand, and study more efficiently throughout med school.
           Excel in your classes, ace the USMLE®, and be better prepared for
-          clinicals when you learn by Osmosis.
+          clinicals when you learn by Osmosis.</p>
+
+          <p>In the chat on the bottom right corner, share the email of the person that referred you</p>
         </HeaderParagraph>
       </Grid.Column>
       <Grid.Column>

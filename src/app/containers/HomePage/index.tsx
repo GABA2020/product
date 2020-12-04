@@ -1,9 +1,7 @@
 import React, { useContext } from 'react';
-import { useSelector } from 'react-redux';
 import { Router, Switch, Route, Redirect } from 'react-router-dom';
 import { history } from '../../../utils/history';
 import RoutesTypes from 'types/Routes';
-import { authSelector } from 'redux/Auth/selectors';
 import { Context } from 'app/globalContext/GlobalContext';
 
 export function HomePage() {

@@ -222,7 +222,6 @@ const ReviewSection = (props: ReviewSectionProps) => {
                   search
                   selection
                   onChange={(_, { value }) => {
-                    console.log({ value });
                     handleSetActiveFilter('specialties', value);
                   }}
                   options={disciplines.map(discipline => ({

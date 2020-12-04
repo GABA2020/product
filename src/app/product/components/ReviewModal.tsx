@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import DatePicker from 'react-datepicker';
 import { useMutation, useQuery } from '@apollo/react-hooks';
-import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { Dropdown, Button } from 'semantic-ui-react';
 import * as yup from 'yup';
@@ -130,11 +129,6 @@ const Subtitle = styled.p`
     left: -7px;
   }
 `;
-
-const CheckboxContainer = styled.div`
-  width: 50%;
-`;
-
 const TextInput = styled.input`
   height: 40px;
   border: 1px solid lightgray;
@@ -254,7 +248,6 @@ const ReviewModal = ({ onClose }: { onClose: () => void }) => {
     values,
     setFieldValue,
     touched,
-    resetForm,
     isSubmitting,
   } = useFormik({
     initialValues: {

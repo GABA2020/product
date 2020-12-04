@@ -1,4 +1,4 @@
-import { ButtonProps } from 'antd/lib/button';
+
 import styled from 'styled-components';
 
 type Props = {

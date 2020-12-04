@@ -27,14 +27,3 @@ const Wrapper = styled.div`
   min-height: 320px;
   width: 100%;
 `;
-
-const Title = styled.div`
-  margin-top: -8vh;
-  font-weight: bold;
-  color: ${p => p.theme.text};
-  font-size: 4.375rem;
-
-  span {
-    font-size: 3.125rem;
-  }
-`;

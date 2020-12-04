@@ -1,8 +1,6 @@
 import React, { useContext, useState } from 'react';
 import axios from 'axios';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
-import { useSelector } from 'react-redux';
-import { authSelector } from 'redux/Auth/selectors';
 import { db } from '../../../helpers/firebase.module';
 import RoutesTypes from '../../../types/Routes';
 import { Context } from 'app/globalContext/GlobalContext';

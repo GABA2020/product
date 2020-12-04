@@ -10,7 +10,6 @@ import { UserSaga } from 'redux/User/saga';
 import { AuthSaga } from 'redux/Auth/saga';
 import { userSelector } from 'redux/User/selectors';
 import { useSelector, useDispatch } from 'react-redux';
-import { authSelector } from 'redux/Auth/selectors';
 import { Context } from 'app/globalContext/GlobalContext';
 
 export const CVPage = () => {

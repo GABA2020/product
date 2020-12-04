@@ -1,5 +1,4 @@
 import moment from 'moment';
-import lodash from 'lodash';
 const MonthYearFormat = 'MMM yyyy';
 const DayMonthYearFormat = 'MMM DD, yyyy';
 const YearFormat = 'yyyy';

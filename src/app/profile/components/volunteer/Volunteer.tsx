@@ -1,12 +1,11 @@
-import React, { FC, Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment';
-import { YearFormat, getDifferenceYear } from 'helpers/Unity';
 import { VolunteerModal } from './VolunteerModal';
 import { down_arrow } from 'assets/images';
 
-export function Volunteer(props){
+export function Volunteer(props) {
   const {
     editMode,
     volunteers,
@@ -25,17 +24,17 @@ export function Volunteer(props){
 
   /* end state modal display */
 
-  function onAddNewVolunteer(volunteer){
+  function onAddNewVolunteer(volunteer) {
     addNewVolunteer(volunteer);
     hideVolunteerModal();
   };
 
-  function onEditVolunteer(volunteer){
+  function onEditVolunteer(volunteer) {
     editVolunteer(volunteer);
     hideVolunteerModal();
   };
 
-  function onDeleteVolunteer(volunteer){
+  function onDeleteVolunteer(volunteer) {
     deleteVolunteer(volunteer);
     hideVolunteerModal();
   };
@@ -98,7 +97,7 @@ export function Volunteer(props){
                         {item.job_title} - {item.city}
                       </p>
                       <p>
-                        {`${moment(item.start_date,"MM/YYYY").format('YYYY')} - ${moment(item.end_date,"MM/YYYY").format('YYYY')}`}
+                        {`${moment(item.start_date, "MM/YYYY").format('YYYY')} - ${moment(item.end_date, "MM/YYYY").format('YYYY')}`}
                       </p>
                     </div>
                   </div>
@@ -107,10 +106,10 @@ export function Volunteer(props){
             );
           })
         ) : (
-          <div className="text-empty text-center">
-            <p>There is no experiences available</p>
-          </div>
-        ))}
+            <div className="text-empty text-center">
+              <p>There is no experiences available</p>
+            </div>
+          ))}
       {!loading && volunteers.length > 0 && volunteers.length < arrayLength ? (
         <div className="load-more-wrapper text-center">
           <a
@@ -121,7 +120,7 @@ export function Volunteer(props){
               getMoreVolunteers();
             }}
           >
-            Load More Experiences <img src={down_arrow} alt="img" />
+            Load More Experiences <img src={down_arrow} alt="" />
           </a>
         </div>
       ) : null}

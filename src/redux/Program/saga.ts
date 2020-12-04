@@ -19,7 +19,7 @@ export function* getProgramReview({ payload }) {
 
 export function* updateProgramReview({ payload }) {
   try {
-    const program = yield call(updateProgramOfUser, payload);
+    yield call(updateProgramOfUser, payload);
     yield put(actions.updateProgramActionSuccess());
   } catch (e) {
     yield put(actions.updateProgramActionFailed());

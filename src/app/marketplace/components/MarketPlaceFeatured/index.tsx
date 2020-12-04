@@ -123,7 +123,7 @@ const MarketPlaceFeatured = ({
         </FeaturedHeader>
         <>
           {loading
-            ? Array.from({ length: 4 }).map(() => <FeaturedItemSkeleton />)
+            ? Array.from({ length: 4 }).map((element,index) => <FeaturedItemSkeleton key={index}/>)
             : resources.map((item, index) => (
               <FeaturedItem
                 item={item}

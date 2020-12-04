@@ -1,9 +1,5 @@
 import { db } from 'helpers/firebase.module';
 import { DTO } from 'types/DTO';
-import moment from 'moment';
-import { firestore } from 'firebase';
-
-const limitContent = 5;
 
 const getWorkExperiences = async (
   payload: DTO.User.WorkExperience.GetWorkExperiencesRequest,
@@ -130,7 +126,7 @@ const editWorkExperience = async (
 const deleteWorkExperience = async (
   payload: DTO.User.WorkExperience.DeleteWorkExperiencesRequest,
 ) => {
-  const workCollection = await db
+  await db
     .collection('member_data')
     .doc(payload.email)
     .collection('work')

@@ -23,6 +23,6 @@ export async function getUser(graphQLClient,email="",username="") {
     .doc(userAccount?.email || '_')
     .get()
   const userFirestore = memberRef.data();
-  console.log('user', userFirestore, userAccount, userDataHasura);
+  
   return({ userFirestore, userAccount, userDataHasura });
 }

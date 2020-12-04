@@ -1,7 +1,5 @@
 import { DTO } from 'types/DTO';
 import { db } from 'helpers/firebase.module';
-import { firestore } from 'firebase';
-import moment from 'moment';
 
 const getResourceDetail = async (
   payload: DTO.Locker.Resource.GetResourceDetailRequest,

@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 
 const YellowActiveStar = require('../../assets/images/front/YellowActiveStar@2x.png');
 const YellowStar = require('../../assets/images/front/YellowStar@2x.png');

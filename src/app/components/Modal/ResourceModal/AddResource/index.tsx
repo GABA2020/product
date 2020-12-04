@@ -8,7 +8,7 @@ import { useFormik } from 'formik';
 import moment from 'moment';
 
 import { Column, Row } from '../../../../genericComponents/Layout';
-import { Checkbox, Stars } from '../../../../genericComponents';
+import { Stars } from '../../../../genericComponents';
 
 import theme from '../../../../../theme';
 import { CREATE_REVIEW } from '../../../../../service/mutations';
@@ -143,10 +143,6 @@ const Subtitle = styled.p`
   }
 `;
 
-const CheckboxContainer = styled.div`
-  width: 50%;
-`;
-
 const TextInput = styled.input`
   height: 40px;
   border: 1px solid lightgray;
@@ -268,7 +264,6 @@ const AddReviewModal = ({ onClose }: { onClose: () => void }) => {
     values,
     setFieldValue,
     touched,
-    resetForm,
     isSubmitting,
   } = useFormik({
     initialValues: {

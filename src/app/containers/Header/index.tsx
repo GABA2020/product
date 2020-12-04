@@ -1,5 +1,4 @@
 import React, { Fragment, useContext, useEffect, useState } from 'react';
-import { authSelector } from 'redux/Auth/selectors';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { img_account, gaba, nav_icon } from 'assets/images';
@@ -9,15 +8,12 @@ import {
   sliceKey as userSlice,
 } from 'redux/User/slice';
 import {
-  actions as authActions,
   sliceKey as authSlice,
 } from 'redux/Auth/slice';
 import {
-  actions as chatActions,
   sliceKey as chatSlice,
 } from 'redux/Chat/slice';
 import { useInjectSaga } from 'redux-injectors';
-import { userSelector } from 'redux/User/selectors';
 import { AuthSaga } from 'redux/Auth/saga';
 import { ChatSaga } from 'redux/Chat/saga';
 import { UserSaga } from 'redux/User/saga';

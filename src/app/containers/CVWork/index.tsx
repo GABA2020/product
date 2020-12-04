@@ -4,7 +4,6 @@ import { Work } from 'app/profile/components/work/Work';
 import { Research } from 'app/profile/components/research/Research';
 import { Volunteer } from 'app/profile/components/volunteer/Volunteer';
 import { Letter } from 'app/profile/components/letter/Letter';
-import { Education } from 'app/components/Education';
 import { useInjectSaga } from 'utils/redux-injectors';
 import {
   sliceKey as userSliceKey,
@@ -52,13 +51,6 @@ export const CVWork: FC<ICVWork> = props => {
   useInjectSaga({ key: storageSliceKey, saga: StorageSaga });
   const dispatch = useDispatch();
   const {
-    // userProfile,
-    workExperiences,
-    educations,
-    volunteers,
-    researches,
-    letters,
-    lastQuery,
     arrayLength,
     loading,
   } = useSelector(userSelector);

@@ -138,7 +138,7 @@ const FeaturedItem = (props: FeaturedItemProps) => {
       </DetailsSection>
       <TagsSection>
         {item.tags
-          ? item.tags.map((tagitem, index) => <Tag>{tagitem}</Tag>)
+          ? item.tags.map((tagitem, index) => <Tag key={index}>{tagitem}</Tag>)
           : 'no tag'}
       </TagsSection>
       {url !== '' ? <Image src={url} /> : <Image src={Bitmap} />}

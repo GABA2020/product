@@ -1,4 +1,4 @@
-import React, { Fragment, FC } from 'react';
+import React, { Fragment } from 'react';
 import { Modal } from 'react-bootstrap';
 import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -6,7 +6,6 @@ import * as yup from 'yup';
 import moment from 'moment';
 import 'styles/scss/ModalWorkExperience.scss';
 import { Formik } from 'formik';
-import { convertDateToTimestamp } from 'helpers/Unity';
 
 const schema = yup.object().shape({
   document_name: yup

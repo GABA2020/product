@@ -1,7 +1,6 @@
 import React, { Fragment, FC, useContext } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { img_locker } from 'assets/images';
-import RoutesTypes from 'types/Routes';
 import { useStorage } from 'hook/useStorage';
 import Rate from 'antd/lib/rate';
 import { useResource } from 'hook/useResource';

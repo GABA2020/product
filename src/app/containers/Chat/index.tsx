@@ -3,8 +3,6 @@ import React, {
   FC,
   useEffect,
   useState,
-  useCallback,
-  useLayoutEffect,
   useContext,
 } from 'react';
 import { Modal } from 'react-bootstrap';
@@ -17,7 +15,6 @@ import { actions, sliceKey } from 'redux/Chat/slice';
 import { ChatSelector } from 'redux/Chat/selectors';
 import { ChatSaga } from 'redux/Chat/saga';
 import { useInjectSaga } from 'utils/redux-injectors';
-import { userSelector } from 'redux/User/selectors';
 import { FormInputText } from 'app/components/Modal/Chat/FormInputText';
 import { convertDateToTimestamp } from 'helpers/Unity';
 import moment from 'moment';
@@ -49,16 +46,11 @@ export const Chat: FC<IChat> = props => {
     loading_listMessage,
     currentUserKey,
   } = useSelector(ChatSelector);
-  const { state: { user:userProfile } } = useContext(Context);
-  // const { userProfile } = useSelector(userSelector);
+  const { state: { user: userProfile } } = useContext(Context);
+
   const [indexConversion, setIndexConversion] = useState(0);
 
-  // const scrollToBottom = () => {
-  //   const element = document.getElementById('msg_history') as HTMLElement;
-  //   element.scrollTop = element.scrollHeight;
-  // };
-
-  const onScroll = event => {
+  const onScroll = (event) => {
     const element: HTMLElement = event.target as HTMLElement;
     if (element.scrollTop === 0 && listMessages.length < messages_length) {
       dispatch(
@@ -123,9 +115,8 @@ export const Chat: FC<IChat> = props => {
           return (
             <div
               key={index}
-              className={`chat_list ${
-                item.users.join(':') === currentUserKey && 'active_chat'
-              }`}
+              className={`chat_list ${item.users.join(':') === currentUserKey && 'active_chat'
+                }`}
             >
               <ChatListitem openMessage={openMessage} lastMessageItem={item} />
             </div>
@@ -142,18 +133,12 @@ export const Chat: FC<IChat> = props => {
           return item.sender_email === userProfile.email ? (
             <OutGoingMessage message={item} key={index} />
           ) : (
-            <InComingMessage message={item} key={index} />
-          );
+              <InComingMessage message={item} key={index} />
+            );
         })}
       </Fragment>
     );
   };
-
-  // useLayoutEffect(() => {
-  //   if (!loading_listMessage && isShow) {
-  //     scrollToBottom();
-  //   }
-  // }, [loading_listMessage, isShow]);
 
   const openMessage = (userKeyMail: string) => {
     dispatch(actions.setCurrentUserKey(userKeyMail));

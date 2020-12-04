@@ -1,7 +1,6 @@
-import gql from 'graphql-tag';
 import React, { useState, useEffect } from 'react';
 import { useMutation } from '@apollo/react-hooks';
-import { Button, Form, Label, Modal } from 'semantic-ui-react';
+import {  Form, Modal } from 'semantic-ui-react';
 import { FormTagInput } from '../Tags';
 import { storageFB} from '../../../../helpers/firebase.module';
 import {  CREATE_PROGRAM, UPDATE_PROGRAM } from '../../../../service/mutations'

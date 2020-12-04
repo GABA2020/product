@@ -1,10 +1,8 @@
 import React from 'react';
 import emailjs from 'emailjs-com';
-import { db } from '../../../../helpers/firebase.module';
 import { useMutation } from '@apollo/client';
 import { UPDATE_USER_VALIDATION } from '../../../../service/mutations';
 import { useStorage } from 'hook/useStorage';
-import { Label } from 'semantic-ui-react';
 
 export const AdminVerifyProfileModal = ({
   selectedImg,
@@ -49,7 +47,6 @@ export const AdminVerifyProfileModal = ({
   };
 
   const handleVerify = async () => {
-    console.log('onclick');
     await verifyUser();
     sendVerificationEmail();
     setSelectedImg(null);

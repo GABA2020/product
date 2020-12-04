@@ -10,7 +10,6 @@ import UserCard from '../components/UserCard';
 import UserCardSkeleton from '../components/UserCardSkeleton';
 import SideFilters from '../components/SideFilters';
 import { USERS_QUERY_PG, CONNECTED_USERS } from '../../../service/queries';
-import { useSelector } from 'react-redux';
 
 import {
   CONNECT_TO_USER,
@@ -47,13 +46,11 @@ const PeoplePageScreen = () => {
   const {
     loading: loadingConnect,
     data: connectResponse,
-    error: connectError,
     refetch: fetchConnect,
   } = useQuery(CONNECTED_USERS, { variables: { email: emailSender } });
   const {
     data: userResponse,
-    loading: loadinUsers,
-    error: userError,
+    loading: loadingUsers,
   } = useQuery(USERS_QUERY_PG);
 
   const [connectToUser] = useMutation(CONNECT_TO_USER);
@@ -103,9 +100,6 @@ const PeoplePageScreen = () => {
   useEffect(() => {
     GApageView('People');
   }, []);
-
-  //console.log('errors', connectError, userError);
-  // console.log('connected', userResponse, userError);
 
   function filterUser(user) {
     if (user.email === emailSender) return false;
@@ -161,11 +155,12 @@ const PeoplePageScreen = () => {
         }}
       />
       <CardsContainer>
-        {loadinUsers ? (
-          Array.from({ length: 4 }).map(() => <UserCardSkeleton />)
+        {loadingUsers ? (
+          Array.from({ length: 4 }).map((element, index) => <UserCardSkeleton key={index} />)
         ) : users.length ? (
-          users.map((user: any) => (
+          users.map((user: any, index:number) => (
             <UserCard
+              key={index}
               email={user.email}
               name={user.FSdata.name}
               username={user.username}

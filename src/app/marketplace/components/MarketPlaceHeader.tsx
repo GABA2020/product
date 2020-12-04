@@ -80,11 +80,11 @@ const MarketPlaceHeader = () => (
       <Grid.Column>
         <StarL>
           {' '}
-          <img src={StarLeft} /> 
+          <img src={StarLeft} alt={""}/> 
         </StarL>
         <StarR>
           {' '}
-           <img src={StarRight} />
+           <img src={StarRight} alt={""} />
         </StarR>
        
         <HeaderTitle>Refer your friends for 50% off Osmosis</HeaderTitle>
@@ -98,7 +98,7 @@ const MarketPlaceHeader = () => (
       </Grid.Column>
       <Grid.Column>
         <Rectangle>
-          <img src={Osmosis} />
+          <img src={Osmosis} alt={""} />
         </Rectangle>
       </Grid.Column>
     </ContentContainer>

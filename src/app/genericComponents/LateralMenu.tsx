@@ -1,7 +1,7 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { Menu, Sidebar } from 'semantic-ui-react';
 import { Context } from 'app/globalContext/GlobalContext';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink} from 'react-router-dom';
 
 export default function LateralMenu({ children }) {
   const {

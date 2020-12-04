@@ -208,8 +208,8 @@ const MarketPlaceSearch = (props: MarketPlaceSearchProps) => {
           <CategoriesTitle>Browse Categories</CategoriesTitle>
           <CategoriesRow>
             {
-              categories.map(category => (
-                <Category onClick={() => handleFilterByCategory(category.id)}>
+              categories.map((category, index) => (
+                <Category key={index} onClick={() => handleFilterByCategory(category.id)}>
                   <CategoryThumbnail active={activeCategory === category.id} width="25" src={category.icon} />
                   <CategoryLabel>{category.name}</CategoryLabel>
                 </Category>

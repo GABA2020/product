@@ -1,4 +1,4 @@
-import React, { Fragment, FC, useEffect, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusCircle, faEdit } from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment';
@@ -113,7 +113,7 @@ export function Letter(props){
                           <img
                             className="right-arrow"
                             src={right_arrow}
-                            alt="image"
+                            alt=""
                           />
                         </a>
                       </div>

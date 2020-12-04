@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Table,
   Search,
@@ -8,7 +8,6 @@ import {
   SearchProps,
 } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
-import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
 import { CreateResourceModal } from '../CreateResourceModal';
 import { ResourceRow } from '../ResourceRow';
@@ -24,7 +23,7 @@ export const AdminResourcesTab = () => {
 
   const itemsPerPage = 10;
 
-  var { loading, error, data, fetchMore } = useQuery(RESOURCES, {
+  var { fetchMore } = useQuery(RESOURCES, {
     fetchPolicy: 'network-only',
     onCompleted: data => {
       setResources([...data.resources]);

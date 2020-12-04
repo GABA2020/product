@@ -22,6 +22,7 @@ const ContentContainer = styled.div`
   flex-direction: column;
   align-self: center;
   margin-left: -35px;
+  min-width: 950px;
   ${props => props.theme.rules.narrowWidth}
 `;
 
@@ -29,6 +30,7 @@ const FeaturedHeader = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 62px;
+  min-width: 950px;
 `;
 
 const Title = styled.h1`

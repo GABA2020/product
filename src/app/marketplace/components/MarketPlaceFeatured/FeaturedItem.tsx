@@ -20,6 +20,7 @@ const ItemContainer = styled.div`
   padding: 30px;
   position: relative;
   min-height: 150px;
+  min-width: 637px;
 `;
 
 const DetailsSection = styled(Column)`

@@ -13,6 +13,7 @@ import { SearchUser } from '../SearchUser';
 import MarketPlacePage from '../../marketplace/screens/MarketPlaceScreen';
 import { Context } from 'app/globalContext/GlobalContext';
 import PeoplePage from '../../people/screens/PeoplePage';
+import PaymentScreen from '../../payments/screen/PaymentScreen';
 import Schools from '../../schools/index';
 import AplicantDatabase from 'app/aplicantDatabase';
 // Auth Route
@@ -88,7 +89,12 @@ export const MainPage = () => {
               path={RoutesTypes.HOME}
               component={HomePage}
             />
-            
+            <AuthRoute
+              isAuth={isAuth}
+              exact
+              path={RoutesTypes.PAYMENT}
+              component={PaymentScreen}
+            />            
           </Switch>
         </Router>
       </div>

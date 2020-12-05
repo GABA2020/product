@@ -110,12 +110,6 @@ export function App() {
       <Router history={history}>
         <Switch>
           <Route exact path={RoutesTypes.AUTH} component={AuthScreen} />
-          <Route
-            isAuth={isAuth}
-            exact
-            path={RoutesTypes.PAYMENT}
-            component={PaymentPage}
-          />
           <AuthRoute
             isAuth={isAuth}
             exact
@@ -170,6 +164,12 @@ export function App() {
             path={RoutesTypes.APLICANTDB}
             component={MainPage}
           />
+          <Route
+            isAuth={isAuth}
+            exact
+            path={RoutesTypes.PAYMENT}
+            component={MainPage}
+          />          
         </Switch>
       </Router>
     </React.Fragment>

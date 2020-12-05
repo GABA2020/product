@@ -52,6 +52,9 @@ export default function LateralMenu({ children }) {
         >
           Applicant Database
         </Menu.Item>
+        <Menu.Item onClick={() => changeShowMenu(false)} as={NavLink} to="/payment">
+          Checkout
+        </Menu.Item>        
       </Sidebar>
       <Sidebar.Pusher dimmed={showMenu}>{children}</Sidebar.Pusher>
     </Sidebar.Pushable>

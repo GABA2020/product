@@ -74,20 +74,29 @@ const RadioButton = ({
   label,
   checked,
   onChange,
+  value,
 }: {
   label?: string;
   checked?: boolean;
-  onChange?: () => void;
-}) => (
-  <Container>
-    {label}
-    <input
-      type="radio"
-      onChange={() => onChange && onChange()}
-      checked={checked}
-    />
-    <span className="checkmark"></span>
-  </Container>
-);
+  onChange: (event:any) => void;
+  value?: string;
+}) => {
+
+  const handlerChange = (e: any) => {
+    onChange(e)
+  }
+  return (
+    <Container>
+      {label}
+      <input
+        type="radio"
+        onChange={handlerChange}
+        checked={checked}
+        value={value}
+      />
+      <span className="checkmark"></span>
+    </Container>
+  )
+}
 
 export default RadioButton;

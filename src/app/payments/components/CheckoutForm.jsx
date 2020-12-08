@@ -1,14 +1,16 @@
 import React, { useContext, useState } from 'react';
+import styled from 'styled-components';
 import axios from 'axios';
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
 import { Context } from 'app/globalContext/GlobalContext';
 
-// Make sure to call `loadStripe` outside of a component’s render to avoid
-// recreating the `Stripe` object on every render.
-const stripePromise = loadStripe('pk_test_JJ1eMdKN0Hp4UFJ6kWXWO4ix00jtXzq5XG');
 
-export default function CheckoutForm({ isVisible }) {
+const ContentContainer = styled.div`
+  width: 100%;
+  padding: 30px;
+`;
+
+export default function CheckoutForm({ isVisible, stripePromise }) {
   const [customerName, setCustomerName] = useState('');
   const [customerEmail, setCustomerEmail] = useState('');
   const [customerCity, setCustomerCity] = useState('');
@@ -20,9 +22,9 @@ export default function CheckoutForm({ isVisible }) {
   const [isProcessing, setIsProcessing] = useState(false);
   const [checkoutError, setCheckoutError] = useState('');
 
-  const stripe = undefined
-  const elements = undefined
 
+  const elements = undefined
+  const stripe = useStripe()
   const { state: { user } } = useContext(Context);
   const email = user?.email;
   // const { email } = useSelector(authSelector);
@@ -47,24 +49,6 @@ export default function CheckoutForm({ isVisible }) {
     // );
   };
 
-  const membershipPrice = () => {
-    let price;
-    switch (selectedMembership) {
-      case 'GABABronze':
-        price = 9 * 12;
-        break;
-      case 'GABASilver':
-        price = 20 * 12;
-        break;
-      case 'PreMed':
-        price = 30 * 12;
-        break;
-      default:
-        price = 0;
-        break;
-    }
-    return price;
-  };
   const handleFormSubmit = async e => {
     e.preventDefault();
 
@@ -137,7 +121,7 @@ export default function CheckoutForm({ isVisible }) {
 
 
   return isVisible ? (
-    <section className="container">
+    <ContentContainer>
       <form onSubmit={handleFormSubmit}>
         <section className="form-group">
           <label htmlFor="customerName">Cardholder Name</label>
@@ -228,17 +212,16 @@ export default function CheckoutForm({ isVisible }) {
         <Elements stripe={stripePromise} options={cardElementOptions} />
         {checkoutError && <span>{checkoutError}</span>}
         <p>
-          Your total for the {selectedMembership} membership comes out to $
-            {membershipPrice()}.
+          Your total for the {selectedMembership} membership comes out to
           </p>
         <button
           type="submit"
           disabled={isProcessing}
           className="btn btn-success btn-block"
         >
-          {isProcessing ? 'Processing...' : `Pay $${membershipPrice()}.00`}
+          {isProcessing ? 'Processing...' : `Pay $.00`}
         </button>
       </form>
-    </section>
+    </ContentContainer>
   ) : (<div></div>)
 };

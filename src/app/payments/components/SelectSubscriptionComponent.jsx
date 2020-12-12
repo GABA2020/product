@@ -37,7 +37,7 @@ const LoadMoreButton = styled(Button)`
 `;
 const CardContainer = styled.div`
   background: ${props => props.theme.color.white};
-  color: blue;
+  color: #0065f2;
   display: flex;
   margin: 30px;
   padding: 10px;
@@ -47,7 +47,7 @@ const CardContainer = styled.div`
 
 const PaymentCardContainer = styled.div`
   background: ${props => props.theme.color.white};
-  color: blue;
+  color: #0065f2;
   display: flex;
   margin: 30px;
   padding: 10px;

@@ -160,6 +160,7 @@
     "semantic-ui-react": "2.0.0",
     "styled-components": "5.0.1",
     "sweetalert2": "9.17.0",
+    "subscriptions-transport-ws": "0.9.18",
     "yup": "0.29.2"
   },
   "devDependencies": {

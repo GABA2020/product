@@ -10,7 +10,7 @@ const Container = styled.div`
 const ContentContainer = styled.div`
   width: 100%;
   margin-bottom: 30px;
-  border:1px solid blue;
+  border:1px solid #0065f2;
   border-radius: 15px;
 `;
 const Title = styled.div`

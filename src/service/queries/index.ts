@@ -9,7 +9,7 @@ export const CREATE_USER = gql`
     $school_year: String!
     $username: String!
     $password: String!
-    $verification_file: String!
+    
   ) {
     createUser(
       userData: {
@@ -20,7 +20,6 @@ export const CREATE_USER = gql`
         password: $password
         school_year: $school_year
         username: $username
-        verification_file: $verification_file
       }
     ) {
       user_uid

@@ -30,6 +30,7 @@ import { LateralMenu } from './genericComponents';
 import { Context } from './globalContext/GlobalContext';
 import ReactGA from 'react-ga';
 import { getUser } from './auth/services';
+import LoaderBals from './genericComponents/LoaderBals.js';
 
 export const initGA = () => {
   ReactGA.initialize('UA-183349067-1'); // put your tracking id here
@@ -95,7 +96,7 @@ export function App() {
     });
   }, []);
 
-  if (!initialized) return <></>;
+  if (!initialized) return <><LoaderBals/></>;
 
   return (
     <React.Fragment>

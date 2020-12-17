@@ -26,12 +26,12 @@ const SignupSchema = yup.object().shape({
   username: yup.string().required('Username is a required field'),
   medical_school: yup.string().required('Medical School is a required field'),
   school_year: yup.string().required('School Year is a required field'),
-  filesubmission: yup
-    .object()
-    .nullable()
-    .shape({
-      file: yup.mixed().required('A file is required'),
-    }),
+  // filesubmission: yup
+  //   .object()
+  //   .nullable()
+  //   .shape({
+  //     file: yup.mixed().required('A file is required'),
+  //   }),
   email: yup
     .string()
     .email('Email format incorrect')
@@ -112,7 +112,7 @@ export function SignUp() {
     };
 
     const service_id = 'default_service';
-    const template_id = 'template_7uh3g6p';
+    const template_id = 'welcome_to_gaba_';
     const user_id = 'user_yIq3IIfTQ8ruKbjBAqYaQ';
     await emailjs.send(service_id, template_id, template_params, user_id);
   };
@@ -163,7 +163,7 @@ export function SignUp() {
         password: data.password,
         school_year: data.school_year,
         username: data.username.trim().toLowerCase(),
-        verification_file: data.filesubmission?.name || '',
+        //verification_file: data.filesubmission?.name || '',
       };
       await graphQLClient
         .mutate({
@@ -173,11 +173,11 @@ export function SignUp() {
         .then(result => console.log(result));
       sendVerificationEmail(data);
       await auth.signInWithEmailAndPassword(data.email, data.password);
-      await fileStorage(data.filesubmission, data);
-      alert(
-        'Submitted! Please allow 24-48 hours for your documents to be verified. You will be emailed when accepted!',
-      );
-      window.location.replace(RoutesTypes.AUTH);
+      // await fileStorage(data.filesubmission, data);
+      // alert(
+      //   'Submitted! Please allow 24-48 hours for your documents to be verified. You will be emailed when accepted!',
+      // );
+      window.location.replace(RoutesTypes.HOME);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -271,13 +271,13 @@ export function SignUp() {
           <span className={'text-danger'}>{errors.school_year}</span>
         )}
       </Form.Field>
-      <Form.Field required>
+      {/* <Form.Field required>
         <Label>Medical School Verification</Label>
         <input type="file" name="filesubmission" onChange={changeHandler} />
         {errors.filesubmission?.file && touched.filesubmission && (
           <span className={'text-danger'}>{errors.filesubmission?.file}</span>
         )}
-      </Form.Field>
+      </Form.Field> */}
       <Divider />
 
       <Form.Field required>
